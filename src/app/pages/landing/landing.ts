@@ -12,12 +12,11 @@ import { CountryView } from '../country-view/country-view';
 import { CatalysingNetwork1 } from '../catalysing-network-1/catalysing-network-1';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { GlobalMap2 } from '../global-map-2/global-map-2';
-import { Global7Map } from '../global-map-7/global-map-7';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, CountryView, CatalysingNetwork1, GlobalMap2, Global7Map],
+  imports: [CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, CountryView, CatalysingNetwork1, GlobalMap2],
   templateUrl: './landing.html',
   styleUrls: ['./landing.css'],
   animations: [
