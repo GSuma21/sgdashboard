@@ -8,7 +8,7 @@
         <section [ngClass]="section.styles.section">
           <div class="">
             <h3 class="">{{ section.header }}</h3>
-            <h4 class="">{{ section.subHeader }}</h4>
+            <h4 class="sub-header">{{ section.subHeader }}</h4>
             <p class="">{{ section.description }}</p>
           </div>
         </section>
@@ -19,7 +19,7 @@
         <section [ngClass]="section.styles.section" class="metrics-container">
           <div class="dashboard-container">
             <h3 class="">{{ section.header }}</h3>
-            <h4 class="">{{ section.subHeader }}</h4>
+            <h4 class="sub-header">{{ section.subHeader }}</h4>
             <div class="dashboard-indicator">
               <div *ngFor="let item of section.indicators">
                 <h4>{{item.value}}</h4>

@@ -54,7 +54,7 @@ export class CatalysingNetwork1 implements OnInit {
     },
     {
       type: 'note',
-      label: '*For illustration purposes only'
+      label: '*This map is a visual guide and not drawn to scale.'
     }
   ];
 
