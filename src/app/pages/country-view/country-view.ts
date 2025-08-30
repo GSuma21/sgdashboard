@@ -42,7 +42,7 @@ export class CountryView implements OnInit, AfterViewInit {
   }
 
   fetchIndicatorData(stateCode?: string, forTooltip: boolean = false): Promise<any> {
-return d3.json(this.resourcePath.length > 0 ? this.resourcePath :`${this.baseUrl}/${DISTRICT_VIEW_INDICATORS}`).then((data: any) => {
+return d3.json(this.resourcePath.length > 0 ? this.resourcePath.includes('https://') ? this.resourcePath : `${this.baseUrl}/${this.resourcePath}` :`${this.baseUrl}/${DISTRICT_VIEW_INDICATORS}`).then((data: any) => {
       const statesData = data.result.states;
       const labels = data.result.meta?.labels || {};
       // this.notes = data.result.meta?.notes || [];

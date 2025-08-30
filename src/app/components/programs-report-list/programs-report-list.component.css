@@ -123,3 +123,10 @@ h3 {
   flex-wrap: wrap;
   justify-content: center;
 }
+.badge-completed {
+  background-color: #65568e !important;
+}
+
+.mat-mdc-card-header {
+  padding-bottom: 3px !important;
+}
