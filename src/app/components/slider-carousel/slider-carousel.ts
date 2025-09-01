@@ -59,12 +59,14 @@ export class SliderCarouselComponent implements AfterViewInit {
   prevSlide() {
     if (this.currentIndex > 0) {
       this.currentIndex--;
+      this.updateVisibleSlides() 
     }
   }
 
   nextSlide() {
     if (this.currentIndex < this.testimonials.length - this.visibleSlides) {
       this.currentIndex++;
+      this.updateVisibleSlides() 
     }
   }
 }
