@@ -17,6 +17,7 @@ import { environment } from '../../environments/environment';
 import { COMMUNITY_LED_IMPROVEMENT } from '../constants/urlConstants';
 import { ProgramDetails } from './components/program-details/program-details';
 import { pageDataConfig } from '../config/pageDataConfig';
+import { WorldMapComponent } from './pages/world-map/world-map';
 
 export const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -35,5 +36,6 @@ export const routes: Routes = [
     { path: 'catalysing-network-1', component: CatalysingNetwork1 },
     { path: 'program-details', component: ProgramDetails },
     { path: 'community-view/:state/:code', component: StateImprovementsComponent, data: pageDataConfig.communityDetails },
+    { path: 'world-map', component: WorldMapComponent },
 
 ];
