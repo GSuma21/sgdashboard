@@ -112,8 +112,10 @@ export class DistrictImprovementsComponent implements OnInit {
             })
           }else{
             this.metrics.map((metric:any) => {
+              let data =metric.label.split(" ")
+              let path =data.map((word:any) => word.toLowerCase()).join("_")
               element.indicators.push(
-                {...{"icon":"assets/icons/group.svg"},...metric}
+                {...{"icon":metric.label === 'Schools driving improvements' ?`assets/icons/${path}.png`:`assets/icons/${path}.svg`},...metric}
               )
             })
           }
