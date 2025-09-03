@@ -72,7 +72,7 @@
       </ng-container>
 
       <ng-container *ngIf="section.type === 'line-chart'">
-        <app-line-chart [allData]="section.data"></app-line-chart>
+        <app-line-chart [data]="section.data"></app-line-chart>
       </ng-container>
 
       <ng-container *ngIf="section.type === 'pie-chart'">

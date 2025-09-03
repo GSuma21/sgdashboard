@@ -12,8 +12,25 @@
       }
   },
   {
+    "type": "line-chart",
+    "width": "50%",
+    "position": "center",
+    "title": "Monthly Progress",
+    "data": [
+      { "name": "Curriculam and pedagogy", "value": 35 },
+      { "name": "Leadership", "value": 25 },
+      { "name": "Community Engagement", "value": 20 },
+      { "name": "Infrastructure", "value": 10 },
+      { "name": "Inclusive practices", "value": 10 }
+    ],
+    "styles": {
+      "section": "line-chart-section",
+      "title": "section-title"
+    }
+  },
+  {
     "type": "pie-chart",
-    "width": "100%",
+    "width": "50%",
     "position": "center",
     "title": "Monthly Progress",
     "data": [
