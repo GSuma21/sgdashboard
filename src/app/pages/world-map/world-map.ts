@@ -160,7 +160,7 @@ export class WorldMapComponent implements OnInit {
   }
 
   /** Apply zoom effect for partners inside India */
-  private applyIndiaZoom(point: [number, number], indiaData: any, scale: number = 2): [number, number] {
+  private applyIndiaZoom(point: [number, number], indiaData: any, scale: number = 4): [number, number] {
     if (!this.isIndiaZoomed || !indiaData) return point;
 
     const centroid = this.path.centroid(indiaData);
@@ -178,7 +178,7 @@ export class WorldMapComponent implements OnInit {
       this.partnersGroup = this.svg.append('g').attr('class', 'partners');
     }
 
-    const indiaScale = 2;
+    const indiaScale = 4;
     const iconSize = 18;
 
     networkData.partners.forEach((partner: Partner) => {
@@ -365,7 +365,7 @@ export class WorldMapComponent implements OnInit {
   /** Keep India permanently zoomed */
   zoomIndiaPermanently(indiaGroup: any, indiaData: any): void {
     const centroid = this.path.centroid(indiaData);
-    indiaGroup.attr('transform', `translate(${centroid[0]},${centroid[1]}) scale(2) translate(${-centroid[0]},${-centroid[1]})`);
+    indiaGroup.attr('transform', `translate(${centroid[0]},${centroid[1]}) scale(4) translate(${-centroid[0]},${-centroid[1]})`);
     this.isIndiaZoomed = true;
   }
 
