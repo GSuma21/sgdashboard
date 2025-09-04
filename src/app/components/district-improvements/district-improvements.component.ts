@@ -29,6 +29,7 @@ export class DistrictImprovementsComponent implements OnInit {
   stateCode:string = '';
   programsList:any = [];
   pageConfig:any = '';
+  lineChart:any = [];
   metricsMappingData = [
     { icon: "assets/icons/community_leaders.svg", identifier: 1 },
     { icon: "assets/icons/community_improvements.svg", identifier: 2 },
@@ -63,6 +64,7 @@ export class DistrictImprovementsComponent implements OnInit {
   getImprovementsData() {
     let metricsPath = "metrics.json"
     let pieChartPath = "pie-chart.json"
+    let lineChartPath = "line-chart.json"
     if(this.isCommunityFlow){
       metricsPath = "community-metrics.json"
       pieChartPath = "community-pie-chart.json"
@@ -71,6 +73,12 @@ export class DistrictImprovementsComponent implements OnInit {
       this.metrics = data.metrics
       d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${pieChartPath}`).then((data: any) => {
         this.pieChart = data.data;
+        d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${lineChartPath}`).then((data: any) => {
+          this.lineChart = data.data;
+          this.getProgramsList()
+        }).catch((error: any) => {
+          console.error('Error loading page data:', error);
+        });
         this.getProgramsList()
       }).catch((error: any) => {
         console.error('Error loading page data:', error);
