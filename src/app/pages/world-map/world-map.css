@@ -22,18 +22,6 @@
   cursor: pointer;
 }
 
-.tooltip {
-  position: absolute;
-  visibility: hidden;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 12px;
-  pointer-events: none; /* So it doesn't interfere with mouse events on map */
-  z-index: 100;
-}
-
 /* Partner icon colors based on category */
 .partner-momentum {
   fill: #572E91;
@@ -54,7 +42,13 @@
 .tooltip {
   background: transparent !important;
   border: none !important;
-  pointer-events: none;
+  position: absolute;
+  visibility: hidden;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer; 
+  z-index: 100;
 }
 
 

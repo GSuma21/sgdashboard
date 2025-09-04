@@ -75,7 +75,8 @@ export class WorldMapComponent implements OnInit {
     'USA': '840', 'GBR': '826', 'CAN': '124',
     'FRA': '250', 'DEU': '276', 'ITA': '380', 'ESP': '724', 'NLD': '528', 'BEL': '056', 'CHE': '756', 'SWE': '752', 'NOR': '578', 'DNK': '208',
     'ZAF': '710', 'EGY': '818', 'NGA': '566', 'KEN': '404', 'DZA': '012', 'MAR': '504', 'TUN': '788',
-    'AUS': '036', 'NZL': '554', 'FJI': '242', 'PNG': '598',
+    // 'AUS': '036', 'NZL': '554', 'FJI': '242', 'PNG': '598',
+    'SGP': '702'
   };
 
   ngOnInit(): void {
@@ -159,7 +160,7 @@ export class WorldMapComponent implements OnInit {
   }
 
   /** Apply zoom effect for partners inside India */
-  private applyIndiaZoom(point: [number, number], indiaData: any, scale: number = 5): [number, number] {
+  private applyIndiaZoom(point: [number, number], indiaData: any, scale: number = 2): [number, number] {
     if (!this.isIndiaZoomed || !indiaData) return point;
 
     const centroid = this.path.centroid(indiaData);
@@ -177,7 +178,7 @@ export class WorldMapComponent implements OnInit {
       this.partnersGroup = this.svg.append('g').attr('class', 'partners');
     }
 
-    const indiaScale = 5;
+    const indiaScale = 2;
     const iconSize = 18;
 
     networkData.partners.forEach((partner: Partner) => {
@@ -198,18 +199,20 @@ export class WorldMapComponent implements OnInit {
       const size = isInsideIndia ? iconSize / indiaScale : iconSize;
       const offset = size / 2;
 
-      targetGroup.append('image')
+      const icon = targetGroup.append('image')
         .attr('class', `partner-icon partner-${categoryKey}`)
         .attr('xlink:href', iconPath)
         .attr('x', projected[0] - offset)
         .attr('y', projected[1] - offset)
         .attr('width', size)
-        .attr('height', size)
-        .on('mouseover', (event: any) => {
-          this.tooltip.transition().duration(200).style('opacity', 1);
+        .attr('height', size);
 
-          // Tooltip HTML
-          const partnerHtml = `
+      // --- Tooltip on click instead of hover ---
+      icon.on('click', (event: any) => {
+        event.stopPropagation(); // prevent closing when clicking on icon itself
+
+        // Tooltip HTML
+        const partnerHtml = `
 <div style="position: relative;
   background: white;
   border-radius: 12px;
@@ -247,18 +250,17 @@ export class WorldMapComponent implements OnInit {
   </a>
 </div>`;
 
-          this.tooltip.html(partnerHtml)
-            .style('left', (event.pageX + 10) + 'px')
-            .style('top', (event.pageY - 20) + 'px');
-        })
-        .on('mousemove', (event: any) => {
-          this.tooltip
-            .style('left', (event.pageX + 10) + 'px')
-            .style('top', (event.pageY - 20) + 'px');
-        })
-        .on('mouseout', () => {
-          this.tooltip.transition().duration(200).style('opacity', 0);
-        });
+        this.tooltip
+          .html(partnerHtml)
+          .style('left', (event.pageX + 10) + 'px')
+          .style('top', (event.pageY - 20) + 'px')
+          .transition().duration(200).style('opacity', 1);
+      });
+    });
+
+    // Hide tooltip when clicking outside
+    d3.select('body').on('click', () => {
+      this.tooltip.transition().duration(200).style('opacity', 0);
     });
   }
 
@@ -363,7 +365,7 @@ export class WorldMapComponent implements OnInit {
   /** Keep India permanently zoomed */
   zoomIndiaPermanently(indiaGroup: any, indiaData: any): void {
     const centroid = this.path.centroid(indiaData);
-    indiaGroup.attr('transform', `translate(${centroid[0]},${centroid[1]}) scale(5) translate(${-centroid[0]},${-centroid[1]})`);
+    indiaGroup.attr('transform', `translate(${centroid[0]},${centroid[1]}) scale(2) translate(${-centroid[0]},${-centroid[1]})`);
     this.isIndiaZoomed = true;
   }
 
