@@ -43,7 +43,7 @@ echarts.use([
   styleUrls: ['./line-chart.css']
 })
 export class LineChartComponent implements OnInit {
-  @Input() xAxis:any = ['Q1', 'Q2', 'Q3', 'Q4'];
+  @Input() xAxis:any = ['Q1(Jan - Mar)', 'Q2(Apr - Jun)', 'Q3(Jul - Sept)', 'Q4(Oct - Dec)'];
   @Input() data:any = {};
   currentYear:string = '2025';
   @Input() replaceCode?:any;
