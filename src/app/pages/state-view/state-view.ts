@@ -191,37 +191,33 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
             if (this.showDetails) {
               this.fetchIndicatorData(districtCode);
             }
-            if (this.showVariations) {
-              const selectedDetail = districtInfo.details.find((detail: any) => {
-                const detailCode = detail.code?.toLowerCase().replace(/\s+/g, '');
-                const selectedCode = this.selectedIndicator?.toLowerCase().replace(/\s+/g, '');
-                return detailCode === selectedCode;
-              });
-              if (selectedDetail) {
-                tooltip.transition().duration(200).style("opacity", .9);
-                let tooltipHtml = `<div style="padding: 8px 12px;border-radius: 6px;text-align: center;">
-                <div style="font-size: 14px; color: #333; font-weight: 500; text-transform:capitalize">${selectedDetail.code || ''}</div>
-                <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div></div>`;
-                tooltip.html(tooltipHtml)
-              } else {
-                tooltip.transition().duration(500).style("opacity", 0);
-              }
+            const selectedDetail = districtInfo.details.find((detail: any) => {
+              const detailCode = detail.code?.toLowerCase().replace(/\s+/g, '');
+              const selectedCode = this.selectedIndicator?.toLowerCase().replace(/\s+/g, '');
+              return detailCode === selectedCode;
+            });
+            if (selectedDetail) {
+              tooltip.transition().duration(200).style("opacity", .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtInfo.label || 'Unknown District'}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500; text-transform: capitalize;">${selectedDetail.code || ''}</div>
+                <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
+              </div>`;
+              tooltip.html(tooltipHtml);
+            } else {
+              tooltip.transition().duration(500).style("opacity", 0);
             }
           }
         })
         .on('mousemove', (event: any) => {
-          if (this.showVariations) {
-            tooltip.style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 28) + "px");
-          }
+          tooltip.style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY - 28) + "px");
         })
         .on('mouseout', () => {
           if (this.showDetails) {
             this.fetchIndicatorData();
           }
-          if (this.showVariations) {
-            tooltip.transition().duration(500).style("opacity", 0);
-          }
+          tooltip.transition().duration(500).style("opacity", 0);
         })
         .on('click', (event: any, d: any) => {
           const districtCode = d.properties.dt_code;

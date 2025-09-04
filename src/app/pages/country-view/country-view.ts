@@ -148,43 +148,39 @@ export class CountryView implements OnInit, AfterViewInit {
         .on('mouseover', (event: any, d: any) => {
           const stateCode = d.properties.st_code;
           const stateInfo = statesData[stateCode];
+          debugger;
           if (stateInfo) {
             if (this.showDetails) {
               this.fetchIndicatorData(stateCode);
             }
-            if (this.showVariations) {
-              const selectedDetail = stateInfo.details.find((detail: any) => {
-                const detailCode = detail.code?.toLowerCase().replace(/\s+/g, ''); // removes spaces & \n
-                const selectedCode = this.selectedIndicator?.toLowerCase().replace(/\s+/g, '');
-                return detailCode === selectedCode;
-              });
-              if (selectedDetail) {
-                tooltip.transition().duration(200).style("opacity", .9);
-                // let tooltipHtml = `<strong>${stateInfo.label}</strong><br/>`;
-                // let tooltipHtml = `${labels[selectedDetail.code]}: ${selectedDetail.value}`;
-                let tooltipHtml = `<div style="padding: 8px 12px;border-radius: 6px;text-align: center;">
-                <div style="font-size: 14px; color: #333; font-weight: 500; text-transform:capitalize">${selectedDetail.code || ''}</div>
-                <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div></div>`;
-                tooltip.html(tooltipHtml)
-              } else {
-                tooltip.transition().duration(500).style("opacity", 0); // Hide tooltip if data not found
-              }
+            const selectedDetail = stateInfo.details.find((detail: any) => {
+              const detailCode = detail.code?.toLowerCase().replace(/\s+/g, '');
+              const selectedCode = this.selectedIndicator?.toLowerCase().replace(/\s+/g, '');
+              return detailCode === selectedCode;
+            });
+            if (selectedDetail) {
+              tooltip.transition().duration(200).style("opacity", .9);
+              // Updated tooltip HTML to include state name
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500; text-transform: capitalize;">${selectedDetail.code || ''}</div>
+                <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
+              </div>`;
+              tooltip.html(tooltipHtml);
+            } else {
+              tooltip.transition().duration(500).style("opacity", 0); // Hide tooltip if data not found
             }
           }
         })
         .on('mousemove', (event: any) => {
-          if (this.showVariations) {
-            tooltip.style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 28) + "px");
-          }
+          tooltip.style("left", (event.pageX + 10) + "px")
+          .style("top", (event.pageY - 28) + "px");
         })
         .on('mouseout', () => {
           if (this.showDetails) {
             this.fetchIndicatorData(); // Reset right panel to default
           }
-          if (this.showVariations) {
-            tooltip.transition().duration(500).style("opacity", 0);
-          }
+          tooltip.transition().duration(500).style("opacity", 0);
         })
         .on('click', (event: any, d: any) => {
           const stateCode = d.properties.st_code;
