@@ -1,9 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import * as d3 from 'd3';
-import * as topojson from 'topojson-client';
-import { FeatureCollection, Geometry } from 'geojson';
-import { INDIA } from '../../../constants/urlConstants';
-import { environment } from '../../../../environments/environment';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core'; 
+import * as d3 from 'd3'; 
+import * as topojson from 'topojson-client'; 
+import { FeatureCollection, Geometry } from 'geojson'; 
+import { INDIA } from '../../../constants/urlConstants'; 
+import { environment } from '../../../../environments/environment'; 
 
 interface ImpactDataItem {
   source: {
@@ -34,7 +34,6 @@ interface Partner {
   website?: string;
   src?: string;
   name?: string;
-
 }
 
 interface NetworkData {
@@ -50,6 +49,7 @@ interface NetworkData {
 export class WorldMapComponent implements OnInit {
 
   @ViewChild('map', { static: true }) private mapContainer!: ElementRef;
+
   baseUrl: any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`;
 
   markerConfigList: any = {
@@ -82,6 +82,7 @@ export class WorldMapComponent implements OnInit {
     this.createMap();
   }
 
+  /** Create world map, India map, and render partners/lines */
   private createMap(): void {
     const element = this.mapContainer.nativeElement;
 
@@ -90,14 +91,11 @@ export class WorldMapComponent implements OnInit {
       .attr('width', this.width)
       .attr('height', this.height);
 
+    // Tooltip container
     this.tooltip = d3.select(element)
       .append('div')
       .attr('class', 'tooltip')
       .style('position', 'absolute')
-      .style('pointer-events', 'none')
-      .style('color', '#fff')
-      .style('border-radius', '4px')
-      .style('font-size', '12px')
       .style('opacity', 0);
 
     this.g = this.svg.append('g').attr('class', 'world');
@@ -109,6 +107,7 @@ export class WorldMapComponent implements OnInit {
 
     this.path = d3.geoPath().projection(this.projection);
 
+    // Load world map, India map, and partner data
     Promise.all([
       d3.json<any>('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-10m.json'),
       d3.json<any>(`${this.baseUrl}/${INDIA}`),
@@ -121,6 +120,7 @@ export class WorldMapComponent implements OnInit {
         f.id !== undefined && Object.values(this.countryMap).includes(String(f.id))
       );
 
+      // Draw countries (except India)
       this.g.selectAll('path')
         .data(filteredCountries.filter(f => String(f.id) !== this.countryMap['IND']))
         .enter()
@@ -132,6 +132,7 @@ export class WorldMapComponent implements OnInit {
 
       const indiaData = filteredCountries.find(f => String(f.id) === this.countryMap['IND']);
       if (indiaData) {
+        // Draw India states
         this.indiaGroup.selectAll('.state')
           .data(states.features)
           .enter()
@@ -142,6 +143,7 @@ export class WorldMapComponent implements OnInit {
           .attr('stroke', '#3a3a3aff')
           .attr('stroke-width', 0.2);
 
+        // Permanently zoom into India
         this.zoomIndiaPermanently(this.indiaGroup, indiaData);
       }
 
@@ -149,7 +151,6 @@ export class WorldMapComponent implements OnInit {
         this.drawConnectionLines(networkData, filteredCountries, states.features, indiaData);
         this.drawPartners(networkData, indiaData);
       }
-
     }).catch(err => console.error('Data load error:', err));
   }
 
@@ -157,6 +158,7 @@ export class WorldMapComponent implements OnInit {
     return id.toLowerCase().replace(/[\s_]/g, '');
   }
 
+  /** Apply zoom effect for partners inside India */
   private applyIndiaZoom(point: [number, number], indiaData: any, scale: number = 5): [number, number] {
     if (!this.isIndiaZoomed || !indiaData) return point;
 
@@ -167,6 +169,7 @@ export class WorldMapComponent implements OnInit {
     return [x, y];
   }
 
+  /** Render partner icons and interactive tooltip */
   private drawPartners(networkData: NetworkData, indiaData: any): void {
     if (!networkData?.partners?.length) return;
 
@@ -202,10 +205,10 @@ export class WorldMapComponent implements OnInit {
         .attr('y', projected[1] - offset)
         .attr('width', size)
         .attr('height', size)
-        .on('mouseover', (event: any, d: any) => {
+        .on('mouseover', (event: any) => {
           this.tooltip.transition().duration(200).style('opacity', 1);
 
-
+          // Tooltip HTML
           const partnerHtml = `
 <div style="position: relative;
   background: white;
@@ -215,13 +218,9 @@ export class WorldMapComponent implements OnInit {
   width: 250px;
   border: 1px solid #000000ff;
   font-family: Arial, sans-serif;
-  box-sizing: border-box;
-
-  /* NEW SCROLL STYLES */
   max-height: 300px;
   overflow-y: auto;
 ">
-  <!-- Pointer arrow -->
   <div style="
     position: absolute;
     left: -8px;
@@ -234,57 +233,20 @@ export class WorldMapComponent implements OnInit {
     filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));
   "></div>
 
-  <a href="${partner.website}" target="_blank" style="
-    text-decoration: none;
-    color: inherit;
-    display: block;
-  ">
-    <div style="
-      display: grid;
-      grid-template-columns: 36px 1fr;
-      align-items: center;
-      padding: 8px 12px;
-    ">
-      <!-- icon -->
-      <div style="
-        width: 36px;
-        height: 36px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      ">
-        <img src="${partner.src}" alt="${partner.name}" style="
-          display: block;
-          width: 24px;
-          height: 24px;
-          object-fit: contain;
-        ">
+  <a href="${partner.website}" target="_blank" style="text-decoration: none; color: inherit; display: block;">
+    <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px;">
+      <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+        <img src="${partner.src}" alt="${partner.name}" style="width: 24px; height: 24px; object-fit: contain;">
       </div>
-
-      <!-- text -->
-      <div style="display: flex; flex-direction: column; justify-content: center; margin: 0; padding-left: 5px;">
-        <div style="font-weight: 600; font-size: 14px; color: #000; line-height: 1.2;">
-          ${partner.name}
-        </div>
-        <div style="font-size: 12px; color: #777; line-height: 1.2;">
-          ${partner.category} partner
-        </div>
-        <div style="font-size: 12px; color: #555; line-height: 1.2;">
-          ${partner.partnerState}
-        </div>
+      <div style="display: flex; flex-direction: column; padding-left: 5px;">
+        <div style="font-weight: 600; font-size: 14px; color: #000;">${partner.name}</div>
+        <div style="font-size: 12px; color: #777;">${partner.category} partner</div>
+        <div style="font-size: 12px; color: #555;">${partner.partnerState}</div>
       </div>
     </div>
   </a>
-</div>
-`;
+</div>`;
 
-
-
-
-
-          console.log(d)
-          console.log(partner)
           this.tooltip.html(partnerHtml)
             .style('left', (event.pageX + 10) + 'px')
             .style('top', (event.pageY - 20) + 'px');
@@ -300,6 +262,7 @@ export class WorldMapComponent implements OnInit {
     });
   }
 
+  /** Draw animated curved connection lines between partners */
   private drawConnectionLines(networkData: NetworkData, countries: any[], states: any[], indiaData?: any): void {
     const getCoords = (location: any): [number, number] | null => {
       if (location.coords && location.coords.length === 2) {
@@ -360,7 +323,6 @@ export class WorldMapComponent implements OnInit {
       if (pathData) {
         const path = lines.append('path')
           .attr('d', pathData)
-          .attr('class', 'connection-line')
           .attr('fill', 'none')
           .attr('stroke', d.color || '#000')
           .attr('stroke-width', 2)
@@ -373,13 +335,13 @@ export class WorldMapComponent implements OnInit {
               case 'dashed': return '8,6';
               case 'multi-dash': return '12,4,4,4';
               case 'double-dash': return '15,3,3,3';
-              default: return '6,6'; // default flowing pattern
+              default: return '6,6';
             }
           })());
 
-        // continuous flow effect
+        // Animate line flow
         d3.timer((elapsed) => {
-          path.attr('stroke-dashoffset', -elapsed / 40); // adjust /10 for speed
+          path.attr('stroke-dashoffset', -elapsed / 40);
         });
 
         // path.on('mouseover', (event: any) => {
@@ -398,6 +360,7 @@ export class WorldMapComponent implements OnInit {
     });
   }
 
+  /** Keep India permanently zoomed */
   zoomIndiaPermanently(indiaGroup: any, indiaData: any): void {
     const centroid = this.path.centroid(indiaData);
     indiaGroup.attr('transform', `translate(${centroid[0]},${centroid[1]}) scale(5) translate(${-centroid[0]},${-centroid[1]})`);
