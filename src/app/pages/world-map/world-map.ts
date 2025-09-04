@@ -66,14 +66,12 @@ export class WorldMapComponent implements OnInit {
   private width = 1000;
   private height = 500;
 
-  // Mapping 3-letter ISO codes to numeric TopoJSON IDs
   private countryMap: Record<string, string> = {
     'IND': '356',
     'USA': '840', 'GBR': '826', 'CAN': '124',
     'FRA': '250','DEU': '276','ITA': '380','ESP': '724','NLD': '528','BEL': '056','CHE': '756','SWE': '752','NOR': '578','DNK': '208',
     'ZAF': '710','EGY': '818','NGA': '566','KEN': '404','DZA': '012','MAR': '504','TUN': '788',
     'AUS': '036','NZL': '554','FJI': '242','PNG': '598',
-    'THA': '764','MMR': '104','KHM': '116','VNM': '704','LAO': '418','MYS': '458','SGP': '702','IDN': '360','PHL': '608','BRN': '096','TWN': '158','CHN': '156','KOR': '410','JPN': '392'
   };
 
   ngOnInit(): void {
@@ -83,13 +81,11 @@ export class WorldMapComponent implements OnInit {
   private createMap(): void {
     const element = this.mapContainer.nativeElement;
 
-    // Append SVG
     this.svg = d3.select(element)
       .append('svg')
       .attr('width', this.width)
       .attr('height', this.height);
 
-    // Tooltip
     this.tooltip = d3.select(element)
       .append('div')
       .attr('class', 'tooltip')
@@ -102,18 +98,15 @@ export class WorldMapComponent implements OnInit {
       .style('font-size', '12px')
       .style('opacity', 0);
 
-    // Groups
     this.g = this.svg.append('g').attr('class', 'world');
     this.indiaGroup = this.svg.append('g').attr('class', 'india');
 
-    // Projection
     this.projection = d3.geoMercator()
       .scale(150)
       .translate([this.width / 2, this.height / 1.5]);
 
     this.path = d3.geoPath().projection(this.projection);
 
-    // Load TopoJSON and network data
     Promise.all([
       d3.json<any>('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-10m.json'),
       d3.json<any>(`${this.baseUrl}/${INDIA}`),
@@ -226,12 +219,10 @@ export class WorldMapComponent implements OnInit {
 
   private drawConnectionLines(networkData: NetworkData, countries: any[], states: any[], indiaData?: any): void {
     const getCoords = (location: any): [number, number] | null => {
-      // Explicit coords
       if (location.coords && location.coords.length === 2) {
         return [location.coords[1], location.coords[0]];
       }
 
-      // Match partner by normalized ID
       if (location.partner_id?.length) {
         const partner = networkData.partners.find(
           p => this.normalizeId(p.id) === this.normalizeId(location.partner_id[0])
@@ -241,7 +232,6 @@ export class WorldMapComponent implements OnInit {
         }
       }
 
-      // Match state
       if (location.stateName) {
         const state = states.find(
           (s: any) => s.properties.st_nm.toLowerCase() === location.stateName.toLowerCase()
@@ -249,7 +239,6 @@ export class WorldMapComponent implements OnInit {
         if (state) return d3.geoCentroid(state);
       }
 
-      // Match country
       if (location.countryName) {
         const country = countries.find(
           (c: any) => c.properties.name.toLowerCase() === location.countryName.toLowerCase()
@@ -287,34 +276,29 @@ export class WorldMapComponent implements OnInit {
 
       if (pathData) {
         const path = lines.append('path')
-  .attr('d', pathData)
-  .attr('class', 'connection-line')
-  .attr('fill', 'none')
-  .attr('stroke', d.color || '#000')
-  .attr('stroke-width', 2) // custom width
-  .attr('opacity', 0.9)
-  .attr('stroke-linecap', 'round')   // smooth end caps
-  .attr('stroke-linejoin', 'round')  // smooth corners
-  .attr('stroke-dasharray', (() => {
-    switch (d.lineType) {
-      case 'dotted': return '2,6';      // dots
-      case 'dashed': return '8,6';      // normal dashes
-      case 'multi-dash': return '12,4,4,4'; // long-short pattern
-      case 'double-dash': return '15,3,3,3'; // custom style
-      default: return '0';              // solid line
-    }
-  })());
+          .attr('d', pathData)
+          .attr('class', 'connection-line')
+          .attr('fill', 'none')
+          .attr('stroke', d.color || '#000')
+          .attr('stroke-width', 2)
+          .attr('opacity', 0.9)
+          .attr('stroke-linecap', 'round')
+          .attr('stroke-linejoin', 'round')
+          .attr('stroke-dasharray', (() => {
+            switch (d.lineType) {
+              case 'dotted': return '2,6';
+              case 'dashed': return '8,6';
+              case 'multi-dash': return '12,4,4,4';
+              case 'double-dash': return '15,3,3,3';
+              default: return '6,6'; // default flowing pattern
+            }
+          })());
 
-        const totalLength = path.node().getTotalLength();
-        path
-          .attr('stroke-dasharray', totalLength + ' ' + totalLength)
-          .attr('stroke-dashoffset', totalLength)
-          .transition()
-          .duration(2000)
-          .ease(d3.easeLinear)
-          .attr('stroke-dashoffset', 0);
+        // continuous flow effect
+        d3.timer((elapsed) => {
+          path.attr('stroke-dashoffset', -elapsed / 40); // adjust /10 for speed
+        });
 
-        // Tooltip for lines
         path.on('mouseover', (event: any) => {
           this.tooltip.transition().duration(200).style('opacity', 1);
           this.tooltip.html(`Source: ${d.source.partner_id[0]}<br>Target: ${d.target.partner_id[0]}`)
