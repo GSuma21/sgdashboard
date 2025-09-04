@@ -50,3 +50,26 @@
 .partner-anchor {
   fill: pink;
 }
+
+.tooltip {
+  background: transparent !important;
+  border: none !important;
+  pointer-events: none;
+}
+
+
+#tooltip ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#tooltip li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+#tooltip li img {
+  margin-right: 10px;
+}

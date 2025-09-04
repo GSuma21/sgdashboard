@@ -31,6 +31,10 @@ interface Partner {
   partnerState?: string;
   countryName?: string;
   category?: string;
+  website?: string;
+  src?: string;
+  name?: string;
+
 }
 
 interface NetworkData {
@@ -69,9 +73,9 @@ export class WorldMapComponent implements OnInit {
   private countryMap: Record<string, string> = {
     'IND': '356',
     'USA': '840', 'GBR': '826', 'CAN': '124',
-    'FRA': '250','DEU': '276','ITA': '380','ESP': '724','NLD': '528','BEL': '056','CHE': '756','SWE': '752','NOR': '578','DNK': '208',
-    'ZAF': '710','EGY': '818','NGA': '566','KEN': '404','DZA': '012','MAR': '504','TUN': '788',
-    'AUS': '036','NZL': '554','FJI': '242','PNG': '598',
+    'FRA': '250', 'DEU': '276', 'ITA': '380', 'ESP': '724', 'NLD': '528', 'BEL': '056', 'CHE': '756', 'SWE': '752', 'NOR': '578', 'DNK': '208',
+    'ZAF': '710', 'EGY': '818', 'NGA': '566', 'KEN': '404', 'DZA': '012', 'MAR': '504', 'TUN': '788',
+    'AUS': '036', 'NZL': '554', 'FJI': '242', 'PNG': '598',
   };
 
   ngOnInit(): void {
@@ -91,9 +95,7 @@ export class WorldMapComponent implements OnInit {
       .attr('class', 'tooltip')
       .style('position', 'absolute')
       .style('pointer-events', 'none')
-      .style('background', 'rgba(0,0,0,0.7)')
       .style('color', '#fff')
-      .style('padding', '4px 8px')
       .style('border-radius', '4px')
       .style('font-size', '12px')
       .style('opacity', 0);
@@ -200,9 +202,90 @@ export class WorldMapComponent implements OnInit {
         .attr('y', projected[1] - offset)
         .attr('width', size)
         .attr('height', size)
-        .on('mouseover', (event: any) => {
+        .on('mouseover', (event: any, d: any) => {
           this.tooltip.transition().duration(200).style('opacity', 1);
-          this.tooltip.html(`${partner.id}<br>${partner.countryName || ''}`)
+
+
+          const partnerHtml = `
+<div style="position: relative;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 8px 0;
+  width: 250px;
+  border: 1px solid #000000ff;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+
+  /* NEW SCROLL STYLES */
+  max-height: 300px;
+  overflow-y: auto;
+">
+  <!-- Pointer arrow -->
+  <div style="
+    position: absolute;
+    left: -8px;
+    top: 20px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid white;
+    filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));
+  "></div>
+
+  <a href="${partner.website}" target="_blank" style="
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  ">
+    <div style="
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      align-items: center;
+      padding: 8px 12px;
+    ">
+      <!-- icon -->
+      <div style="
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      ">
+        <img src="${partner.src}" alt="${partner.name}" style="
+          display: block;
+          width: 24px;
+          height: 24px;
+          object-fit: contain;
+        ">
+      </div>
+
+      <!-- text -->
+      <div style="display: flex; flex-direction: column; justify-content: center; margin: 0; padding-left: 5px;">
+        <div style="font-weight: 600; font-size: 14px; color: #000; line-height: 1.2;">
+          ${partner.name}
+        </div>
+        <div style="font-size: 12px; color: #777; line-height: 1.2;">
+          ${partner.category} partner
+        </div>
+        <div style="font-size: 12px; color: #555; line-height: 1.2;">
+          ${partner.partnerState}
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+`;
+
+
+
+
+
+          console.log(d)
+          console.log(partner)
+          this.tooltip.html(partnerHtml)
             .style('left', (event.pageX + 10) + 'px')
             .style('top', (event.pageY - 20) + 'px');
         })
@@ -299,18 +382,18 @@ export class WorldMapComponent implements OnInit {
           path.attr('stroke-dashoffset', -elapsed / 40); // adjust /10 for speed
         });
 
-        path.on('mouseover', (event: any) => {
-          this.tooltip.transition().duration(200).style('opacity', 1);
-          this.tooltip.html(`Source: ${d.source.partner_id[0]}<br>Target: ${d.target.partner_id[0]}`)
-            .style('left', (event.pageX + 10) + 'px')
-            .style('top', (event.pageY - 20) + 'px');
-        }).on('mousemove', (event: any) => {
-          this.tooltip
-            .style('left', (event.pageX + 10) + 'px')
-            .style('top', (event.pageY - 20) + 'px');
-        }).on('mouseout', () => {
-          this.tooltip.transition().duration(200).style('opacity', 0);
-        });
+        // path.on('mouseover', (event: any) => {
+        //   this.tooltip.transition().duration(200).style('opacity', 1);
+        //   this.tooltip.html(`Source: ${d.source.partner_id[0]}<br>Target: ${d.target.partner_id[0]}`)
+        //     .style('left', (event.pageX + 10) + 'px')
+        //     .style('top', (event.pageY - 20) + 'px');
+        // }).on('mousemove', (event: any) => {
+        //   this.tooltip
+        //     .style('left', (event.pageX + 10) + 'px')
+        //     .style('top', (event.pageY - 20) + 'px');
+        // }).on('mouseout', () => {
+        //   this.tooltip.transition().duration(200).style('opacity', 0);
+        // });
       }
     });
   }
