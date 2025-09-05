@@ -37,61 +37,7 @@ export class CountryView implements OnInit, AfterViewInit {
   // Embedded JSON data
   private indicatorJson = {
     "result": {
-      "states": {
-        "10": {
-          "id": "10",
-          "label": "Bihar",
-          "type": "category_1",
-          "details": [
-            { "code": "No. of community leaders engaged", "value": 61603 },
-            { "code": "Community led improvements", "value": 2752 },
-            { "code": "Challenges shared", "value": 5991 },
-            { "code": "Solutions shared", "value": 5442 },
-            { "code": "Districts Activated", "value": 8 }
-          ]
-        },
-        "29": {
-          "id": "29",
-          "label": "Karnataka",
-          "type": "category_1",
-          "details": [
-            { "code": "No. of community leaders engaged", "value": 9264 },
-            { "code": "Community led improvements", "value": 292 },
-            { "code": "Challenges shared", "value": 816 },
-            { "code": "Solutions shared", "value": 757 },
-            { "code": "Districts Activated", "value": 2 }
-          ]
-        }
-      },
-      "overview": {
-        "label": "india",
-        "type": "category_1",
-        "details": [
-          { "code": "No. of community leaders engaged", "value": 70867 },
-          { "code": "Community led improvements", "value": 3044 },
-          { "code": "Challenges shared", "value": 6807 },
-          { "code": "Solutions shared", "value": 6199 },
-          { "code": "Districts Activated", "value": 10 }
-        ]
-      },
-      "meta": {
-        "legends": {
-          "category_1": {
-            "label": "State with Community led Initiatives",
-            "color": "#5F1160",
-            "show_details": true
-          },
-          "category_4": {
-            "label": "Yet to start",
-            "color": "#ffffff",
-            "show_details": false
-          }
-        },
-        "notes": [
-          "Click on a state to view detailed insights",
-          "Data as shared by the partners"
-        ]
-      }
+      "states": {}
     }
   };
 
