@@ -12,20 +12,21 @@ import { CountryView } from '../country-view/country-view';
 import { CatalysingNetwork1 } from '../catalysing-network-1/catalysing-network-1';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { GlobalMap2 } from '../global-map-2/global-map-2';
+import { WorldMapComponent } from '../world-map/world-map';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, CountryView, CatalysingNetwork1, GlobalMap2],
+  imports: [CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, CountryView, CatalysingNetwork1, GlobalMap2, WorldMapComponent],
   templateUrl: './landing.html',
   styleUrls: ['./landing.css'],
-  animations: [
-    trigger('fade', [
-      state('visible', style({ opacity: 1 })),
-      state('hidden', style({ opacity: 0 })),
-      transition('visible <=> hidden', [animate('800ms ease-in-out')]),
-    ])
-  ]
+ animations: [
+  trigger('fade', [
+    state('visible', style({ opacity: 1, pointerEvents: 'auto', transform: 'scale(1)' })),
+    state('hidden', style({ opacity: 0, pointerEvents: 'none', transform: 'scale(0.95)' })),
+    transition('visible <=> hidden', [animate('800ms ease-in-out')]),
+  ])
+]
 })
 export class LandingComponent implements OnInit, AfterViewInit {
 
@@ -42,7 +43,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.isGlobalMapVisible = false;
-    }, 1000); 
+    }, 1200); 
   }
 
   fetchPageData(): void {

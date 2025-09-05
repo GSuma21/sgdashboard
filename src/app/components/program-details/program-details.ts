@@ -58,13 +58,6 @@ export class ProgramDetails {
     this.getPartnerDetails()
   }
 
-  ngAfterViewInit(): void {
-    if (this.galleryTrack) {
-      this.transitionEndListener = () => this.onTransitionEnd();
-      this.galleryTrack.nativeElement.addEventListener('transitionend', this.transitionEndListener);
-    }
-  }
-
   getPartnerDetails() {
 
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${LANDING_PAGE}`).then((data: any) => {
@@ -80,25 +73,6 @@ export class ProgramDetails {
   }
 
 
-
-
-  ngOnDestroy(): void {
-    if (this.galleryTrack && this.galleryTrack.nativeElement && this.transitionEndListener) {
-      this.galleryTrack.nativeElement.removeEventListener('transitionend', this.transitionEndListener);
-    }
-  }
-
-  onTransitionEnd(): void {
-  const total = this.displayImages.length;
-  if (this.currentSlide === 0) { // went left past first
-    this.currentSlide = total;
-    this.updateSlidePosition(false);
-  }
-  if (this.currentSlide === total + 1) { // went right past last
-    this.currentSlide = 1;
-    this.updateSlidePosition(false);
-  }
-}
 
 
   nextSlide(): void {
