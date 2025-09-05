@@ -22,37 +22,55 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
   @Input() selectedState: string = '';
   @Input() selections: any = [];
   @Input() legends: any = {};
-  @Input() path: any
-  @Input() replaceCode?: any
-  @Input() notes?: any = []
-  @Input() pageConfig:any = '';
-  @Input() stateLedMission?:any = 0
+  @Input() path: any;
+  @Input() replaceCode?: any;
+  @Input() notes?: any = [];
+  @Input() pageConfig: any = '';
+  @Input() stateLedMission?: any = 0;
   selectedIndicator: string = 'Micro Improvements Initiated';
-  hoveredDistrict: string = ""
+  hoveredDistrict: string = '';
   indicatorData: { value: number | string; label: string }[] = [];
-  baseUrl:any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
-  country: string = "India"
-  dataFetchPath: any
-  displayLegends:any = []
+  baseUrl: any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`;
+  country: string = 'India';
+  dataFetchPath: any;
+  communityDataFetchPath: any = '/states/{code}/community-map.json';
+  displayLegends: any = [];
+  communityJson: any = {
+    "result": {
+      "districts": {}
+    }
+  };
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    this.dataFetchPath = this.replaceCode ? this.path.replace('{code}', this.replaceCode.toString()) : this.path
-    this.displayLegends = Object.values(this.legends).map((item:any) => ({
+    this.dataFetchPath = this.replaceCode ? this.path.replace('{code}', this.replaceCode.toString()) : this.path;
+    this.communityDataFetchPath = this.replaceCode ? this.communityDataFetchPath.replace('{code}', this.replaceCode.toString()) : this.path;
+    this.fetchCommunityData();
+    this.displayLegends = Object.values(this.legends).map((item: any) => ({
       label: item.label,
-      color: item.color
+      color: item.color,
+      icon: item.icon
     }));
     this.fetchIndicatorData();
   }
 
+  fetchCommunityData() {
+    d3.json(`${this.baseUrl}${this.communityDataFetchPath}`).then((data: any) => {
+      this.communityJson = data;
+      console.log(data);
+    }).catch((error: any) => {
+      console.error('Error loading page data:', error);
+    });
+  }
+
   fetchIndicatorData(districtCode?: string, forTooltip: boolean = false): Promise<any> {
     return d3.json(`${this.baseUrl}${this.dataFetchPath}`).then((data: any) => {
-      const districtsData = data.result.districts;
+      const districtsData = data.result.districts || {};
       const labels = data.result.meta?.labels || {};
       let details = (districtCode && districtsData[districtCode]) ? districtsData[districtCode].details : data.result.overview.details;
       let processedData: { value: number | string; label: string }[] = [];
-      this.hoveredDistrict = districtCode ? districtsData[districtCode].label : ""
+      this.hoveredDistrict = districtCode ? districtsData[districtCode].label : '';
 
       if (details) {
         if (forTooltip && this.showVariations && this.selectedIndicator) {
@@ -86,9 +104,9 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
     this.drawMap();
   }
 
-  ngOnChanges(changes: any){
-    if(changes?.slm?.currentValue){
-      this.stateLedMission = changes?.stateLedMission?.currentValue
+  ngOnChanges(changes: any) {
+    if (changes?.stateLedMission?.currentValue) {
+      this.stateLedMission = changes?.stateLedMission?.currentValue;
     }
   }
 
@@ -107,17 +125,14 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
     const containerWidth = container.offsetWidth;
     const height = containerWidth * 0.6;
 
-    const tooltip = d3.select("#map-tooltip");
+    const tooltip = d3.select('#map-tooltip');
 
     Promise.all([
       d3.json(`${this.baseUrl}/${INDIA}`),
       d3.json(`${this.baseUrl}${this.dataFetchPath}`)
     ]).then(([india, indicatorData]: [any, any]) => {
       const districtsData = indicatorData.result.districts || {};
-      // const labels = indicatorData.result.meta.labels;
-      // const legends = indicatorData.result.meta.legends;
-      // this.legends = legends;
-
+      const iconDistrictsData = this.communityJson.result.districts || {}; // Use communityJson for icons only
       const states = topojson.feature(india, india.objects.states) as any;
       const districts = topojson.feature(india, india.objects.districts) as any;
 
@@ -139,8 +154,8 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
       );
 
       // Create a feature collection for the selected state districts
-      const stateDistrictsFeature:any = {
-        type: "FeatureCollection",
+      const stateDistrictsFeature: any = {
+        type: 'FeatureCollection',
         features: stateDistricts
       };
 
@@ -163,7 +178,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
         .attr('stroke', '#000')
         .attr('stroke-width', 2);
 
-      // Draw districts
+      // Draw districts with original color logic
       svg.selectAll('.district-path')
         .data(stateDistricts)
         .enter().append('path')
@@ -175,7 +190,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
           if (districtInfo) {
             return this.legends[districtInfo.type]?.color || '#fff';
           } else {
-            return this.stateLedMission > 0 ? this.legends["category_2"]?.color : '#fff';
+            return this.stateLedMission > 0 ? this.legends['category_2']?.color : '#fff';
           }
         })
         .attr('stroke', '#000')
@@ -187,6 +202,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
         .on('mouseover', (event: any, d: any) => {
           const districtCode = d.properties.dt_code;
           const districtInfo = districtsData[districtCode];
+          const districtName = d.properties.district || 'Unknown District'; // Fallback to district name from topojson
           if (districtInfo) {
             if (this.showDetails) {
               this.fetchIndicatorData(districtCode);
@@ -197,7 +213,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
               return detailCode === selectedCode;
             });
             if (selectedDetail) {
-              tooltip.transition().duration(200).style("opacity", .9);
+              tooltip.transition().duration(200).style('opacity', .9);
               let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
                 <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtInfo.label || 'Unknown District'}</div>
                 <div style="font-size: 14px; color: #333; font-weight: 500; text-transform: capitalize;">${selectedDetail.code || ''}</div>
@@ -205,19 +221,32 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
               </div>`;
               tooltip.html(tooltipHtml);
             } else {
-              tooltip.transition().duration(500).style("opacity", 0);
+              tooltip.transition().duration(200).style('opacity', .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtInfo.label || 'Unknown District'}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500;">No data for ${this.selectedIndicator}</div>
+              </div>`;
+              tooltip.html(tooltipHtml);
             }
+          } else {
+            // Show tooltip for districts without data
+            tooltip.transition().duration(200).style('opacity', .9);
+            let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+              <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtName}</div>
+              <div style="font-size: 14px; color: #333; font-weight: 500;">Yet to start</div>
+            </div>`;
+            tooltip.html(tooltipHtml);
           }
         })
         .on('mousemove', (event: any) => {
-          tooltip.style("left", (event.pageX + 10) + "px")
-          .style("top", (event.pageY - 28) + "px");
+          tooltip.style('left', (event.pageX + 10) + 'px')
+            .style('top', (event.pageY - 28) + 'px');
         })
         .on('mouseout', () => {
           if (this.showDetails) {
             this.fetchIndicatorData();
           }
-          tooltip.transition().duration(500).style("opacity", 0);
+          tooltip.transition().duration(500).style('opacity', 0);
         })
         .on('click', (event: any, d: any) => {
           const districtCode = d.properties.dt_code;
@@ -226,16 +255,101 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
             this.fetchIndicatorData(districtCode);
             const stateName = distInfo.label;
             if (stateName) {
-              // this.districtSelected.emit(distInfo.label);
-              if(this.pageConfig.type == "communityDetails") {
-                this.router.navigate(['/community-led-district-improvements/',d.properties.st_nm,d.properties.st_code, d.properties.district,  d.properties.dt_code]);
-              }
-              else {
-                this.router.navigate(['/state-led-district-improvements',d.properties.st_nm,d.properties.st_code, d.properties.district,  d.properties.dt_code]);
+              if (this.pageConfig.type == 'communityDetails') {
+                this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
+              } else {
+                this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
               }
             }
-          }else if(!this.showDetails){
-            // this.districtSelected.emit(distInfo.label);
+          } else if (!this.showDetails) {
+            this.router.navigate(['/dashboard']);
+          }
+        });
+
+      // Add SVG icons only for districts in communityJson
+      svg.selectAll('.district-icon')
+        .data(stateDistricts.filter((d: any) => iconDistrictsData[d.properties.dt_code]))
+        .enter()
+        .append('image')
+        .attr('class', 'district-icon')
+        .attr('x', (d: any) => {
+          const centroid = path.centroid(d);
+          return centroid[0] - 10; // Adjust x to center the 20x20 icon
+        })
+        .attr('y', (d: any) => {
+          const centroid = path.centroid(d);
+          return centroid[1] - 10; // Adjust y to center the 20x20 icon
+        })
+        .attr('width', 20) // Icon width
+        .attr('height', 20) // Icon height
+        .attr('xlink:href', 'assets/icons/community_map_icon.svg') // Path to the SVG icon
+        .style('cursor', (d: any) => {
+          const districtCode = d.properties.dt_code;
+          return iconDistrictsData[districtCode] ? 'pointer' : 'default';
+        })
+        .on('mouseover', (event: any, d: any) => {
+          const districtCode = d.properties.dt_code;
+          const districtInfo = districtsData[districtCode];
+          const districtName = d.properties.district || 'Unknown District'; // Fallback to district name from topojson
+          if (districtInfo) {
+            if (this.showDetails) {
+              this.fetchIndicatorData(districtCode);
+            }
+            const selectedDetail = districtInfo.details.find((detail: any) => {
+              const detailCode = detail.code?.toLowerCase().replace(/\s+/g, '');
+              const selectedCode = this.selectedIndicator?.toLowerCase().replace(/\s+/g, '');
+              return detailCode === selectedCode;
+            });
+            if (selectedDetail) {
+              tooltip.transition().duration(200).style('opacity', .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtInfo.label || 'Unknown District'}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500; text-transform: capitalize;">${selectedDetail.code || ''}</div>
+                <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
+              </div>`;
+              tooltip.html(tooltipHtml);
+            } else {
+              tooltip.transition().duration(200).style('opacity', .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtInfo.label || 'Unknown District'}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500;">No data for ${this.selectedIndicator}</div>
+              </div>`;
+              tooltip.html(tooltipHtml);
+            }
+          } else {
+            // Show tooltip for districts without data
+            tooltip.transition().duration(200).style('opacity', .9);
+            let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+              <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtName}</div>
+              <div style="font-size: 14px; color: #333; font-weight: 500;">Yet to start</div>
+            </div>`;
+            tooltip.html(tooltipHtml);
+          }
+        })
+        .on('mousemove', (event: any) => {
+          tooltip.style('left', (event.pageX + 10) + 'px')
+            .style('top', (event.pageY - 28) + 'px');
+        })
+        .on('mouseout', () => {
+          if (this.showDetails) {
+            this.fetchIndicatorData();
+          }
+          tooltip.transition().duration(500).style('opacity', 0);
+        })
+        .on('click', (event: any, d: any) => {
+          const districtCode = d.properties.dt_code;
+          const distInfo = districtsData[districtCode];
+          if (this.showDetails && distInfo) {
+            this.fetchIndicatorData(districtCode);
+            const stateName = distInfo.label;
+            if (stateName) {
+              if (this.pageConfig.type == 'communityDetails') {
+                this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
+              } else {
+                this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
+              }
+            }
+          } else if (!this.showDetails) {
             this.router.navigate(['/dashboard']);
           }
         });
