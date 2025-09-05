@@ -1,11 +1,14 @@
+<div class="breadcrumb pt-5">
+  <a [routerLink]="['/dashboard']" class="mr-1">Dashboard</a> / <span class="ml-1">Community Led Initiatives</span>
+</div>
 <div class="landing-container">
-    <div *ngFor="let section of pageData.sections" [style.width]="section.width" [ngClass]="'section-position-' + section.position">
+    <div *ngFor="let section of pageData" [style.width]="section.width" [ngClass]="'section-position-' + section.position">
       <!-- Main Section -->
       <ng-container *ngIf="section.type === 'dashboard-main'">
         <section [ngClass]="section.styles.section">
-          <div class="container">
+          <div class="">
             <h3 class="">{{ section.header }}</h3>
-            <h4 class="">{{ section.subHeader }}</h4>
+            <h4 class="sub-header">{{ section.subHeader }}</h4>
             <p class="">{{ section.description }}</p>
           </div>
         </section>
@@ -16,7 +19,7 @@
         <section [ngClass]="section.styles.section" class="metrics-container">
           <div class="dashboard-container">
             <h3 class="">{{ section.header }}</h3>
-            <h4 class="">{{ section.subHeader }}</h4>
+            <h4 class="sub-header">{{ section.subHeader }}</h4>
             <div class="dashboard-indicator">
               <div *ngFor="let item of section.indicators">
                 <h4>{{item.value}}</h4>
@@ -40,7 +43,8 @@
 
       <!-- Partner Logos Section -->
       <ng-container *ngIf="section.type === 'country-view'">
-        <app-country-view [showVariations]="section.showVariations" [showDetails]="section.showDetails" [legends]="section.legends" [selections]="section.selections"></app-country-view>
+        <app-country-view [showVariations]="section.showVariations" [notes]="section.notes" [showDetails]="section.showDetails" [legends]="section.legends" [selections]="section.selections" [resourcePath]="section.path"
+        [redirectPath]="'community-view'"></app-country-view>
       </ng-container>
 
       <!-- Data Indicators Section -->
@@ -72,7 +76,7 @@
       </ng-container>
 
       <ng-container *ngIf="section.type === 'line-chart'">
-        <app-line-chart [allData]="section.data"></app-line-chart>
+        <app-line-chart [data]="section.data"></app-line-chart>
       </ng-container>
 
       <ng-container *ngIf="section.type === 'pie-chart'">

@@ -15,7 +15,9 @@ import { LeadersProgramDetailsComponent } from './components/leaders-program-det
 import { ImprovementDetailsComponent } from './components/improvement-details/improvement-details.component';
 import { environment } from '../../environments/environment';
 import { COMMUNITY_LED_IMPROVEMENT } from '../constants/urlConstants';
-
+import { ProgramDetails } from './components/program-details/program-details';
+import { pageDataConfig } from '../config/pageDataConfig';
+import { WorldMapComponent } from './pages/world-map/world-map';
 
 export const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -24,13 +26,16 @@ export const routes: Routes = [
     { path: 'national-view', component: NationalView },
     { path: 'network-health', component: NetworkHealth },
     { path: 'community-led-improvements', component: ImprovementDetailsComponent},
-    { path: 'state-view/:state', component: StateImprovementsComponent },
-    { path: 'community-led-district-improvements', component: DistrictImprovementsComponent,data:{filePath:'/assets/leaders-improvement-district-details.json'}},
-    { path: 'state-led-district-improvements', component: DistrictImprovementsComponent,data:{filePath:`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_LED_IMPROVEMENT}`}},
+    { path: 'state-view/:state/:code', component: StateImprovementsComponent, data: pageDataConfig.stateDetails},
+    { path: 'community-led-district-improvements/:state/:st-code/:district/:dt-code', component: DistrictImprovementsComponent,data:{...{filePath:`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_LED_IMPROVEMENT}`},...pageDataConfig.communityDetails}},
+    { path: 'state-led-district-improvements/:state/:st-code/:district/:dt-code', component: DistrictImprovementsComponent,data:{...{filePath:`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_LED_IMPROVEMENT}`},...pageDataConfig.stateDetails}},
     { path: 'community-program-details', component: CommunityProgramDetailsComponent},
     { path: 'leaders-program-details', component: LeadersProgramDetailsComponent},
     { path: 'district-view/:district', component: DistrictView },
     { path: 'global-map-2', component: GlobalMap2 },
     { path: 'catalysing-network-1', component: CatalysingNetwork1 },
+    { path: 'program-details', component: ProgramDetails },
+    { path: 'community-view/:state/:code', component: StateImprovementsComponent, data: pageDataConfig.communityDetails },
+    { path: 'world-map', component: WorldMapComponent },
 
 ];

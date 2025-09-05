@@ -39,6 +39,10 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  openCommunityDetails() {
+    this.router.navigate(['/community-led-improvements']);
+  }
+
   prepareLogosForScrolling(): void {
     const partnerLogosSection = this.pageData.sections.find((s:any) => s.type === 'partner-logos');
     if (partnerLogosSection && partnerLogosSection.partners) {

@@ -1,21 +1,33 @@
 <section [ngClass]="styles.section">
-  <div class="container">
+  <div class="partners-section">
     <h2 [ngClass]="styles.title">{{ title }}</h2>
     <div class="filter-buttons" *ngIf="showFilters">
       <button (click)="filterLogos(null)" [class.active]="activeCategory === null">All</button>
       <button *ngFor="let category of categories" (click)="filterLogos(category)" [class.active]="activeCategory === category">
-        {{ category }} partners
+        <img src="./assets/icons/{{category}}.svg" alt="">
+        {{ category }}
       </button>
     </div>
     <div class="scroller" data-animated="true">
       <ul class="scroller__inner">
         <li *ngFor="let logo of filteredLogos">
           <img [src]="logo.src" [alt]="logo.alt" [ngClass]="styles.logo">
+          <div class="partner-name">
           <p>{{logo.name}}</p>
+            <p class="partner-type">
+              {{ logo.category?.toLowerCase() === 'collaborators' ? logo.category : (logo.category + ' Partner') }}
+            </p>
+          </div>
         </li>
         <li *ngFor="let logo of filteredLogos" aria-hidden="true">
           <img [src]="logo.src" [alt]="logo.alt" [ngClass]="styles.logo">
+          <div class="partner-name">
           <p>{{logo.name}}</p>
+            <p class="partner-type">
+              {{ logo.category?.toLowerCase() === 'collaborators' ? logo.category : (logo.category + ' Partner') }}
+            </p>
+
+          </div>
         </li>
       </ul>
     </div>

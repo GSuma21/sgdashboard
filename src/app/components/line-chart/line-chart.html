@@ -1,25 +1,18 @@
 <mat-card class="chart-card">
-  <mat-card-title>Micro Improvements so far - {{ currentYear }}</mat-card-title>
+  <mat-card-title>Micro Improvements so far</mat-card-title>
 
   <div class="year-buttons">
-    <button mat-button *ngFor="let year of ['2021', '2022', '2023']"
-            [color]="year === currentYear ? 'primary' : ''"
-            (click)="currentYear = year">
-      {{ year }}
+    <button mat-button *ngFor="let item of data" class="year-button"
+            [ngClass]="{'enabled':item.year === year }"
+            (click)="showYearData(item)">
+      {{ item.year }}
     </button>
   </div>
 
   <mat-card-content>
-    <ngx-charts-line-chart
-      [results]="chartData"
-      [xAxis]="true"
-      [yAxis]="true"
-      [legend]="false"
-      [showXAxisLabel]="true"
-      [xAxisLabel]="xAxisLabel"
-      [showYAxisLabel]="true"
-      [yAxisLabel]="yAxisLabel"
-      [view]="view">
-    </ngx-charts-line-chart>
+    <div class="chart-container">
+      <div echarts [options]="chartOption" class="chart"></div>
+    </div>
+
   </mat-card-content>
 </mat-card>

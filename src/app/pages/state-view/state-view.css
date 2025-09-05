@@ -1,0 +1,149 @@
+.state-view-container {
+    padding: 4rem 8rem;
+    background: #EEEEEE!important;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .legend-container {
+    background-color: #EEEEEE;
+    padding: 16px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .legend-icon {
+    width: 20px;
+    margin-right: 8px;
+    height: 20px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .color-box {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    border: 1px solid #999;
+    min-width: 20px;
+  }
+
+  .both {
+    background-color: #4b2e83;
+  }
+
+  .state {
+    background-color: #6a3fb2;
+  }
+
+  .district {
+    background-color: #9b6fc6;
+  }
+
+  .yet {
+    background-color: #ffffff;
+    border: 1px solid #999;
+  }
+
+  .note {
+    font-size: 12px;
+    color: #555;
+    margin-top: 10px;
+  }
+
+  #state-map-container {
+    width: 100%;
+    position: relative;
+    flex: 3;
+  }
+
+  #state-map-container svg {
+    background-color: #f9f9f9;
+  }
+
+  .map-tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: auto;
+    padding: 8px;
+    font: 12px sans-serif;
+    background: rgb(254, 254, 254);
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .indicator-container{
+    flex: 2.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .indicator-container .heading{
+    margin-left: 8px;
+    font-size: 18px;
+  }
+
+  .indicator-container .indicators{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* always 2 columns */
+    gap: 10px;
+  }
+
+  .indicator-container .heading{
+    margin-left: 8px;
+    font-size: 18px;
+  }
+
+  .filter-selection{
+    display: flex;
+    justify-content: flex-end;
+    height: fit-content;
+    flex: 1;
+    margin-top: 4rem;
+  }
+
+  @media (max-width: 1250px){
+    .indicator-container .indicators {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+    .state-view-container {
+      flex-direction: column-reverse;
+    }
+
+    #state-map-container {
+      margin-top: 20px;
+    }
+  }
+
+  .legend-item-header{
+    font-size: 12px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px){
+  .state-view-container {
+    padding: 1rem; /* tighter padding for small devices */
+  }
+  .indicator-container .indicators {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+}

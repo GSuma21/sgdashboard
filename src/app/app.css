@@ -57,5 +57,60 @@
   color: var(--primary-color);
   font-weight: bold;
   position: relative;
-  text-decoration: none;
+}
+
+/* ====== Hamburger button ====== */
+.menu-toggle {
+  display: none;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  color: var(--text-color);
+  padding: 0.25rem 0.5rem;
+  z-index: 1101;
+}
+.menu-toggle:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ====== Mobile styles ====== */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+    margin-left: auto;
+  }
+  .app-header{
+    padding: 0;
+  }
+
+  .app-header .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+    padding: 1rem 0;
+    z-index: 1100;
+  }
+
+  .app-header .nav-links.open {
+    display: flex;
+  }
+
+  .app-header .nav-links a {
+    margin: 0.75rem 0;
+    text-align: center;
+  }
+}
+
+.app-content {
+  padding-top: 80px;
 }

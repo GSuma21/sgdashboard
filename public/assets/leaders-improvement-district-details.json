@@ -1,107 +1,68 @@
-{
-    "sections": [
-        {
-            "type": "data-indicators",
-            "width": "100%",
-            "position": "left",
-            "indicators": [
-                { "value": 15000,"icon":"assets/icons/group.svg", "label": "Micro Improvements Initiated" },
-                { "value": 5000,"icon":"assets/icons/group.svg", "label": "Leaders Driving Improvements" },
-                { "value": 10000,"icon":"assets/icons/group.svg", "label": "Schools Driving Improvements" },
-                { "value": 25,"icon":"assets/icons/group.svg", "label": "Momentum Partners" },
-                { "value": 10,"icon":"assets/icons/group.svg", "label": "Active Missions" },
-                { "value": 500, "icon":"assets/icons/group.svg","label": "NAS grade 3" }
-            ],
-            "styles": {
-                "section": "data-indicators-section",
-                "title": "section-title",
-                "grid": "data-indicators-grid"
-            }
-        },
-      {
-        "type": "line-chart",
-        "width": "50%",
-        "position": "center",
-        "title": "Monthly Progress",
-        "data": {
-          "2021": [
-            {
-              "name": "Production",
-              "series": [
-                { "name": "Jan", "value": 40 },
-                { "name": "Feb", "value": 55 },
-                { "name": "Mar", "value": 60 },
-                { "name": "Apr", "value": 50 },
-                { "name": "May", "value": 70 }
-              ]
-            }
-          ],
-          "2022": [
-            {
-              "name": "Production",
-              "series": [
-                { "name": "Jan", "value": 45 },
-                { "name": "Feb", "value": 60 },
-                { "name": "Mar", "value": 65 },
-                { "name": "Apr", "value": 55 },
-                { "name": "May", "value": 75 }
-              ]
-            }
-          ],
-          "2023": [
-            {
-              "name": "Production",
-              "series": [
-                { "name": "Jan", "value": 50 },
-                { "name": "Feb", "value": 65 },
-                { "name": "Mar", "value": 70 },
-                { "name": "Apr", "value": 60 },
-                { "name": "May", "value": 80 }
-              ]
-            }
-          ]
-        },
-        "styles": {
-          "section": "line-chart-section",
-          "title": "section-title"
-        }
-      },
-      {
-        "type": "pie-chart",
-        "width": "50%",
-        "position": "center",
-        "title": "Monthly Progress",
-        "data": [
-          { "name": "Curriculam and pedagogy", "value": 35 },
-          { "name": "Leadership", "value": 25 },
-          { "name": "Community Engagement", "value": 20 },
-          { "name": "Infrastructure", "value": 10 },
-          { "name": "Inclusive practices", "value": 10 }
-        ],
-        "styles": {
-          "section": "line-chart-section",
-          "title": "section-title"
-        }
-      },
-      {
-        "type": "programs-list",
-        "width": "50%",
-        "position": "center",
-        "title": "Ongoing District Missions",
-        "data": [
-            {
-                "title":"program 1",
-                "status":"In Progress",
-                "gallery":[
-                    "link","link"
-                ],
-                "partners":[]
-            }
-        ],
-        "styles": {
-          "section": "line-chart-section",
-          "title": "section-title"
-        }
+[
+  {
+      "type": "data-indicators",
+      "width": "80%",
+      "position": "center",
+      "indicators": [
+      ],
+      "styles": {
+          "section": "data-indicators-section",
+          "title": "section-title",
+          "grid": "data-indicators-grid"
       }
-    ]
+  },
+  {
+    "type": "line-chart",
+    "width": "50%",
+    "position": "center",
+    "title": "Monthly Progress",
+    "data": [
+      { "name": "Curriculam and pedagogy", "value": 35 },
+      { "name": "Leadership", "value": 25 },
+      { "name": "Community Engagement", "value": 20 },
+      { "name": "Infrastructure", "value": 10 },
+      { "name": "Inclusive practices", "value": 10 }
+    ],
+    "styles": {
+      "section": "line-chart-section",
+      "title": "section-title"
+    }
+  },
+  {
+    "type": "pie-chart",
+    "width": "50%",
+    "position": "center",
+    "title": "Monthly Progress",
+    "data": [
+      { "name": "Curriculam and pedagogy", "value": 35 },
+      { "name": "Leadership", "value": 25 },
+      { "name": "Community Engagement", "value": 20 },
+      { "name": "Infrastructure", "value": 10 },
+      { "name": "Inclusive practices", "value": 10 }
+    ],
+    "styles": {
+      "section": "line-chart-section",
+      "title": "section-title"
+    }
+  },
+  {
+    "type": "programs-list",
+    "width": "100%",
+    "position": "center",
+    "title": "Ongoing District Missions",
+    "data": [
+        {
+            "title":"program 1",
+            "status":"In Progress",
+            "gallery":[
+                "link","link"
+            ],
+            "partners":[]
+        }
+    ],
+    "styles": {
+      "section": "line-chart-section",
+      "title": "section-title"
+    }
   }
+]

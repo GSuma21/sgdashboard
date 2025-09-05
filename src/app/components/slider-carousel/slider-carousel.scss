@@ -1,21 +1,27 @@
 .carousel-wrapper {
   display: flex;
   background: #5f2c82;
-  padding: 3rem;
+  padding: 3rem 8rem;
   align-items: center;
   justify-content: center;
-  flex-direction: row; /* Default to row for larger screens */
-  flex-wrap: nowrap; /* Prevent wrapping by default */
+  flex-direction: row;
+  /* Default to row for larger screens */
+  flex-wrap: nowrap;
+  /* Prevent wrapping by default */
 
   .side-header {
     color: white;
     font-size: 1.5rem;
     font-weight: bold;
-    flex-basis: 200px; /* Use flex-basis instead of width */
-    flex-shrink: 0; /* Prevent shrinking */
-    margin-right: 3rem; /* Increased margin */
+    flex-basis: 200px;
+    /* Use flex-basis instead of width */
+    flex-shrink: 0;
+    /* Prevent shrinking */
+    margin-right: 3rem;
+    /* Increased margin */
     line-height: 1.3;
-    text-align: right; /* Align text to the right */
+    text-align: right;
+    /* Align text to the right */
   }
 }
 
@@ -23,14 +29,17 @@
   display: flex;
   flex-direction: row;
   margin: 20px;
+  margin-top: 2.5rem;
 }
 
 .carousel-container {
   display: flex;
   align-items: center;
   position: relative;
-  flex-grow: 1; /* Allow container to grow */
-  max-width: 100%; /* Ensure it doesn't overflow */
+  flex-grow: 1;
+  /* Allow container to grow */
+  max-width: 100%;
+  /* Ensure it doesn't overflow */
 
   .nav {
     background: white;
@@ -42,16 +51,19 @@
     z-index: 1;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     transition: background 0.2s;
-    position: absolute; /* Position navigation buttons absolutely */
+    position: absolute;
+    /* Position navigation buttons absolutely */
     top: 50%;
     transform: translateY(-50%);
 
     &.left {
-      left: -25px; /* Adjust as needed */
+      left: -25px;
+      /* Adjust as needed */
     }
 
     &.right {
-      right: -25px; /* Adjust as needed */
+      right: -25px;
+      /* Adjust as needed */
     }
 
     &:hover {
@@ -61,7 +73,8 @@
 
   .carousel {
     overflow: hidden;
-    width: 100%; /* Make carousel width fluid */
+    width: 100%;
+    /* Make carousel width fluid */
 
     .carousel-track {
       display: flex;
@@ -69,15 +82,17 @@
     }
 
     .carousel-slide {
-      flex: 0 0 33.33%; /* Show 3 slides by default, flexing to fill space */
+      flex: 0 0 33.33%;
+      /* Show 3 slides by default, flexing to fill space */
       padding: 0 0.5rem;
-      box-sizing: border-box; /* Include padding in width calculation */
+      box-sizing: border-box;
+      /* Include padding in width calculation */
 
       .card {
         background: white;
         height: 100%;
         border-radius: 1rem;
-        text-align: center;
+        text-align: center; // keep this for other content
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         position: relative;
         overflow: hidden;
@@ -85,6 +100,10 @@
 
         .quote {
           font-size: 3rem;
+          position: absolute;
+          top: 15px;
+          left: 20px;
+          text-align: left;
         }
 
         .message {
@@ -98,7 +117,7 @@
           bottom: 0;
           left: 0;
           width: 100%;
-          height: 100px;
+          height: 120px;
           color: var(--cardColor);
 
           svg {
@@ -116,7 +135,7 @@
           border-radius: 50%;
           border: 2px solid var(--cardColor);
           position: absolute;
-          bottom: 55px;
+          bottom: 65px;
           left: 50%;
           transform: translateX(-50%);
           font-size: 1.5rem;
@@ -127,7 +146,7 @@
 
         .details {
           position: absolute;
-          bottom: 15px;
+          bottom: 12px;
           left: 0;
           width: 100%;
 
@@ -144,19 +163,30 @@
     }
   }
 }
-
+@media (max-width: 1560px) {
+  .carousel-container .carousel .carousel-slide {
+    flex: 0 0 45%;
+  }
+}
+@media (max-width: 1260px) {
+  .carousel-container .carousel .carousel-slide {
+    flex: 0 0 50%;
+  }
+}
 /* Media Queries for Responsiveness */
 
 /* Tablets and smaller desktops */
 @media (max-width: 1024px) {
   .carousel-wrapper {
     padding: 2rem;
-    flex-direction: column; /* Stack side-header and carousel */
+    flex-direction: column;
+    /* Stack side-header and carousel */
   }
 
   .carousel-wrapper .side-header {
     width: 100%;
-    flex-basis: 50px; /* Use flex-basis instead of width */
+    flex-basis: 50px;
+    /* Use flex-basis instead of width */
     text-align: center;
     margin-right: 0;
     margin-bottom: 1.5rem;
@@ -167,7 +197,8 @@
   }
 
   .carousel-container .carousel .carousel-slide {
-    flex: 0 0 50%; /* Show 2 slides on tablets */
+    flex: 0 0 50%;
+    /* Show 2 slides on tablets */
   }
 }
 
@@ -178,7 +209,8 @@
   }
 
   .carousel-container .carousel .carousel-slide {
-    flex: 0 0 100%; /* Show 1 slide on mobile */
+    flex: 0 0 100%;
+    /* Show 1 slide on mobile */
   }
 
   .carousel-container .nav {

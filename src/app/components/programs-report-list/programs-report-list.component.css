@@ -1,0 +1,132 @@
+.main-section {
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #e8f5ff !important;
+}
+.carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* hide scrollbar in Firefox */
+    -ms-overflow-style: none; /* hide scrollbar in IE */
+  }
+  .carousel-track::-webkit-scrollbar {
+    display: none; /* hide scrollbar in Chrome/Safari */
+  }
+
+  .carousel-track img {
+    width: 100%;
+    max-width: 300px;
+    margin-right: 10px;
+    border-radius: 4px;
+  }
+
+  .carousel .nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.7);
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    z-index: 1;
+  }
+
+  .carousel .nav.left { left: 10px; }
+  .carousel .nav.right { right: 10px; }
+
+.report-description {
+    overflow: hidden; /* Hide the overflowing content */
+    display: -webkit-box; /* Necessary for -webkit-line-clamp to work */
+    -webkit-box-orient: vertical; /* Set the box orientation to vertical */
+    -webkit-line-clamp: 2; /* Limit the text to 2 lines */
+    line-clamp: 2; /* For broader compatibility (though currently a WebKit-specific feature) */
+    padding: 5px;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: gray;
+}
+
+mat-card {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 5px;
+    border: 0;
+    background: white;
+     cursor: pointer;
+}
+
+mat-card-title {
+    font-weight: 600;
+}
+
+mat-card-header {
+    padding-left: 0;
+    padding-bottom: 16px;
+}
+
+.community-button {
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    background: white;
+    padding: 0.5rem;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+.header-section {
+    width: 80%;
+    margin: auto;
+}
+
+.program-images {
+  height: 180px !important;
+}
+
+h3 {
+    font-weight: 700;
+  }
+
+.no-image {
+  width: 100% !important;
+  max-width: 500px !important;
+  display: flex;
+  justify-content: center;
+}
+
+.partners-logo {
+  height: 30px;
+}
+
+.partner-name {
+  font-size: .5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.row{
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.partners {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.badge-completed {
+  background-color: #65568e !important;
+}
+
+.mat-mdc-card-header {
+  padding-bottom: 3px !important;
+}

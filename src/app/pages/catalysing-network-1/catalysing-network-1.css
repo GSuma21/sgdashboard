@@ -1,6 +1,6 @@
 .catalysing-networks-container {
   text-align: center;
-  padding: 2rem;
+  padding:0 8rem;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -8,7 +8,7 @@
 }
 
 #network-map-container {
-  width: 90%;
+  width: 100%;
   position: relative;
   height: 0;
   padding-bottom: 50%; /* Aspect ratio 2:1, adjust as needed */
@@ -60,26 +60,27 @@
 .legend {
     padding: 16px;
     width: fit-content;
+    min-width: 200px;
     border-radius: 8px;
     font-family: Arial, sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: end;
-    margin-bottom: 10%;
+    position:relative;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: .5rem;
   color: black;
 }
 
 .legend-line {
-  width: 20px;
+  width: 24px;
   height: 0;
   margin-right: 8px;
-  border-top: 2px dashed;
+  border-top: 8px dashed;
 }
 
 .momentum-line {
@@ -87,7 +88,7 @@
 }
 
 .strategy-line {
-  border-color: #1aaf5d;
+  border-color: #333399;
 }
 
 .legend-circle {
@@ -120,6 +121,7 @@
   font-size: 12px;
   color: #6c6c6c;
   margin-top: 8px;
+  text-align: left;
 }
 
 .map-note{
@@ -128,4 +130,62 @@
   margin-top: 8px;
   display: flex;
   flex-direction: column-reverse;
+  position: absolute;
+  top: 80%;
+  right:20%;
 }
+
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .legend {
+        position: relative;
+        bottom: 0%;
+        left: 0%;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .legend {
+      position: relative;
+      bottom: 0%;
+        left: 0%;
+    }
+
+    .map-note{
+      position: relative;
+      top: 0;
+      left:10%;
+      display: flex;
+      flex-direction: column-reverse;
+    }
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/* .legend-line {
+  width: 24px;
+  height: 2px;
+  margin-right: 6px;
+} */
+
+.momentum-line {
+  border-top: 2px dashed blue;
+}
+
+.strategy-line {
+  border-top: 3px dashed #333399;
+}
+
+.legend-circle {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+}
+

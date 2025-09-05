@@ -1,38 +1,26 @@
 
-<div class="catalysing-networks-container" (click)="goToNetworkPage()">
+<div class="catalysing-networks-container pt-5" (click)="goToNetworkPage()">
   <div class="legend" *ngIf="showDetails">
-    <!-- Momentum Impact -->
-    <div class="legend-item">
-      <div class="legend-line momentum-line"></div>
-      <span>Momentum Impact</span>
+       @for (legend of displayLegends; track $index) {
+  <!-- Line legends -->
+  <div class="legend-item" *ngIf="legend.type === 'line' && showDetails">
+    <div class="legend-line" [ngClass]="legend.class"></div>
+    <span>{{ legend.label }}</span>
+  </div>
+
+  <!-- Icon legends -->
+  <div class="legend-item" *ngIf="legend.type === 'icon' && showDetails">
+    <div class="legend-circle">
+      <img class="legend-circle" [src]="legend.icon" alt="">
     </div>
-  
-    <!-- Strategy Impact -->
-    <div class="legend-item">
-      <div class="legend-line strategy-line"></div>
-      <span>Strategy Impact</span>
-    </div>
-  
-    <!-- Momentum Partners -->
-    <div class="legend-item">
-      <div class="legend-circle">
-        <img src="./assets/marker-icons/circle.svg" alt="">
-      </div>
-      <span>Momentum Partners</span>
-    </div>
-  
-    <!-- Strategic Partners -->
-    <div class="legend-item">
-      <div class="legend-circle">
-         <img src="./assets/marker-icons/square.svg" alt="">
-      </div>
-      <span>Strategic Partners</span>
-    </div>
-  
-    <!-- Note -->
-    <div class="legend-note">
-      *Click on the state to explore further
-    </div>
+    <span>{{ legend.label }}</span>
+  </div>
+
+  <!-- Note -->
+  <div class="legend-note" *ngIf="legend.type === 'note' && showDetails">
+    {{ legend.label }}
+  </div>
+}
   </div>
   <div id="network-map-container" #networkMapContainer class="catalysing-networks-svg"></div>
   <div id="tooltip"
@@ -43,7 +31,7 @@
      <p><i>*Click on the map to see our network</i></p>
     </div>
 
-   
+
 </div>
 
 

@@ -7,7 +7,7 @@
           <h3 class="">{{ section.header }}</h3>
           <h4 class="">{{ section.subHeader }}</h4>
           <p class="">{{ section.description }}</p>
-          <button class="community-button">Know more about Community Led Improvements<img src="assets/icons/arrow.svg" class="arrow" alt="" aria-hidden="true">
+          <button class="community-button" (click)="openCommunityDetails()">Know more about Community Led Initiatives<img src="assets/icons/arrow.svg" class="arrow" alt="" aria-hidden="true">
           </button>
         </div>
       </section>
@@ -50,6 +50,7 @@
         [showDetails]="section.showDetails"
         [legends]="section.legends"
         [selections]="section.selections"
+        [notes]="section.notes"
         (stateSelected)="onStateSelected($event)">
       </app-country-view>
     </ng-container>
@@ -83,7 +84,7 @@
     </ng-container>
 
     <ng-container *ngIf="section.type === 'line-chart'">
-      <app-line-chart [allData]="section.data"></app-line-chart>
+      <app-line-chart [data]="section.data"></app-line-chart>
     </ng-container>
 
     <ng-container *ngIf="section.type === 'pie-chart'" class="pie-chart">

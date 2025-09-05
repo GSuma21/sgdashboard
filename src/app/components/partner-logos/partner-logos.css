@@ -1,6 +1,7 @@
 .filter-buttons {
   margin-bottom: 2rem;
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
 }
 
@@ -9,29 +10,42 @@ h2 {
 }
 
 .filter-buttons button {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  padding: 0.5rem 1.5rem;
+  box-shadow: 0 3px 2px rgba(0, 0, 0, 0.2);
+  background-color: #fef7ff;
+  border: 0px;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
   cursor: pointer;
+  font-weight: 500;
+  font-size: 12px;
   transition: background-color 0.3s, color 0.3s;
 }
 
 .filter-buttons button.active {
   background-color: var(--primary-color);
   color: white;
-  border-color: var(--primary-color);
+  border: 0px;
+}
+
+button:focus{
+  outline: none;
 }
 
 .scroller {
   max-width: 100%;
+  overflow: hidden;
 }
 
 .scroller__inner {
   padding-block: 1rem;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 3rem;
+  width: max-content;
+
+  animation-name: scroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
 .scroller__inner li {
@@ -45,16 +59,6 @@ h2 {
   margin: 0;
 }
 
-.scroller[data-animated="true"] {
-  overflow: hidden;
-}
-
-.scroller[data-animated="true"] .scroller__inner {
-  width: max-content;
-  flex-wrap: nowrap;
-  animation: scroll 100s linear infinite;
-}
-
 @keyframes scroll {
   0% {
     transform: translateX(0);
@@ -64,12 +68,50 @@ h2 {
   }
 }
 
-.partner-logo {
-  max-width: 100px;
-  height: 100px;
-  transition: filter 0.3s ease, opacity 0.3s ease; /* Smooth transition */
+.scroller__inner:hover {
+  animation-play-state: paused;
 }
 
-.scroller[data-animated="true"] .scroller__inner:hover { /* pause the scroll whenever your mouse is over the scrolling track. */
-  animation-play-state: paused;
+.scroller__inner img {
+  width: 120px;
+  height: 80px;
+  object-fit: contain;
+  display: block;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+.partners-section {
+  padding: 0 8rem;
+}
+
+.partners-section h2 {
+  font-weight: bolder;
+}
+
+.partner-name {
+  text-align: center;
+  font-weight: bold;
+}
+
+.partner-type {
+  font-size: 12px;
+}
+
+@media (max-width: 768px){
+  .partners-section{
+    padding: 0 2rem;
+}
+}
+
+.filter-buttons button img {
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  vertical-align: middle;
+  transition: filter 0.3s ease;
+}
+
+.filter-buttons button.active img {
+  filter: brightness(0) invert(1);
 }

@@ -1,44 +1,36 @@
 <div class="country-view-container">
-  <div class="main-container">
-    <div class="legend-container">
-  <div class="legend-item">
-    <div class="color-box both"></div>
-    <span>State and District led missions</span>
-  </div>
-  <div class="legend-item">
-    <div class="color-box state"></div>
-    <span>State led missions</span>
-  </div>
-  <div class="legend-item">
-    <div class="color-box district"></div>
-    <span>District led missions</span>
-  </div>
-  <div class="legend-item">
-    <div class="color-box yet"></div>
-    <span>Yet to start</span>
-  </div>
-  <div class="note">
-    *Click on the map to access the main dashboard
-  </div>
-</div>
+  <div class="legend-container">
+    @for(data of displayLegends; track $index){
+      <div class="legend-item">
+        <div class="color-box" [ngStyle]="{'background-color': data.color}" *ngIf="!data.icon"></div>
+        <img class="legend-icon" [src]="data.icon" *ngIf="data.icon">
+        <span class="legend-item-header">{{ data.label }}</span>
+      </div>
+    }
 
-
-    <div id="india-map-container" #indiaMapContainer></div>
-    <div id="map-tooltip" class="map-tooltip"></div>
-    <div class="indicator-container" *ngIf="showDetails">
+    @for(note of notes; track $index){
+      <div class="note">*{{ note }}</div>
+    }
+  </div>
+  <div id="india-map-container" #indiaMapContainer></div>
+  <div id="map-tooltip" class="map-tooltip"></div>
+  @if(showDetails){
+    <div class="indicator-container">
+      <div>
       <h4 class="heading">India {{hoveredState ? ( '> '+hoveredState ) : ""}}</h4>
-      <div class="indicators">
-        <app-mini-indicator-card *ngFor="let indicator of indicatorData" [value]="indicator.value" [label]="indicator.label"></app-mini-indicator-card>
+      <div class="indicators  ">
+        <app-mini-indicator-card *ngFor="let indicator of indicatorData" [value]="indicator.value" [label]="indicator.label" ></app-mini-indicator-card>
+        </div>
       </div>
     </div>
-    <div *ngIf="showVariations" class="filter-selection">
+  }
+  @if(showVariations){
+    <div class="filter-selection">
       <mat-form-field>
-        <!-- <mat-label>Select</mat-label> -->
         <mat-select [(ngModel)]="selectedIndicator">
           <mat-option [value]="option.value" *ngFor="let option of selections" >{{option.label}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-  </div>
+  }
 </div>
-

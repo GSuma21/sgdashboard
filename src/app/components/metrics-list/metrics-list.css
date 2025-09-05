@@ -1,0 +1,49 @@
+.metrics-container{
+  max-width: 90%;
+  margin: auto;
+}
+
+.metrics-card{
+  margin: 18px 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.icon-heading-section{
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 16px;
+}
+
+.label-value-section{
+  align-self: center;
+  margin-left: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  color:#52585C;
+}
+
+.value{
+  margin-top: 4px;
+  color: var(--secondary-color-light);
+}
+
+.description{
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 8px 0px;
+  flex: 1;
+}
+
+.link{
+  font-size: 14px;
+  font-weight: 600;
+  color: #0051FF;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.disabled-card {
+  pointer-events: none; 
+  color: darkgrey;
+}

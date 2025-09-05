@@ -28,7 +28,8 @@
     </ng-container>
 
      <ng-container *ngIf="section.type === 'global-view'">
-      <app-catalysing-network-1 [showDetails]="section.showDetails" [isPartnerShowable] = "section.isPartnerShowable"></app-catalysing-network-1>
+      <!-- <app-catalysing-network-1 [showDetails]="section.showDetails" [isPartnerShowable] = "section.isPartnerShowable"></app-catalysing-network-1> -->
+       <app-world-map></app-world-map>
     </ng-container>
 
     <!-- Data Indicators Section -->
@@ -54,5 +55,5 @@
       <app-partner-logos [partners]="section.partners" [styles]="section.styles" [title]="section.title" [showFilters]="section.showFilters"></app-partner-logos>
     </ng-container>
   </div>
-  <app-slider-carousel></app-slider-carousel>
+  <app-slider-carousel [testimonials]="pageData?.testimonials?.slides"></app-slider-carousel>
 </div>

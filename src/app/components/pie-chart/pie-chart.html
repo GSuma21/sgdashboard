@@ -1,8 +1,8 @@
 <section class="outer-container">
   <mat-card class="chart-card">
-    <mat-card-title>Categories of Micro Improvements</mat-card-title>
+    <mat-card-title>Categories of Micro Improvements initiated</mat-card-title>
     <mat-card-content>
-      <ngx-charts-pie-chart
+      <!-- <ngx-charts-pie-chart
         [results]="pieData"
         [legend]="showLegend"
         [labels]="showLabels"
@@ -15,7 +15,9 @@
         [gradient]="false"
         [tooltipText]="tooltipText"
       >
-      </ngx-charts-pie-chart>
+      </ngx-charts-pie-chart> -->
+      <div echarts [options]="chartOptions" [theme]="theme" class="donut-chart"></div>
     </mat-card-content>
   </mat-card>
 </section>
+

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, HostListener, Input } from '@angular/core';
 
 @Component({
   selector: 'app-slider-carousel',
@@ -11,46 +11,9 @@ import { Component, ViewChild, ElementRef, AfterViewInit, HostListener } from '@
 export class SliderCarouselComponent implements AfterViewInit {
   @ViewChild('carouselTrack') carouselTrack!: ElementRef;
   @ViewChild('carousel') carousel!: ElementRef;
+  @Input() testimonials: any[] = [];
 
-  slides = [
-    {
-      message:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet,',
-      name: 'Namium Ipsum',
-      designation:'Designation',
-      org: 'Org Name/Link'
-    },
-    {
-      message:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet,',
-      name: 'Namium Ipsum',
-      designation:'Designation',
-      org: 'Org Name/Link'
-    },
-    {
-      message:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet,',
-      name: 'Namium Ipsum',
-      designation:'Designation',
-      org: 'Org Name/Link'
-    },
-        {
-      message:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet,',
-      name: 'Namium Ipsum',
-      designation:'Designation',
-      org: 'Org Name/Link'
-    },
-    {
-      message:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris Lorem ipsum dolor sit amet,',
-      name: 'Namium Ipsum',
-      designation:'Designation',
-      org: 'Org Name/Link'
-    }
-  ];
-
-  colors = ['#00c853', '#aa00ff', '#2979ff']; // Green, Purple, Blue
+  colors = ['#00cd6b', '#9e00d7', '#3887fd']; // Green, Purple, Blue
   currentIndex = 0;
   visibleSlides = 3; // Default for desktop
 
@@ -78,14 +41,14 @@ export class SliderCarouselComponent implements AfterViewInit {
         this.visibleSlides = 3;
       }
       // Ensure currentIndex doesn't go out of bounds after resize
-      if (this.currentIndex > this.slides.length - this.visibleSlides) {
-        this.currentIndex = Math.max(0, this.slides.length - this.visibleSlides);
+      if (this.currentIndex > this.testimonials.length - this.visibleSlides) {
+        this.currentIndex = Math.max(0, this.testimonials.length - this.visibleSlides);
       }
     }
   }
 
   getTransform() {
-    if (this.carouselTrack && this.slides.length > 0) {
+    if (this.carouselTrack && this.carouselTrack.nativeElement.children.length > 0 && this.testimonials.length > 0) {
       // Calculate the width of a single slide including its padding
       const slideWidth = this.carouselTrack.nativeElement.children[0].offsetWidth;
       return `translateX(-${this.currentIndex * slideWidth}px)`;
@@ -96,12 +59,14 @@ export class SliderCarouselComponent implements AfterViewInit {
   prevSlide() {
     if (this.currentIndex > 0) {
       this.currentIndex--;
+      this.updateVisibleSlides() 
     }
   }
 
   nextSlide() {
-    if (this.currentIndex < this.slides.length - this.visibleSlides) {
+    if (this.currentIndex < this.testimonials.length - this.visibleSlides) {
       this.currentIndex++;
+      this.updateVisibleSlides() 
     }
   }
 }

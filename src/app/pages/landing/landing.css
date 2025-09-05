@@ -137,9 +137,13 @@
 
 /* Data Indicators Section */
 .data-indicators-section {
-  padding: 5rem 0;
+  padding:20px ;
   text-align: center;
   background-color: var(--background-color);
+}
+
+.indicators-section{
+  padding: 0rem 8rem;
 }
 
 .section-title {
@@ -154,6 +158,7 @@
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
   align-items: stretch; /* Ensure all grid items stretch to the same height */
+  padding-bottom: 30px;
 }
 
 /* Indicator Card styles are now in indicator-card.css */
@@ -213,7 +218,7 @@
 .map-container {
   position: relative;
   width: 100%;
-  height: 500px; /* Adjust as needed */
+  height: 350px; /* Adjust as needed */
 }
 
 .map-wrapper {
@@ -226,6 +231,9 @@
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+  .indicators-section{
+  padding: 0rem 2rem;
+}
   .hero-title {
     font-size: 2.8rem;
   }
@@ -246,10 +254,6 @@
 
   .section-title {
     font-size: 2.2rem;
-  }
-
-  .data-indicators-grid {
-    grid-template-columns: 1fr;
   }
 
   .app-header nav {
@@ -301,3 +305,4 @@
   font-size: 24px;
   text-align: center;
 }
+

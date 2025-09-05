@@ -1,44 +1,50 @@
 .indicator-card {
   background:none;
   padding: 2rem;
-  text-align: center;
-  transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease; /* Smooth transitions */
-  opacity: 0;
-  transform: translateY(30px) scale(0.95); /* Initial state for animation */
-  animation: slideInUpScale 0.6s forwards; /* New animation */
-
-  /* Flexbox for consistent internal layout */
   display: flex;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  animation: slideInUpScale 0.6s forwards;
 }
 
-img {
-  width: 100px;
+.indicator-icon {
+  min-width: 25%;
+  max-width: 35%;
+  object-fit: contain;
+  padding-right: 2%;
+}
+
+.divider {
+  width: 0.2%;
+  min-height: 30%;           
+  max-height: 60%;           
+  background-color: #aaa;  
 }
 
 .indicator-container {
-  padding-left: 1rem;
-  border-left: 3px solid;
+  width: 80%;
+  padding-left: 0.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
+
 }
 
 .indicator-value {
   font-size: 1.5rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
   color: var(--secondary-color-light);
 }
 
 .indicator-label {
-  font-size: .9rem;
+  width: 100%;
+  font-size: 0.9rem;
   color: var(--text-color);
   opacity: 0.8;
-  min-height: 2.2em; /* Ensure consistent height for labels */
-  display: flex; /* Use flex to center text vertically if needed */
-  align-items: center;
-  justify-content: center;
-  margin-top: 0;
+  text-align: left;
+
 }
 
 @keyframes slideInUpScale {
