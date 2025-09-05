@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
-import { COMMUNITY_DASHBOARD_PAGE, DISTRICT_VIEW_INDICATORS, INDIA } from '../../../constants/urlConstants';
+import { COMMUNITY_DASHBOARD_PAGE, COMMUNITY_MAP_DATA, DISTRICT_VIEW_INDICATORS, INDIA } from '../../../constants/urlConstants';
 
 @Component({
   selector: 'app-country-view',
@@ -44,12 +44,14 @@ export class CountryView implements OnInit, AfterViewInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    this.fetchCommunityData();
     this.fetchIndicatorData();
   }
 
   fetchCommunityData() {
-    d3.json(`${this.baseUrl}/${COMMUNITY_DASHBOARD_PAGE}`).then((data: any) => {
+    d3.json(`${this.baseUrl}/${COMMUNITY_MAP_DATA}`).then((data: any) => {
       this.indicatorJson = data;
+      console.log(data);
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
