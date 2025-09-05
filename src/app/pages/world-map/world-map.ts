@@ -497,7 +497,10 @@ export class WorldMapComponent implements OnInit {
       <div style="font-size: 12px; color: #555;">${partner.countryName}</div>
       <div style="font-size: 12px; color: #555;">${partner.partnerState}</div>
         <div style="font-weight: 600; font-size: 14px; color: #000;">${partner.name}</div>
-        <div style="font-size: 12px; color: #777;">${partner.category}</div>
+        ${partner.category?.toLowerCase() === 'collaborators'
+    ? `<div style="font-size: 12px; color: #777;">${partner.category ?? ''}</div>`
+    : `<div style="font-size: 12px; color: #777;">${partner.category ?? ''} partner</div>`}
+
       </div>
     </div>
   </a>
