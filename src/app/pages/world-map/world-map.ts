@@ -2,7 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { FeatureCollection, Geometry } from 'geojson';
-import { INDIA } from '../../../constants/urlConstants';
+import { INDIA, NETWORK_DATA } from '../../../constants/urlConstants';
 import { environment } from '../../../../environments/environment';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -339,7 +339,7 @@ export class WorldMapComponent implements OnInit {
     Promise.all([
       d3.json<any>('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-10m.json'),
       d3.json<any>(`${this.baseUrl}/${INDIA}`),
-      d3.json<NetworkData>('./assets/network-data.json')
+      d3.json<NetworkData>(`${this.baseUrl}/${NETWORK_DATA}`)
     ]).then(([topology, indiaTopology, networkData]) => {
       const countries = topojson.feature(topology, topology.objects.countries) as unknown as FeatureCollection<Geometry, any>;
       const states = topojson.feature(indiaTopology, indiaTopology.objects.states) as unknown as FeatureCollection<Geometry, any>;
