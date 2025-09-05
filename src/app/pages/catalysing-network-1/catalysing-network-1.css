@@ -77,10 +77,10 @@
 }
 
 .legend-line {
-  width: 20px;
+  width: 24px;
   height: 0;
   margin-right: 8px;
-  border-top: 2px dashed;
+  border-top: 8px dashed;
 }
 
 .momentum-line {
@@ -88,7 +88,7 @@
 }
 
 .strategy-line {
-  border-color: #1aaf5d;
+  border-color: #333399;
 }
 
 .legend-circle {
@@ -169,18 +169,18 @@
   font-size: 14px;
 }
 
-.legend-line {
+/* .legend-line {
   width: 24px;
   height: 2px;
   margin-right: 6px;
-}
+} */
 
 .momentum-line {
   border-top: 2px dashed blue;
 }
 
 .strategy-line {
-  border-top: 2px dashed green;
+  border-top: 3px dashed #333399;
 }
 
 .legend-circle {

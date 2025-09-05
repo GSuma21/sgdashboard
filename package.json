@@ -43,6 +43,7 @@
     "three": "^0.178.0",
     "topojson-client": "^3.1.0",
     "tslib": "^2.3.0",
+    "world-atlas": "^2.0.2",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {

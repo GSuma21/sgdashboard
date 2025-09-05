@@ -57,7 +57,8 @@
           <app-global-map-2></app-global-map-2>
         </div>
         <div class="map-wrapper" [@fade]="!isGlobalMapVisible ? 'visible' : 'hidden'">
-          <app-catalysing-network-1  [showDetails]="section.showDetails" [isPartnerShowable]="section.isPartnerShowable" [iconSize]="section.iconSize ?? 18"></app-catalysing-network-1>
+           <app-world-map [showDetails]="section.showDetails" ></app-world-map>
+          <!-- <app-catalysing-network-1  [showDetails]="section.showDetails" [isPartnerShowable]="section.isPartnerShowable" [iconSize]="section.iconSize ?? 18"></app-catalysing-network-1> -->
         </div>
       </div>
     </ng-container>

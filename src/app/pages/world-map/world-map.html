@@ -1,0 +1,30 @@
+<div class="map-wrapper">
+  <div #map class="map-container"></div>
+  <div class="legend" *ngIf="showDetails">
+    @for (legend of displayLegends; track $index) {
+    <!-- Line legends -->
+    <!-- <div class="legend-item" *ngIf="legend.type === 'line'">
+        <div class="legend-line" [ngClass]="legend.class"></div>
+        <span>{{ legend.label }}</span>
+      </div> -->
+
+    <!-- Icon legends -->
+    <div class="legend-item" *ngIf="legend.type === 'icon'">
+      <div class="legend-circle">
+        <img class="legend-circle" [src]="legend.icon" alt="">
+      </div>
+      <span>{{ legend.label }}</span>
+    </div>
+
+    <!-- Note -->
+    <div class="legend-note" *ngIf="legend.type === 'note'">
+      {{ legend.label }}
+    </div>
+    }
+  </div>
+  <div #tooltip class="tooltip"></div>
+
+  <div class="map-note" *ngIf="!showDetails">
+    <p><i>*Click on the map to see our network</i></p>
+  </div>
+</div>

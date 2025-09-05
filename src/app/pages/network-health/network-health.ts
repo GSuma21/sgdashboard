@@ -13,11 +13,12 @@ import { SliderCarouselComponent } from '../../components/slider-carousel/slider
 import { CatalysingNetwork1 } from '../catalysing-network-1/catalysing-network-1';
 import { NETWORK_HEALTH_PAGE } from '../../../constants/urlConstants';
 import { environment } from '../../../../environments/environment';
+import { WorldMapComponent } from '../world-map/world-map';
 
 @Component({
   selector: 'app-network-health',
   standalone:true,
-  imports:[CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, LineChartComponent, PieChartComponent,CountryView, SliderCarouselComponent, CatalysingNetwork1],
+  imports:[CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, LineChartComponent, PieChartComponent,CountryView, SliderCarouselComponent, CatalysingNetwork1, WorldMapComponent],
   templateUrl: './network-health.html',
   styleUrls: ['./network-health.css']
 })
