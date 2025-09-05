@@ -37,98 +37,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
   displayLegends: any = [];
   communityJson: any = {
     "result": {
-      "districts": {
-        "203": {
-          "label": "West Champaran",
-          "type": "category_1",
-          "details": [
-            { "value": 8395, "code": "No. of community leaders engaged" },
-            { "value": 365, "code": "Community led improvements" },
-            { "value": 822, "code": "Challenges shared" },
-            { "value": 734, "code": "Solutions shared" }
-          ]
-        },
-        "205": {
-          "label": "Sheohar",
-          "type": "category_1",
-          "details": [
-            { "value": 10265, "code": "No. of community leaders engaged" },
-            { "value": 448, "code": "Community led improvements" },
-            { "value": 842, "code": "Challenges shared" },
-            { "value": 713, "code": "Solutions shared" }
-          ]
-        },
-        "206": {
-          "label": "Sitamarhi",
-          "type": "category_1",
-          "details": [
-            { "value": 7564, "code": "No. of community leaders engaged" },
-            { "value": 352, "code": "Community led improvements" },
-            { "value": 833, "code": "Challenges shared" },
-            { "value": 719, "code": "Solutions shared" }
-          ]
-        },
-        "216": {
-          "label": "Muzaffarpur",
-          "type": "category_1",
-          "details": [
-            { "value": 8762, "code": "No. of community leaders engaged" },
-            { "value": 428, "code": "Community led improvements" },
-            { "value": 948, "code": "Challenges shared" },
-            { "value": 837, "code": "Solutions shared" }
-          ]
-        },
-        "230": {
-          "label": "Patna",
-          "type": "category_1",
-          "details": [
-            { "value": 1308, "code": "No. of community leaders engaged" },
-            { "value": 60, "code": "Community led improvements" },
-            { "value": 166, "code": "Challenges shared" },
-            { "value": 112, "code": "Solutions shared" }
-          ]
-        },
-        "233": {
-          "label": "Kaimur",
-          "type": "category_1",
-          "details": [
-            { "value": 9690, "code": "No. of community leaders engaged" },
-            { "value": 395, "code": "Community led improvements" },
-            { "value": 1106, "code": "Challenges shared" },
-            { "value": 1137, "code": "Solutions shared" }
-          ]
-        },
-        "234": {
-          "label": "Rohtas",
-          "type": "category_1",
-          "details": [
-            { "value": 8329, "code": "No. of community leaders engaged" },
-            { "value": 350, "code": "Community led improvements" },
-            { "value": 660, "code": "Challenges shared" },
-            { "value": 626, "code": "Solutions shared" }
-          ]
-        },
-        "236": {
-          "label": "Gaya",
-          "type": "category_1",
-          "details": [
-            { "value": 7290, "code": "No. of community leaders engaged" },
-            { "value": 354, "code": "Community led improvements" },
-            { "value": 614, "code": "Challenges shared" },
-            { "value": 564, "code": "Solutions shared" }
-          ]
-        }
-      },
-      "overview": {
-        "label": "Bihar",
-        "type": "category_2",
-        "details": [
-          { "value": 61603, "code": "No. of community leaders engaged" },
-          { "value": 2752, "code": "Community led improvements" },
-          { "value": 5991, "code": "Challenges shared" },
-          { "value": 5442, "code": "Solutions shared" }
-        ]
-      }
+      "districts": {}
     }
   };
 
@@ -136,10 +45,8 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
 
   ngOnInit(): void {
     this.dataFetchPath = this.replaceCode ? this.path.replace('{code}', this.replaceCode.toString()) : this.path;
-    if (!this.dataFetchPath.includes('community')) {
-      this.communityDataFetchPath = this.replaceCode ? this.communityDataFetchPath.replace('{code}', this.replaceCode.toString()) : this.path;
-      this.fetchCommunityData();
-    }
+    this.communityDataFetchPath = this.replaceCode ? this.communityDataFetchPath.replace('{code}', this.replaceCode.toString()) : this.path;
+    this.fetchCommunityData();
     this.displayLegends = Object.values(this.legends).map((item: any) => ({
       label: item.label,
       color: item.color,
@@ -295,6 +202,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
         .on('mouseover', (event: any, d: any) => {
           const districtCode = d.properties.dt_code;
           const districtInfo = districtsData[districtCode];
+          const districtName = d.properties.district || 'Unknown District'; // Fallback to district name from topojson
           if (districtInfo) {
             if (this.showDetails) {
               this.fetchIndicatorData(districtCode);
@@ -313,8 +221,21 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
               </div>`;
               tooltip.html(tooltipHtml);
             } else {
-              tooltip.transition().duration(500).style('opacity', 0);
+              tooltip.transition().duration(200).style('opacity', .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtInfo.label || 'Unknown District'}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500;">No data for ${this.selectedIndicator}</div>
+              </div>`;
+              tooltip.html(tooltipHtml);
             }
+          } else {
+            // Show tooltip for districts without data
+            tooltip.transition().duration(200).style('opacity', .9);
+            let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+              <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtName}</div>
+              <div style="font-size: 14px; color: #333; font-weight: 500;">Yet to start</div>
+            </div>`;
+            tooltip.html(tooltipHtml);
           }
         })
         .on('mousemove', (event: any) => {
@@ -369,6 +290,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
         .on('mouseover', (event: any, d: any) => {
           const districtCode = d.properties.dt_code;
           const districtInfo = districtsData[districtCode];
+          const districtName = d.properties.district || 'Unknown District'; // Fallback to district name from topojson
           if (districtInfo) {
             if (this.showDetails) {
               this.fetchIndicatorData(districtCode);
@@ -387,8 +309,21 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
               </div>`;
               tooltip.html(tooltipHtml);
             } else {
-              tooltip.transition().duration(500).style('opacity', 0);
+              tooltip.transition().duration(200).style('opacity', .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtInfo.label || 'Unknown District'}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500;">No data for ${this.selectedIndicator}</div>
+              </div>`;
+              tooltip.html(tooltipHtml);
             }
+          } else {
+            // Show tooltip for districts without data
+            tooltip.transition().duration(200).style('opacity', .9);
+            let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+              <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtName}</div>
+              <div style="font-size: 14px; color: #333; font-weight: 500;">Yet to start</div>
+            </div>`;
+            tooltip.html(tooltipHtml);
           }
         })
         .on('mousemove', (event: any) => {

@@ -172,14 +172,14 @@ export class CountryView implements OnInit, AfterViewInit {
       d3.json(this.resourcePath.length > 0 ? (this.resourcePath.includes('https://') ? this.resourcePath : `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${this.resourcePath}`) :`${this.baseUrl}/${DISTRICT_VIEW_INDICATORS}`)
     ]).then(([india, indicatorData]: [any, any]) => {
       const statesData = indicatorData.result.states; // Use indicatorData for colors and interactions
-      const iconStatesData:any = this.indicatorJson.result.states; // Use indicatorJson only for icons
+      const iconStatesData: any = this.indicatorJson.result.states; // Use indicatorJson only for icons
       const labels = indicatorData.result.meta.labels;
       const legends = indicatorData.result.meta.legends;
       this.legends = legends;
       this.displayLegends = Object.values(legends).map((item: any) => ({
         label: item.label,
         color: item.color,
-        icon:item.icon
+        icon: item.icon
       }));
       const activeStates = indicatorData.result.overview;
       const states = topojson.feature(india, india.objects.states) as any;
@@ -219,6 +219,7 @@ export class CountryView implements OnInit, AfterViewInit {
         .on('mouseover', (event: any, d: any) => {
           const stateCode = d.properties.st_code;
           const stateInfo = statesData[stateCode];
+          const stateName = d.properties.st_nm || 'Unknown State'; // Fallback to state name from topojson
           if (stateInfo) {
             if (this.showDetails) {
               this.fetchIndicatorData(stateCode);
@@ -237,8 +238,21 @@ export class CountryView implements OnInit, AfterViewInit {
               </div>`;
               tooltip.html(tooltipHtml);
             } else {
-              tooltip.transition().duration(500).style("opacity", 0);
+              tooltip.transition().duration(200).style("opacity", .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500;">No data for ${this.selectedIndicator}</div>
+              </div>`;
+              tooltip.html(tooltipHtml);
             }
+          } else {
+            // Show tooltip for states without data
+            tooltip.transition().duration(200).style("opacity", .9);
+            let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+              <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateName}</div>
+              <div style="font-size: 14px; color: #333; font-weight: 500;">Yet to start</div>
+            </div>`;
+            tooltip.html(tooltipHtml);
           }
         })
         .on('mousemove', (event: any) => {
@@ -263,7 +277,7 @@ export class CountryView implements OnInit, AfterViewInit {
               this.router.navigate([path, stateName, stateCode]);
             }
           } else if (!this.showDetails) {
-            this.stateSelected.emit(stateInfo.label);
+            this.stateSelected.emit(stateInfo?.label || '');
             this.router.navigate(['/dashboard']);
           }
         });
@@ -292,6 +306,7 @@ export class CountryView implements OnInit, AfterViewInit {
         .on('mouseover', (event: any, d: any) => {
           const stateCode = d.properties.st_code;
           const stateInfo = statesData[stateCode];
+          const stateName = d.properties.st_nm || 'Unknown State'; // Fallback to state name from topojson
           if (stateInfo) {
             if (this.showDetails) {
               this.fetchIndicatorData(stateCode);
@@ -310,8 +325,21 @@ export class CountryView implements OnInit, AfterViewInit {
               </div>`;
               tooltip.html(tooltipHtml);
             } else {
-              tooltip.transition().duration(500).style("opacity", 0);
+              tooltip.transition().duration(200).style("opacity", .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500;">No data for ${this.selectedIndicator}</div>
+              </div>`;
+              tooltip.html(tooltipHtml);
             }
+          } else {
+            // Show tooltip for states without data
+            tooltip.transition().duration(200).style("opacity", .9);
+            let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+              <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateName}</div>
+              <div style="font-size: 14px; color: #333; font-weight: 500;">Yet to start</div>
+            </div>`;
+            tooltip.html(tooltipHtml);
           }
         })
         .on('mousemove', (event: any) => {
@@ -336,7 +364,7 @@ export class CountryView implements OnInit, AfterViewInit {
               this.router.navigate([path, stateName, stateCode]);
             }
           } else if (!this.showDetails) {
-            this.stateSelected.emit(stateInfo.label);
+            this.stateSelected.emit(stateInfo?.label || '');
             this.router.navigate(['/dashboard']);
           }
         });
