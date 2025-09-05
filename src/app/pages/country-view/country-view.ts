@@ -4,12 +4,11 @@ import * as topojson from 'topojson-client';
 import { CommonModule, KeyValuePipe } from '@angular/common';
 import { IndicatorCardComponent } from '../../components/indicator-card/indicator-card';
 import { MiniIndicatorCardComponent } from '../../components/mini-indicator-card/mini-indicator-card';
-import { Router } from '@angular/router'; // Import Router
+import { Router } from '@angular/router';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
-import { DISTRICT_VIEW_INDICATORS, INDIA } from '../../../constants/urlConstants';
-
+import { COMMUNITY_DASHBOARD_PAGE, DISTRICT_VIEW_INDICATORS, INDIA } from '../../../constants/urlConstants';
 
 @Component({
   selector: 'app-country-view',
@@ -22,33 +21,102 @@ export class CountryView implements OnInit, AfterViewInit {
   @ViewChild('indiaMapContainer') private mapContainer!: ElementRef;
   @Input() showDetails: boolean = false;
   @Input() showVariations: boolean = false;
-  @Input() legends:any = [];
+  @Input() legends: any = [];
   @Input() selections: any = [];
   @Output() stateSelected = new EventEmitter<string>();
-  @Input() resourcePath:string = '';
-  @Input() redirectPath?:any = ''
-  @Input() notes:any = [];
+  @Input() resourcePath: string = '';
+  @Input() redirectPath?: any = '';
+  @Input() notes: any = [];
   selectedIndicator: string = 'Micro Improvements Initiated';
-  hoveredState: string = ""
+  hoveredState: string = "";
 
   indicatorData: { value: number | string; label: string }[] = [];
-  baseUrl:any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
-  displayLegends:any = []
+  baseUrl: any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`;
+  displayLegends: any = [];
 
-  constructor(private router: Router) { } // Inject Router
+  // Embedded JSON data
+  private indicatorJson = {
+    "result": {
+      "states": {
+        "10": {
+          "id": "10",
+          "label": "Bihar",
+          "type": "category_1",
+          "details": [
+            { "code": "No. of community leaders engaged", "value": 61603 },
+            { "code": "Community led improvements", "value": 2752 },
+            { "code": "Challenges shared", "value": 5991 },
+            { "code": "Solutions shared", "value": 5442 },
+            { "code": "Districts Activated", "value": 8 }
+          ]
+        },
+        "29": {
+          "id": "29",
+          "label": "Karnataka",
+          "type": "category_1",
+          "details": [
+            { "code": "No. of community leaders engaged", "value": 9264 },
+            { "code": "Community led improvements", "value": 292 },
+            { "code": "Challenges shared", "value": 816 },
+            { "code": "Solutions shared", "value": 757 },
+            { "code": "Districts Activated", "value": 2 }
+          ]
+        }
+      },
+      "overview": {
+        "label": "india",
+        "type": "category_1",
+        "details": [
+          { "code": "No. of community leaders engaged", "value": 70867 },
+          { "code": "Community led improvements", "value": 3044 },
+          { "code": "Challenges shared", "value": 6807 },
+          { "code": "Solutions shared", "value": 6199 },
+          { "code": "Districts Activated", "value": 10 }
+        ]
+      },
+      "meta": {
+        "legends": {
+          "category_1": {
+            "label": "State with Community led Initiatives",
+            "color": "#5F1160",
+            "show_details": true
+          },
+          "category_4": {
+            "label": "Yet to start",
+            "color": "#ffffff",
+            "show_details": false
+          }
+        },
+        "notes": [
+          "Click on a state to view detailed insights",
+          "Data as shared by the partners"
+        ]
+      }
+    }
+  };
+
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.fetchIndicatorData();
   }
 
+  fetchCommunityData() {
+    d3.json(`${this.baseUrl}/${COMMUNITY_DASHBOARD_PAGE}`).then((data: any) => {
+      this.indicatorJson = data;
+    }).catch((error: any) => {
+      console.error('Error loading page data:', error);
+    });
+  }
+
   fetchIndicatorData(stateCode?: string, forTooltip: boolean = false): Promise<any> {
-    return d3.json(this.resourcePath.length > 0 ? this.resourcePath.includes('https://') ? this.resourcePath : `${this.baseUrl}/${this.resourcePath}` :`${this.baseUrl}/${DISTRICT_VIEW_INDICATORS}`).then((data: any) => {
+    // Use embedded JSON instead of fetching
+    return d3.json(this.resourcePath.length > 0 ? (this.resourcePath.includes('https://') ? this.resourcePath : `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${this.resourcePath}`) :`${this.baseUrl}/${DISTRICT_VIEW_INDICATORS}`).then((data: any) => {
       const statesData = data.result.states;
       const labels = data.result.meta?.labels || {};
-      // this.notes = data.result.meta?.notes || [];
       let details = (stateCode && statesData[stateCode]) ? statesData[stateCode].details : data.result.overview.details;
       let processedData: { value: number | string; label: string }[] = [];
-      this.hoveredState = stateCode? statesData[stateCode].label : ""
+      this.hoveredState = stateCode ? statesData[stateCode].label : "";
 
       if (details) {
         if (forTooltip && this.showVariations && this.selectedIndicator) {
@@ -70,7 +138,7 @@ export class CountryView implements OnInit, AfterViewInit {
       }
       return processedData;
     }).catch((error: any) => {
-      console.error('Error loading indicator data:', error);
+      console.error('Error processing indicator data:', error);
       if (!forTooltip) {
         this.indicatorData = [];
       }
@@ -103,13 +171,15 @@ export class CountryView implements OnInit, AfterViewInit {
       d3.json(`${this.baseUrl}/${INDIA}`),
       d3.json(this.resourcePath.length > 0 ? (this.resourcePath.includes('https://') ? this.resourcePath : `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${this.resourcePath}`) :`${this.baseUrl}/${DISTRICT_VIEW_INDICATORS}`)
     ]).then(([india, indicatorData]: [any, any]) => {
-      const statesData = indicatorData.result.states;
+      const statesData = indicatorData.result.states; // Use indicatorData for colors and interactions
+      const iconStatesData:any = this.indicatorJson.result.states; // Use indicatorJson only for icons
       const labels = indicatorData.result.meta.labels;
       const legends = indicatorData.result.meta.legends;
       this.legends = legends;
-      this.displayLegends = Object.values(legends).map((item:any) => ({
+      this.displayLegends = Object.values(legends).map((item: any) => ({
         label: item.label,
-        color: item.color
+        color: item.color,
+        icon:item.icon
       }));
       const activeStates = indicatorData.result.overview;
       const states = topojson.feature(india, india.objects.states) as any;
@@ -125,6 +195,7 @@ export class CountryView implements OnInit, AfterViewInit {
         .attr('viewBox', `0 0 ${containerWidth} ${height}`)
         .attr('preserveAspectRatio', 'xMidYMid meet');
 
+      // Render state paths with original color logic
       svg.selectAll('.state-path')
         .data(states.features)
         .enter().append('path')
@@ -148,7 +219,6 @@ export class CountryView implements OnInit, AfterViewInit {
         .on('mouseover', (event: any, d: any) => {
           const stateCode = d.properties.st_code;
           const stateInfo = statesData[stateCode];
-          debugger;
           if (stateInfo) {
             if (this.showDetails) {
               this.fetchIndicatorData(stateCode);
@@ -160,7 +230,6 @@ export class CountryView implements OnInit, AfterViewInit {
             });
             if (selectedDetail) {
               tooltip.transition().duration(200).style("opacity", .9);
-              // Updated tooltip HTML to include state name
               let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
                 <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
                 <div style="font-size: 14px; color: #333; font-weight: 500; text-transform: capitalize;">${selectedDetail.code || ''}</div>
@@ -168,17 +237,17 @@ export class CountryView implements OnInit, AfterViewInit {
               </div>`;
               tooltip.html(tooltipHtml);
             } else {
-              tooltip.transition().duration(500).style("opacity", 0); // Hide tooltip if data not found
+              tooltip.transition().duration(500).style("opacity", 0);
             }
           }
         })
         .on('mousemove', (event: any) => {
           tooltip.style("left", (event.pageX + 10) + "px")
-          .style("top", (event.pageY - 28) + "px");
+            .style("top", (event.pageY - 28) + "px");
         })
         .on('mouseout', () => {
           if (this.showDetails) {
-            this.fetchIndicatorData(); // Reset right panel to default
+            this.fetchIndicatorData();
           }
           tooltip.transition().duration(500).style("opacity", 0);
         })
@@ -189,11 +258,84 @@ export class CountryView implements OnInit, AfterViewInit {
             this.fetchIndicatorData(stateCode);
             const stateName = stateInfo.label;
             if (stateName) {
-              let path = this.redirectPath ? this.redirectPath : "state-view"
+              let path = this.redirectPath ? this.redirectPath : "state-view";
               this.stateSelected.emit(stateInfo.label);
               this.router.navigate([path, stateName, stateCode]);
             }
-          }else if(!this.showDetails){
+          } else if (!this.showDetails) {
+            this.stateSelected.emit(stateInfo.label);
+            this.router.navigate(['/dashboard']);
+          }
+        });
+
+      // Add SVG icons only for states in indicatorJson (Bihar and Karnataka)
+      svg.selectAll('.state-icon')
+        .data(states.features.filter((d: any) => iconStatesData[d.properties.st_code]))
+        .enter()
+        .append('image')
+        .attr('class', 'state-icon')
+        .attr('x', (d: any) => {
+          const centroid = path.centroid(d);
+          return centroid[0] - 10; // Adjust x to center the 20x20 icon
+        })
+        .attr('y', (d: any) => {
+          const centroid = path.centroid(d);
+          return centroid[1] - 10; // Adjust y to center the 20x20 icon
+        })
+        .attr('width', 20) // Icon width
+        .attr('height', 20) // Icon height
+        .attr('xlink:href', 'assets/icons/community_map_icon.svg') // Path to the SVG icon
+        .style('cursor', (d: any) => {
+          const stateCode = d.properties.st_code;
+          return iconStatesData[stateCode] ? 'pointer' : 'default';
+        })
+        .on('mouseover', (event: any, d: any) => {
+          const stateCode = d.properties.st_code;
+          const stateInfo = statesData[stateCode];
+          if (stateInfo) {
+            if (this.showDetails) {
+              this.fetchIndicatorData(stateCode);
+            }
+            const selectedDetail = stateInfo.details.find((detail: any) => {
+              const detailCode = detail.code?.toLowerCase().replace(/\s+/g, '');
+              const selectedCode = this.selectedIndicator?.toLowerCase().replace(/\s+/g, '');
+              return detailCode === selectedCode;
+            });
+            if (selectedDetail) {
+              tooltip.transition().duration(200).style("opacity", .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500; text-transform: capitalize;">${selectedDetail.code || ''}</div>
+                <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
+              </div>`;
+              tooltip.html(tooltipHtml);
+            } else {
+              tooltip.transition().duration(500).style("opacity", 0);
+            }
+          }
+        })
+        .on('mousemove', (event: any) => {
+          tooltip.style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 28) + "px");
+        })
+        .on('mouseout', () => {
+          if (this.showDetails) {
+            this.fetchIndicatorData();
+          }
+          tooltip.transition().duration(500).style("opacity", 0);
+        })
+        .on('click', (event: any, d: any) => {
+          const stateCode = d.properties.st_code;
+          const stateInfo = statesData[stateCode];
+          if (this.showDetails && stateInfo) {
+            this.fetchIndicatorData(stateCode);
+            const stateName = stateInfo.label;
+            if (stateName) {
+              let path = this.redirectPath ? this.redirectPath : "state-view";
+              this.stateSelected.emit(stateInfo.label);
+              this.router.navigate([path, stateName, stateCode]);
+            }
+          } else if (!this.showDetails) {
             this.stateSelected.emit(stateInfo.label);
             this.router.navigate(['/dashboard']);
           }

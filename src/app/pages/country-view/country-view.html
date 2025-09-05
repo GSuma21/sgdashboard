@@ -2,7 +2,8 @@
   <div class="legend-container">
     @for(data of displayLegends; track $index){
       <div class="legend-item">
-        <div class="color-box" [ngStyle]="{'background-color': data.color}"></div>
+        <div class="color-box" [ngStyle]="{'background-color': data.color}" *ngIf="!data.icon"></div>
+        <img class="legend-icon" [src]="data.icon" *ngIf="data.icon">
         <span class="legend-item-header">{{ data.label }}</span>
       </div>
     }
