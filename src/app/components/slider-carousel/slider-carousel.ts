@@ -13,7 +13,7 @@ export class SliderCarouselComponent implements AfterViewInit {
   @ViewChild('carousel') carousel!: ElementRef;
   @Input() testimonials: any[] = [];
 
-  colors = ['#00cd6b', '#9e00d7', '#3887fd']; // Green, Purple, Blue
+  colors = ['#ed2388', '#9e00d7', '#d11f44']; // colour for testimonials
   currentIndex = 0;
   visibleSlides = 3; // Default for desktop
 

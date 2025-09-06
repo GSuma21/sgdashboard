@@ -93,7 +93,7 @@ export class WorldMapComponent implements OnInit {
     },
     {
       type: 'note',
-      label: '*This map is a visual guide and not drawn to scale.'
+      label: '*Not drawn to scale. For illustration purposes only.'
     }
   ];
 
@@ -540,11 +540,33 @@ export class WorldMapComponent implements OnInit {
         coords = [location.coords[1], location.coords[0]]; // [lon, lat]
       }
 
+      // // 2️⃣ Partner coordinates (from partner list)
+      // if (!coords && location.partner_id?.length) {
+      //   const partner = networkData.partners.find(p => this.normalizeId(p.id) === this.normalizeId(location.partner_id[0]));
+      //   if (partner?.coordinates) coords = [partner.coordinates[1], partner.coordinates[0]];
+      // }
+
       // 2️⃣ Partner coordinates (from partner list)
-      if (!coords && location.partner_id?.length) {
-        const partner = networkData.partners.find(p => this.normalizeId(p.id) === this.normalizeId(location.partner_id[0]));
-        if (partner?.coordinates) coords = [partner.coordinates[1], partner.coordinates[0]];
-      }
+if (!coords && location.partner_id?.length) {
+  const partner = networkData.partners.find(p => {
+    const sameId = this.normalizeId(p.id) === this.normalizeId(location.partner_id[0]);
+
+    const sameCountry = location.countryName
+      ? (p.countryName && p.countryName.toLowerCase() === location.countryName.toLowerCase())
+      : true; // ignore if not provided
+
+    const sameState = location.stateName
+      ? (p.partnerState && p.partnerState.toLowerCase() === location.stateName.toLowerCase())
+      : true; // ignore if not provided
+
+    return sameId && sameCountry && sameState;
+  });
+
+  if (partner?.coordinates) {
+    coords = [partner.coordinates[1], partner.coordinates[0]];
+  }
+}
+
 
       // 3️⃣ State centroid
       if (!coords && location.stateName) {
