@@ -97,7 +97,6 @@ export class WorldMapComponent implements OnInit {
     }
   ];
 
-
   private svg: any;
   private g: any;
   private indiaGroup: any;
@@ -158,7 +157,6 @@ export class WorldMapComponent implements OnInit {
     'POL': '616',  // Poland
     'PRT': '620',  // Portugal
     'ROU': '642',  // Romania
-
     'SMR': '674',  // San Marino
     'SRB': '688',  // Serbia
     'SVK': '703',  // Slovakia
@@ -169,7 +167,6 @@ export class WorldMapComponent implements OnInit {
     // 'TUR': '792',  // Turkey
     'UKR': '804',  // Ukraine
     'VAT': '336',  // Holy See (Vatican City State)
-
 
     // Africa
     'DZA': '012',  // Algeria
@@ -230,23 +227,12 @@ export class WorldMapComponent implements OnInit {
     'ZMB': '894',  // Zambia
     'ZWE': '716',  // Zimbabwe
 
-
-    // Singapore
     'SGP': '702',  // Singapore
-
 
     'AUS': '036',
 
     'THA': '764'  // Thailand
   };
-
-  // private countryMap: Record<string, string> = {
-  //   'IND': '356',
-  //   'USA': '840', 'GBR': '826', 'CAN': '124',
-  //   'FRA': '250', 'DEU': '276', 'ITA': '380', 'ESP': '724', 'NLD': '528', 'BEL': '056', 'CHE': '756', 'SWE': '752', 'NOR': '578', 'DNK': '208',
-  //   'ZAF': '710', 'EGY': '818', 'NGA': '566', 'KEN': '404', 'DZA': '012', 'MAR': '504', 'TUN': '788',
-  //   'SGP': '702'
-  // };
 
   // Only for moving countries: left/right/up/down and scaling
   private countryTransforms: Record<string, { scale?: number; translate?: [number, number] }> = {
@@ -258,8 +244,6 @@ export class WorldMapComponent implements OnInit {
     'CAN': { scale: 0, translate: [0, -20] },
     'AUS': { scale: 0, translate: [350, 180] },
 
-
-    // Add African countries with left shift (-200px)
     // Add African countries with left shift (-250px)
     'DZA': { translate: [-250, 100] }, 'AGO': { translate: [-250, 100] }, 'BEN': { translate: [-250, 100] },
     'BWA': { translate: [-250, 100] }, 'BFA': { translate: [-250, 100] }, 'BDI': { translate: [-250, 100] },
@@ -281,8 +265,6 @@ export class WorldMapComponent implements OnInit {
     'TGO': { translate: [-250, 100] }, 'TUN': { translate: [-250, 100] }, 'UGA': { translate: [-250, 100] },
     'ESH': { translate: [-250, 100] }, 'ZMB': { translate: [-250, 100] }, 'ZWE': { translate: [-250, 100] },
 
-
-
     // Europe countries with left shift (-150px)
     'ALB': { translate: [-200, 80] }, 'AND': { translate: [-200, 80] }, 'ARM': { translate: [-200, 80] },
     'AUT': { translate: [-200, 80] }, 'AZE': { translate: [-200, 80] }, 'BLR': { translate: [-200, 80] },
@@ -300,9 +282,6 @@ export class WorldMapComponent implements OnInit {
     'SRB': { translate: [-200, 80] }, 'SVK': { translate: [-200, 80] }, 'SVN': { translate: [-200, 80] },
     'ESP': { translate: [-200, 80] }, 'SWE': { translate: [-200, 80] }, 'CHE': { translate: [-200, 80] },
     'TUR': { translate: [-200, 80] }, 'UKR': { translate: [-200, 80] }, 'VAT': { translate: [-200, 80] }
-
-
-
   };
 
   ngOnInit(): void {
@@ -317,7 +296,6 @@ export class WorldMapComponent implements OnInit {
       .attr('viewBox', `0 0 ${this.width} ${this.height}`)
       .attr('preserveAspectRatio', 'xMidYMid meet')
 
-
     this.tooltip = d3.select(element)
       .append('div')
       .attr('class', 'tooltip')
@@ -325,14 +303,12 @@ export class WorldMapComponent implements OnInit {
       .style('opacity', 0)
       .style('pointer-events', 'none'); // important fix
 
-
     this.g = this.svg.append('g').attr('class', 'world');
     this.indiaGroup = this.svg.append('g').attr('class', 'india');
 
     this.projection = d3.geoMercator()
       .scale(150)
       .translate([this.width / 2 - 150, this.height / 2]);
-
 
     this.path = d3.geoPath().projection(this.projection);
 
@@ -498,14 +474,13 @@ export class WorldMapComponent implements OnInit {
       <div style="font-size: 12px; color: #555;">${partner.partnerState}</div>
         <div style="font-weight: 600; font-size: 14px; color: #000;">${partner.name}</div>
         ${partner.category?.toLowerCase() === 'collaborators'
-    ? `<div style="font-size: 12px; color: #777;">${partner.category ?? ''}</div>`
-    : `<div style="font-size: 12px; color: #777;">${partner.category ?? ''} partner</div>`}
+              ? `<div style="font-size: 12px; color: #777;">${partner.category ?? ''}</div>`
+              : `<div style="font-size: 12px; color: #777;">${partner.category ?? ''} partner</div>`}
 
       </div>
     </div>
   </a>
 </div>`;
-
 
           // Get container position
           const containerRect = this.mapContainer.nativeElement.getBoundingClientRect();
@@ -520,40 +495,36 @@ export class WorldMapComponent implements OnInit {
             .style('top', `${top}px`)
             .style('pointer-events', 'auto')
             .transition().duration(200).style('opacity', 1);
-
         }
-
       });
     });
 
-    // Hide tooltip on body click
-    // d3.select('body').on('click', () => {
-    //   this.tooltip.transition().duration(200).style('pointer-events', 'none').style('opacity', 0);
-    // });
+    // Instead, attach click to the SVG container itself
+    const mapEl = d3.select(this.mapContainer.nativeElement);
 
-    d3.select('body').style('cursor', this.showDetails ? 'default' : 'pointer');
+    // Set cursor to pointer when showDetails is false
+    mapEl.style('cursor', this.showDetails ? 'default' : 'pointer');
 
-    d3.select('body').on('click', (event: any) => {
-      const target = event.target;
-
+    mapEl.on('click', (event: any) => {
+      // If showDetails is false, redirect on map click
       if (!this.showDetails) {
-        // Only redirect if not clicking on partner icons or tooltip
+        const target = event.target;
+
+        // Only redirect if click is NOT on partner icon or tooltip
         if (!target.closest('.partner-icon') && !target.closest('.tooltip')) {
           this.router.navigate(['/network-health']);
         }
       } else {
-        // Existing tooltip hide logic
-        this.tooltip.transition().duration(200)
-          .style('pointer-events', 'none')
-          .style('opacity', 0);
+        // If showDetails is true, hide tooltip when clicking outside partner icons
+        const target = event.target;
+        if (!target.closest('.partner-icon')) {
+          this.tooltip.transition().duration(200)
+            .style('opacity', 0)
+            .style('pointer-events', 'none');
+        }
       }
     });
-
-
   }
-
-
-
 
   private drawConnectionLines(networkData: NetworkData, countries: any[], states: any[], indiaData?: any): void {
     if (!networkData?.impactData?.length) return;
@@ -676,7 +647,6 @@ export class WorldMapComponent implements OnInit {
       d3.timer(elapsed => path.attr('stroke-dashoffset', -elapsed / 40));
     });
   }
-
 
   resetZoom(): void {
     this.indiaGroup.transition().duration(1000).attr('transform', 'translate(0,0) scale(1)');
