@@ -5,7 +5,7 @@
       <div [ngClass]="styles.track" #carouselTrack>
         <div [ngClass]="styles.slide" *ngFor="let slide of displaySlides; let i = index">
           <div class="header-icon-container">
-            <img [src]="slide.icon">
+            <img *ngIf="slide.icon" [src]="slide.icon">
             <h3>{{ slide.header }}</h3>
           </div>
           <h4>{{ slide.subHeader }}</h4>

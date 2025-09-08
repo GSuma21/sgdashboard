@@ -321,8 +321,8 @@ img {
   }
 
 .partners {
-    text-align: center;
-    padding: 2rem;
+    text-align: left;
+    padding: 2rem 0;
     background-color: #eaf7ff;
 }
 
@@ -332,10 +332,11 @@ img {
 }
 
 .partners-grid {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust 200px to card width */
+  gap: 0.5rem;
+  row-gap: 2rem; 
+  justify-content: start; /* makes last row items stick left */
 }
 
 .partner-card {
@@ -419,4 +420,11 @@ p {
     .gallery-slide {
         min-width: 100%;
     }
+
+    .partners-grid {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
 }
