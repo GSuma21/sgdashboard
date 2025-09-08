@@ -318,7 +318,6 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
             tooltip.transition().duration(200).style('opacity', .9);
             let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
               <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${districtName}</div>
-              <div style="font-size: 14px; color: #333; font-weight: 500;">Yet to start</div>
             </div>`;
             tooltip.html(tooltipHtml);
           }
