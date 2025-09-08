@@ -327,10 +327,6 @@
   margin-left: 20px;
 }
 
-.breadcrumb span {
-  color: var(--primary-color);
-  font-weight: 700;
-}
 
 .dashboard-main-container{
   max-width: 90%;

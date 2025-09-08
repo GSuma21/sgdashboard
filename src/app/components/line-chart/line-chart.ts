@@ -53,7 +53,11 @@ export class LineChartComponent implements OnInit {
   baseUrl:any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`;
   chartOption: EChartsOption = {
     tooltip: {
-      trigger: 'axis'
+      trigger: 'item',
+       axisPointer: {
+    type: 'line',
+    snap: true // <-- helps snapping to last point
+  }
     },
     xAxis: {
       type: 'category',
@@ -164,8 +168,6 @@ export class LineChartComponent implements OnInit {
     if(this.path){
       this.dataFetchPath = this.replaceCode ? this.path.replace('{code}', this.replaceCode.toString()) : this.path
       this.fetchData()
-      this.setChartData(this.data[0].data)
-      this.year = this.data[0].year
     }
     else {
       this.data = this.data;
