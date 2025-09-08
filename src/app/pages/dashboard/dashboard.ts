@@ -22,6 +22,7 @@ import { environment } from '../../../../environments/environment';
 export class DashboardComponent implements OnInit {
 
   pageData: any = {};
+  window: any = window;
   selectedState: string | null = null;
 
   constructor(private router: Router) { }

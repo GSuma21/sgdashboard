@@ -10,11 +10,6 @@
     font-family: Arial, sans-serif;
 }
 
-.breadcrumb span {
-    color: var(--primary-color);
-    font-weight: 700;
-}
-
 
 .program-container {
     padding: 0 7.5%;
@@ -427,4 +422,10 @@ p {
     gap: 0.5rem;
     flex-wrap: wrap;
   }
+
+}
+
+.breadcrumb span {
+  color: var(--text-color);
+  font-weight: 700;
 }

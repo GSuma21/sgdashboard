@@ -53,7 +53,11 @@ export class LineChartComponent implements OnInit {
   baseUrl:any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`;
   chartOption: EChartsOption = {
     tooltip: {
-      trigger: 'axis'
+      trigger: 'item',
+       axisPointer: {
+    type: 'line',
+    snap: true // <-- helps snapping to last point
+  }
     },
     xAxis: {
       type: 'category',
@@ -163,8 +167,6 @@ export class LineChartComponent implements OnInit {
     if(this.path){
       this.dataFetchPath = this.replaceCode ? this.path.replace('{code}', this.replaceCode.toString()) : this.path
       this.fetchData()
-      this.setChartData(this.data[0].data)
-      this.year = this.data[0].year
     }
     else {
       this.data = this.data;
@@ -181,6 +183,8 @@ export class LineChartComponent implements OnInit {
   fetchData(){
     d3.json(`${this.baseUrl}${this.dataFetchPath}`).then((data:any)=>{
       this.data = data.data
+      this.setChartData(this.data[0].data)
+      this.year = this.data[0].year
       // this.chartOptions = this.setChartConfig();
     }).catch((err:any)=>{
       console.error("Error loading pie-chart data ",err)

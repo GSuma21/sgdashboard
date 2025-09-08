@@ -440,7 +440,7 @@ export class WorldMapComponent implements OnInit {
         if (this.showDetails) {
           event.stopPropagation();
 
-          const partnerHtml = `
+const partnerHtml = `
 <div style="position: relative;
   background: white;
   border-radius: 12px;
@@ -464,22 +464,45 @@ export class WorldMapComponent implements OnInit {
     filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));
   "></div>
 
-  <a href="${partner.website}" target="_blank" style="text-decoration: none; color: inherit; display: block;">
-    <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px;">
-      <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-        <img src="${partner.src}" alt="${partner.name}" style="width: 24px; height: 24px; object-fit: contain;">
-      </div>
-      <div style="display: flex; flex-direction: column; padding-left: 5px;">
-      <div style="font-size: 12px; color: #555;">${partner.countryName}</div>
-      <div style="font-size: 12px; color: #555;">${partner.partnerState}</div>
-        <div style="font-weight: 600; font-size: 14px; color: #000;">${partner.name}</div>
-        ${partner.category?.toLowerCase() === 'collaborators'
-              ? `<div style="font-size: 12px; color: #777;">${partner.category ?? ''}</div>`
-              : `<div style="font-size: 12px; color: #777;">${partner.category ?? ''} partner</div>`}
-
-      </div>
-    </div>
-  </a>
+  ${
+    partner.website
+      ? `
+        <a href="${partner.website}" target="_blank" style="text-decoration: none; color: inherit; display: block;">
+          <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px;">
+            <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+              <img src="${partner.src}" alt="${partner.name}" style="width: 24px; height: 24px; object-fit: contain;">
+            </div>
+            <div style="display: flex; flex-direction: column; padding-left: 5px;">
+              <div style="font-size: 12px; color: #555;">${partner.countryName}</div>
+              <div style="font-size: 12px; color: #555;">${partner.partnerState}</div>
+              <div style="font-weight: 600; font-size: 14px; color: #000;">${partner.name}</div>
+              ${
+                partner.category?.toLowerCase() === 'collaborators'
+                  ? `<div style="font-size: 12px; color: #777;">${partner.category ?? ''}</div>`
+                  : `<div style="font-size: 12px; color: #777;">${partner.category ?? ''} partner</div>`
+              }
+            </div>
+          </div>
+        </a>
+      `
+      : `
+        <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px; cursor: default;">
+          <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+            <img src="${partner.src}" alt="${partner.name}" style="width: 24px; height: 24px; object-fit: contain;">
+          </div>
+          <div style="display: flex; flex-direction: column; padding-left: 5px;">
+            <div style="font-size: 12px; color: #555;">${partner.countryName}</div>
+            <div style="font-size: 12px; color: #555;">${partner.partnerState}</div>
+            <div style="font-weight: 600; font-size: 14px; color: #000;">${partner.name}</div>
+            ${
+              partner.category?.toLowerCase() === 'collaborators'
+                ? `<div style="font-size: 12px; color: #777;">${partner.category ?? ''}</div>`
+                : `<div style="font-size: 12px; color: #777;">${partner.category ?? ''} partner</div>`
+            }
+          </div>
+        </div>
+      `
+  }
 </div>`;
 
           // Get container position
