@@ -6,7 +6,7 @@
   stateCode,
   district,
   districtCode
-]" class="mx-1">{{district}}</a> /  <span class="ml-1">Community led improvements - {{ district }}</span>
+]" class="mx-1">{{district}}</a> / Community led improvements - <span class="ml-1">{{ district }}</span>
   }
   @else if(!isCommunityFlow){
     <a [routerLink]="['/dashboard']" class="mr-1">Dashboard</a> / <a [routerLink]="['/state-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <span class="ml-1">{{ district }}</span>
