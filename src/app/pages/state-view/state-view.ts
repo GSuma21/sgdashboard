@@ -276,7 +276,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
         })
         .attr('y', (d: any) => {
           const centroid = path.centroid(d);
-          return centroid[1] - 10; // Adjust y to center the 20x20 icon
+          return centroid[1] - 18; // Adjust y to center the 20x20 icon
         })
         .attr('width', 20) // Icon width
         .attr('height', 20) // Icon height
