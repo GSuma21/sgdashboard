@@ -1,9 +1,9 @@
 <div class="breadcrumb">
-  @if(!dashboard){
+  @if(dashboard || !isCommunityFlow){
+    <a [routerLink]="['/dashboard']" class="mr-1">Dashboard</a> / <a [routerLink]="['/state-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <span class="ml-1">{{ district }}</span>
+  }@else{
     <a [routerLink]="['/community-led-improvements']" class="mr-1">Community Led Initiatives</a> /
     <a [routerLink]="['/community-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <span class="ml-1">{{ district }}</span>
-  }@else{
-    <a [routerLink]="['/dashboard']" class="mr-1">Dashboard</a> / <a [routerLink]="['/state-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <span class="ml-1">{{ district }}</span>
   }
 </div>
 <div class="landing-container">

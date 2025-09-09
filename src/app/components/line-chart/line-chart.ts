@@ -63,7 +63,17 @@ export class LineChartComponent implements OnInit {
       type: 'category',
       data: this.xAxis,
       boundaryGap: false,
-      axisLine: { lineStyle: { color: '#999' } }
+      axisLine: { lineStyle: { color: '#999' } },
+      axisTick: { show: true, alignWithLabel: true },
+  splitLine: {
+    show: true,
+    interval: 0,  // draw a vertical line for every category
+    lineStyle: {
+      color: '#eee',
+      type: 'dashed'
+    }
+  }
+
     },
     yAxis: {
       type: 'value',
@@ -117,7 +127,17 @@ export class LineChartComponent implements OnInit {
         type: 'category',
         data: this.xAxis,
         boundaryGap: false,
-        axisLine: { lineStyle: { color: '#999' } }
+        axisLine: { lineStyle: { color: '#999' } },
+        axisTick: { show: true, alignWithLabel: true },
+  splitLine: {
+    show: true,
+    interval: 0,  // draw a vertical line for every category
+    lineStyle: {
+      color: '#eee',
+      type: 'dashed'
+    }
+  }
+
       },
       yAxis: {
         type: 'value',
@@ -170,8 +190,8 @@ export class LineChartComponent implements OnInit {
     }
     else {
       this.data = this.data;
-      this.setChartData(this.data[0].data)
-      this.year = this.data[0].year
+      this.setChartData(this.data[this.data.length - 1].data)
+      this.year = this.data[this.data.length - 1].year
     }
   }
 
@@ -183,8 +203,8 @@ export class LineChartComponent implements OnInit {
   fetchData(){
     d3.json(`${this.baseUrl}${this.dataFetchPath}`).then((data:any)=>{
       this.data = data.data
-      this.setChartData(this.data[0].data)
-      this.year = this.data[0].year
+      this.setChartData(this.data[this.data.length - 1].data)
+      this.year = this.data[this.data.length - 1].year
       // this.chartOptions = this.setChartConfig();
     }).catch((err:any)=>{
       console.error("Error loading pie-chart data ",err)
