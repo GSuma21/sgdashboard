@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import { EChartsOption } from 'echarts';
 import * as echarts from 'echarts/core';
@@ -37,107 +37,76 @@ echarts.use([
 @Component({
   selector: 'app-line-chart',
   standalone: true,
-  imports: [NgxEchartsDirective,MatCardModule, MatButtonModule, CommonModule],
-  providers: [ provideEchartsCore({ echarts })],
+  imports: [NgxEchartsDirective, MatCardModule, MatButtonModule, CommonModule],
+  providers: [provideEchartsCore({ echarts })],
   templateUrl: './line-chart.html',
   styleUrls: ['./line-chart.css']
 })
 export class LineChartComponent implements OnInit {
-  @Input() xAxis:any = ['Q1(Apr - Jun)', 'Q2(Jul - Sept)', 'Q3(Oct - Dec)','Q4(Jan - Mar)'];
-  @Input() data:any = {};
-  currentYear:string = '2025';
-  @Input() replaceCode?:any;
-  @Input() path?:any
-  year = '2025'
-  dataFetchPath:any
-  baseUrl:any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`;
-  chartOption: EChartsOption = {
-    tooltip: {
-      trigger: 'item',
-       axisPointer: {
-    type: 'line',
-    snap: true // <-- helps snapping to last point
-  }
-    },
-    xAxis: {
-      type: 'category',
-      data: this.xAxis,
-      boundaryGap: false,
-      axisLine: { lineStyle: { color: '#999' } },
-      axisTick: { show: true, alignWithLabel: true },
-  splitLine: {
-    show: true,
-    interval: 0,  // draw a vertical line for every category
-    lineStyle: {
-      color: '#eee',
-      type: 'dashed'
-    }
-  }
+  @Input() xAxis: string[] = ['Q1(Apr - Jun)', 'Q2(Jul - Sept)', 'Q3(Oct - Dec)', 'Q4(Jan - Mar)'];
+  @Input() data: any = {};
+  @Input() replaceCode?: any;
+  @Input() path?: any;
 
-    },
-    yAxis: {
-      type: 'value',
-      axisLine: { lineStyle: { color: '#999' } },
-      splitLine: { lineStyle: { color: '#eee' } }
-    },
-    series: [
-      {
-        data: [18, 38, 27, 50],
-        type: 'line',
-        smooth: false,
-        symbol: 'circle',
-        symbolSize: 12,
-        itemStyle: {
-          color: '#5E2EBF'
-        },
-        lineStyle: {
-          color: '#5E2EBF',
-          width: 3
-        },
-        areaStyle: {
-          color: {
-            type: 'linear',
-            x: 0,
-            y: 0,
-            x2: 0,
-            y2: 1,
-            colorStops: [
-              { offset: 0, color: 'rgba(94, 46, 191, 0.4)' },
-              { offset: 1, color: 'rgba(94, 46, 191, 0.0)' }
-            ]
-          }
-        }
+  currentYear: string = '2025';
+  year = '2025';
+  dataFetchPath: any;
+  baseUrl: any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`;
+
+  // Positions on x-axis for quarters (mapped to 1,4,7,10)
+  quarterPositions = [1, 4, 7, 10];
+
+  chartOption: EChartsOption = {};
+
+  ngOnInit(): void {
+    if (this.path) {
+      this.dataFetchPath = this.replaceCode ? this.path.replace('{code}', this.replaceCode.toString()) : this.path;
+      this.fetchData();
+    } else {
+      if (this.data && this.data.length > 0) {
+        // Map your data to [x, y] pairs using quarterPositions
+        const latestData = this.data[this.data.length - 1];
+        const mappedData = this.mapDataToPositions(latestData.data);
+        this.setChartData(mappedData);
+        this.year = latestData.year;
       }
-    ],
-    grid: {
-      left: '5%',
-      right: '5%',
-      top: '10%',
-      bottom: '10%',
-      containLabel: true
     }
-  };
+  }
 
-  setChartData(data:any) {
+  // Maps the data array to positions on x-axis as [x, y]
+  mapDataToPositions(dataArray: number[]): [number, number][] {
+    return dataArray.map((value, idx) => [this.quarterPositions[idx], value]);
+  }
+
+  setChartData(data: [number, number][]) {
     this.chartOption = {
       tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
+        axisPointer: {
+          type: 'line',
+          snap: true
+        }
       },
       xAxis: {
-        type: 'category',
-        data: this.xAxis,
-        boundaryGap: false,
+        type: 'value',
+        min: 1,
+        max: 10,
+        interval: 1,
         axisLine: { lineStyle: { color: '#999' } },
-        axisTick: { show: true, alignWithLabel: true },
-  splitLine: {
-    show: true,
-    interval: 0,  // draw a vertical line for every category
-    lineStyle: {
-      color: '#eee',
-      type: 'dashed'
-    }
-  }
-
+        axisTick: { show: true },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: '#eee',
+            type: 'dashed'
+          }
+        },
+        axisLabel: {
+          formatter: (value: number) => {
+            const idx = this.quarterPositions.indexOf(value);
+            return idx !== -1 ? this.xAxis[idx] : '';
+          }
+        }
       },
       yAxis: {
         type: 'value',
@@ -150,14 +119,9 @@ export class LineChartComponent implements OnInit {
           type: 'line',
           smooth: false,
           symbol: 'circle',
-          symbolSize: 12,
-          itemStyle: {
-            color: '#5E2EBF'
-          },
-          lineStyle: {
-            color: '#5E2EBF',
-            width: 3
-          },
+          symbolSize: 10,
+          itemStyle: { color: '#5E2EBF' },
+          lineStyle: { color: '#5E2EBF', width: 3 },
           areaStyle: {
             color: {
               type: 'linear',
@@ -171,6 +135,15 @@ export class LineChartComponent implements OnInit {
               ]
             }
           }
+        },
+        // Invisible placeholder series to force vertical lines at every integer 1..12
+        {
+          name: 'placeholder',
+          data: Array.from({ length: 10 }, (_, i) => [i + 1, null]),
+          type: 'line',
+          showSymbol: false,
+          lineStyle: { opacity: 0 },
+          emphasis: { disabled: true }
         }
       ],
       grid: {
@@ -183,32 +156,23 @@ export class LineChartComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
-    debugger;
-    if(this.path){
-      this.dataFetchPath = this.replaceCode ? this.path.replace('{code}', this.replaceCode.toString()) : this.path
-      this.fetchData()
-    }
-    else {
-      this.data = this.data;
-      this.setChartData(this.data[this.data.length - 1].data)
-      this.year = this.data[this.data.length - 1].year
-    }
-  }
-
-  showYearData(yearData:any) {
+  showYearData(yearData: any) {
     this.year = yearData.year;
-    this.setChartData(yearData.data);
+    const mappedData = this.mapDataToPositions(yearData.data);
+    this.setChartData(mappedData);
   }
 
-  fetchData(){
-    d3.json(`${this.baseUrl}${this.dataFetchPath}`).then((data:any)=>{
-      this.data = data.data
-      this.setChartData(this.data[this.data.length - 1].data)
-      this.year = this.data[this.data.length - 1].year
-      // this.chartOptions = this.setChartConfig();
-    }).catch((err:any)=>{
-      console.error("Error loading pie-chart data ",err)
-    })
+  fetchData() {
+    d3.json(`${this.baseUrl}${this.dataFetchPath}`)
+      .then((data: any) => {
+        this.data = data.data;
+        const latestData = this.data[this.data.length - 1];
+        const mappedData = this.mapDataToPositions(latestData.data);
+        this.setChartData(mappedData);
+        this.year = latestData.year;
+      })
+      .catch((err: any) => {
+        console.error('Error loading line-chart data', err);
+      });
   }
 }
