@@ -101,7 +101,7 @@ export class DistrictImprovementsComponent implements OnInit {
   }
 
   fetchPageData(): void {
-    d3.json('/assets/leaders-improvement-district-details.json').then((data: any) => {
+    d3.json(`/assets/${this.pageConfig.type == "communityDetails" ? 'community-led':'leaders'}-improvement-district-details.json`).then((data: any) => {
       this.pageData = data;
       this.pageData.forEach((element:any) => {
         if(element.type == "data-indicators") {

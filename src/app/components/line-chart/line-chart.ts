@@ -43,7 +43,7 @@ echarts.use([
   styleUrls: ['./line-chart.css']
 })
 export class LineChartComponent implements OnInit {
-  @Input() xAxis:any = ['Q1(Jan - Mar)', 'Q2(Apr - Jun)', 'Q3(Jul - Sept)', 'Q4(Oct - Dec)'];
+  @Input() xAxis:any = ['Q1(Apr - Jun)', 'Q2(Jul - Sept)', 'Q3(Oct - Dec)','Q4(Jan - Mar)'];
   @Input() data:any = {};
   currentYear:string = '2025';
   @Input() replaceCode?:any;
@@ -184,6 +184,7 @@ export class LineChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    debugger;
     if(this.path){
       this.dataFetchPath = this.replaceCode ? this.path.replace('{code}', this.replaceCode.toString()) : this.path
       this.fetchData()
