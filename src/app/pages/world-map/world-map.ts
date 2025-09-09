@@ -61,7 +61,7 @@ export class WorldMapComponent implements OnInit {
 
   markerConfigList: any = {
     "momentum": { hqIcon: "./assets/marker-icons/momentum-partners.svg", icon: "./assets/marker-icons/momentum.svg", color: "#572E91" },
-    "stategic": { hqIcon: "./assets/marker-icons/strategic-partners.svg", icon: "./assets/marker-icons/stategic.svg", color: "orange" },
+    "strategic": { hqIcon: "./assets/marker-icons/strategic-partners.svg", icon: "./assets/marker-icons/stategic.svg", color: "orange" },
     "collaborators": { hqIcon: "./assets/marker-icons/triangle.svg", icon: "./assets/marker-icons/collaborators.svg", color: "red" }
   };
 
@@ -83,7 +83,7 @@ export class WorldMapComponent implements OnInit {
     },
     {
       type: 'icon',
-      label: 'Stategic Partners',
+      label: 'Strategic Partners',
       icon: './assets/marker-icons/stategic.svg'
     },
     {
