@@ -30,6 +30,7 @@ export class DistrictImprovementsComponent implements OnInit {
   programsList:any = [];
   pageConfig:any = '';
   lineChart:any = [];
+  dashboard:any
   metricsMappingData = [
     { icon: "assets/icons/community_leaders.svg", identifier: 1 },
     { icon: "assets/icons/community_improvements.svg", identifier: 2 },
@@ -45,6 +46,7 @@ export class DistrictImprovementsComponent implements OnInit {
       this.districtCode = params.get("dt-code")
       this.stateName = params.get('state');
       this.stateCode = params.get('st-code')
+      this.dashboard = params.get('extra');
     });
     route.data.subscribe((data:any)=>{
       this.pageConfig = data

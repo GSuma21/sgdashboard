@@ -27,7 +27,23 @@ export const routes: Routes = [
     { path: 'network-health', component: NetworkHealth },
     { path: 'community-led-improvements', component: ImprovementDetailsComponent},
     { path: 'state-view/:state/:code', component: StateImprovementsComponent, data: pageDataConfig.stateDetails},
-    { path: 'community-led-district-improvements/:state/:st-code/:district/:dt-code', component: DistrictImprovementsComponent,data:{...{filePath:`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_LED_IMPROVEMENT}`},...pageDataConfig.communityDetails}},
+  {
+    path: 'community-led-district-improvements/:state/:st-code/:district/:dt-code/:extra',
+    component: DistrictImprovementsComponent,
+    data: {
+      filePath: `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_LED_IMPROVEMENT}`,
+      ...pageDataConfig.communityDetails
+    }
+  },
+  {
+    path: 'community-led-district-improvements/:state/:st-code/:district/:dt-code',
+    component: DistrictImprovementsComponent,
+    data: {
+      filePath: `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_LED_IMPROVEMENT}`,
+      ...pageDataConfig.communityDetails
+    }
+  }
+,
     { path: 'state-led-district-improvements/:state/:st-code/:district/:dt-code', component: DistrictImprovementsComponent,data:{...{filePath:`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_LED_IMPROVEMENT}`},...pageDataConfig.stateDetails}},
     { path: 'community-program-details', component: CommunityProgramDetailsComponent},
     { path: 'leaders-program-details', component: LeadersProgramDetailsComponent},
