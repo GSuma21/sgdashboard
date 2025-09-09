@@ -56,7 +56,15 @@ export class ProgramsReportListComponent implements OnInit {
 
   openCommunityDetails() {
     let pathData = this.paramsData
-    this.router.navigate(['/community-led-district-improvements', pathData.state, pathData["st-code"], pathData.district, pathData["dt-code"]]);
+    this.router.navigate([
+      '/community-led-district-improvements',
+      pathData.state,
+      pathData['st-code'],
+      pathData.district,
+      pathData['dt-code'],
+      'dashboard'
+    ]);
+    // this.router.navigate(['/community-led-district-improvements', pathData.state, pathData["st-code"], pathData.district, pathData["dt-code"]]);
   }
 
 

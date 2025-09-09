@@ -1,5 +1,5 @@
 <div class="breadcrumb">
-  @if(isCommunityFlow){
+  @if(!dashboard){
     <a [routerLink]="['/community-led-improvements']" class="mr-1">Community Led Initiatives</a> /
     <a [routerLink]="['/community-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <span class="ml-1">{{ district }}</span>
   }@else{
