@@ -77,7 +77,7 @@ export class PieChartComponent {
         top: 'middle',
         align: 'left',
         textStyle: { fontSize: 13 },
-        itemGap: 8,
+        itemGap: 1,
         data: this.pieData.map(d => d.name)
       },
       series: [
@@ -111,7 +111,7 @@ export class PieChartComponent {
             left: 'center',
             top: null,
             right: null,
-            itemGap: 12
+            itemGap: 1
           },
           series: [
             {
