@@ -325,7 +325,7 @@ export class GlobalMap2 implements OnInit {
         let iconType = 'momentum'; // default
         if (partner.category) {
           let category = partner.category.trim().toLowerCase();
-          if (category === 'stategic') {
+          if (category === 'strategic') {
             category = 'strategic';
           }
           if (this.markerConfigList[category]) {
