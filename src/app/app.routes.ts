@@ -44,6 +44,14 @@ export const routes: Routes = [
     }
   }
 ,
+  {
+    path: 'community-led-district-improvements/:state/:st-code/:district/:dt-code/state',
+    component: DistrictImprovementsComponent,
+    data: {
+      filePath: `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_LED_IMPROVEMENT}`,
+      ...pageDataConfig.communityDetails
+    }
+  },
     { path: 'state-led-district-improvements/:state/:st-code/:district/:dt-code', component: DistrictImprovementsComponent,data:{...{filePath:`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_LED_IMPROVEMENT}`},...pageDataConfig.stateDetails}},
     { path: 'community-program-details', component: CommunityProgramDetailsComponent},
     { path: 'leaders-program-details', component: LeadersProgramDetailsComponent},
@@ -52,6 +60,11 @@ export const routes: Routes = [
     { path: 'catalysing-network-1', component: CatalysingNetwork1 },
     { path: 'program-details', component: ProgramDetails },
     { path: 'community-view/:state/:code', component: StateImprovementsComponent, data: pageDataConfig.communityDetails },
+  {
+    path: 'community-view/:state/:code/dashboard',
+    component: StateImprovementsComponent,   // or another component
+    data: pageDataConfig.communityDashboard
+  },
     { path: 'world-map', component: WorldMapComponent },
 
 ];

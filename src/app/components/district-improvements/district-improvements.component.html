@@ -1,5 +1,5 @@
 <div class="breadcrumb">
-  @if(dashboard){
+  @if(dashboard =='dashboard'){
     <a [routerLink]="['/state-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <a [routerLink]="[
   '/state-led-district-improvements',
   stateName,
@@ -7,6 +7,8 @@
   district,
   districtCode
 ]" class="mx-1">{{district}}</a> / Community led improvements - <span class="ml-1">{{ district }}</span>
+  }@else if(dashboard =='state'){
+ <a [routerLink]="['/state-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <a [routerLink]="['/community-view',stateName,stateCode,'dashboard']" class="mx-1">Community led improvements - {{stateName}}</a> / <span class="ml-1">{{ district }}</span>
   }
   @else if(!isCommunityFlow){
     <a [routerLink]="['/dashboard']" class="mr-1">Dashboard</a> / <a [routerLink]="['/state-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <span class="ml-1">{{ district }}</span>

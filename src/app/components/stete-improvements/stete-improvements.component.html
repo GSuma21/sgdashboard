@@ -4,8 +4,10 @@
     <a [routerLink]="['/dashboard']">Dashboard &nbsp;</a>
     @if(pageConfig.type == "communityDetails"){
       <a [routerLink]="['/community-led-improvements']"> / Community Led Initiatives &nbsp; </a>
+    }@else if(pageConfig.type == "communityDashboard"){
+      <a [routerLink]="['/state-view',stateName,stateCode]"> / {{ stateName }} &nbsp; </a>
     }
-    <span> / {{ stateName }}</span>
+     / <ng-container class="breadcrumb" *ngIf="pageConfig.type == 'communityDashboard'">Community led improvements - </ng-container><span> {{ stateName }}</span>
   </div>
     <div *ngFor="let section of pageData.sections" [style.width]="section.width" [ngClass]="'section-position-' + section.position">
       <!-- Main Section -->

@@ -253,9 +253,13 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
             this.fetchIndicatorData(districtCode);
             const stateName = distInfo.label;
             if (stateName) {
-              if (this.pageConfig.type == 'communityDetails') {
+              if(this.pageConfig.type == 'communityDashboard'){
+                this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code,'state'])
+              }
+              else if (this.pageConfig.type == 'communityDetails') {
                 this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
-              } else {
+              }
+              else {
                 this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
               }
             }
@@ -339,9 +343,13 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
             this.fetchIndicatorData(districtCode);
             const stateName = distInfo.label;
             if (stateName) {
-              if (this.pageConfig.type == 'communityDetails') {
+                            if(this.pageConfig.type == 'communityDashboard'){
+                this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code,'state'])
+              }
+              else if (this.pageConfig.type == 'communityDetails') {
                 this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
-              } else {
+              }
+              else {
                 this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
               }
             }
