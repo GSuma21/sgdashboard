@@ -97,12 +97,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .breadcrumb a {
   text-decoration: none;
-  color: var(--text-color);
+  color:black;
   margin-right: 0.25rem;
   /* font-weight: 700; */
 }
 
 .breadcrumb span {
-  color: var(--text-color);
+  color: black;
   font-weight: 700;
 }
