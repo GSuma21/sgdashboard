@@ -59,8 +59,8 @@ export class MetricsListComponent {
       this.scrollToProgramsEvent.emit();
       return;
     }else if(item.identifier == 'clm'){
-      this.router.navigate(['/community-view', this.paramsData.state, this.paramsData.code ]);
-      return
+      this.router.navigate(['/community-view', this.paramsData.state, this.paramsData.code, 'dashboard']);
+      return 
     }
     window.scrollBy({
       top: 300,

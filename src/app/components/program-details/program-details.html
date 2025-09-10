@@ -7,24 +7,24 @@
     <div class="program-container">
         <div class="title">
             <div class="back-icon" (click)="goBack()">&#8592;</div>
-            <h2 class="label">{{ programData.name_of_the_program }}</h2>
+            <h2 class="label" *ngIf="programData.name_of_the_program">{{ programData.name_of_the_program }}</h2>
         </div>
 
         <div class="content">
             <div class="program-model-container">
                 <div>
-                    <div class="program-section">
+                    <div class="program-section" *ngIf="programData.about_the_program_objective">
                         <h3>Program Overview</h3>
                         <p>{{ programData.about_the_program_objective }}</p>
                     </div>
 
                     <div class="info-section">
-                        <div class="impact">
-                            <h3>Intended Impact</h3>
+                        <div  class="impact">
+                            <h3 *ngIf="impactText">Intended Impact</h3>
                             <p [innerText]="impactText"
                                 [ngStyle]="{'white-space': 'normal', 'word-wrap': 'break-word'}"></p>
 
-                            <h3>Key Stakeholders</h3>
+                            <h3 *ngIf="programData.stakeholders_doing_the_program">Key Stakeholders</h3>
                             <p>{{ programData.stakeholders_doing_the_program }}</p>
                         </div>
 
@@ -33,7 +33,7 @@
 
                 </div>
 
-                <div class="indiactor-container">
+                <div  *ngIf="programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted" class="indiactor-container">
                     <div class="indicator-card">
                         <div class="indicator-image">
                             <img src='./assets/icons/micro_improvements_initiated.svg'>
@@ -62,7 +62,7 @@
                 </div>
                 <button *ngIf="currentSlide < displayImages.length - this.visibleSlides"  class="arrow right" (click)="nextSlide()">&#10095;</button>
             </section>
-            <h3 *ngIf="partnerDetails" class="heading">Partners</h3>
+            <h3 *ngIf="partnerDetails.length" class="heading">Partners</h3>
             <div *ngIf="partnerDetails" class="partners">
                 <div class="partners-grid">
                     <div class="partner-card" *ngFor="let partner of partnerDetails">
