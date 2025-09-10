@@ -253,10 +253,13 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
             this.fetchIndicatorData(districtCode);
             const stateName = distInfo.label;
             if (stateName) {
-              if (this.pageConfig.type == 'communityDetails') {
+              if(this.pageConfig.type == 'communityDashboard'){
+                this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code,'state'])
+              }
+              else if (this.pageConfig.type == 'communityDetails') {
                 this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
-              } else {
-                debugger;
+              }
+              else {
                 this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
               }
             }
@@ -277,7 +280,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
         })
         .attr('y', (d: any) => {
           const centroid = path.centroid(d);
-          return centroid[1] - 10; // Adjust y to center the 20x20 icon
+          return centroid[1] - 18; // Adjust y to center the 20x20 icon
         })
         .attr('width', 20) // Icon width
         .attr('height', 20) // Icon height
@@ -340,10 +343,13 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
             this.fetchIndicatorData(districtCode);
             const stateName = distInfo.label;
             if (stateName) {
-              if (this.pageConfig.type == 'communityDetails') {
+                            if(this.pageConfig.type == 'communityDashboard'){
+                this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code,'state'])
+              }
+              else if (this.pageConfig.type == 'communityDetails') {
                 this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
-              } else {
-                debugger;
+              }
+              else {
                 if("category_1" == districtsData.find((element:any) => element.label == stateName).type) {
                   this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
                 }

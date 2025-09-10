@@ -9,4 +9,8 @@ export const pageDataConfig = {
         jsonPath: COMMUNITY_DETAILS_PAGE,
         type: "communityDetails"
     },
+    communityDashboard:{
+        jsonPath: COMMUNITY_DETAILS_PAGE,
+        type: "communityDashboard"
+    }
 }

@@ -85,7 +85,22 @@ export class LineChartComponent implements OnInit {
         axisPointer: {
           type: 'line',
           snap: true
-        }
+        },
+        formatter: (params: any) => {
+          // params is an array of series points at this x
+          if (!params || !params.length) return '';
+          const point = params[0]; // first series
+          const quarterPositions = [1, 4, 7, 10];
+          const labels = ['Q1(Apr-Jun)', 'Q2(Jul-Sept)', 'Q3(Oct-Dec)', 'Q4(Jan-Mar)'];
+          const idx = quarterPositions.indexOf(point.value[0]);
+          const label = idx !== -1 ? labels[idx] : `x: ${point.value[0]}`;
+          return `
+      <div style="text-align: center;">
+        <div>${point.value[1]}</div>
+        <div>Micro improvements</div>
+      </div>
+    `;
+  }
       },
       xAxis: {
         type: 'value',
@@ -143,7 +158,8 @@ export class LineChartComponent implements OnInit {
           type: 'line',
           showSymbol: false,
           lineStyle: { opacity: 0 },
-          emphasis: { disabled: true }
+          emphasis: { disabled: true },
+          tooltip: { show: false } // <-- hide from tooltip
         }
       ],
       grid: {
