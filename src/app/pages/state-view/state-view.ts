@@ -350,7 +350,9 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
                 this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
               }
               else {
-                this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
+                if("category_1" == districtsData.find((element:any) => element.label == stateName).type) {
+                  this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
+                }
               }
             }
           } else if (!this.showDetails) {
