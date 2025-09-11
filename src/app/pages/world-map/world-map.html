@@ -17,9 +17,13 @@
     </div>
 
     <!-- Note -->
-    <div class="legend-note" *ngIf="legend.type === 'note'">
-      {{ legend.label }}
-    </div>
+    <ng-container *ngIf="legend.type === 'note'">
+       @for(note of legend.label; track $index){
+      <div class="legend-note">
+        {{ note }}
+      </div>
+    }
+    </ng-container>
     }
   </div>
   <div #tooltip class="tooltip"></div>

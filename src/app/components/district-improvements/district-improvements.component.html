@@ -13,7 +13,7 @@
   @else if(!isCommunityFlow){
     <a [routerLink]="['/dashboard']" class="mr-1">Dashboard</a> / <a [routerLink]="['/state-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <span class="ml-1">{{ district }}</span>
   }@else{
-    <a [routerLink]="['/community-led-improvements']" class="mr-1">Community Led Initiatives</a> /
+    <a [routerLink]="['/community-led-improvements']" class="mr-1">Community led initiatives</a> /
     <a [routerLink]="['/community-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <span class="ml-1">{{ district }}</span>
   }
 </div>
@@ -48,7 +48,7 @@
 
     <!-- country view -->
     <ng-container *ngIf="section.type === 'programs-list'" class="program-list">
-      <app-programs-report-list [headerText]="pageConfig.type === 'communityDetails' ? 'Community led Initiatives' : 'District led Programs'" [CommunityButton]="enableCommunityButton" [programs]="programsList" [pageConfig]="pageConfig"></app-programs-report-list>
+      <app-programs-report-list [headerText]="pageConfig.type === 'communityDetails' ? 'Community led initiatives' : 'District led programs'" [CommunityButton]="enableCommunityButton" [programs]="programsList" [pageConfig]="pageConfig"></app-programs-report-list>
     </ng-container>
     <!-- Data Indicators Section -->
     <ng-container *ngIf="section.type === 'data-indicators'">

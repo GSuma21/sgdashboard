@@ -15,9 +15,9 @@
 /* Legend pinned below the map */
 .legend {
   position: absolute;
-  top: 70%;
+  top: 60%;
   /* places it just under the map */
-  left: 15%;
+  left: 18%;
   transform: translateX(-50%);
   margin-top: 10px;
   /* spacing between map and legend */
@@ -138,9 +138,9 @@
 }
 
 .legend-note {
-  font-size: 12px;
+  font-size: 10px;
   color: #6c6c6c;
-  margin-top: 8px;
+  margin-top: 2px;
   text-align: left;
 }
 
@@ -212,7 +212,7 @@
 /* Tablet */
 @media (max-width: 1024px) {
   .legend {
-    left: 18%;
+    left: 25%;
   }
 
 }
@@ -233,7 +233,7 @@
   position: absolute;
   top: 60%;
   /* places it just under the map */
-  left: 28%;
+  left: 30%;
   transform: translateX(-50%);
   margin-top: 10px;
   /* spacing between map and legend */
@@ -252,7 +252,7 @@
 .legend-note {
   font-size: 6px;
   color: #6c6c6c;
-  margin-top: 8px;
+  margin-top: 2px;
   text-align: left;
 }
 
@@ -270,7 +270,7 @@
   position: absolute;
   top: 50%;
   /* places it just under the map */
-  left: 32%;
+  left: 34%;
   transform: translateX(-50%);
   margin-top: 10px;
   /* spacing between map and legend */
@@ -289,7 +289,7 @@
 .legend-note {
   font-size: 6px;
   color: #6c6c6c;
-  margin-top: 8px;
+  margin-top: 2px;
   text-align: left;
 }
 
