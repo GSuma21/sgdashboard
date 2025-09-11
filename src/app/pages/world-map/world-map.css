@@ -155,23 +155,6 @@
   right: 20%;
 }
 
-
-/* Tablet */
-@media (max-width: 1024px) {}
-
-/* Mobile */
-@media (max-width: 480px) {
-
-
-  .map-note {
-    position: relative;
-    top: 0;
-    left: 10%;
-    display: flex;
-    flex-direction: column-reverse;
-  }
-}
-
 .legend-item {
   display: flex;
   align-items: center;
@@ -223,4 +206,96 @@
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+}
+
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .legend {
+    left: 18%;
+  }
+
+}
+
+/* Mobile */
+@media (max-width: 540px) {
+
+
+  .map-note {
+    position: relative;
+    top: 0;
+    left: 10%;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  
+  .legend {
+  position: absolute;
+  top: 60%;
+  /* places it just under the map */
+  left: 28%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+  /* spacing between map and legend */
+  min-width: 200px;
+  z-index: 5;
+  font-size: x-small;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+  font-size: 8px;
+}
+
+.legend-note {
+  font-size: 6px;
+  color: #6c6c6c;
+  margin-top: 8px;
+  text-align: left;
+}
+
+.legend-circle {
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+}
+}
+
+
+@media (max-width: 380px) {
+
+  .legend {
+  position: absolute;
+  top: 50%;
+  /* places it just under the map */
+  left: 32%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+  /* spacing between map and legend */
+  min-width: 200px;
+  z-index: 5;
+  font-size: x-small;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+  font-size: 6px;
+}
+
+.legend-note {
+  font-size: 6px;
+  color: #6c6c6c;
+  margin-top: 8px;
+  text-align: left;
+}
+
+.legend-circle {
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+}
 }
