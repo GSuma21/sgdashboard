@@ -4,7 +4,7 @@
         <div class="legend-item">
           <div class="color-box" [ngStyle]="{'background-color': data.color}" *ngIf="!data.icon"></div>
           <img class="legend-icon" [src]="data.icon" *ngIf="data.icon">
-          <span class="legend-item-header">{{ data.label }}</span>
+          <span class="legend-item-header">{{ data.label.charAt(0).toUpperCase() + data.label.slice(1).toLowerCase() }}</span>
         </div>
       }
 
