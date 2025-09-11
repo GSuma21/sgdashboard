@@ -78,12 +78,12 @@ export class WorldMapComponent implements OnInit {
     // },
     {
       type: 'icon',
-      label: 'Momentum Partners',
+      label: 'Momentum partners',
       icon: './assets/marker-icons/momentum.svg'
     },
     {
       type: 'icon',
-      label: 'Strategic Partners',
+      label: 'Strategic partners',
       icon: './assets/marker-icons/stategic.svg'
     },
     {
@@ -93,7 +93,10 @@ export class WorldMapComponent implements OnInit {
     },
     {
       type: 'note',
-      label: '*Not drawn to scale. For illustration purposes only.'
+      label: [
+        '*Click icons on the map to know about the partners in different states.', 
+        '*Not drawn to scale. For illustration purposes only.'
+      ] 
     }
   ];
 
