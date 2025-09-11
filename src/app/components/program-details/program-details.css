@@ -132,10 +132,6 @@
     display: flex;
 }
 
-img {
-    width: 80px;
-}
-
 .indicator-container {
     padding-left: 1rem;
     border-left: 3px solid;
@@ -152,6 +148,10 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+h5 {
+    font-size: 1.2rem;
 }
 
 
@@ -286,7 +286,7 @@ img {
 
 .content {
     margin: 0;
-    width: 100%; 
+    width: 100%;
 }
 
 .title {
@@ -310,9 +310,9 @@ img {
     margin-bottom: 1%;
     transition: transform 0.2s ease-in-out;
   }
-  
+
   .back-icon:hover {
-    transform: translateX(-3px); 
+    transform: translateX(-3px);
   }
 
 .partners {
@@ -330,7 +330,7 @@ img {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust 200px to card width */
   gap: 0.5rem;
-  row-gap: 2rem; 
+  row-gap: 2rem;
   justify-content: start; /* makes last row items stick left */
 }
 
@@ -338,9 +338,9 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; 
+    justify-content: space-between;
     gap: 0.75rem;
-    
+
     background: #fff;
     border-radius: 12px;
     padding: 1.5rem 1rem;
@@ -360,7 +360,7 @@ img {
     object-fit: contain;
     display: block;
     image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges; 
+    image-rendering: crisp-edges;
 }
 
 .partner-name {

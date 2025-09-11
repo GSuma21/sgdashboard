@@ -260,9 +260,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
                 this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
               }
               else {
-                if("category_1" == districtsData[districtCode].type) {
-                  this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
-                }
+                this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
               }
             }
           } else if (!this.showDetails) {
@@ -352,9 +350,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
                 this.router.navigate(['/community-led-district-improvements/', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
               }
               else {
-                if("category_1" == districtsData[districtCode].type) {
-                  this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
-                }
+                this.router.navigate(['/state-led-district-improvements', d.properties.st_nm, d.properties.st_code, d.properties.district, d.properties.dt_code]);
               }
             }
           } else if (!this.showDetails) {

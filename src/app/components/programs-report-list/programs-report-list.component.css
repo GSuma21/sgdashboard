@@ -104,6 +104,11 @@ h3 {
   justify-content: center;
 }
 
+.program-list-container {
+  justify-content: start;
+  margin-left: 10% !important;
+}
+
 .partners-logo {
   height: 30px;
 }
