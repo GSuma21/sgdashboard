@@ -4,7 +4,7 @@
         <button class="community-button" (click)="openCommunityDetails()" *ngIf="CommunityButton">Community led Initiatives<img src="assets/icons/arrow.svg" class="arrow ml-2" alt="" aria-hidden="true">
         </button>
     </section>
-    <section class="row d-flex program-list-container" style="margin-left: 10%;" *ngIf="programs.length > 0">
+    <section class="row d-flex justify-content-center" style="margin-left: 10%;" *ngIf="programs.length > 0">
         <mat-card (click)="openReport(report)" class="example-card col-sm-3 my-3 mx-3 py-2" appearance="outlined" *ngFor="let report of programs">
             <mat-card-header>
                 <mat-card-title class="pb-0">{{ report.name_of_the_program }}</mat-card-title>
