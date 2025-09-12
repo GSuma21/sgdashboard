@@ -386,7 +386,12 @@ export class WorldMapComponent implements OnInit {
   }
 
   // --- Partners and connection lines remain unchanged ---
-  private normalizeId(id: string) { return id.toLowerCase().replace(/[\s_]/g, ''); }
+  private normalizeId(id: string): string {
+    return (id || '')
+      .toLowerCase()
+      .replace(/[\s_\.]/g, '') // remove spaces, underscores, periods
+      .replace(/[^a-z0-9]/g, ''); // remove any remaining non-alphanumeric chars
+  }
 
   private drawPartners(networkData: NetworkData, indiaData: any): void {
     if (!networkData?.partners?.length) return;
@@ -575,8 +580,9 @@ const partnerHtml = `
       // 2️⃣ Partner coordinates (from partner list)
 if (!coords && location.partner_id?.length) {
   const partner = networkData.partners.find(p => {
+    console.log(p.id, location.partner_id[0])
     const sameId = this.normalizeId(p.id) === this.normalizeId(location.partner_id[0]);
-
+    console.log(sameId)
     const sameCountry = location.countryName
       ? (p.countryName && p.countryName.toLowerCase() === location.countryName.toLowerCase())
       : true; // ignore if not provided
@@ -587,6 +593,7 @@ if (!coords && location.partner_id?.length) {
 
     return sameId && sameCountry && sameState;
   });
+  console.log(partner)
 
   if (partner?.coordinates) {
     coords = [partner.coordinates[1], partner.coordinates[0]];
