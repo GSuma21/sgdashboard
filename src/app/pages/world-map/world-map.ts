@@ -580,9 +580,7 @@ const partnerHtml = `
       // 2️⃣ Partner coordinates (from partner list)
 if (!coords && location.partner_id?.length) {
   const partner = networkData.partners.find(p => {
-    console.log(p.id, location.partner_id[0])
     const sameId = this.normalizeId(p.id) === this.normalizeId(location.partner_id[0]);
-    console.log(sameId)
     const sameCountry = location.countryName
       ? (p.countryName && p.countryName.toLowerCase() === location.countryName.toLowerCase())
       : true; // ignore if not provided
@@ -593,7 +591,6 @@ if (!coords && location.partner_id?.length) {
 
     return sameId && sameCountry && sameState;
   });
-  console.log(partner)
 
   if (partner?.coordinates) {
     coords = [partner.coordinates[1], partner.coordinates[0]];
