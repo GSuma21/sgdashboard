@@ -179,11 +179,9 @@ export class CountryView implements OnInit, AfterViewInit {
             });
             if (selectedDetail) {
               tooltip.transition().duration(200).style("opacity", .9);
-              let code = selectedDetail.code || '';
-              code = code.charAt(0).toUpperCase() + code.slice(1).toLowerCase();
               let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
                 <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
-                <div style="font-size: 14px; color: #333; font-weight: 500;">${code}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500;">${selectedDetail.code || ''}</div>
                 <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
               </div>`;
               tooltip.style("left", (event.pageX + 10) + "px")
