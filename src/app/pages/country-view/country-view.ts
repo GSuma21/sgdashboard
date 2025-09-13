@@ -153,7 +153,7 @@ export class CountryView implements OnInit, AfterViewInit {
           const stateCode = d.properties.st_code;
           const stateInfo = statesData[stateCode];
           if (stateInfo) {
-            return legends[stateInfo.type]?.color || '#fff';
+            return (typeof legends[stateInfo.type]?.color === 'object' ? legends[stateInfo.type]?.color[this.selectedIndicator] : legends[stateInfo.type]?.color) || '#fff';
           } else {
             return '#fff';
           }
@@ -186,12 +186,16 @@ export class CountryView implements OnInit, AfterViewInit {
                 <div style="font-size: 14px; color: #333; font-weight: 500;">${code}</div>
                 <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
               </div>`;
+              tooltip.style("left", (event.pageX + 10) + "px")
+              .style("top", (event.pageY - 28) + "px");
               tooltip.html(tooltipHtml);
             } else {
               tooltip.transition().duration(200).style("opacity", .9);
               let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
                 <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
               </div>`;
+              tooltip.style("left", (event.pageX + 10) + "px")
+              .style("top", (event.pageY - 28) + "px");
               tooltip.html(tooltipHtml);
             }
           } else {
@@ -200,6 +204,8 @@ export class CountryView implements OnInit, AfterViewInit {
             let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
               <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateName}</div>
             </div>`;
+            tooltip.style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 28) + "px");
             tooltip.html(tooltipHtml);
           }
         })
@@ -271,12 +277,16 @@ export class CountryView implements OnInit, AfterViewInit {
                 <div style="font-size: 14px; color: #333; font-weight: 500; text-transform: capitalize;">${selectedDetail.code || ''}</div>
                 <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
               </div>`;
+              tooltip.style("left", (event.pageX + 10) + "px")
+              .style("top", (event.pageY - 28) + "px");
               tooltip.html(tooltipHtml);
             } else {
               tooltip.transition().duration(200).style("opacity", .9);
               let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
                 <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
               </div>`;
+              tooltip.style("left", (event.pageX + 10) + "px")
+              .style("top", (event.pageY - 28) + "px");
               tooltip.html(tooltipHtml);
             }
           } else {
@@ -285,6 +295,8 @@ export class CountryView implements OnInit, AfterViewInit {
             let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
               <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateName}</div>
             </div>`;
+            tooltip.style("left", (event.pageX + 10) + "px")
+            .style("top", (event.pageY - 28) + "px");
             tooltip.html(tooltipHtml);
           }
         })
@@ -322,5 +334,9 @@ export class CountryView implements OnInit, AfterViewInit {
     }).catch((error: any) => {
       console.error('Error loading or processing data:', error);
     });
+  }
+
+  reDrawMap() {
+    this.drawMap();
   }
 }

@@ -12,7 +12,6 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
   @Input() slides: any[] = [];
   @Input() styles: any = {};
   @Input() title: string = '';
-
   @ViewChild('carouselTrack') carouselTrack!: ElementRef;
 
   currentSlide = 0;
@@ -21,11 +20,7 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
   private transitionEndListener: any;
 
   ngAfterViewInit(): void {
-    if (this.slides && this.slides.length > 1) {
-      this.displaySlides = [...this.slides, this.slides[0]];
-    } else {
-      this.displaySlides = this.slides;
-    }
+    this.updateDisplaySlides();
     this.startAutoPlay();
     this.transitionEndListener = () => this.onTransitionEnd();
     this.carouselTrack.nativeElement.addEventListener('transitionend', this.transitionEndListener);
@@ -33,13 +28,26 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopAutoPlay();
-    if (this.carouselTrack && this.carouselTrack.nativeElement && this.transitionEndListener) {
+    if (this.carouselTrack?.nativeElement && this.transitionEndListener) {
       this.carouselTrack.nativeElement.removeEventListener('transitionend', this.transitionEndListener);
     }
   }
 
+  // Update display slides to support infinite looping
+  private updateDisplaySlides(): void {
+    if (this.slides?.length > 1) {
+      // Append first slide at the end and last slide at the beginning for seamless looping
+      this.displaySlides = [this.slides[this.slides.length - 1], ...this.slides, this.slides[0]];
+      this.currentSlide = 1; // Start at the first "real" slide
+    } else {
+      this.displaySlides = this.slides;
+      this.currentSlide = 0;
+    }
+    this.updateSlidePosition(false); // Set initial position without animation
+  }
+
   startAutoPlay(): void {
-    this.stopAutoPlay(); // Ensure no multiple intervals are running
+    this.stopAutoPlay(); // Clear any existing interval
     if (!this.slides || this.slides.length < 2) {
       return;
     }
@@ -51,26 +59,31 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
   stopAutoPlay(): void {
     if (this.intervalId) {
       clearInterval(this.intervalId);
+      this.intervalId = null;
     }
   }
 
   nextSlide(): void {
     this.currentSlide++;
-    this.updateSlidePosition();
+    this.updateSlidePosition(true);
   }
 
   prevSlide(): void {
-    this.currentSlide = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
-    this.updateSlidePosition();
+    this.currentSlide--;
+    this.updateSlidePosition(true);
   }
 
   goToSlide(index: number): void {
-    this.currentSlide = index;
-    this.updateSlidePosition();
-    this.startAutoPlay(); // Restart autoplay when manually navigating
+    if (this.slides.length > 1) {
+      this.currentSlide = index + 1; // Account for the prepended slide
+    } else {
+      this.currentSlide = index;
+    }
+    this.updateSlidePosition(true);
+    this.startAutoPlay(); // Restart autoplay on manual navigation
   }
 
-  updateSlidePosition(animate = true): void {
+  updateSlidePosition(animate: boolean = true): void {
     const track = this.carouselTrack.nativeElement;
     if (animate) {
       track.style.transition = 'transform 0.5s ease-in-out';
@@ -81,9 +94,18 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
   }
 
   onTransitionEnd(): void {
-    if (this.currentSlide === this.slides.length) {
-      this.currentSlide = 0;
-      this.updateSlidePosition(false);
+    if (!this.slides || this.slides.length < 2) {
+      return;
+    }
+    const track = this.carouselTrack.nativeElement;
+    if (this.currentSlide >= this.displaySlides.length - 1) {
+      // Reached the duplicated first slide at the end
+      this.currentSlide = 1; // Reset to the first "real" slide
+      this.updateSlidePosition(false); // Move without animation
+    } else if (this.currentSlide <= 0) {
+      // Reached the duplicated last slide at the beginning
+      this.currentSlide = this.slides.length; // Reset to the last "real" slide
+      this.updateSlidePosition(false); // Move without animation
     }
   }
 }

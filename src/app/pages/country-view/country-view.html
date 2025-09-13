@@ -2,7 +2,7 @@
   <div class="legend-container">
     @for(data of displayLegends; track $index){
       <div class="legend-item">
-        <div class="color-box" [ngStyle]="{'background-color': data.color}" *ngIf="!data.icon"></div>
+        <div class="color-box" [ngStyle]="{'background-color': typeof data.color == 'object' ? data.color[selectedIndicator] : data.color }" *ngIf="!data.icon"></div>
         <img class="legend-icon" [src]="data.icon" *ngIf="data.icon">
         <span class="legend-item-header">{{ data.label }}</span>
       </div>
@@ -27,7 +27,7 @@
   @if(showVariations){
     <div class="filter-selection">
       <mat-form-field>
-        <mat-select [(ngModel)]="selectedIndicator">
+        <mat-select [(ngModel)]="selectedIndicator" (selectionChange)="reDrawMap()">
           <mat-option [value]="option.value" *ngFor="let option of selections" >{{option.label}}</mat-option>
         </mat-select>
       </mat-form-field>
