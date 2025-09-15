@@ -4,39 +4,43 @@
         <button class="community-button" (click)="openCommunityDetails()" *ngIf="CommunityButton">Community led initiatives<img src="assets/icons/arrow.svg" class="arrow ml-2" alt="" aria-hidden="true">
         </button>
     </section>
-    <section class="row d-flex justify-content-center" style="margin-left: 10%;" *ngIf="programs.length > 0">
-        <mat-card (click)="openReport(report)" class="example-card col-sm-3 my-3 mx-3 py-2" appearance="outlined" *ngFor="let report of programs">
-            <mat-card-header>
-                <mat-card-title class="pb-0">{{ report.name_of_the_program }}</mat-card-title>
-            </mat-card-header>
+    <section class="w-100 d-flex justify-content-center">
+        <section class="row d-flex container" style="margin-left: 10%;" *ngIf="programs.length > 0">
+            <div class="px-3 col-sm-4" *ngFor="let report of programs">
+                <mat-card (click)="openReport(report)" class="example-card my-3 py-2 px-3" appearance="outlined">
+                    <mat-card-header>
+                        <mat-card-title class="pb-0">{{ report.name_of_the_program }}</mat-card-title>
+                    </mat-card-header>
 
-            <div class="mb-3">
-                <span class="badge badge-warning text-white p-1" *ngIf="report.status_of_the_program == 'Ongoing'">In Progress</span>
-                <span class="badge badge-completed text-white p-1"  *ngIf="report.status_of_the_program != 'Ongoing'">Completed</span>
+                    <div class="mb-3">
+                        <span class="badge badge-warning text-white p-1" *ngIf="report.status_of_the_program == 'Ongoing'">In Progress</span>
+                        <span class="badge badge-completed text-white p-1"  *ngIf="report.status_of_the_program != 'Ongoing'">Completed</span>
+                    </div>
+
+                    <div class="carousel">
+                        <button class="nav left" (click)="scrollLeft($event)" *ngIf=" report.logo_urls.length > 0">&#10094;</button>
+                        <div class="carousel-track" *ngIf=" report.logo_urls.length > 0">
+                          <img *ngFor="let img of report.logo_urls" [src]="img" class="program-images" alt="Program image">
+                        </div>
+                        <div class="carousel-track no-image" *ngIf=" report.logo_urls.length == 0">
+                          <img src="assets/icons/image_not_available.png" class="program-images" alt="Program image">
+                        </div>
+                        <button class="nav right" *ngIf=" report.logo_urls.length > 0" (click)="scrollRight($event)">&#10095;</button>
+                    </div>
+
+                    <mat-card-content class="px-0">
+                    <p class="report-description" (click)="openReport(report)">{{ report.about_the_program_objective }}</p>
+                    </mat-card-content>
+
+                    <div class="partners row mt-2">
+                        <section *ngFor="let img of getPartnerDetails(report)" class="col-sm-auto">
+                            <img mat-card-image [src]="img.src" class="partners-logo m-2"  alt="Partner logo"><br>
+                            <p class="partner-name">{{img.name}}</p>
+                        </section>
+                    </div>
+                </mat-card>
             </div>
-
-            <div class="carousel">
-                <button class="nav left" (click)="scrollLeft($event)" *ngIf=" report.logo_urls.length > 0">&#10094;</button>
-                <div class="carousel-track" *ngIf=" report.logo_urls.length > 0">
-                  <img *ngFor="let img of report.logo_urls" [src]="img" class="program-images" alt="Program image">
-                </div>
-                <div class="carousel-track no-image" *ngIf=" report.logo_urls.length == 0">
-                  <img src="assets/icons/image_not_available.png" class="program-images" alt="Program image">
-                </div>
-                <button class="nav right" *ngIf=" report.logo_urls.length > 0" (click)="scrollRight($event)">&#10095;</button>
-            </div>
-
-            <mat-card-content class="px-0">
-            <p class="report-description" (click)="openReport(report)">{{ report.about_the_program_objective }}</p>
-            </mat-card-content>
-
-            <div class="partners row mt-2">
-                <section *ngFor="let img of getPartnerDetails(report)" class="col-sm-auto">
-                    <img mat-card-image [src]="img.src" class="partners-logo m-2"  alt="Partner logo"><br>
-                    <p class="partner-name">{{img.name}}</p>
-                </section>
-            </div>
-        </mat-card>
+        </section>
     </section>
     <section class="row d-flex justify-content-center my-5" *ngIf="programs.length == 0">
         <h5 class="d-flex text-center">Yet to Start</h5>
