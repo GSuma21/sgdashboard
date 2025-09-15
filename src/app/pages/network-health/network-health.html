@@ -51,7 +51,7 @@
     </ng-container>
 
     <!-- Partner Logos Section -->
-    <ng-container *ngIf="section.type === 'partner-logos'">
+    <ng-container *ngIf="section.type === 'partner-logos'" class="partners-logo">
       <app-partner-logos [partners]="section.partners" [styles]="section.styles" [title]="section.title" [showFilters]="section.showFilters"></app-partner-logos>
     </ng-container>
   </div>

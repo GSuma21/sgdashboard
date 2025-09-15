@@ -448,17 +448,24 @@ export class WorldMapComponent implements OnInit {
         if (this.showDetails) {
           event.stopPropagation();
 
-const partnerHtml = `
-<div style="position: relative;
+          const partnerHtml = `
+<div style="
+  position: relative;
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   padding: 8px 0;
-  width: 250px;
+  width: auto;
+  max-width: 90vw;
+  min-width: 180px;
   border: 1px solid #000000ff;
   font-family: Arial, sans-serif;
-  max-height: 300px;
+  max-height: 70vh;
   overflow-y: auto;
+  overflow-x: hidden;
+  white-space: normal;
+  word-break: break-word;
+  box-sizing: border-box;
 ">
   <div style="
     position: absolute;
@@ -472,62 +479,85 @@ const partnerHtml = `
     filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));
   "></div>
 
-  ${
-    partner.website
-      ? `
+  ${partner.website
+              ? `
         <a href="${partner.website}" target="_blank" style="text-decoration: none; color: inherit; display: block;">
-          <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px;">
+          <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px; box-sizing: border-box;">
             <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-              <img src="${partner.src}" alt="${partner.name}" style="width: 24px; height: 24px; object-fit: contain;">
+              <img src="${partner.src}" alt="${partner.name}" style="width: 24px; height: 24px; object-fit: contain; max-width: 100%;">
             </div>
             <div style="display: flex; flex-direction: column; padding-left: 5px;">
               <div style="font-size: 12px; color: #555;">${partner.countryName}</div>
               <div style="font-size: 12px; color: #555;">${partner.partnerState}</div>
               <div style="font-weight: 600; font-size: 14px; color: #000;">${partner.name}</div>
-              ${
-                partner.category?.toLowerCase() === 'collaborators'
-                  ? `<div style="font-size: 12px; color: #777;">${partner.category ?? ''}</div>`
-                  : `<div style="font-size: 12px; color: #777;">${partner.category ?? ''} partner</div>`
+              ${partner.category?.toLowerCase() === 'collaborators'
+                ? `<div style="font-size: 12px; color: #777;">${partner.category ?? ''}</div>`
+                : `<div style="font-size: 12px; color: #777;">${partner.category ?? ''} partner</div>`
               }
             </div>
           </div>
         </a>
       `
-      : `
-        <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px; cursor: default;">
+              : `
+        <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px; cursor: default; box-sizing: border-box;">
           <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-            <img src="${partner.src}" alt="${partner.name}" style="width: 24px; height: 24px; object-fit: contain;">
+            <img src="${partner.src}" alt="${partner.name}" style="width: 24px; height: 24px; object-fit: contain; max-width: 100%;">
           </div>
           <div style="display: flex; flex-direction: column; padding-left: 5px;">
             <div style="font-size: 12px; color: #555;">${partner.countryName}</div>
             <div style="font-size: 12px; color: #555;">${partner.partnerState}</div>
             <div style="font-weight: 600; font-size: 14px; color: #000;">${partner.name}</div>
-            ${
-              partner.category?.toLowerCase() === 'collaborators'
+            ${partner.category?.toLowerCase() === 'collaborators'
                 ? `<div style="font-size: 12px; color: #777;">${partner.category ?? ''}</div>`
                 : `<div style="font-size: 12px; color: #777;">${partner.category ?? ''} partner</div>`
-            }
+              }
           </div>
         </div>
       `
-  }
+            }
 </div>`;
 
-          // Get container position
+          // First render tooltip (hidden) so we can measure its size
+          this.tooltip.html(partnerHtml)
+            .style('opacity', 0)
+            .style('pointer-events', 'none')
+            .style('left', `0px`)
+            .style('top', `0px`);
+
+          const tooltipNode = this.tooltip.node() as HTMLElement;
+          const tooltipRect = tooltipNode.getBoundingClientRect();
+
           const containerRect = this.mapContainer.nativeElement.getBoundingClientRect();
 
-          // Calculate tooltip relative to container
-          const left = event.clientX - containerRect.left + 10; // 10px offset
-          const top = event.clientY - containerRect.top - 28;  // 28px above click
+          // Initial position relative to container
+          let left = event.clientX - containerRect.left + 10;
+          let top = event.clientY - containerRect.top - tooltipRect.height - 10;
 
+          // Clamp horizontally
+          if (left + tooltipRect.width > containerRect.width) {
+            left = containerRect.width - tooltipRect.width - 10;
+          }
+          if (left < 10) {
+            left = 10;
+          }
+
+          // Clamp vertically
+          if (top + tooltipRect.height > containerRect.height) {
+            top = containerRect.height - tooltipRect.height - 10;
+          }
+          if (top < 10) {
+            top = 10;
+          }
+
+          // Show tooltip with corrected position
           this.tooltip
-            .html(partnerHtml)
             .style('left', `${left}px`)
             .style('top', `${top}px`)
             .style('pointer-events', 'auto')
             .transition().duration(200).style('opacity', 1);
         }
       });
+
     });
 
     // Instead, attach click to the SVG container itself
