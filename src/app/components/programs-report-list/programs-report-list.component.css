@@ -87,6 +87,7 @@ mat-card-header {
 .header-section {
     width: 80%;
     margin: auto;
+    padding-top: 1rem !important;
 }
 
 .program-images {
