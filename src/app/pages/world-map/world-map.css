@@ -231,7 +231,7 @@
   
   .legend {
   position: absolute;
-  top: 60%;
+  top: 65%;
   /* places it just under the map */
   left: 30%;
   transform: translateX(-50%);
@@ -268,7 +268,7 @@
 
   .legend {
   position: absolute;
-  top: 50%;
+  top: 55%;
   /* places it just under the map */
   left: 34%;
   transform: translateX(-50%);
