@@ -3,6 +3,7 @@
   background: #EEEEEE!important;
   display: flex;
   flex-direction: row;
+  min-height: 600px;
 }
 
 .legend-container {
@@ -90,7 +91,7 @@
 }
 
 .indicator-container{
-  flex: 2.5;
+  flex: 2;
   display: flex;
   justify-content: center;
   align-items: center;

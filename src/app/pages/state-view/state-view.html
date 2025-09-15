@@ -18,8 +18,8 @@
       <div class="indicator-container">
         <div>
         <h4 class="heading">{{country + '> '}} {{selectedState}} {{hoveredDistrict ? ( '> '+hoveredDistrict ) : ""}}</h4>
-        <div class="indicators ">
-          <app-mini-indicator-card *ngFor="let indicator of indicatorData" [value]="indicator.value" [label]="indicator.label" ></app-mini-indicator-card>
+        <div class="row justify-content-center">
+          <app-mini-indicator-card *ngFor="let indicator of indicatorData" [value]="indicator.value" [label]="indicator.label" class="col-sm-auto px-0"></app-mini-indicator-card>
           </div>
         </div>
       </div>
