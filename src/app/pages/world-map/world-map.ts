@@ -298,6 +298,8 @@ export class WorldMapComponent implements OnInit {
       .append('svg')
       .attr('viewBox', `0 0 ${this.width} ${this.height}`)
       .attr('preserveAspectRatio', 'xMidYMid meet')
+      .style('width', '100%')
+      .style('height', '98vh') 
 
     this.tooltip = d3.select(element)
       .append('div')
@@ -484,7 +486,7 @@ export class WorldMapComponent implements OnInit {
         <a href="${partner.website}" target="_blank" style="text-decoration: none; color: inherit; display: block;">
           <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px; box-sizing: border-box;">
             <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-              <img src="${partner.src}" alt="${partner.name}" style="width: 24px; height: 24px; object-fit: contain; max-width: 100%;">
+              <img src="${partner.src}" alt="${partner.name}" style="width: 40px; height: 40px; object-fit: contain; max-width: 100%;">
             </div>
             <div style="display: flex; flex-direction: column; padding-left: 5px;">
               <div style="font-size: 12px; color: #555;">${partner.countryName}</div>
@@ -501,7 +503,7 @@ export class WorldMapComponent implements OnInit {
               : `
         <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px; cursor: default; box-sizing: border-box;">
           <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-            <img src="${partner.src}" alt="${partner.name}" style="width: 24px; height: 24px; object-fit: contain; max-width: 100%;">
+            <img src="${partner.src}" alt="${partner.name}" style="width: 40px; height: 40px; object-fit: contain; max-width: 100%;">
           </div>
           <div style="display: flex; flex-direction: column; padding-left: 5px;">
             <div style="font-size: 12px; color: #555;">${partner.countryName}</div>

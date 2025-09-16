@@ -1,5 +1,5 @@
 import { Component, OnInit, effect } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { ThemeService } from './core/services/theme';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './pages/dashboard/dashboard';
@@ -9,7 +9,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard';
   standalone: true,
   imports: [RouterModule, CommonModule, DashboardComponent],
   template: `
-    <header class="app-header">
+    <header class="app-header" *ngIf="showHeader">
       <nav class="container">
         <a href="https://shikshagraha.org/" target="_blank" class="logo"><img src='assets/icons/main_logo.svg'></a>
 
@@ -29,13 +29,13 @@ import { DashboardComponent } from './pages/dashboard/dashboard';
         </button>
 
         <div class="nav-links" [class.open]="isMenuOpen">
-          <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-          <a routerLink="/dashboard" routerLinkActive="active-link">Dashboard</a>
-          <a routerLink="/network-health" routerLinkActive="active-link">Network Health</a>
+          <a routerLink="/" (click)="closeMenu()"  routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+          <a routerLink="/dashboard" (click)="closeMenu()"  routerLinkActive="active-link">Dashboard</a>
+          <a routerLink="/network-health" (click)="closeMenu()"  routerLinkActive="active-link">Network Health</a>
         </div>
       </nav>
     </header>
-    <main class="app-content">
+    <main class="app-content" [class.no-header]="!showHeader">
       <router-outlet></router-outlet>
     </main>
   `,
@@ -43,10 +43,16 @@ import { DashboardComponent } from './pages/dashboard/dashboard';
 })
 export class AppComponent implements OnInit {
   isMenuOpen = false;
+  showHeader = true;
 
-  constructor(private themeService: ThemeService) {
+  constructor(private themeService: ThemeService, private router: Router) {
     effect(() => {
       document.documentElement.className = `${this.themeService.getTheme()()}-theme`;
+    });
+
+     // Hide header on specific routes (e.g., '/login')
+    this.router.events.subscribe(() => {
+      this.showHeader = this.router.url !== '/world-map'; 
     });
   }
 
@@ -54,6 +60,10 @@ export class AppComponent implements OnInit {
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu(){
+    this.isMenuOpen =false
   }
 
   toggleTheme() {
