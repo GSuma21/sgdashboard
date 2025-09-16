@@ -108,7 +108,7 @@ export class PieChartComponent {
           option: {
             legend: {
               orient: 'horizontal',
-              bottom: '-20px',
+              bottom: 0,
               left: 'center',
               top: null,
               right: null,
