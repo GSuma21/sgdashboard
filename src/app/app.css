@@ -53,6 +53,10 @@
   padding-top: 80px; /* Add padding to account for fixed header height */
 }
 
+.app-content.no-header {
+  padding-top: 0; /* remove space when header is not shown */
+}
+
 .app-header .nav-links a.active-link {
   color: var(--primary-color);
   font-weight: bold;
