@@ -85,7 +85,7 @@ export class PieChartComponent {
             type: 'pie',
             radius: ['55%', '75%'],
             center: ['50%', '50%'],
-            startAngle: 270,
+            startAngle: 180,
             avoidLabelOverlap: true,
             label: {
               show: true,
