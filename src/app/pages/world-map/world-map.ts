@@ -299,7 +299,7 @@ export class WorldMapComponent implements OnInit {
       .attr('viewBox', `0 0 ${this.width} ${this.height}`)
       .attr('preserveAspectRatio', 'xMidYMid meet')
       .style('width', '100%')
-      .style('height', '98vh') 
+      .style('height', () => this.router.url === '/world-map' ? '98vh' : null)
 
     this.tooltip = d3.select(element)
       .append('div')
