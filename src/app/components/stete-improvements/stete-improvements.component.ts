@@ -31,6 +31,7 @@ export class StateImprovementsComponent implements OnInit {
   programsList:any = [];
   @ViewChild('programsSection', { read: ElementRef }) programsSection!: ElementRef;
   stateLedMission = 0
+  window: any = window;
 
   constructor(private route: ActivatedRoute) {
     route.data.subscribe((data:any)=>{
