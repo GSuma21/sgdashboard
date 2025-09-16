@@ -39,6 +39,7 @@ export class DistrictImprovementsComponent implements OnInit {
   ]
   enableCommunityButton:boolean = false
   isCommunityFlow:boolean = false
+  window: any = window;
 
   constructor(private route:ActivatedRoute) {
     this.route.paramMap.subscribe((params:any) => {
