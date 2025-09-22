@@ -3,6 +3,16 @@
   margin: 20px auto;
 }
 
+@media (max-width: 768px) {
+  .chart-card {
+    width: 300px;
+    margin: 20px auto;
+  }
+  .chart-container {
+    width: 450px !important;
+  }
+}
+
 mat-card-title {
  padding-top: 2rem;
  padding-left: 2rem;
@@ -21,7 +31,7 @@ mat-card {
   gap: 10px;
   padding-left: 2rem;
   margin: 10px 0;
-  
+
 }
 
 .year-button {

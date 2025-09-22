@@ -93,6 +93,7 @@
   .indicator-container .heading{
     margin-left: 8px;
     font-size: 18px;
+    padding-left: 3rem;
   }
 
   .indicator-container .indicators{
@@ -144,6 +145,11 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
+  }
+
+  .card-mobile-view {
+    display: flex;
     justify-content: center;
   }
 }

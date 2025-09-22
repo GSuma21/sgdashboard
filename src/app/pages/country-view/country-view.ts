@@ -148,6 +148,7 @@ export class CountryView implements OnInit, AfterViewInit {
         .data(states.features)
         .enter().append('path')
         .attr('class', 'state-path')
+        .attr('z-index', '1000')
         .attr('d', path as any)
         .attr('fill', (d: any) => {
           const stateCode = d.properties.st_code;
@@ -159,6 +160,7 @@ export class CountryView implements OnInit, AfterViewInit {
           }
         })
         .attr('stroke', '#000')
+        .attr('z-index', '1000')
         .attr('stroke-width', 1)
         .style('cursor', (d: any) => {
           const stateCode = d.properties.st_code;
@@ -185,7 +187,7 @@ export class CountryView implements OnInit, AfterViewInit {
                 <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
               </div>`;
               tooltip.style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 28) + "px");
+              .style("top", (event.pageY - 28) + "px").style('z-index',1000);
               tooltip.html(tooltipHtml);
             } else {
               tooltip.transition().duration(200).style("opacity", .9);
@@ -193,7 +195,7 @@ export class CountryView implements OnInit, AfterViewInit {
                 <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
               </div>`;
               tooltip.style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 28) + "px");
+              .style("top", (event.pageY - 28) + "px").style('z-index',1000);
               tooltip.html(tooltipHtml);
             }
           } else {
@@ -203,13 +205,13 @@ export class CountryView implements OnInit, AfterViewInit {
               <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateName}</div>
             </div>`;
             tooltip.style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 28) + "px");
+            .style("top", (event.pageY - 28) + "px").style('z-index',1000);
             tooltip.html(tooltipHtml);
           }
         })
         .on('mousemove', (event: any) => {
           tooltip.style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 28) + "px");
+            .style("top", (event.pageY - 28) + "px").style('z-index',1000);
         })
         .on('mouseout', () => {
           if (this.showDetails) {
@@ -276,7 +278,7 @@ export class CountryView implements OnInit, AfterViewInit {
                 <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
               </div>`;
               tooltip.style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 28) + "px");
+              .style("top", (event.pageY - 28) + "px").style('z-index',1000);
               tooltip.html(tooltipHtml);
             } else {
               tooltip.transition().duration(200).style("opacity", .9);
@@ -284,7 +286,7 @@ export class CountryView implements OnInit, AfterViewInit {
                 <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
               </div>`;
               tooltip.style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 28) + "px");
+              .style("top", (event.pageY - 28) + "px").style('z-index',1000);
               tooltip.html(tooltipHtml);
             }
           } else {
@@ -294,13 +296,13 @@ export class CountryView implements OnInit, AfterViewInit {
               <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateName}</div>
             </div>`;
             tooltip.style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 28) + "px");
+            .style("top", (event.pageY - 28) + "px").style('z-index',1000);
             tooltip.html(tooltipHtml);
           }
         })
         .on('mousemove', (event: any) => {
           tooltip.style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 28) + "px");
+            .style("top", (event.pageY - 28) + "px").style('z-index',1000);
         })
         .on('mouseout', () => {
           if (this.showDetails) {
