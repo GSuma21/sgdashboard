@@ -178,7 +178,7 @@
 /* Tablets and smaller desktops */
 @media (max-width: 1024px) {
   .carousel-wrapper {
-    padding: 2rem;
+    padding: 3rem;
     flex-direction: column;
     /* Stack side-header and carousel */
   }
@@ -205,7 +205,7 @@
 /* Mobile devices */
 @media (max-width: 768px) {
   .carousel-wrapper {
-    padding: 1rem;
+    padding: 2rem;
   }
 
   .carousel-container .carousel .carousel-slide {
