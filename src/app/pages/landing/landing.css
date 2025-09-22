@@ -238,7 +238,10 @@
 @media (max-width: 768px) {
   .indicators-section{
   padding: 0rem 2rem;
-}
+  }
+  .landing-container {
+    overflow-x: hidden;
+  }
   .hero-title {
     font-size: 2.8rem;
   }
@@ -322,5 +325,5 @@
 .map-container{
    width: 90%;
 }
-  
+
 }
