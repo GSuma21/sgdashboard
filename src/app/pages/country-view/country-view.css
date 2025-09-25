@@ -175,5 +175,9 @@ mat-form-field{
     justify-content: center;
     align-items: center;
   }
+  .card-mobile-view {
+    display: flex;
+    justify-content: center;
+  }
 }
 

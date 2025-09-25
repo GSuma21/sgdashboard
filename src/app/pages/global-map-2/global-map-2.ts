@@ -219,13 +219,16 @@ export class GlobalMap2 implements OnInit {
       }).filter(d => d !== null);
 
       const getLineCoords = (location: any) => {
+        if (location.coords && Array.isArray(location.coords) && location.coords.length === 2) {
+          return location.coords;
+        }
         if (location.partner_id && location.partner_id.length > 0) {
           let partnerId = location.partner_id[0];
           const partner = this.partnersWithCoords?.find((p: any) =>
             p.id?.toLowerCase().replace(/[\s_]/g, '') === partnerId?.toLowerCase().replace(/[\s_]/g, '')
           );
 
-          if (partner) {
+          if (partner && partner.coordinates) {
             return partner.coordinates;
           }
         }
@@ -234,8 +237,8 @@ export class GlobalMap2 implements OnInit {
           if (stateIcon) return stateIcon.coordinates;
         }
         if (location.countryName) {
-            const countryIcon = countryIcons.find(icon => icon && icon.countryName.toLowerCase() === location.countryName.toLowerCase());
-            if (countryIcon) return countryIcon.coordinates;
+          const countryIcon = countryIcons.find(icon => icon && icon.countryName.toLowerCase() === location.countryName.toLowerCase());
+          if (countryIcon) return countryIcon.coordinates;
         }
         return getCoords(location);
       };

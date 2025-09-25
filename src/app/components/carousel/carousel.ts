@@ -19,6 +19,22 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
   private intervalId: any;
   public displaySlides: any[] = [];
   private transitionEndListener: any;
+  private visibilityChangeHandler: () => void;
+
+  constructor() {
+    this.visibilityChangeHandler = () => {
+      if (document.hidden) {
+        this.stopAutoPlay();
+      } else {
+        this.startAutoPlay();
+      }
+    };
+  }
+
+  ngOnInit(): void {
+     this.currentSlide = 0;
+     console.log(this.currentSlide)
+  }
 
   ngAfterViewInit(): void {
     if (this.slides && this.slides.length > 1) {
@@ -29,14 +45,18 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
     this.startAutoPlay();
     this.transitionEndListener = () => this.onTransitionEnd();
     this.carouselTrack.nativeElement.addEventListener('transitionend', this.transitionEndListener);
+
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
   }
 
-  ngOnDestroy(): void {
-    this.stopAutoPlay();
-    if (this.carouselTrack && this.carouselTrack.nativeElement && this.transitionEndListener) {
-      this.carouselTrack.nativeElement.removeEventListener('transitionend', this.transitionEndListener);
-    }
+ ngOnDestroy(): void {
+  this.stopAutoPlay();
+  if (this.carouselTrack?.nativeElement && this.transitionEndListener) {
+    this.carouselTrack.nativeElement.removeEventListener('transitionend', this.transitionEndListener);
   }
+
+  document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
+}
 
   startAutoPlay(): void {
     this.stopAutoPlay(); // Ensure no multiple intervals are running
@@ -72,11 +92,10 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
 
   updateSlidePosition(animate = true): void {
     const track = this.carouselTrack.nativeElement;
-    if (animate) {
-      track.style.transition = 'transform 0.5s ease-in-out';
-    } else {
-      track.style.transition = 'none';
+    if (this.currentSlide > this.displaySlides.length) {
+      this.currentSlide = 0;
     }
+    track.style.transition = animate ? 'transform 0.5s ease-in-out' : 'none';
     track.style.transform = `translateX(-${this.currentSlide * 100}%)`;
   }
 

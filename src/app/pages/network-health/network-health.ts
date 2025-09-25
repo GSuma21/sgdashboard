@@ -14,6 +14,7 @@ import { CatalysingNetwork1 } from '../catalysing-network-1/catalysing-network-1
 import { NETWORK_HEALTH_PAGE } from '../../../constants/urlConstants';
 import { environment } from '../../../../environments/environment';
 import { WorldMapComponent } from '../world-map/world-map';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-network-health',
@@ -27,7 +28,7 @@ export class NetworkHealth implements OnInit {
   pageData: any = {};
   baseUrl:any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
 
-  constructor() { }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.fetchPageData();
@@ -37,6 +38,7 @@ export class NetworkHealth implements OnInit {
     d3.json(`${this.baseUrl}/${NETWORK_HEALTH_PAGE}`).then((data: any) => {
       this.pageData = data;
       this.prepareLogosForScrolling();
+      this.cdr.detectChanges();
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
