@@ -33,7 +33,6 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
      this.currentSlide = 0;
-     console.log(this.currentSlide)
   }
 
   ngAfterViewInit(): void {

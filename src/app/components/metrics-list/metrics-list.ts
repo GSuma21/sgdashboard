@@ -53,7 +53,6 @@ export class MetricsListComponent {
   }
 
   navigateToLocation(item:any) {
-    console.log(item);
     if(item.value == 0) return
     if(item.identifier == 'slm'){
       this.scrollToProgramsEvent.emit();

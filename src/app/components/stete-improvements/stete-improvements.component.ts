@@ -36,7 +36,6 @@ export class StateImprovementsComponent implements OnInit {
   constructor(private route: ActivatedRoute) {
     route.data.subscribe((data:any)=>{
       this.pageConfig = data
-      console.log(this.pageConfig)
     })
   }
 

@@ -53,7 +53,6 @@ export class ProgramDetails {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
     window.scrollTo(0,0)
-    console.log(this.programData)
     this.displayImages = this.programData.logo_urls || [];
     this.getPartnerDetails()
   }

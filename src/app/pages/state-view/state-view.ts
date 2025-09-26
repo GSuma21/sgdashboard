@@ -58,7 +58,6 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
   fetchCommunityData() {
     d3.json(`${this.baseUrl}${this.communityDataFetchPath}`).then((data: any) => {
       this.communityJson = data;
-      console.log(data);
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });

@@ -51,7 +51,6 @@ export class CountryView implements OnInit, AfterViewInit {
   fetchCommunityData() {
     d3.json(`${this.baseUrl}/${COMMUNITY_MAP_DATA}`).then((data: any) => {
       this.indicatorJson = data;
-      console.log(data);
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
