@@ -9,7 +9,7 @@
     }
      / <ng-container class="breadcrumb" *ngIf="pageConfig.type == 'communityDashboard'">Community led improvements - </ng-container><span> {{ stateName }}</span>
   </div>
-    <div *ngFor="let section of pageData.sections" [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
+    <div *ngFor="let section of pageData.sections" [style.width]="(window.innerWidth <= 1024 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
       <!-- Main Section -->
       <ng-container *ngIf="section.type === 'dashboard-main'">
         <section [ngClass]="section.styles.section">

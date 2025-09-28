@@ -110,7 +110,12 @@ export class CountryView implements OnInit, AfterViewInit {
 
     const container = this.mapContainer.nativeElement;
     const containerWidth = container.offsetWidth;
-    const height = containerWidth * 0.8;
+    let height = containerWidth * 0.8;
+    if (window.innerWidth < 768) {
+    // For mobile, use a larger height relative to the width
+    // This will make the map appear bigger and more prominent
+    height = containerWidth * 1.1; // Increase the multiplier for more height
+   }
 
     const tooltip = d3.select("#map-tooltip");
 

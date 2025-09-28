@@ -15,8 +15,10 @@ import {
   LegendComponent
 } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
+import { TimelineComponent } from 'echarts/components';
 
 echarts.use([PieChart, TitleComponent, TooltipComponent, LegendComponent, CanvasRenderer]);
+echarts.use([TimelineComponent]);
 
 @Component({
   selector: 'app-pie-chart',
