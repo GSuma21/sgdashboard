@@ -62,6 +62,8 @@ export class PieChartComponent {
   }
 
   setChartConfig(): EChartsOption {
+     const screenWidth = window.innerWidth;
+     const isDesktop = screenWidth > 768;
     return {
       baseOption: {
         title: {
@@ -88,7 +90,7 @@ export class PieChartComponent {
             startAngle: 180,
             avoidLabelOverlap: true,
             label: {
-              show: true,
+              show: isDesktop,
               position: 'outside',
               formatter: (params: any) =>
                 `${params.name}\n{valueStyle|${params.value}}  {percentStyle|${params.percent.toFixed(2)}%}`,
@@ -112,7 +114,7 @@ export class PieChartComponent {
               left: 'center',
               top: null,
               right: null,
-              itemGap: 1
+              itemGap: 0
             },
             series: [
               {

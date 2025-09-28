@@ -116,12 +116,37 @@ export class LineChartComponent implements OnInit {
             type: 'dashed'
           }
         },
-        axisLabel: {
-          formatter: (value: number) => {
-            const idx = this.quarterPositions.indexOf(value);
-            return idx !== -1 ? this.xAxis[idx] : '';
-          }
-        }
+       axisLabel: {
+  formatter: (value: number) => {
+    const idx = this.quarterPositions.indexOf(value);
+    if (idx === -1) return '';
+
+    // Extract both parts from your label
+    const fullLabel = this.xAxis[idx]; // e.g., 'Q1(Apr - Jun)'
+    const match = fullLabel.match(/(Q\d+)\s*\(([^)]+)\)/);
+
+    if (match) {
+      const quarter = match[1];       // Q1
+      const months = match[2];        // Apr - Jun
+
+      return `{bold|${quarter}} {light|(${months})}`;
+    }
+
+    return fullLabel; // fallback if pattern doesn't match
+  },
+  rich: {
+    bold: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      color: '#333',
+    },
+    light: {
+      fontSize: 9,
+      color: '#888',
+    }
+  }
+}
+
       },
       yAxis: {
         type: 'value',

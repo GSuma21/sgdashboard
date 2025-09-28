@@ -1,5 +1,5 @@
 <div class="landing-container">
-  <div *ngFor="let section of pageData" [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
+  <div *ngFor="let section of pageData" [style.width]="(window.innerWidth <= 1024 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
     <!-- Main Section -->
     <ng-container *ngIf="section.type === 'dashboard-main'">
       <section [ngClass]="section.styles.section">
