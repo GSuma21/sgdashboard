@@ -1,5 +1,5 @@
 <div class="landing-container">
-  <div *ngFor="let section of pageData" [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
+  <div *ngFor="let section of pageData" [style.width]="(window.innerWidth <= 1024 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
     <!-- Main Section -->
     <ng-container *ngIf="section.type === 'dashboard-main'">
       <section [ngClass]="section.styles.section">
@@ -7,7 +7,7 @@
           <h3 class="">{{ section.header }}</h3>
           <h4 class="">{{ section.subHeader }}</h4>
           <p class="">{{ section.description }}</p>
-          <button class="community-button" (click)="openCommunityDetails()">Know more about community led initiatives<img src="assets/icons/arrow.svg" class="arrow" alt="" aria-hidden="true">
+          <button class="community-button" (click)="openCommunityDetails()">{{section.linkForCommunityInitiatves}}<img src="assets/icons/arrow.svg" class="arrow" alt="" aria-hidden="true">
           </button>
         </div>
       </section>

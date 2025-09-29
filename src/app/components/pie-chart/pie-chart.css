@@ -43,12 +43,6 @@ mat-card {
   width: 90%;
 }
 
-@media (max-width: 768px) {
-  .chart-card {
-    overflow-x: scroll;
-  }
-}
-
 /* Style for chart labels to improve readability */
 ::ng-deep .pie-label {
   font-size: 12px !important;
@@ -77,4 +71,28 @@ mat-card {
 .donut-chart {
   width: 100%;
   height: 400px;
+}
+
+
+@media (max-width: 768px) {
+  .chart-card {
+    overflow-x: scroll;
+  }
+  .outer-container {
+  width: 100%;
+}
+
+mat-card-title {
+ padding-top: 0rem;
+ padding-left: 2rem;
+ font-weight: 700;
+ font-size: 1.4rem;
+ margin-bottom: 0rem;
+ text-align: left;
+}
+
+.chart-card mat-card-content {
+  /* Padding around the chart */
+  padding: 0 0  20px 0 !important;
+}
 }
