@@ -225,8 +225,8 @@ mat-form-field{
 }
 
 ::ng-deep .mat-mdc-text-field-wrapper {
-  height: fit-content;
-  flex: content;
+  height: unset !important;
+  flex: unset !important;
 }
 
 .filter-selection{
@@ -239,3 +239,21 @@ mat-form-field{
 
 }
 
+#map-tooltip {
+  position: absolute;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  padding: 8px 12px;
+  pointer-events: none;
+  opacity: 0;
+  max-width: 250px;
+  word-wrap: break-word;
+  font-family: 'Arial', sans-serif;
+}
+::ng-deep .mat-mdc-form-field-hint-spacer:empty {
+  display: none;
+}
+::ng-deep .mat-mdc-form-field-bottom-align::before {
+  display: none !important;
+ }
