@@ -257,3 +257,46 @@ mat-form-field{
 ::ng-deep .mat-mdc-form-field-bottom-align::before {
   display: none !important;
  }
+
+.indicator-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  /* Use 'center' alignment to ensure the last row is centered */
+  justify-content: center; 
+  gap: 10px 10px; /* Vertical gap 10px, Horizontal gap 10px */
+  padding: 0;
+  width: 100%;
+}
+
+/* Default (Mobile/Small/Large Screens): 2 items per row */
+.indicator-card-item {
+  /* This width forces 2 items per line (50% - 5px) */
+  width: calc(50% - 5px); 
+  box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------------- */
+
+/* Medium Screens (typically >= 768px): 3 items per row */
+@media (min-width: 768px) {
+  .indicator-card-item {
+    /* This width forces 3 items per line (33.333% - 6.666px) */
+    width: calc(33.333% - 6.666px);
+  }
+}
+
+/* Large Screens (>= 992px): Back to 2 items per row */
+@media (min-width: 992px) {
+  .indicator-card-item {
+    /* Reset to 2 items per row */
+    width: calc(50% - 5px); 
+  }
+}
+
+/* Optional: Constrain and center the overall block on large screens if desired */
+@media (min-width: 992px) {
+  .indicator-card-grid {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
