@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Input, HostListener } from '@angular/core';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { FeatureCollection, Geometry } from 'geojson';
@@ -54,6 +54,14 @@ export class WorldMapComponent implements OnInit {
 
   @ViewChild('map', { static: true }) private mapContainer!: ElementRef;
   @Input() showDetails: boolean = true;
+
+
+
+    isMobile = false;
+  scale = 1;
+  readonly zoomStep = 0.2;
+  readonly minScale = 1;
+  readonly maxScale = 3;
 
   constructor(private router: Router) { }
 
@@ -289,6 +297,7 @@ export class WorldMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.createMap();
+    this.checkIfMobile();
   }
 
   private createMap(): void {
@@ -736,4 +745,37 @@ if (!coords && location.partner_id?.length) {
     this.indiaGroup.transition().duration(1000).attr('transform', 'translate(0,0) scale(1)');
     this.isIndiaZoomed = false;
   }
+
+
+    @HostListener('window:resize')
+  onResize() {
+    this.checkIfMobile();
+  }
+
+  checkIfMobile() {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
+  zoomIn() {
+    if (this.scale < this.maxScale) {
+      this.scale += this.zoomStep;
+      this.applyZoom();
+    }
+  }
+
+  zoomOut() {
+    if (this.scale > this.minScale) {
+      this.scale -= this.zoomStep;
+      this.applyZoom();
+    }
+  }
+
+ applyZoom() {
+  if (this.mapContainer?.nativeElement) {
+    this.mapContainer.nativeElement.style.transform = `scale(${this.scale})`;
+    this.mapContainer.nativeElement.style.transformOrigin = 'left top';
+    this.mapContainer.nativeElement.style.transition = 'transform 0.3s ease';
+  }
+}
+
 }

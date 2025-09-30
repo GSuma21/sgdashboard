@@ -224,5 +224,18 @@ mat-form-field{
   min-width: 10px;
 }
 
+::ng-deep .mat-mdc-text-field-wrapper {
+  height: fit-content;
+  flex: content;
+}
+
+.filter-selection{
+  display: flex;
+  justify-content: flex-end;
+  height: fit-content;
+  flex: 1;
+  margin-top: 1rem;
+}
+
 }
 
