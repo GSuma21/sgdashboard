@@ -1,5 +1,16 @@
 <div class="map-wrapper">
-  <div #map class="map-container"></div>
+  <!-- Show only on mobile screens -->
+   <div class="zoom-controls" *ngIf="isMobile && showDetails">
+  <button (click)="zoomIn()">+</button>
+  <button (click)="zoomOut()">−</button>
+</div>
+
+  <!-- <div #map class="map-container"></div> -->
+   <div class="map-viewport">
+    <div #map class="map-container">
+      <!-- Your map content goes here -->
+    </div>
+  </div>
   <div class="legend" *ngIf="showDetails">
     @for (legend of displayLegends; track $index) {
     <!-- Line legends -->

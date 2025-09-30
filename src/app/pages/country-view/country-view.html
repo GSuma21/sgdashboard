@@ -18,9 +18,17 @@
     <div class="indicator-container">
       <div>
       <h4 class="heading">India {{hoveredState ? ( '> '+hoveredState ) : ""}}</h4>
-      <div class="row justify-content-center gx-0 gy-0 m-0">
+      <!-- <div class="row justify-content-center gx-0 gy-0 m-0">
         <app-mini-indicator-card *ngFor="let indicator of indicatorData" [value]="indicator.value" [label]="indicator.label" class="col-6 col-sm-4 col-md-4 col-lg-6 px-0 card-mobile-view"></app-mini-indicator-card>
-        </div>
+        </div> -->
+        <div class="indicator-card-grid m-0">
+  <app-mini-indicator-card 
+    *ngFor="let indicator of indicatorData" 
+    [value]="indicator.value" 
+    [label]="indicator.label" 
+    class="indicator-card-item card-mobile-view">
+  </app-mini-indicator-card>
+</div>
       </div>
     </div>
   }

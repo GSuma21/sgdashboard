@@ -33,6 +33,7 @@ export class CountryView implements OnInit, AfterViewInit {
   indicatorData: { value: number | string; label: string }[] = [];
   baseUrl: any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`;
   displayLegends: any = [];
+  isMobile = false;
 
   // Embedded JSON data
   private indicatorJson = {
@@ -46,6 +47,10 @@ export class CountryView implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.fetchCommunityData();
     this.fetchIndicatorData();
+    this.checkIfMobile();
+  }
+  checkIfMobile() {
+    this.isMobile = window.innerWidth <= 768;
   }
 
   fetchCommunityData() {
@@ -190,16 +195,14 @@ export class CountryView implements OnInit, AfterViewInit {
                 <div style="font-size: 14px; color: #333; font-weight: 500;">${selectedDetail.code || ''}</div>
                 <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
               </div>`;
-              tooltip.style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 28) + "px").style('z-index',1000);
+              this.positionTooltip(event, document.getElementById('map-tooltip')!);
               tooltip.html(tooltipHtml);
             } else {
               tooltip.transition().duration(200).style("opacity", .9);
               let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
                 <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
               </div>`;
-              tooltip.style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 28) + "px").style('z-index',1000);
+              this.positionTooltip(event, document.getElementById('map-tooltip')!);
               tooltip.html(tooltipHtml);
             }
           } else {
@@ -208,14 +211,12 @@ export class CountryView implements OnInit, AfterViewInit {
             let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
               <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateName}</div>
             </div>`;
-            tooltip.style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 28) + "px").style('z-index',1000);
+            this.positionTooltip(event, document.getElementById('map-tooltip')!);
             tooltip.html(tooltipHtml);
           }
         })
         .on('mousemove', (event: any) => {
-          tooltip.style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 28) + "px").style('z-index',1000);
+          this.positionTooltip(event, document.getElementById('map-tooltip')!);
         })
         .on('mouseout', () => {
           if (this.showDetails) {
@@ -224,7 +225,48 @@ export class CountryView implements OnInit, AfterViewInit {
           tooltip.transition().duration(500).style("opacity", 0);
         })
         .on('click', (event: any, d: any) => {
-          const stateCode = d.properties.st_code;
+          if(this.isMobile && !this.showDetails){
+             const stateCode = d.properties.st_code;
+          const stateInfo = statesData[stateCode];
+          const stateName = d.properties.st_nm || 'Unknown State'; // Fallback to state name from topojson
+          if (stateInfo) {
+            if (this.showDetails) {
+              this.fetchIndicatorData(stateCode);
+            }
+            const selectedDetail = stateInfo.details.find((detail: any) => {
+              const detailCode = detail.code?.toLowerCase().replace(/\s+/g, '');
+              const selectedCode = this.selectedIndicator?.toLowerCase().replace(/\s+/g, '');
+              return detailCode === selectedCode;
+            });
+            if (selectedDetail) {
+              tooltip.transition().duration(200).style("opacity", .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500;">${selectedDetail.code || ''}</div>
+                <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
+              </div>`;
+              this.positionTooltip(event, document.getElementById('map-tooltip')!);
+              tooltip.html(tooltipHtml);
+            } else {
+              tooltip.transition().duration(200).style("opacity", .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
+              </div>`;
+              this.positionTooltip(event, document.getElementById('map-tooltip')!);
+              tooltip.html(tooltipHtml);
+            }
+          } else {
+            // Show tooltip for states without data
+            tooltip.transition().duration(200).style("opacity", .9);
+            let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+              <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateName}</div>
+            </div>`;
+            this.positionTooltip(event, document.getElementById('map-tooltip')!);
+            tooltip.html(tooltipHtml);
+          }
+
+          }else{
+            const stateCode = d.properties.st_code;
           const stateInfo = statesData[stateCode];
           if (this.showDetails && stateInfo) {
             this.fetchIndicatorData(stateCode);
@@ -236,8 +278,11 @@ export class CountryView implements OnInit, AfterViewInit {
             }
           } else if (!this.showDetails) {
             this.stateSelected.emit(stateInfo?.label || '');
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/dashboard']); 
           }
+
+          }
+          
         });
 
       // Add SVG icons only for states in indicatorJson (Bihar and Karnataka)
@@ -281,16 +326,14 @@ export class CountryView implements OnInit, AfterViewInit {
                 <div style="font-size: 14px; color: #333; font-weight: 500; text-transform: capitalize;">${selectedDetail.code || ''}</div>
                 <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
               </div>`;
-              tooltip.style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 28) + "px").style('z-index',1000);
+              this.positionTooltip(event, document.getElementById('map-tooltip')!);
               tooltip.html(tooltipHtml);
             } else {
               tooltip.transition().duration(200).style("opacity", .9);
               let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
                 <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
               </div>`;
-              tooltip.style("left", (event.pageX + 10) + "px")
-              .style("top", (event.pageY - 28) + "px").style('z-index',1000);
+              this.positionTooltip(event, document.getElementById('map-tooltip')!);
               tooltip.html(tooltipHtml);
             }
           } else {
@@ -299,14 +342,12 @@ export class CountryView implements OnInit, AfterViewInit {
             let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
               <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateName}</div>
             </div>`;
-            tooltip.style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 28) + "px").style('z-index',1000);
+            this.positionTooltip(event, document.getElementById('map-tooltip')!);
             tooltip.html(tooltipHtml);
           }
         })
         .on('mousemove', (event: any) => {
-          tooltip.style("left", (event.pageX + 10) + "px")
-            .style("top", (event.pageY - 28) + "px").style('z-index',1000);
+          this.positionTooltip(event, document.getElementById('map-tooltip')!);
         })
         .on('mouseout', () => {
           if (this.showDetails) {
@@ -315,7 +356,48 @@ export class CountryView implements OnInit, AfterViewInit {
           tooltip.transition().duration(500).style("opacity", 0);
         })
         .on('click', (event: any, d: any) => {
-          const stateCode = d.properties.st_code;
+          if(this.isMobile && !this.showDetails){
+            const stateCode = d.properties.st_code;
+          const stateInfo = statesData[stateCode];
+          const stateName = d.properties.st_nm || 'Unknown State'; // Fallback to state name from topojson
+          if (stateInfo) {
+            if (this.showDetails) {
+              this.fetchIndicatorData(stateCode);
+            }
+            const selectedDetail = stateInfo.details.find((detail: any) => {
+              const detailCode = detail.code?.toLowerCase().replace(/\s+/g, '');
+              const selectedCode = this.selectedIndicator?.toLowerCase().replace(/\s+/g, '');
+              return detailCode === selectedCode;
+            });
+            if (selectedDetail) {
+              tooltip.transition().duration(200).style("opacity", .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
+                <div style="font-size: 14px; color: #333; font-weight: 500; text-transform: capitalize;">${selectedDetail.code || ''}</div>
+                <div style="font-size: 20px; color: #e6007a; font-weight: bold;">${selectedDetail.value}</div>
+              </div>`;
+              this.positionTooltip(event, document.getElementById('map-tooltip')!);
+              tooltip.html(tooltipHtml);
+            } else {
+              tooltip.transition().duration(200).style("opacity", .9);
+              let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+                <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateInfo.label}</div>
+              </div>`;
+              this.positionTooltip(event, document.getElementById('map-tooltip')!);
+              tooltip.html(tooltipHtml);
+            }
+          } else {
+            // Show tooltip for states without data
+            tooltip.transition().duration(200).style("opacity", .9);
+            let tooltipHtml = `<div style="padding: 8px 12px; border-radius: 6px; text-align: center;">
+              <div style="font-size: 16px; color: #333; font-weight: bold; text-transform: capitalize;">${stateName}</div>
+            </div>`;
+            this.positionTooltip(event, document.getElementById('map-tooltip')!);
+            tooltip.html(tooltipHtml);
+          }
+
+          }else{
+           const stateCode = d.properties.st_code;
           const stateInfo = statesData[stateCode];
           if (this.showDetails && stateInfo) {
             this.fetchIndicatorData(stateCode);
@@ -329,6 +411,8 @@ export class CountryView implements OnInit, AfterViewInit {
             this.stateSelected.emit(stateInfo?.label || '');
             this.router.navigate(['/dashboard']);
           }
+          }
+          
         });
 
       svg.append('path')
@@ -343,4 +427,37 @@ export class CountryView implements OnInit, AfterViewInit {
   reDrawMap() {
     this.drawMap();
   }
+
+  positionTooltip(event: MouseEvent, tooltipEl: HTMLElement) {
+    const tooltipWidth = tooltipEl.offsetWidth;
+    const tooltipHeight = tooltipEl.offsetHeight;
+    const pageWidth = window.innerWidth;
+    const pageHeight = window.innerHeight;
+
+    let left = event.clientX + 10;
+    let top = event.clientY - tooltipHeight - 10;
+
+    if ((left + tooltipWidth) > pageWidth) {
+      left = event.clientX - tooltipWidth - 10;
+    }
+
+    if (left < 0) {
+      left = 10;
+    }
+
+    if (top < 0) {
+      top = event.clientY + 10;
+    }
+
+    if ((top + tooltipHeight) > pageHeight) {
+      top = pageHeight - tooltipHeight - 10;
+    }
+
+    tooltipEl.style.left = `${left}px`;
+    tooltipEl.style.top = `${top}px`;
+    tooltipEl.style.position = 'fixed';
+    tooltipEl.style.zIndex = '1000';
+    tooltipEl.style.display = 'block'; // Ensure it's visible
+  }
+
 }
