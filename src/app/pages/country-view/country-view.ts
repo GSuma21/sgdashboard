@@ -52,6 +52,12 @@ export class CountryView implements OnInit, AfterViewInit {
   checkIfMobile() {
     this.isMobile = window.innerWidth <= 768;
   }
+  @HostListener('window:scroll', [])
+  onScroll() {
+    if (this.isMobile) {
+      d3.select("#map-tooltip").transition().duration(0).style("opacity", 0);
+    }
+  }
 
   fetchCommunityData() {
     d3.json(`${this.baseUrl}/${COMMUNITY_MAP_DATA}`).then((data: any) => {
