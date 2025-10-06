@@ -19,6 +19,10 @@ export class PartnerLogosComponent implements OnInit, AfterViewInit {
   categories: string[] = [];
   activeCategory: string | null = null;
 
+  private isMobile = window.innerWidth <= 768;
+  private scrollerInner: HTMLElement | null = null;
+  private animationPaused = false;
+
   constructor(private elRef: ElementRef) {}
 
   ngOnInit(): void {
@@ -33,6 +37,54 @@ export class PartnerLogosComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.updateScrollSpeed();
+    this.setupMobileScrollResume();
+  }
+
+  private setupMobileScrollResume() {
+    if (!this.isMobile) return;
+    this.scrollerInner = this.elRef.nativeElement.querySelector('.scroller__inner');
+    if (!this.scrollerInner) return;
+
+    // Pause on tapping logos
+    this.scrollerInner.addEventListener('touchstart', this.pauseAnimation);
+
+    // Resume on scroll
+    window.addEventListener('scroll', this.resumeAnimation, { passive: true });
+
+    // Resume on tapping outside the scroller
+    document.addEventListener('touchstart', this.handleOutsideTap);
+  }
+
+  private handleOutsideTap = (event: TouchEvent) => {
+    if (
+      this.animationPaused &&
+      this.scrollerInner &&
+      !this.scrollerInner.contains(event.target as Node)
+    ) {
+      this.resumeAnimation();
+    }
+  };
+
+  private pauseAnimation = () => {
+    if (this.scrollerInner && !this.animationPaused) {
+      this.scrollerInner.style.animationPlayState = 'paused';
+      this.animationPaused = true;
+    }
+  };
+
+  private resumeAnimation = () => {
+    if (this.scrollerInner && this.animationPaused) {
+      this.scrollerInner.style.animationPlayState = 'running';
+      this.animationPaused = false;
+    }
+  };
+
+  ngOnDestroy(): void {
+    if (this.isMobile && this.scrollerInner) {
+      this.scrollerInner.removeEventListener('touchstart', this.pauseAnimation);
+      window.removeEventListener('scroll', this.resumeAnimation);
+      document.removeEventListener('touchstart', this.handleOutsideTap);
+    }
   }
 
   filterLogos(category: string | null): void {
