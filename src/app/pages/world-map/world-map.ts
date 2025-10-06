@@ -770,12 +770,38 @@ if (!coords && location.partner_id?.length) {
     }
   }
 
- applyZoom() {
-  if (this.mapContainer?.nativeElement) {
-    this.mapContainer.nativeElement.style.transform = `scale(${this.scale})`;
-    this.mapContainer.nativeElement.style.transformOrigin = 'left top';
-    this.mapContainer.nativeElement.style.transition = 'transform 0.3s ease';
-  }
+applyZoom() {
+  const mapEl = this.mapContainer.nativeElement as HTMLElement;
+  const viewportEl = mapEl.parentElement as HTMLElement; // Assuming map-container is directly inside map-viewport
+
+  if (!mapEl || !viewportEl) return;
+
+  const oldScale = parseFloat(mapEl.style.transform.replace('scale(', '').replace(')', '')) || 1;
+  const newScale = this.scale;
+  const scaleRatio = newScale / oldScale;
+
+  // 1. Get the current center point of the viewport relative to the map content
+  const centerX = viewportEl.scrollLeft + viewportEl.clientWidth / 2;
+  const centerY = viewportEl.scrollTop + viewportEl.clientHeight / 2;
+
+  // 2. Apply the new scale transformation to the map container
+  mapEl.style.transform = `scale(${newScale})`;
+  mapEl.style.transformOrigin = '0 0'; // Crucial: ensure scaling is applied from top-left (0 0)
+                                      // so that the calculation below works predictably.
+  mapEl.style.transition = 'transform 0.3s ease';
+
+  // 3. Calculate the new scroll position to keep the center fixed
+  // The map dimensions have effectively grown by scaleRatio.
+  // The new scroll position should be the center point scaled, minus half the viewport size.
+  const newScrollLeft = centerX * scaleRatio - viewportEl.clientWidth / 2;
+  const newScrollTop = centerY * scaleRatio - viewportEl.clientHeight / 2;
+
+  // 4. Apply the new scroll position (with smooth transition for a nicer effect)
+  viewportEl.scrollTo({
+    left: newScrollLeft,
+    top: newScrollTop,
+    behavior: 'smooth'
+  });
 }
 
 }
