@@ -38,7 +38,9 @@
 
                     <div class="partners row mt-2">
                         <section *ngFor="let img of getPartnerDetails(report)" class="col-sm-auto">
-                            <img mat-card-image [src]="img.src" class="partners-logo m-2"  alt="Partner logo"><br>
+                            <div class="d-flex flex-row justify-content-center">
+                                <img mat-card-image [src]="img.src" class="partners-logo m-2" alt="Partner logo"><br>
+                            </div>
                             <p class="partner-name">{{img.name}}</p>
                         </section>
                     </div>

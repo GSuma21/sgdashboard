@@ -341,6 +341,6 @@ app-slider-carousel {
     gap: 12px;
   }
   .network-section{
-    padding: 40px 2rem;
+    padding: 40px 2rem 0 2rem;
   }
 }
