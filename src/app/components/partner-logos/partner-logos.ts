@@ -116,7 +116,7 @@ export class PartnerLogosComponent implements OnInit, AfterViewInit {
       const refreshRate = (window.matchMedia('(min-resolution: 120dpi)').matches ? 120 : 60);
       const adjustment = (deviceRatio * refreshRate) / 60;
 
-      const baseSpeed = 200; // px/sec
+      const baseSpeed = 60; // px/sec
       const adjustedSpeed = baseSpeed * (1 / adjustment);
 
       const duration = distance / adjustedSpeed;
