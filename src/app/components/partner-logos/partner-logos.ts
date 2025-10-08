@@ -42,13 +42,14 @@ export class PartnerLogosComponent implements OnInit, AfterViewInit {
 
   private setupMobileScrollResume() {
     if (!this.isMobile) return;
+
     this.scrollerInner = this.elRef.nativeElement.querySelector('.scroller__inner');
     if (!this.scrollerInner) return;
 
-    // Pause on tapping logos
+    // ✅ Pause on tapping logos
     this.scrollerInner.addEventListener('touchstart', this.pauseAnimation);
 
-    // Resume on scroll
+    // ✅ Resume on scroll
     window.addEventListener('scroll', this.resumeAnimation, { passive: true });
 
     // Resume on tapping outside the scroller
@@ -99,18 +100,28 @@ export class PartnerLogosComponent implements OnInit, AfterViewInit {
   }
 
   /** Ensure consistent scroll speed */
-  private updateScrollSpeed() {
-    const scrollerInner: HTMLElement | null = this.elRef.nativeElement.querySelector('.scroller__inner');
-    const scroller: HTMLElement | null = this.elRef.nativeElement.querySelector('.scroller');
+  private updateScrollSpeed = () => {
+    const scrollerInner = this.elRef.nativeElement.querySelector('.scroller__inner') as HTMLElement;
+    const scroller = this.elRef.nativeElement.querySelector('.scroller') as HTMLElement;
 
-    if (scrollerInner && scroller) {
-      const contentWidth = scrollerInner.scrollWidth;
-      const distance = contentWidth / 2; // we duplicate the logos for infinite scroll
+    if (!scrollerInner || !scroller) return;
 
-      const pixelsPerSecond = 60; // 🔹 adjust this to control speed
-      const duration = distance / pixelsPerSecond;
+    // Wait for layout to settle (important for Firefox + DOM updates)
+    requestAnimationFrame(() => {
+      const contentWidth = scrollerInner.scrollWidth || 1;
+      const distance = contentWidth / 2;
 
+      // Normalize across browsers/devices
+      const deviceRatio = window.devicePixelRatio || 1;
+      const refreshRate = (window.matchMedia('(min-resolution: 120dpi)').matches ? 120 : 60);
+      const adjustment = (deviceRatio * refreshRate) / 60;
+
+      const baseSpeed = 200; // px/sec
+      const adjustedSpeed = baseSpeed * (1 / adjustment);
+
+      const duration = distance / adjustedSpeed;
       scrollerInner.style.animationDuration = `${duration}s`;
-    }
-  }
+    });
+  };
+
 }
