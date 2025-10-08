@@ -832,4 +832,16 @@ applyZoom() {
   });
 }
 
+@HostListener('window:scroll', [])
+onScroll() {
+  // Hide tooltip when the user scrolls the page (mobile or desktop)
+  if (this.tooltip) {
+    this.tooltip
+      .interrupt() // stop any D3 transitions in progress
+      .style('opacity', 0)
+      .style('pointer-events', 'none');
+  }
+}
+
+
 }
