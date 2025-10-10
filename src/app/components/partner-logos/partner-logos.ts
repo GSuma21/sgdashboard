@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './partner-logos.html',
   styleUrls: ['./partner-logos.css']
 })
-export class PartnerLogosComponent implements OnInit, AfterViewInit {
+export class PartnerLogosComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() partners: any[] = [];
   @Input() styles: any = {};
   @Input() title: string = '';
@@ -21,7 +21,14 @@ export class PartnerLogosComponent implements OnInit, AfterViewInit {
 
   private isMobile = window.innerWidth <= 768;
   private scrollerInner: HTMLElement | null = null;
+  
+  // --- Properties for Desktop CSS Animation ---
   private animationPaused = false;
+
+  // --- Properties for Mobile JS Animation ---
+  private scrollInterval: any;
+  private userIsInteracting = false;
+  private resumeTimeout: any;
 
   constructor(private elRef: ElementRef) {}
 
@@ -36,32 +43,67 @@ export class PartnerLogosComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.updateScrollSpeed();
-    this.setupMobileScrollResume();
+    this.scrollerInner = this.elRef.nativeElement.querySelector('.scroller__inner');
+    if (this.isMobile) {
+      this.setupMobileJsAnimation();
+    } else {
+      this.updateScrollSpeed();
+      this.setupDesktopCssAnimation();
+    }
   }
 
-  private setupMobileScrollResume() {
-    if (!this.isMobile) return;
+  // --- Mobile-specific logic (JS Animation) ---
+  private setupMobileJsAnimation() {
+    const scroller = this.elRef.nativeElement.querySelector('.scroller');
+    if (!scroller) return;
 
-    this.scrollerInner = this.elRef.nativeElement.querySelector('.scroller__inner');
+    scroller.addEventListener('touchstart', () => {
+      this.userIsInteracting = true;
+      clearTimeout(this.resumeTimeout);
+      clearInterval(this.scrollInterval);
+    }, { passive: true });
+
+    scroller.addEventListener('touchend', () => {
+      this.userIsInteracting = false;
+      // Resume animation after a delay if user is not interacting
+      this.resumeTimeout = setTimeout(() => {
+        if (!this.userIsInteracting) {
+          this.startJsScrollAnimation();
+        }
+      }, 2000); // 2-second delay
+    }, { passive: true });
+
+    this.startJsScrollAnimation();
+  }
+
+  private startJsScrollAnimation() {
+    clearInterval(this.scrollInterval);
+    const scroller = this.elRef.nativeElement.querySelector('.scroller');
+    if (!scroller) return;
+
+    this.scrollInterval = setInterval(() => {
+      const listWidth = scroller.scrollWidth / 2;
+      
+      // When the scroll position exceeds the width of the first set of logos, loop back.
+      // We check against listWidth - 1 because scrollLeft can be a float.
+      if (scroller.scrollLeft >= listWidth - 1) {
+        scroller.scrollLeft = 0;
+      } else {
+        scroller.scrollLeft += 1; // Speed of the scroll
+      }
+    }, 30); // Interval time (ms)
+  }
+
+  // --- Desktop-specific logic (CSS Animation) ---
+  private setupDesktopCssAnimation() {
     if (!this.scrollerInner) return;
-
-    // ✅ Pause on tapping logos
     this.scrollerInner.addEventListener('touchstart', this.pauseAnimation);
-
-    // ✅ Resume on scroll
     window.addEventListener('scroll', this.resumeAnimation, { passive: true });
-
-    // Resume on tapping outside the scroller
     document.addEventListener('touchstart', this.handleOutsideTap);
   }
 
   private handleOutsideTap = (event: TouchEvent) => {
-    if (
-      this.animationPaused &&
-      this.scrollerInner &&
-      !this.scrollerInner.contains(event.target as Node)
-    ) {
+    if (this.animationPaused && this.scrollerInner && !this.scrollerInner.contains(event.target as Node)) {
       this.resumeAnimation();
     }
   };
@@ -80,11 +122,18 @@ export class PartnerLogosComponent implements OnInit, AfterViewInit {
     }
   };
 
+  // --- Common Logic & Lifecycle Hooks ---
   ngOnDestroy(): void {
-    if (this.isMobile && this.scrollerInner) {
-      this.scrollerInner.removeEventListener('touchstart', this.pauseAnimation);
-      window.removeEventListener('scroll', this.resumeAnimation);
-      document.removeEventListener('touchstart', this.handleOutsideTap);
+    if (this.isMobile) {
+      clearInterval(this.scrollInterval);
+      clearTimeout(this.resumeTimeout);
+      // Note: No need to remove passive event listeners in most modern browsers
+    } else {
+      if (this.scrollerInner) {
+        this.scrollerInner.removeEventListener('touchstart', this.pauseAnimation);
+        window.removeEventListener('scroll', this.resumeAnimation);
+        document.removeEventListener('touchstart', this.handleOutsideTap);
+      }
     }
   }
 
@@ -96,32 +145,33 @@ export class PartnerLogosComponent implements OnInit, AfterViewInit {
       this.filteredLogos = this.allLogos;
     }
 
-    setTimeout(() => this.updateScrollSpeed(), 0); // recalc after DOM update
+    // After filtering, restart the appropriate animation
+    setTimeout(() => {
+      if (this.isMobile) {
+        this.startJsScrollAnimation();
+      } else {
+        this.updateScrollSpeed();
+      }
+    }, 0);
   }
 
-  /** Ensure consistent scroll speed */
   private updateScrollSpeed = () => {
-    const scrollerInner = this.elRef.nativeElement.querySelector('.scroller__inner') as HTMLElement;
+    // This is only for the desktop CSS animation
+    if (this.isMobile || !this.scrollerInner) return;
+    
     const scroller = this.elRef.nativeElement.querySelector('.scroller') as HTMLElement;
+    if (!scroller) return;
 
-    if (!scrollerInner || !scroller) return;
-
-    // Wait for layout to settle (important for Firefox + DOM updates)
     requestAnimationFrame(() => {
-      const contentWidth = scrollerInner.scrollWidth || 1;
+      const contentWidth = this.scrollerInner!.scrollWidth || 1;
       const distance = contentWidth / 2;
-
-      // Normalize across browsers/devices
       const deviceRatio = window.devicePixelRatio || 1;
       const refreshRate = (window.matchMedia('(min-resolution: 120dpi)').matches ? 120 : 60);
       const adjustment = (deviceRatio * refreshRate) / 60;
-
       const baseSpeed = 60; // px/sec
       const adjustedSpeed = baseSpeed * (1 / adjustment);
-
       const duration = distance / adjustedSpeed;
-      scrollerInner.style.animationDuration = `${duration}s`;
+      this.scrollerInner!.style.animationDuration = `${duration}s`;
     });
   };
-
 }
