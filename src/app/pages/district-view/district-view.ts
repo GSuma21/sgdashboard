@@ -51,7 +51,7 @@ export class DistrictView implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    if (this.stateName) {
+    if (!(window.innerWidth <= 768) && this.stateName) {
       this.drawDistrictMap(this.stateName);
     }
   }
