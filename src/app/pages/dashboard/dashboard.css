@@ -17,7 +17,14 @@
 
 
   .goal-values {
-    margin-left: 2rem;
+    margin: 0 15px;
+  }
+  
+  .dashboard-indicator {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: start;
   }
 
 }
@@ -364,15 +371,5 @@
 
 .flag {
   margin-right: 1.5rem;
-}
-
-@media (max-width: 768px){
-
-  .dashboard-indicator {
-         display: flex;
-        flex-wrap: wrap;
-        justify-content: start;
-        align-items: start;
-}
 }
 

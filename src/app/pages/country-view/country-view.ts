@@ -29,6 +29,7 @@ export class CountryView implements OnInit, AfterViewInit {
   @Input() notes: any = [];
   selectedIndicator: string = 'Micro Improvements Initiated';
   hoveredState: string = "";
+  dashboardPage = window.location.pathname.includes('/dashboard') ? true : false
 
   indicatorData: { value: number | string; label: string }[] = [];
   baseUrl: any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`;
