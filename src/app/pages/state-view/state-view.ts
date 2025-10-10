@@ -180,8 +180,10 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    clearTimeout(this.resizeTimeout);
-    this.resizeTimeout = setTimeout(() => this.drawMap(), 200);
+    if (!(window.innerWidth <= 768)) {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = setTimeout(() => this.drawMap(), 200);
+    }
   }
 
   private drawMap(): void {
