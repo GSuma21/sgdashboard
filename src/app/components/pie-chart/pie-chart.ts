@@ -116,11 +116,12 @@ export class PieChartComponent {
               left: 'center',
               top: null,
               right: null,
-              itemGap: 0
+              itemGap: 10
             },
             series: [
               {
-                center: ['50%', '45%']
+                center: ['50%', '45%'],
+                radius: ['45%', '65%'],
               }
             ]
           }
