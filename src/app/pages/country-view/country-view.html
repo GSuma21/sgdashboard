@@ -1,5 +1,5 @@
 <div class="country-view-container">
-  <div class="legend-container">
+  <div  [ngClass]="dashboardPage ? 'legend-dashboard' : 'legend-container'">
     @for(data of displayLegends; track $index){
       <div class="legend-item">
         <div class="color-box" [ngStyle]="{'background-color': typeof data.color == 'object' ? data.color[selectedIndicator] : data.color }" *ngIf="!data.icon"></div>
