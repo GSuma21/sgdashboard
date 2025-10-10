@@ -366,3 +366,13 @@
   margin-right: 1.5rem;
 }
 
+@media (max-width: 768px){
+
+  .dashboard-indicator {
+         display: flex;
+        flex-wrap: wrap;
+        justify-content: start;
+        align-items: start;
+}
+}
+
