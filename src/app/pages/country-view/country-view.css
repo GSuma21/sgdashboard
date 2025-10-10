@@ -17,6 +17,17 @@
   min-width: 200px;
 }
 
+.legend-dashboard{
+  background-color: #EEEEEE; /* Light gray background */
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 200px;
+}
+
 .legend-icon {
   width: 20px;
   margin-right: 8px;
