@@ -113,8 +113,10 @@ export class CountryView implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    clearTimeout(this.resizeTimeout);
-    this.resizeTimeout = setTimeout(() => this.drawMap(), 200);
+    if(!this.isMobile){
+       clearTimeout(this.resizeTimeout);
+       this.resizeTimeout = setTimeout(() => this.drawMap(), 200);
+    }
   }
 
   private drawMap(): void {
