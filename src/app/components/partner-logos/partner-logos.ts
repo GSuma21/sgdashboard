@@ -43,14 +43,16 @@ export class PartnerLogosComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.scrollerInner = this.elRef.nativeElement.querySelector('.scroller__inner');
-    if (this.isMobile) {
+  this.scrollerInner = this.elRef.nativeElement.querySelector('.scroller__inner');
+  if (this.isMobile) {
+    setTimeout(() => {
       this.setupMobileJsAnimation();
-    } else {
-      this.updateScrollSpeed();
-      this.setupDesktopCssAnimation();
-    }
+    }, 100); // give DOM/images time to render
+  } else {
+    this.updateScrollSpeed();
+    this.setupDesktopCssAnimation();
   }
+}
 
   // --- Mobile-specific logic (JS Animation) ---
   private setupMobileJsAnimation() {
@@ -76,23 +78,28 @@ export class PartnerLogosComponent implements OnInit, AfterViewInit, OnDestroy {
     this.startJsScrollAnimation();
   }
 
-  private startJsScrollAnimation() {
-    clearInterval(this.scrollInterval);
-    const scroller = this.elRef.nativeElement.querySelector('.scroller');
-    if (!scroller) return;
+ private startJsScrollAnimation() {
+  clearInterval(this.scrollInterval);
+  const scroller = this.elRef.nativeElement.querySelector('.scroller') as HTMLElement;
+  if (!scroller) return;
 
-    this.scrollInterval = setInterval(() => {
-      const listWidth = scroller.scrollWidth / 2;
-      
-      // When the scroll position exceeds the width of the first set of logos, loop back.
-      // We check against listWidth - 1 because scrollLeft can be a float.
-      if (scroller.scrollLeft >= listWidth - 1) {
-        scroller.scrollLeft = 0;
-      } else {
-        scroller.scrollLeft += 1; // Speed of the scroll
-      }
-    }, 30); // Interval time (ms)
-  }
+  const scrollSpeed = 1; // px per tick
+  const frameRate = 30; // ms per tick
+
+  this.scrollInterval = setInterval(() => {
+    const totalScroll = scroller.scrollWidth;
+    const visibleWidth = scroller.clientWidth;
+    const duplicatedWidth = totalScroll / 2;
+
+    // SAFER check: always let it scroll full width before reset
+    if (scroller.scrollLeft >= duplicatedWidth) {
+      scroller.scrollLeft = 0;
+    } else {
+      scroller.scrollLeft += scrollSpeed;
+    }
+  }, frameRate);
+}
+
 
   // --- Desktop-specific logic (CSS Animation) ---
   private setupDesktopCssAnimation() {

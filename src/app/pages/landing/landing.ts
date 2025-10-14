@@ -44,7 +44,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.isGlobalMapVisible = false;
-    }, 1200); 
+    }, 2000); 
   }
 
   fetchPageData(): void {

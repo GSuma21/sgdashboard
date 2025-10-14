@@ -61,11 +61,10 @@ export class GlobalMap2 implements OnInit {
   partnersByState: { [key: string]: any[] } = {};
   partnersByCountry: { [key: string]: any[] } = {};
   markerConfigList: any = {
-    momentum: { hqIcon: "./assets/marker-icons/momentum-partners.svg", icon: "./assets/marker-icons/momentum-partners.svg", color: "#572E91" },
-    strategic: { hqIcon: "./assets/marker-icons/strategic-partners.svg", icon: "./assets/marker-icons/strategic-partners.svg", color: "orange" },
-    collaborator: { hqIcon: "./assets/marker-icons/hq-triangle.svg", icon: "./assets/marker-icons/triangle.svg", color: "red" },
-    anchor: { hqIcon: "./assets/marker-icons/hq-diamond.svg", icon: "./assets/marker-icons/diamond.svg", color: "pink" }
-  }
+    "momentum": { hqIcon: "./assets/marker-icons/momentum-partners.svg", icon: "./assets/marker-icons/momentum.svg", color: "#572E91" },
+    "strategic": { hqIcon: "./assets/marker-icons/strategic-partners.svg", icon: "./assets/marker-icons/stategic.svg", color: "orange" },
+    "collaborators": { hqIcon: "./assets/marker-icons/triangle.svg", icon: "./assets/marker-icons/collaborators.svg", color: "red" }
+  };
 
   constructor() { }
   ngOnInit(): void {
@@ -371,17 +370,17 @@ export class GlobalMap2 implements OnInit {
           const x = projected[0];
           const y = projected[1];
 
-          function rotate() {
-            icon.transition()
-              .duration(2000)
-              .ease(d3.easeLinear)
-              .attrTween('transform', () => {
-                const i = d3.interpolate(0, 360);
-                return (t) => `rotate(${i(t)}, ${x}, ${y})`;
-              })
-              .on('end', rotate);
-          }
-          rotate();
+          // function rotate() {
+          //   icon.transition()
+          //     .duration(2000)
+          //     .ease(d3.easeLinear)
+          //     .attrTween('transform', () => {
+          //       const i = d3.interpolate(0, 360);
+          //       return (t) => `rotate(${i(t)}, ${x}, ${y})`;
+          //     })
+          //     .on('end', rotate);
+          // }
+          // rotate();
         });
 
       const indiaCountry = countries.find((d: any) => d.properties.name === 'India');
