@@ -77,7 +77,7 @@ export class PieChartComponent {
         tooltip: { trigger: 'item', formatter: '{b}<br/>{c} ({d}%)' },
         legend: {
           orient: 'vertical',
-          right: 10,
+          right: 30,
           top: 'middle',
           align: 'left',
           textStyle: { fontSize: 13 },
@@ -116,7 +116,7 @@ export class PieChartComponent {
               left: 'center',
               top: null,
               right: null,
-              itemGap: 10
+              itemGap: 2
             },
             series: [
               {
