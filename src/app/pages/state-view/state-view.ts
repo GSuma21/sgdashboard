@@ -104,34 +104,34 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
     this.tryDrawMap();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const relevantChange =
-      ('stateLedMission' in changes && !changes['stateLedMission'].firstChange) ||
-      ('path' in changes && !changes['path'].firstChange) ||
-      ('selectedState' in changes && !changes['selectedState'].firstChange);
-
-    if (relevantChange) {
-      this.mapRendered = false;
-      this.debouncedRedraw();
-    }
-  }
-
   // ngOnChanges(changes: SimpleChanges): void {
-  //   if ('stateLedMission' in changes && this.mapRendered) {
-  //     // Only update colors when already rendered
-  //     this.stateLedMission = changes['stateLedMission'].currentValue ?? 0;
-  //     this.updateDistrictColors();
-  //   } else {
-  //     const relevantChange =
-  //       ('path' in changes && !changes['path'].firstChange) ||
-  //       ('selectedState' in changes && !changes['selectedState'].firstChange);
+  //   const relevantChange =
+  //     ('stateLedMission' in changes && !changes['stateLedMission'].firstChange) ||
+  //     ('path' in changes && !changes['path'].firstChange) ||
+  //     ('selectedState' in changes && !changes['selectedState'].firstChange);
 
-  //     if (relevantChange) {
-  //       this.mapRendered = false;
-  //       this.debouncedRedraw();
-  //     }
+  //   if (relevantChange) {
+  //     this.mapRendered = false;
+  //     this.debouncedRedraw();
   //   }
   // }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('stateLedMission' in changes && this.mapRendered) {
+      // Only update colors when already rendered
+      this.stateLedMission = changes['stateLedMission'].currentValue ?? 0;
+      this.updateDistrictColors();
+    } else {
+      const relevantChange =
+        ('path' in changes && !changes['path'].firstChange) ||
+        ('selectedState' in changes && !changes['selectedState'].firstChange);
+
+      if (relevantChange) {
+        this.mapRendered = false;
+        this.debouncedRedraw();
+      }
+    }
+  }
 
 
   private redrawTimeout: any;
