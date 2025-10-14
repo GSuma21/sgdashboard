@@ -164,7 +164,7 @@ h5 {
     display: flex;
     /* Use flex to center text vertically if needed */
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     margin-top: 0;
     color: var(--secondary-color-light);
 }
