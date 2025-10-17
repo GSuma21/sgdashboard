@@ -44,8 +44,8 @@ export class ProgramsReportListComponent implements OnInit {
 
   scrollRight(event: any) {
     event.stopPropagation();
-
-    const container = (event.target as HTMLElement).parentElement!.querySelector('.carousel-track');
+    const parent = (event.target as HTMLElement).parentElement; if (!parent) return;
+    const container = parent.querySelector('.carousel-track');
     if (!container) return;
 
     // Get all images inside the carousel
@@ -66,9 +66,11 @@ export class ProgramsReportListComponent implements OnInit {
   scrollLeft(event: any) {
     event.stopPropagation();
 
-    const container = (event.target as HTMLElement).parentElement!.querySelector('.carousel-track');
+    const parent = (event.target as HTMLElement).parentElement;
+    if (!parent) return;
+    const container = parent.querySelector('.carousel-track');
     if (!container) return;
-
+    
     const images = Array.from(container.querySelectorAll('.program-images')) as HTMLElement[];
     const containerRect = container.getBoundingClientRect();
 
