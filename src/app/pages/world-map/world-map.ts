@@ -329,7 +329,7 @@ export class WorldMapComponent implements OnInit {
     this.path = d3.geoPath().projection(this.projection);
 
     Promise.all([
-      d3.json<any>('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-10m.json'),
+      d3.json<any>('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'),
       d3.json<any>(`${this.baseUrl}/${INDIA}`),
       d3.json<NetworkData>(`${this.baseUrl}/${NETWORK_DATA}`)
     ]).then(([topology, indiaTopology, networkData]) => {
