@@ -1,0 +1,234 @@
+:host {
+    display: block;
+    padding: 40px 0;
+    background-color: #f5f5f5; // Light background for contrast
+}
+
+.carousel-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+}
+
+.carousel-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.carousel-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden; // Important to hide non-active slides
+    min-height: 400px; // Ensure the container has height
+}
+
+.nav-button {
+    background: none;
+    border: 2px solid #5d1792; // Dark purple border matching the image
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.2s;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    svg {
+        fill: #5d1792;
+        width: 20px;
+        height: 20px;
+    }
+
+    &:hover {
+        background-color: #5d1792;
+        svg {
+            fill: white;
+        }
+    }
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
+
+.slides-area {
+    display: flex;
+    flex: 1;
+    margin: 0 60px; /* Increased margin to ensure buttons don't overlap cards */
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* This represents one "Page" containing 2 cards */
+.slide-group {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out;
+
+    /* Flex layout to put 2 cards side by side */
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Gap between the two cards */
+}
+
+.slide-group.active {
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+}
+
+/* --- Updated Card Styling --- */
+.story-card {
+    /* Calculate width: (100% - gap) / 2 */
+    width: calc(50% - 10px);
+    display: flex;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    min-height: 350px;
+}
+
+.card-content {
+    flex: 1;
+    padding: 30px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    // Purple gradient background for the bottom part
+    background: linear-gradient(to top, #7a1fa2 0%, #7a1fa2 30%, white 30%, white 100%);
+
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 110px; // Adjust based on your card actions height
+        background-color: #7a1fa2;
+        z-index: 1;
+    }
+}
+
+.quote-icon {
+    font-size: 50px;
+    font-weight: 900;
+    line-height: 0.5;
+    color: #7a1fa2;
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.card-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.card-meta {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    .meta-icon {
+        font-size: 20px;
+        margin-right: 10px;
+        color: #7a1fa2;
+    }
+    .location {
+        font-size: 12px;
+        color: #888;
+    }
+}
+
+.card-actions {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    position: relative;
+    z-index: 2; // Keep actions above the purple background ::after
+
+    .action-item {
+        display: flex;
+        align-items: center;
+        color: white;
+        font-size: 14px;
+        padding: 8px 12px;
+        margin-right: 15px;
+        border: 1px solid white;
+        border-radius: 20px;
+
+        .like-icon {
+            font-size: 16px;
+            margin-right: 5px;
+        }
+        .read-icon {
+            // Placeholder for the book icon in the image
+            width: 14px;
+            height: 14px;
+            background-color: white;
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 17h-2v2h2v-2zm-2 4h2v-2h-2v2zm-2-4h2v-2h-2v2zm-2 4h2v-2h-2v2zm-2-4h2v-2h-2v2zm-2 4h2v-2h-2v2zm-2-4h2v-2h-2v2zm-2 4h2v-2h-2v2zm-2-4h2v-2h-2v2zm-2 4h2v-2h-2v2zm-2-4h2v-2h-2v2zm-2 4h2v-2H3v2zm0-4h2v-2H3v2zm0-4h2v-2H3v2zm0-4h2v-2H3v2zm0-4h2V5H3v2zm4-2h14v-2H7v2z"/></svg>') no-repeat center;
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 17h-2v2h2v-2zm-2 4h2v-2h-2v2zm-2-4h2v-2h-2v2zm-2 4h2v-2h-2v2zm-2-4h2v-2h-2v2zm-2 4h2v-2h-2v2zm-2-4h2v-2h-2v2zm-2 4h2v-2h-2v2zm-2-4h2v-2h-2v2zm-2 4h2v-2h-2v2zm-2-4h2v-2h-2v2zm-2 4h2v-2H3v2zm0-4h2v-2H3v2zm0-4h2v-2H3v2zm0-4h2v-2H3v2zm0-4h2V5H3v2zm4-2h14v-2H7v2z"/></svg>') no-repeat center;
+            mask-size: contain;
+            margin-right: 5px;
+        }
+    }
+
+    .read-story-btn {
+        margin-left: auto;
+        padding: 10px 20px;
+        background-color: white;
+        color: #7a1fa2;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        &:hover {
+            background-color: #e0e0e0;
+        }
+    }
+}
+
+.card-image-wrapper {
+    width: 40%; // Image takes 40% of the card width
+    overflow: hidden;
+
+    .card-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+}
+
+// Ensure the cards are horizontally aligned
+.slide-item.active > .story-card {
+    &:first-child {
+        margin-right: 20px; // Space between the two visible cards
+    }
+}

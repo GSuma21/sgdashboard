@@ -18,6 +18,7 @@ import { COMMUNITY_LED_IMPROVEMENT } from '../constants/urlConstants';
 import { ProgramDetails } from './components/program-details/program-details';
 import { pageDataConfig } from '../config/pageDataConfig';
 import { WorldMapComponent } from './pages/world-map/world-map';
+import { VoicesComponent } from './pages/voices/voices.component';
 
 export const routes: Routes = [
     { path: '', component: LandingComponent },
@@ -25,6 +26,7 @@ export const routes: Routes = [
     { path: 'country-view', component: CountryView },
     { path: 'national-view', component: NationalView },
     { path: 'network-health', component: NetworkHealth },
+    { path: 'voices', component: VoicesComponent },
     { path: 'community-led-improvements', component: ImprovementDetailsComponent},
     { path: 'state-view/:state/:code', component: StateImprovementsComponent, data: pageDataConfig.stateDetails},
   {

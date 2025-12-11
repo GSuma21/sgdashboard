@@ -1,0 +1,18 @@
+<div class="community-feed-container">
+  <h1 class="header-title">Community Feed</h1>
+
+  <div class="feed-scroller">
+    <div class="scroll-track" #scrollTrack>
+
+      <div *ngFor="let item of extendedFeed; let i = index" class="feed-card" [class.active]="i === currentIndex"
+        #feedCard>
+        <div class="feed-content">
+          <p class="main-text"> {{ item.mainText }} </p>
+          <p class="highlighted-text"> {{ item.highlightedText }} </p>
+          <p class="source-info"> - {{ item.author }}, {{ item.location }} </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
