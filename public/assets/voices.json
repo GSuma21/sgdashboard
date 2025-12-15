@@ -1,0 +1,117 @@
+[
+  {
+    "type": "branch-animation",
+    "width": "80%",
+    "position": "center",
+    "title": "",
+    "styles": {}
+  },
+  {
+    "type": "data-indicators",
+    "width": "80%",
+    "position": "center",
+    "title": "India Speaks",
+    "indicators": [
+      {
+        "label": "Shiksha \nChaupals",
+        "value": 600000,
+        "icon": ""
+      },
+      {
+        "label": "Community members \nparticipating in dialogues",
+        "value": 200000,
+        "icon": ""
+      },
+      {
+        "label": "Local challenges \nidentified",
+        "value": 150000,
+        "icon": ""
+      },
+      {
+        "label": "Community leaders \ndriving improvements",
+        "value": 4000,
+        "icon": ""
+      },
+      {
+        "label": "Local solutions \nidentified",
+        "value": 25,
+        "icon": ""
+      },
+      {
+        "label": "Local solutions \nimplemented",
+        "value": 5,
+        "icon": ""
+      }
+    ],
+    "styles": {
+      "section": "data-indicators-section",
+      "title": "section-title",
+      "grid": "data-indicators-grid"
+    }
+  },
+  {
+    "type": "heat-map",
+    "width": "85%",
+    "position": "center",
+    "title": "",
+    "styles": {}
+  },
+  {
+    "type": "voices-of-improvement",
+    "width": "85%",
+    "position": "left",
+    "title": "",
+    "styles": {}
+  },
+  {
+    "type": "story-of-the-week",
+    "width": "50",
+    "position": "center",
+    "title": "",
+    "styles": {}
+  },
+  {
+    "type": "community-feed",
+    "width": "50",
+    "position": "center",
+    "title": "",
+    "styles": {}
+  },
+  {
+    "type": "pulse-of-leadership",
+    "width": "85%",
+    "position": "left",
+    "title": "Pulse of leadership",
+    "styles": {}
+  },
+  {
+    "type": "leaders-engaged",
+    "width": "85%",
+    "position": "left",
+    "title": "Leaders engaged",
+    "styles": {}
+  },
+  {
+    "type": "micro-improvements-so-far",
+    "width": "85%",
+    "position": "left",
+    "data": [
+      {
+        "year": 2025,
+        "data": [
+          618359.0,
+          763265.0
+        ]
+      }
+    ],
+    "title": "Micro Improvements so far",
+    "styles": {}
+  },
+  {
+    "type": "more-stories",
+    "width": "85%",
+    "position": "left",
+    "title": "More stories of Micro Improvements",
+    "styles": {}
+  }
+]

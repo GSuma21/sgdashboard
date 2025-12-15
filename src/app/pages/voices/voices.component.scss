@@ -1,0 +1,36 @@
+body {
+    overflow-x: hidden !important;
+}
+h2 {
+    font-family: Manrope;
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 36px;
+}
+.animation-description {
+    font-family: Manrope;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 24px;
+}
+
+/* Data Indicators Section */
+.data-indicators-section {
+padding: 5rem 0;
+text-align: center;
+background-color: var(--background-color);
+}
+
+.section-title {
+font-size: 2.8rem;
+font-weight: 700;
+margin-bottom: 3.5rem;
+color: var(--primary-color);
+}
+
+.data-indicators-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+gap: 1.5rem;
+align-items: stretch; /* Ensure all grid items stretch to the same height */
+}

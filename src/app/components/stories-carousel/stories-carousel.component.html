@@ -1,0 +1,52 @@
+<div class="carousel-container">
+    <h2 class="carousel-title">More stories of Micro Improvements</h2>
+
+    <div class="carousel-wrapper">
+
+      <button class="nav-button prev" (click)="prevSlide()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+      </button>
+
+      <div class="slides-area">
+        <div *ngFor="let chunk of chunkedSlides; let i = index"
+             class="slide-group"
+             [ngClass]="{'active': i === currentChunkIndex}">
+
+          <div class="story-card" *ngFor="let slide of chunk">
+            <div class="card-content">
+              <span class="quote-icon">“</span>
+              <h3 class="card-title">{{ slide.title }}</h3>
+              <p class="card-subtitle">{{ slide.subtitle }}</p>
+
+              <div class="card-meta">
+                <span class="meta-icon">👤</span>
+                <div class="meta-text">
+                  <p>{{ slide.leader }}</p>
+                  <p class="location">{{ slide.location }}</p>
+                </div>
+              </div>
+
+              <div class="card-actions">
+                <div class="action-item">
+                  <span class="like-icon">♡</span> {{ slide.likes }}
+                </div>
+                <div class="action-item">
+                  <span class="read-icon"></span> {{ slide.reads }}
+                </div>
+                <button class="read-story-btn">Read Story</button>
+              </div>
+            </div>
+
+            <div class="card-image-wrapper">
+               <img [src]="slide.imageUrl" alt="Story Image" class="card-image">
+            </div>
+          </div>
+          </div>
+      </div>
+
+      <button class="nav-button next" (click)="nextSlide()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.59 16.59L15.17 11l-5.58-5.59L11 4l7 7-7 7z"/></svg>
+      </button>
+
+    </div>
+  </div>

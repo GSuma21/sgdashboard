@@ -32,6 +32,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard';
           <a routerLink="/" (click)="closeMenu()"  routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
           <a routerLink="/dashboard" (click)="closeMenu()"  routerLinkActive="active-link">Dashboard</a>
           <a routerLink="/network-health" (click)="closeMenu()"  routerLinkActive="active-link">Network Health</a>
+          <a routerLink="/voices" (click)="closeMenu()"  routerLinkActive="active-link">Voices from the ground</a>
         </div>
       </nav>
     </header>
@@ -52,7 +53,7 @@ export class AppComponent implements OnInit {
 
      // Hide header on specific routes (e.g., '/login')
     this.router.events.subscribe(() => {
-      this.showHeader = this.router.url !== '/world-map'; 
+      this.showHeader = this.router.url !== '/world-map';
     });
   }
 

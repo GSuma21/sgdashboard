@@ -1,0 +1,63 @@
+<div class="landing-container">
+  <div *ngFor="let section of pageData" [ngClass]="'section-position-' + section.position">
+    <!-- Data Indicators Section -->
+    <ng-container *ngIf="section.type === 'branch-animation'">
+      <section [ngClass]="section.styles.section">
+        <h2>Voices from the ground</h2>
+        <p class="animation-description">This space highlights voices from the community identifying issues, finding
+          contextual solutions, and implementing them to solve education barriers.
+          Women leaders are at the forefront of making this change possible.</p>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="section.type === 'data-indicators'">
+      <section [ngClass]="section.styles.section">
+        <div class="indicators-section">
+          <h2 [ngClass]="section.styles.title">{{ section.title }}</h2>
+          <div class="row justify-content-center">
+            <app-indicator-card class="col-sm-3 col-md-3 col-lg-3"
+              *ngFor="let indicator of section.indicators; let i = index" [value]="indicator.value"
+              [label]="indicator.label" [icon]="indicator.icon"
+              [style.--animation-delay.s]="i * 0.1"></app-indicator-card>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="section.type === 'heat-map'">
+      <section [ngClass]="section.styles.section">
+        <div class="indicators-section">
+          <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
+          <div class="row justify-content-center">
+            <app-heat-map [themes]="heatmapThemes" [allVoices]="heatmapVoices"></app-heat-map>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="section.type === 'leaders-engaged'">
+      <section [ngClass]="section.styles.section">
+        <div class="indicators-section">
+          <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
+          <div class="row justify-content-center">
+            <app-multi-axis-chart></app-multi-axis-chart>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="section.type === 'micro-improvements-so-far'">
+      <section [ngClass]="section.styles.section">
+        <div class="indicators-section">
+          <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
+          <div class="row justify-content-center">
+            <app-line-chart [data]="section.data"></app-line-chart>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+  </div>
+</div>
+<app-stories-carousel></app-stories-carousel>
+<app-improvement-story></app-improvement-story>
+<app-vertical-carousel></app-vertical-carousel>
