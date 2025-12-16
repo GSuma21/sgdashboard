@@ -2,15 +2,19 @@ import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartEvent, ChartType, Chart, registerables } from 'chart.js';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-multi-axis-chart',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule, BaseChartDirective, MatCardModule, MatButtonModule],
   templateUrl: './multi-axis-chart.component.html',
   styleUrls: ['./multi-axis-chart.component.scss']
 })
 export class MultiAxisChartComponent {
+  year = '2025';
+
   constructor() {
     Chart.register(...registerables);
   }
@@ -19,17 +23,17 @@ export class MultiAxisChartComponent {
   public lineChartData: ChartConfiguration['data'] = {
     datasets: [
       {
-        data: [65, 59, 80, 81, 56, 55, 40],
+        data: [65, 59, 80, 81],
         label: 'Series A',
         type: 'bar',
-        backgroundColor: 'rgba(0, 255, 255, 0.6)',
-        borderColor: 'rgba(0, 255, 255, 1)',
-        hoverBackgroundColor: 'rgba(0, 255, 255, 0.8)',
-        hoverBorderColor: 'rgba(0, 255, 255, 1)',
+        backgroundColor: '#592e91',
+        borderColor: '#592e91',
+        hoverBackgroundColor: '#592e91',
+        hoverBorderColor: '#592e91',
         yAxisID: 'y'
       },
       {
-        data: [4500, 480000, 490000, 495000, 500000, 502000, 509000],
+        data: [4500, 4800, 4900, 4950],
         label: 'Series B',
         type: 'line',
         backgroundColor: (context: any) => {
@@ -42,16 +46,16 @@ export class MultiAxisChartComponent {
           const isDatasetActive = activeElements.some((el: any) => el.datasetIndex === context.datasetIndex);
           return isDatasetActive ? 'rgba(255, 0, 255, 0.2)' : 'rgba(255, 0, 255, 0)';
         },
-        borderColor: 'rgba(255, 0, 255, 1)',
-        pointBackgroundColor: 'rgba(255, 0, 255, 1)',
+        borderColor: '#fe9a11',
+        pointBackgroundColor: '#fe9a11',
         pointBorderColor: '#fff',
         pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(255, 0, 255, 1)',
+        pointHoverBorderColor: '#fe9a11',
         fill: 'origin',
         yAxisID: 'y1'
       }
     ],
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July']
+    labels: ['Q1 (Apr - Jun)', 'Q2 (Jul - Sept)', 'Q3 (Oct - Dec)', 'Q4 (Jan - Mar)']
   };
 
   public lineChartOptions: ChartConfiguration['options'] = {
@@ -74,7 +78,7 @@ export class MultiAxisChartComponent {
           color: 'rgba(255,0,0,0.3)',
         },
         ticks: {
-          color: 'red'
+          color: 'black'
         }
       }
     },

@@ -13,35 +13,9 @@
              [ngClass]="{'active': i === currentChunkIndex}">
 
           <div class="story-card" *ngFor="let slide of chunk">
-            <div class="card-content">
-              <span class="quote-icon">“</span>
-              <h3 class="card-title">{{ slide.title }}</h3>
-              <p class="card-subtitle">{{ slide.subtitle }}</p>
-
-              <div class="card-meta">
-                <span class="meta-icon">👤</span>
-                <div class="meta-text">
-                  <p>{{ slide.leader }}</p>
-                  <p class="location">{{ slide.location }}</p>
-                </div>
-              </div>
-
-              <div class="card-actions">
-                <div class="action-item">
-                  <span class="like-icon">♡</span> {{ slide.likes }}
-                </div>
-                <div class="action-item">
-                  <span class="read-icon"></span> {{ slide.reads }}
-                </div>
-                <button class="read-story-btn">Read Story</button>
-              </div>
-            </div>
-
-            <div class="card-image-wrapper">
-               <img [src]="slide.imageUrl" alt="Story Image" class="card-image">
-            </div>
+            <app-improvement-story [story]="slide"></app-improvement-story>
           </div>
-          </div>
+        </div>
       </div>
 
       <button class="nav-button next" (click)="nextSlide()">

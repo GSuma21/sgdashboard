@@ -45,7 +45,8 @@ mat-card {
 }
 
 .chart-container {
-  width: 650px;
+  width: 100%;
+  max-width: 650px;
   background: #fff;
   border-radius: 16px;
   padding: 20px;

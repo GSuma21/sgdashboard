@@ -1,5 +1,5 @@
 <div class="landing-container">
-  <div *ngFor="let section of pageData" [ngClass]="'section-position-' + section.position">
+  <div *ngFor="let section of pageData" [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
     <!-- Data Indicators Section -->
     <ng-container *ngIf="section.type === 'branch-animation'">
       <section [ngClass]="section.styles.section">
@@ -40,7 +40,22 @@
         <div class="indicators-section">
           <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
           <div class="row justify-content-center">
-            <app-multi-axis-chart></app-multi-axis-chart>
+            <div class="box-shadow">
+              <app-multi-axis-chart></app-multi-axis-chart>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="section.type === 'community-feed'">
+      <section [ngClass]="section.styles.section">
+        <div class="indicators-section">
+          <h5 [ngClass]="section.styles.title">{{ section.title }}</h5>
+          <div class="row justify-content-center">
+            <div class="box-shadow">
+              <app-vertical-carousel></app-vertical-carousel>
+            </div>
           </div>
         </div>
       </section>
@@ -51,13 +66,40 @@
         <div class="indicators-section">
           <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
           <div class="row justify-content-center">
-            <app-line-chart [data]="section.data"></app-line-chart>
+            <div class="box-shadow">
+              <app-line-chart [data]="section.data"></app-line-chart>
+            </div>
           </div>
         </div>
       </section>
     </ng-container>
+    <ng-container *ngIf="section.type === 'story-of-the-week'">
+      <section [ngClass]="section.styles.section">
+        <div class="indicators-section">
+          <h5 [ngClass]="section.styles.title">{{ section.title }}</h5>
+          <div class="row justify-content-center">
+            <div class="story-card">
+              <app-improvement-story [story]="story" [storyOfWeek]="true"></app-improvement-story>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="section.type === 'more-stories'">
+      <section [ngClass]="section.styles.section" [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)">
+        <div class="indicators-section">
+          <div class="row">
+            <div class="story-card">
+              <app-stories-carousel></app-stories-carousel>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngIf="section.type === 'section-heading'">
+          <h3 [ngClass]="section.styles.title">{{ section.title }}</h3>
+    </ng-container>
   </div>
 </div>
-<app-stories-carousel></app-stories-carousel>
-<app-improvement-story></app-improvement-story>
-<app-vertical-carousel></app-vertical-carousel>

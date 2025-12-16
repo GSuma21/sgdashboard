@@ -30,8 +30,8 @@ export interface VoiceQuote {
       transition('* => *', [ // Trigger when the list changes
         query(':enter', [
           style({ opacity: 0, transform: 'translateY(20px)' }),
-          stagger('100ms', [
-            animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+          stagger('10ms', [
+            animate('100ms ease-out', style({ opacity: 1 }))
           ])
         ], { optional: true }),
         query(':leave', [

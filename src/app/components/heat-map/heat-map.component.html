@@ -1,7 +1,7 @@
 <div class="container">
     <!-- Left Panel: Heatmap -->
     <div class="left-panel">
-        <h2 class="section-title">Top themes emerged</h2>
+        <h2 class="section-title">Themes beneath the voices</h2>
         <div class="heatmap-grid">
             <div *ngFor="let theme of themes" class="heatmap-item" [ngClass]="theme.gridClass"
                 [class.active]="activeThemeId === theme.id" [class]="theme.color"
@@ -9,15 +9,7 @@
                 <div class="content">
                     <div class="icon" *ngIf="theme.icon">
                         <!-- Placeholder for icon, using text or a simple shape for now -->
-                        <i class="material-icons" *ngIf="theme.icon === 'child_care'">child_care</i>
-                        <i class="material-icons" *ngIf="theme.icon === 'school'">school</i>
-                        <i class="material-icons" *ngIf="theme.icon === 'water_drop'">water_drop</i>
-                        <i class="material-icons" *ngIf="theme.icon === 'description'">description</i>
-                        <i class="material-icons" *ngIf="theme.icon === 'payments'">payments</i>
-                        <i class="material-icons" *ngIf="theme.icon === 'person'">person</i>
-                        <i class="material-icons" *ngIf="theme.icon === 'factory'">factory</i>
-                        <i class="material-icons" *ngIf="theme.icon === 'bolt'">bolt</i>
-                        <i class="material-icons" *ngIf="theme.icon === 'image'">image</i>
+                        <img [src]="theme.icon" alt="icon" />
                     </div>
                     <h3 class="theme-title">{{ theme.title }}</h3>
                     <p class="voice-count" *ngIf="theme.count > 0">{{ theme.count }} Voices raised</p>
@@ -28,7 +20,7 @@
 
     <!-- Right Panel: Similar Voices -->
     <div class="right-panel">
-        <h2 class="section-title">Similar voices</h2>
+        <h2 class="section-title">What we are hearing</h2>
         <div class="voices-grid" [@voicesAnimation]="displayedVoices.length">
             <div *ngFor="let voice of displayedVoices" class="voice-card" [ngClass]="voice.color">
                 <div class="quote-icon">“</div>
