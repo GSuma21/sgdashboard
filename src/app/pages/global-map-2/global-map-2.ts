@@ -61,11 +61,10 @@ export class GlobalMap2 implements OnInit {
   partnersByState: { [key: string]: any[] } = {};
   partnersByCountry: { [key: string]: any[] } = {};
   markerConfigList: any = {
-    momentum: { hqIcon: "./assets/marker-icons/momentum-partners.svg", icon: "./assets/marker-icons/momentum-partners.svg", color: "#572E91" },
-    strategic: { hqIcon: "./assets/marker-icons/strategic-partners.svg", icon: "./assets/marker-icons/strategic-partners.svg", color: "orange" },
-    collaborator: { hqIcon: "./assets/marker-icons/hq-triangle.svg", icon: "./assets/marker-icons/triangle.svg", color: "red" },
-    anchor: { hqIcon: "./assets/marker-icons/hq-diamond.svg", icon: "./assets/marker-icons/diamond.svg", color: "pink" }
-  }
+    "momentum": { hqIcon: "./assets/marker-icons/momentum-partners.svg", icon: "./assets/marker-icons/momentum.svg", color: "#572E91" },
+    "strategic": { hqIcon: "./assets/marker-icons/strategic-partners.svg", icon: "./assets/marker-icons/stategic.svg", color: "orange" },
+    "collaborators": { hqIcon: "./assets/marker-icons/triangle.svg", icon: "./assets/marker-icons/collaborators.svg", color: "red" }
+  };
 
   constructor() { }
   ngOnInit(): void {
@@ -219,13 +218,16 @@ export class GlobalMap2 implements OnInit {
       }).filter(d => d !== null);
 
       const getLineCoords = (location: any) => {
+        if (location.coords && Array.isArray(location.coords) && location.coords.length === 2) {
+          return location.coords;
+        }
         if (location.partner_id && location.partner_id.length > 0) {
           let partnerId = location.partner_id[0];
           const partner = this.partnersWithCoords?.find((p: any) =>
             p.id?.toLowerCase().replace(/[\s_]/g, '') === partnerId?.toLowerCase().replace(/[\s_]/g, '')
           );
 
-          if (partner) {
+          if (partner && partner.coordinates) {
             return partner.coordinates;
           }
         }
@@ -234,8 +236,8 @@ export class GlobalMap2 implements OnInit {
           if (stateIcon) return stateIcon.coordinates;
         }
         if (location.countryName) {
-            const countryIcon = countryIcons.find(icon => icon && icon.countryName.toLowerCase() === location.countryName.toLowerCase());
-            if (countryIcon) return countryIcon.coordinates;
+          const countryIcon = countryIcons.find(icon => icon && icon.countryName.toLowerCase() === location.countryName.toLowerCase());
+          if (countryIcon) return countryIcon.coordinates;
         }
         return getCoords(location);
       };
@@ -368,17 +370,17 @@ export class GlobalMap2 implements OnInit {
           const x = projected[0];
           const y = projected[1];
 
-          function rotate() {
-            icon.transition()
-              .duration(2000)
-              .ease(d3.easeLinear)
-              .attrTween('transform', () => {
-                const i = d3.interpolate(0, 360);
-                return (t) => `rotate(${i(t)}, ${x}, ${y})`;
-              })
-              .on('end', rotate);
-          }
-          rotate();
+          // function rotate() {
+          //   icon.transition()
+          //     .duration(2000)
+          //     .ease(d3.easeLinear)
+          //     .attrTween('transform', () => {
+          //       const i = d3.interpolate(0, 360);
+          //       return (t) => `rotate(${i(t)}, ${x}, ${y})`;
+          //     })
+          //     .on('end', rotate);
+          // }
+          // rotate();
         });
 
       const indiaCountry = countries.find((d: any) => d.properties.name === 'India');

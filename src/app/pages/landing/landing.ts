@@ -13,6 +13,7 @@ import { CatalysingNetwork1 } from '../catalysing-network-1/catalysing-network-1
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { GlobalMap2 } from '../global-map-2/global-map-2';
 import { WorldMapComponent } from '../world-map/world-map';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-landing',
@@ -34,7 +35,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
   window: any = window;
   isGlobalMapVisible = true; 
 
-  constructor() { }
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.fetchPageData();
@@ -49,7 +50,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
   fetchPageData(): void {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${LANDING_PAGE}`).then((data: any) => {
       this.pageData = data;
-      console.log(data)
+      this.cdr.detectChanges();
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });

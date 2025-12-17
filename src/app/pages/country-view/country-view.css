@@ -17,6 +17,17 @@
   min-width: 200px;
 }
 
+.legend-dashboard{
+  background-color: #EEEEEE; /* Light gray background */
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 200px;
+}
+
 .legend-icon {
   width: 20px;
   margin-right: 8px;
@@ -166,7 +177,7 @@ mat-form-field{
 
 @media (max-width: 768px){
   .country-view-container {
-    padding: 1rem; /* tighter padding for small devices */
+    padding: 0.5rem; /* tighter padding for small devices */
   }
   .indicator-container .indicators {
     display: flex;
@@ -179,5 +190,137 @@ mat-form-field{
     display: flex;
     justify-content: center;
   }
+
+
+  .legend-container {
+  background-color: #EEEEEE; /* Light gray background */
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 170px;
+  position: absolute;
+  left:48%
 }
 
+.legend-dashboard{
+  background-color: #EEEEEE; /* Light gray background */
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 170px;
+  position: absolute;
+  left:56%
+}
+
+.legend-icon {
+  width: 10px;
+  margin-right: 8px;
+  height: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3px;
+}
+.legend-item-header{
+  font-size: 8px;
+  font-weight: 600;
+  max-width: 95px;
+}
+
+.note {
+  font-size: 8px;
+  color: #555;
+  margin-top: 3px;
+}
+.color-box {
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border: 1px solid #999;
+  min-width: 10px;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  height: unset !important;
+  flex: unset !important;
+}
+
+.filter-selection{
+  display: flex;
+  justify-content: flex-end;
+  height: fit-content;
+  flex: 1;
+  margin-top: 1rem;
+}
+
+}
+
+#map-tooltip {
+  position: absolute;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  padding: 8px 12px;
+  pointer-events: none;
+  opacity: 0;
+  max-width: 250px;
+  word-wrap: break-word;
+  font-family: 'Arial', sans-serif;
+}
+::ng-deep .mat-mdc-form-field-hint-spacer:empty {
+  display: none;
+}
+::ng-deep .mat-mdc-form-field-bottom-align::before {
+  display: none !important;
+ }
+
+.indicator-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  /* Use 'center' alignment to ensure the last row is centered */
+  justify-content: center; 
+  gap: 10px 10px; /* Vertical gap 10px, Horizontal gap 10px */
+  padding: 0;
+  width: 100%;
+}
+
+/* Default (Mobile/Small/Large Screens): 2 items per row */
+.indicator-card-item {
+  /* This width forces 2 items per line (50% - 5px) */
+  width: calc(50% - 5px); 
+  box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------------- */
+
+/* Medium Screens (typically >= 768px): 3 items per row */
+@media (min-width: 768px) {
+  .indicator-card-item {
+    /* This width forces 3 items per line (33.333% - 6.666px) */
+    width: calc(33.333% - 6.666px);
+  }
+}
+
+/* Large Screens (>= 992px): Back to 2 items per row */
+@media (min-width: 992px) {
+  .indicator-card-item {
+    /* Reset to 2 items per row */
+    width: calc(50% - 5px); 
+  }
+}
+
+/* Optional: Constrain and center the overall block on large screens if desired */
+@media (min-width: 992px) {
+  .indicator-card-grid {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}

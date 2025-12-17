@@ -112,3 +112,14 @@ button:focus{
 .filter-buttons button.active img {
   filter: brightness(0) invert(1);
 }
+
+@media (max-width: 768px) {
+  .scroller {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto;
+  }
+  .scroller__inner {
+    animation: none !important;
+  }
+}

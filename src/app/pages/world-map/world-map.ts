@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, Input, HostListener } from '@angular/core';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { FeatureCollection, Geometry } from 'geojson';
@@ -54,6 +54,14 @@ export class WorldMapComponent implements OnInit {
 
   @ViewChild('map', { static: true }) private mapContainer!: ElementRef;
   @Input() showDetails: boolean = true;
+
+
+
+    isMobile = false;
+  scale = 1;
+  readonly zoomStep = 0.2;
+  readonly minScale = 1;
+  readonly maxScale = 3;
 
   constructor(private router: Router) { }
 
@@ -289,10 +297,13 @@ export class WorldMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.createMap();
+    this.checkIfMobile();
   }
 
   private createMap(): void {
     const element = this.mapContainer.nativeElement;
+    const mapEl = this.mapContainer.nativeElement as HTMLElement;
+    const mapWrapperEl = mapEl.closest('.map-wrapper') || mapEl.parentElement?.parentElement || document.body;
 
     this.svg = d3.select(this.mapContainer.nativeElement)
       .append('svg')
@@ -301,12 +312,12 @@ export class WorldMapComponent implements OnInit {
       .style('width', '100%')
       .style('height', () => this.router.url === '/world-map' ? '98vh' : null)
 
-    this.tooltip = d3.select(element)
+    this.tooltip = d3.select(mapWrapperEl)
       .append('div')
       .attr('class', 'tooltip')
       .style('position', 'absolute')
       .style('opacity', 0)
-      .style('pointer-events', 'none'); // important fix
+      .style('pointer-events', 'none');
 
     this.g = this.svg.append('g').attr('class', 'world');
     this.indiaGroup = this.svg.append('g').attr('class', 'india');
@@ -318,7 +329,7 @@ export class WorldMapComponent implements OnInit {
     this.path = d3.geoPath().projection(this.projection);
 
     Promise.all([
-      d3.json<any>('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-10m.json'),
+      d3.json<any>('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'),
       d3.json<any>(`${this.baseUrl}/${INDIA}`),
       d3.json<NetworkData>(`${this.baseUrl}/${NETWORK_DATA}`)
     ]).then(([topology, indiaTopology, networkData]) => {
@@ -395,199 +406,225 @@ export class WorldMapComponent implements OnInit {
       .replace(/[^a-z0-9]/g, ''); // remove any remaining non-alphanumeric chars
   }
 
-  private drawPartners(networkData: NetworkData, indiaData: any): void {
-    if (!networkData?.partners?.length) return;
+ private drawPartners(networkData: NetworkData, indiaData: any): void {
+  if (!networkData?.partners?.length) return;
 
-    if (!this.partnersGroup) {
-      this.partnersGroup = this.svg.append('g').attr('class', 'partners');
-    }
+  if (!this.partnersGroup) {
+    this.partnersGroup = this.svg.append('g').attr('class', 'partners');
+  }
 
-    const indiaScale = this.countryTransforms['IND']?.scale ? this.countryTransforms['IND']?.scale : 4;
-    const iconSize = 14;
+  const indiaScale = this.countryTransforms['IND']?.scale ?? 4;
+  const iconSize = 14;
 
-    networkData.partners.forEach((partner: Partner) => {
-      if (!partner.coordinates || partner.coordinates.length !== 2) return;
+  networkData.partners.forEach((partner: Partner) => {
+    if (!partner?.coordinates || partner.coordinates.length !== 2) return;
 
-      const categoryKey = (partner.category || '').trim().toLowerCase();
-      const iconConfig = this.markerConfigList[categoryKey];
-      const iconPath = iconConfig ? iconConfig.icon : 'circle.svg';
+    const categoryKey = (partner.category || '').trim().toLowerCase();
+    const iconConfig = this.markerConfigList?.[categoryKey];
+    const iconPath = iconConfig?.icon ?? 'circle.svg';
 
-      const lon = partner.coordinates[1];
-      const lat = partner.coordinates[0];
-      let projected = this.projection([lon, lat]);
-      if (!projected) return;
+    // NOTE: D3 projection expects [longitude, latitude]
+    const [lat, lon] = partner.coordinates;
+    let projected = this.projection?.([lon, lat]);
+    if (!projected) return;
 
-      const isInsideIndia = indiaData && d3.geoContains(indiaData, [lon, lat]);
-      const targetGroup = isInsideIndia ? this.indiaGroup : this.partnersGroup;
+    const isInsideIndia = indiaData ? d3.geoContains(indiaData, [lon, lat]) : false;
+    const targetGroup = isInsideIndia ? this.indiaGroup : this.partnersGroup;
 
-      // --- Only shift Singapore / cluster countries ---
-      if (!isInsideIndia && partner.countryName?.toLowerCase() === 'singapore') {
+    // Shift specific countries
+    const country = partner.countryName?.toLowerCase() ?? '';
+    if (!isInsideIndia) {
+      if (country === 'singapore') {
         projected = [projected[0] + 250, projected[1] + 250];
-      }
-
-      if (!isInsideIndia && partner.countryName?.toLowerCase() === 'united states of america (usa)') {
+      } else if (country === 'united states of america (usa)') {
         projected = [projected[0] - 50, projected[1] - 80];
-      }
-
-      if (!isInsideIndia && partner.countryName?.toLowerCase() === 'united kingdom (uk)') {
+      } else if (country === 'united kingdom (uk)') {
         projected = [projected[0] - 100, projected[1] - 20];
       }
+    }
 
-      const size = isInsideIndia ? iconSize / indiaScale : iconSize;
-      const offset = size / 2;
+    const size = isInsideIndia ? iconSize / indiaScale : iconSize;
+    const offset = size / 2;
 
-      // Append partner icon
-      const icon = targetGroup.append('image')
-        .style('cursor', 'pointer')
-        .attr('class', `partner-icon partner-${categoryKey}`)
-        .attr('xlink:href', iconPath)
-        .attr('x', projected[0] - offset)
-        .attr('y', projected[1] - offset)
-        .attr('width', size)
-        .attr('height', size);
+    const icon = targetGroup.append('image')
+      .style('cursor', 'pointer')
+      .attr('class', `partner-icon partner-${categoryKey}`)
+      .attr('xlink:href', iconPath)
+      .attr('x', projected[0] - offset)
+      .attr('y', projected[1] - offset)
+      .attr('width', size)
+      .attr('height', size);
 
-      icon.on('click', (event: any) => {
-        if (this.showDetails) {
-          event.stopPropagation();
+    icon.on('click', (event: MouseEvent) => {
+  if (!this.showDetails) return;
+  event.stopPropagation();
 
-          const partnerHtml = `
-<div style="
-  position: relative;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  padding: 8px 0;
-  width: auto;
-  max-width: 90vw;
-  min-width: 180px;
-  border: 1px solid #000000ff;
-  font-family: Arial, sans-serif;
-  max-height: 70vh;
-  overflow-y: auto;
-  overflow-x: hidden;
-  white-space: normal;
-  word-break: break-word;
-  box-sizing: border-box;
-">
-  <div style="
-    position: absolute;
-    left: -8px;
-    top: 20px;
-    width: 0;
-    height: 0;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-right: 8px solid white;
-    filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));
-  "></div>
+  // wrapper element (same place where tooltip was appended)
+  const mapEl = this.mapContainer.nativeElement as HTMLElement;
+  const viewportEl = mapEl.parentElement as HTMLElement;
+  const mapWrapperEl = viewportEl?.parentElement as HTMLElement || document.body;
+  const mapWrapperRect = mapWrapperEl.getBoundingClientRect();
 
-  ${partner.website
-              ? `
-        <a href="${partner.website}" target="_blank" style="text-decoration: none; color: inherit; display: block;">
-          <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px; box-sizing: border-box;">
-            <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-              <img src="${partner.src}" alt="${partner.name}" style="width: 40px; height: 40px; object-fit: contain; max-width: 100%;">
-            </div>
-            <div style="display: flex; flex-direction: column; padding-left: 5px;">
-              <div style="font-size: 12px; color: #555;">${partner.countryName}</div>
-              <div style="font-size: 12px; color: #555;">${partner.partnerState}</div>
-              <div style="font-weight: 600; font-size: 14px; color: #000;">${partner.name}</div>
-              ${partner.category?.toLowerCase() === 'collaborators'
-                ? `<div style="font-size: 12px; color: #777;">${partner.category ?? ''}</div>`
-                : `<div style="font-size: 12px; color: #777;">${partner.category ?? ''} partner</div>`
-              }
-            </div>
-          </div>
-        </a>
-      `
-              : `
-        <div style="display: grid; grid-template-columns: 36px 1fr; align-items: center; padding: 8px 12px; cursor: default; box-sizing: border-box;">
-          <div style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-            <img src="${partner.src}" alt="${partner.name}" style="width: 40px; height: 40px; object-fit: contain; max-width: 100%;">
-          </div>
-          <div style="display: flex; flex-direction: column; padding-left: 5px;">
-            <div style="font-size: 12px; color: #555;">${partner.countryName}</div>
-            <div style="font-size: 12px; color: #555;">${partner.partnerState}</div>
-            <div style="font-weight: 600; font-size: 14px; color: #000;">${partner.name}</div>
-            ${partner.category?.toLowerCase() === 'collaborators'
-                ? `<div style="font-size: 12px; color: #777;">${partner.category ?? ''}</div>`
-                : `<div style="font-size: 12px; color: #777;">${partner.category ?? ''} partner</div>`
-              }
-          </div>
-        </div>
-      `
-            }
-</div>`;
+  // Responsive tooltip sizing (no scale math)
+  let tooltipMaxWidth = 250;
+  let tooltipFontSize = 14;
+  let smallFontSize = 12;
+  let imageSize = 40;
+  let paddingY = 8;
+  let paddingX = 12;
+  let padding = 8;
+  const ARROW_TIP_OFFSET = 10;
 
-          // First render tooltip (hidden) so we can measure its size
-          this.tooltip.html(partnerHtml)
-            .style('opacity', 0)
-            .style('pointer-events', 'none')
-            .style('left', `0px`)
-            .style('top', `0px`);
-
-          const tooltipNode = this.tooltip.node() as HTMLElement;
-          const tooltipRect = tooltipNode.getBoundingClientRect();
-
-          const containerRect = this.mapContainer.nativeElement.getBoundingClientRect();
-
-          // Initial position relative to container
-          let left = event.clientX - containerRect.left + 10;
-          let top = event.clientY - containerRect.top - tooltipRect.height - 10;
-
-          // Clamp horizontally
-          if (left + tooltipRect.width > containerRect.width) {
-            left = containerRect.width - tooltipRect.width - 10;
-          }
-          if (left < 10) {
-            left = 10;
-          }
-
-          // Clamp vertically
-          if (top + tooltipRect.height > containerRect.height) {
-            top = containerRect.height - tooltipRect.height - 10;
-          }
-          if (top < 10) {
-            top = 10;
-          }
-
-          // Show tooltip with corrected position
-          this.tooltip
-            .style('left', `${left}px`)
-            .style('top', `${top}px`)
-            .style('pointer-events', 'auto')
-            .transition().duration(200).style('opacity', 1);
-        }
-      });
-
-    });
-
-    // Instead, attach click to the SVG container itself
-    const mapEl = d3.select(this.mapContainer.nativeElement);
-
-    // Set cursor to pointer when showDetails is false
-    mapEl.style('cursor', this.showDetails ? 'default' : 'pointer');
-
-    mapEl.on('click', (event: any) => {
-      // If showDetails is false, redirect on map click
-      if (!this.showDetails) {
-        const target = event.target;
-
-        // Only redirect if click is NOT on partner icon or tooltip
-        if (!target.closest('.partner-icon') && !target.closest('.tooltip')) {
-          this.router.navigate(['/network-health']);
-        }
-      } else {
-        // If showDetails is true, hide tooltip when clicking outside partner icons
-        const target = event.target;
-        if (!target.closest('.partner-icon')) {
-          this.tooltip.transition().duration(200)
-            .style('opacity', 0)
-            .style('pointer-events', 'none');
-        }
-      }
-    });
+  if (mapWrapperRect.width < 480) {
+    tooltipMaxWidth = 180;
+    tooltipFontSize = 12;
+    smallFontSize = 10;
+    imageSize = 32;
+    paddingY = 4;
+    paddingX = 4;
+    padding = 0;
+  } else if (mapWrapperRect.width < 768) {
+    tooltipMaxWidth = 220;
+    tooltipFontSize = 13;
+    smallFontSize = 11;
+    imageSize = 36;
+    paddingY = 8;
+    paddingX = 12;
+    padding = 8;
   }
+
+  const categorySuffix =
+    partner.category?.toLowerCase() === 'collaborators'
+      ? `${partner.category ?? ''}`
+      : `${partner.category ?? ''} partner`;
+
+  // Use the non-scaled sizes here (tooltipMaxWidth, tooltipFontSize etc.)
+  const partnerHtml = `
+    <div style="
+      position: relative;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: ${padding}px 0;
+      width: auto;
+      max-width: ${tooltipMaxWidth}px;
+      min-width: fit-content;
+      border: 1px solid #000;
+      font-family: Arial, sans-serif;
+      max-height: 70vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      white-space: normal;
+      word-break: break-word;
+      box-sizing: border-box;
+    ">
+      <div style="
+        position: absolute;
+        left: -8px;
+        top: 20px;
+        width: 0;
+        height: 0;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-right: 8px solid white;
+        filter: drop-shadow(-1px 0px 1px rgba(0,0,0,0.05));
+      "></div>
+      ${
+        partner.website
+          ? `<a href="${partner.website}" target="_blank" style="text-decoration: none; color: inherit; display: block;">
+              <div style="display: grid; grid-template-columns: ${imageSize}px 1fr; align-items: center; padding: ${paddingY}px ${paddingX}px;">
+                <div style="width: ${imageSize}px; height: ${imageSize}px; display: flex; align-items: center; justify-content: center;">
+                  <img src="${partner.src}" alt="${partner.name}" style="width: ${imageSize}px; height: ${imageSize}px; object-fit: contain;">
+                </div>
+                <div style="display: flex; flex-direction: column; padding-left: 5px;">
+                  <div style="font-size: ${smallFontSize}px; color: #555;">${partner.countryName || ''}</div>
+                  <div style="font-size: ${smallFontSize}px; color: #555;">${partner.partnerState || ''}</div>
+                  <div style="font-weight: 600; font-size: ${tooltipFontSize}px; color: #000;">${partner.name || ''}</div>
+                  <div style="font-size: ${smallFontSize}px; color: #777;">${categorySuffix}</div>
+                </div>
+              </div>
+            </a>`
+          : `<div style="display: grid; grid-template-columns: ${imageSize}px 1fr; align-items: center; padding: ${paddingY}px ${paddingX}px;">
+              <div style="width: ${imageSize}px; height: ${imageSize}px; display: flex; align-items: center; justify-content: center;">
+                <img src="${partner.src}" alt="${partner.name}" style="width: ${imageSize}px; height: ${imageSize}px; object-fit: contain;">
+              </div>
+              <div style="display: flex; flex-direction: column; padding-left: 5px;">
+                <div style="font-size: ${smallFontSize}px; color: #555;">${partner.countryName || ''}</div>
+                <div style="font-size: ${smallFontSize}px; color: #555;">${partner.partnerState || ''}</div>
+                <div style="font-weight: 600; font-size: ${tooltipFontSize}px; color: #000;">${partner.name || ''}</div>
+                <div style="font-size: ${smallFontSize}px; color: #777;">${categorySuffix}</div>
+              </div>
+            </div>`
+      }
+    </div>`;
+
+  // render then measure (no transforms)
+  this.tooltip.html(partnerHtml)
+    .style('opacity', 0)
+    .style('pointer-events', 'none')
+    .style('transform', 'none')
+    .style('left', '0px')
+    .style('top', '0px');
+
+  const tooltipNode = this.tooltip.node() as HTMLElement;
+  const tooltipRect = tooltipNode.getBoundingClientRect();
+  const tooltipWidth = Math.min(tooltipRect.width, tooltipMaxWidth);
+  const tooltipHeight = tooltipRect.height;
+
+  const screenX = event.clientX;
+  const screenY = event.clientY;
+
+  // compute position relative to the wrapper (tooltip is a child of wrapper)
+  let left = screenX - mapWrapperRect.left - tooltipWidth - ARROW_TIP_OFFSET;
+  let top = screenY - mapWrapperRect.top - tooltipHeight - ARROW_TIP_OFFSET;
+
+  // horizontal clamp: prefer to place tooltip to left, otherwise to right
+  if (left < ARROW_TIP_OFFSET) {
+    left = screenX - mapWrapperRect.left + ARROW_TIP_OFFSET;
+  }
+  if (left + tooltipWidth > mapWrapperRect.width - ARROW_TIP_OFFSET) {
+    left = mapWrapperRect.width - tooltipWidth - ARROW_TIP_OFFSET;
+  }
+
+  // vertical clamp: prefer above pointer, otherwise below
+  if (top < ARROW_TIP_OFFSET) {
+    top = screenY - mapWrapperRect.top + ARROW_TIP_OFFSET;
+    if (top + tooltipHeight > mapWrapperRect.height - ARROW_TIP_OFFSET) {
+      top = mapWrapperRect.height - tooltipHeight - ARROW_TIP_OFFSET;
+    }
+  }
+
+  // apply final positioning
+  this.tooltip
+    .style('left', `${left}px`)
+    .style('top', `${top}px`)
+    .style('pointer-events', 'auto')
+    .transition()
+    .duration(200)
+    .style('opacity', 1);
+});
+
+  });
+
+  const mapEl = d3.select(this.mapContainer.nativeElement);
+  mapEl.style('cursor', this.showDetails ? 'default' : 'pointer');
+
+  mapEl.on('click', (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (!this.showDetails) {
+      if (!target.closest('.partner-icon') && !target.closest('.tooltip')) {
+        this.router.navigate(['/network-health']);
+      }
+    } else {
+      if (!target.closest('.partner-icon')) {
+        this.tooltip.transition().duration(200)
+          .style('opacity', 0)
+          .style('pointer-events', 'none');
+      }
+    }
+  });
+}
+
 
   private drawConnectionLines(networkData: NetworkData, countries: any[], states: any[], indiaData?: any): void {
     if (!networkData?.impactData?.length) return;
@@ -736,4 +773,75 @@ if (!coords && location.partner_id?.length) {
     this.indiaGroup.transition().duration(1000).attr('transform', 'translate(0,0) scale(1)');
     this.isIndiaZoomed = false;
   }
+
+
+    @HostListener('window:resize')
+  onResize() {
+    this.checkIfMobile();
+  }
+
+  checkIfMobile() {
+    this.isMobile = window.innerWidth <= 768;
+  }
+
+  zoomIn() {
+    if (this.scale < this.maxScale) {
+      this.scale += this.zoomStep;
+      this.applyZoom();
+    }
+  }
+
+  zoomOut() {
+    if (this.scale > this.minScale) {
+      this.scale -= this.zoomStep;
+      this.applyZoom();
+    }
+  }
+
+applyZoom() {
+  const mapEl = this.mapContainer.nativeElement as HTMLElement;
+  const viewportEl = mapEl.parentElement as HTMLElement; // Assuming map-container is directly inside map-viewport
+
+  if (!mapEl || !viewportEl) return;
+
+  const oldScale = parseFloat(mapEl.style.transform.replace('scale(', '').replace(')', '')) || 1;
+  const newScale = this.scale;
+  const scaleRatio = newScale / oldScale;
+
+  // 1. Get the current center point of the viewport relative to the map content
+  const centerX = viewportEl.scrollLeft + viewportEl.clientWidth / 2;
+  const centerY = viewportEl.scrollTop + viewportEl.clientHeight / 2;
+
+  // 2. Apply the new scale transformation to the map container
+  mapEl.style.transform = `scale(${newScale})`;
+  mapEl.style.transformOrigin = '0 0'; // Crucial: ensure scaling is applied from top-left (0 0)
+                                      // so that the calculation below works predictably.
+  mapEl.style.transition = 'transform 0.3s ease';
+
+  // 3. Calculate the new scroll position to keep the center fixed
+  // The map dimensions have effectively grown by scaleRatio.
+  // The new scroll position should be the center point scaled, minus half the viewport size.
+  const newScrollLeft = centerX * scaleRatio - viewportEl.clientWidth / 2;
+  const newScrollTop = centerY * scaleRatio - viewportEl.clientHeight / 2;
+
+  // 4. Apply the new scroll position (with smooth transition for a nicer effect)
+  viewportEl.scrollTo({
+    left: newScrollLeft,
+    top: newScrollTop,
+    behavior: 'smooth'
+  });
+}
+
+@HostListener('window:scroll', [])
+onScroll() {
+  // Hide tooltip when the user scrolls the page (mobile or desktop)
+  if (this.tooltip) {
+    this.tooltip
+      .interrupt() // stop any D3 transitions in progress
+      .style('opacity', 0)
+      .style('pointer-events', 'none');
+  }
+}
+
+
 }

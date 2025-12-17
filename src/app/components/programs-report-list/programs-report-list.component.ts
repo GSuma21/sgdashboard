@@ -29,12 +29,6 @@ export class ProgramsReportListComponent implements OnInit {
 
   @Input() programs:any = []
 
-  scrollLeft(event: any) {
-    event.stopPropagation(); //Prevent a parent element’s event handler from firing
-    const container = (event.target as HTMLElement).parentElement!.querySelector('.carousel-track');
-    container!.scrollBy({ left: -300, behavior: 'smooth' });
-  }
-
   ngOnInit(): void {
     this.getPartnersList();
   }
@@ -46,12 +40,50 @@ export class ProgramsReportListComponent implements OnInit {
     else {
       this.router.navigate(['/program-details'], { state: { report } });
     }
-  }
+  }  
 
   scrollRight(event: any) {
     event.stopPropagation();
-    const container = (event.target as HTMLElement).parentElement!.querySelector('.carousel-track');
-    container!.scrollBy({ left: 300, behavior: 'smooth' });
+    const parent = (event.target as HTMLElement).parentElement; if (!parent) return;
+    const container = parent.querySelector('.carousel-track');
+    if (!container) return;
+
+    // Get all images inside the carousel
+    const images = Array.from(container.querySelectorAll('.program-images')) as HTMLElement[];
+
+    // Find the first image that is partially or fully visible on the right
+    const containerRect = container.getBoundingClientRect();
+    const nextImage = images.find(img => img.getBoundingClientRect().left > containerRect.left);
+
+    if (nextImage) {
+      const imageRect = nextImage.getBoundingClientRect();
+      const scrollOffset = imageRect.left - containerRect.left;
+
+      container.scrollBy({ left: scrollOffset, behavior: 'smooth' });
+    }
+  }
+
+  scrollLeft(event: any) {
+    event.stopPropagation();
+
+    const parent = (event.target as HTMLElement).parentElement;
+    if (!parent) return;
+    const container = parent.querySelector('.carousel-track');
+    if (!container) return;
+    
+    const images = Array.from(container.querySelectorAll('.program-images')) as HTMLElement[];
+    const containerRect = container.getBoundingClientRect();
+
+    // Find the last image that is partially or fully visible on the left
+    const prevImages = images.filter(img => img.getBoundingClientRect().right < containerRect.right);
+    const lastVisible = prevImages[prevImages.length - 1];
+
+    if (lastVisible) {
+      const imageRect = lastVisible.getBoundingClientRect();
+      const scrollOffset = containerRect.right - imageRect.right;
+
+      container.scrollBy({ left: -scrollOffset, behavior: 'smooth' });
+    }
   }
 
   openCommunityDetails() {
