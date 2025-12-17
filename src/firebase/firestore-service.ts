@@ -8,6 +8,7 @@ import {
   updateDoc,
   getDocs
 } from '@angular/fire/firestore';
+import { FIREBASE_PATHS } from '../constants/actionContants';
 
 @Injectable({ providedIn: 'root' })
 export class SgFirebaseService {
@@ -21,7 +22,7 @@ export class SgFirebaseService {
   async getRecord(storyId: string, browserId: string) {
     return await runInInjectionContext(this.injector, async () => {
 
-      const ref = doc(this.firestore, "sg-dashboard", storyId, "browsers", browserId);
+      const ref = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId, FIREBASE_PATHS.SUB_COLLECTION, browserId);
       const snap = await getDoc(ref);
 
       return snap.exists() ? snap.data() : null;
@@ -34,14 +35,14 @@ export class SgFirebaseService {
   async createRecord(storyId: string, browserId: string, data: any) {
     return await runInInjectionContext(this.injector, async () => {
 
-      const storyRef = doc(this.firestore, "sg-dashboard", storyId);
+      const storyRef = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId);
       await setDoc(storyRef, {
         likesCount: 0,
         shareCount: 0,
         downloadCount: 0
       }, { merge: true });
 
-      const browserRef = doc(this.firestore, "sg-dashboard", storyId, "browsers", browserId);
+      const browserRef = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId, FIREBASE_PATHS.SUB_COLLECTION, browserId);
 
       await setDoc(browserRef, {
         like: data.like ?? 0,
@@ -61,7 +62,7 @@ export class SgFirebaseService {
   async updateRecord(storyId: string, browserId: string, data: any) {
     return await runInInjectionContext(this.injector, async () => {
 
-      const ref = doc(this.firestore, "sg-dashboard", storyId, "browsers", browserId);
+      const ref = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId, FIREBASE_PATHS.SUB_COLLECTION, browserId);
 
       await updateDoc(ref, data);
 
@@ -76,7 +77,7 @@ export class SgFirebaseService {
   async updateStoryTotals(storyId: string) {
     return await runInInjectionContext(this.injector, async () => {
 
-      const browsersRef = collection(this.firestore, "sg-dashboard", storyId, "browsers");
+      const browsersRef = collection(this.firestore, FIREBASE_PATHS.ROOT, storyId, FIREBASE_PATHS.SUB_COLLECTION);
       const snap = await getDocs(browsersRef);
 
       let likes = 0, shares = 0, downloads = 0;
@@ -88,7 +89,7 @@ export class SgFirebaseService {
         downloads += d.download || 0;
       });
 
-      const storyRef = doc(this.firestore, "sg-dashboard", storyId);
+      const storyRef = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId);
 
       await updateDoc(storyRef, {
         likesCount: likes,
@@ -107,7 +108,7 @@ export class SgFirebaseService {
   async getStoryCounts(storyId: string) {
     return await runInInjectionContext(this.injector, async () => {
   
-      const storyRef = doc(this.firestore, "sg-dashboard", storyId);
+      const storyRef = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId);
       const snap = await getDoc(storyRef);
   
       if (!snap.exists()) {

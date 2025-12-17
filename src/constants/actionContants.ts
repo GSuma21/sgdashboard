@@ -3,6 +3,11 @@ export const ACTIONS = {
     SHARE: "share",
     DOWNLOAD: "download"
   } as const;
+
+export const FIREBASE_PATHS = {
+    ROOT: "sg-dashboard",
+    SUB_COLLECTION: "browsers"
+  } as const;
   
 export type ActionType = typeof ACTIONS[keyof typeof ACTIONS];
   
