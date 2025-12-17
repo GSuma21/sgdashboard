@@ -88,16 +88,16 @@ export class VerticalCarouselComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   moveNext() {
-    this.currentIndex++;
+    this.currentIndex--;
     this.updatePosition(true);
 
     // Check for reset needs after transition
     const totalOriginal = this.feedData.length;
-    // If we moved past the end of the middle set
-    if (this.currentIndex >= totalOriginal * 2) {
+    // If we moved past the start of the middle set (into the pre-buffer)
+    if (this.currentIndex < totalOriginal) {
       setTimeout(() => {
-        // Jump back to the start of the middle set
-        this.currentIndex = totalOriginal;
+        // Jump forward to the end of the middle set (same item, different buffer position)
+        this.currentIndex = this.currentIndex + totalOriginal;
         this.updatePosition(false);
       }, this.transitionDuration);
     }

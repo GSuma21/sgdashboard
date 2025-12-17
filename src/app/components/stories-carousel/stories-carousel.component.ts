@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ImprovementStoryComponent } from '../improvement-story/improvement-story.component';
 
 @Component({
   selector: 'app-stories-carousel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ImprovementStoryComponent],
   templateUrl: './stories-carousel.component.html',
   styleUrl: './stories-carousel.component.scss'
 })

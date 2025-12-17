@@ -1,4 +1,16 @@
 <div class="chart-container">
+    <mat-card-title>Leaders Engaged</mat-card-title>
+
+    <div class="year-buttons">
+      <!-- <button mat-button *ngFor="let item of data" class="year-button"
+              [ngClass]="{'enabled':item.year === year }"
+              (click)="showYearData(item)">
+        {{ item.year }}
+      </button> -->
+      <button mat-button class="year-button">{{year}}
+      </button>
+    </div>
+
     <canvas baseChart width="800" height="400" [data]="lineChartData" [options]="lineChartOptions"
         [type]="lineChartType">
     </canvas>
