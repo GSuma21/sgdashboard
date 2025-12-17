@@ -40,6 +40,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
       "districts": {}
     }
   };
+  private mapRendered = false;
 
   constructor(private router: Router) { }
 
@@ -58,7 +59,6 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
   fetchCommunityData() {
     d3.json(`${this.baseUrl}${this.communityDataFetchPath}`).then((data: any) => {
       this.communityJson = data;
-      console.log(data);
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
@@ -101,28 +101,94 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    this.drawMap();
+    this.tryDrawMap();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if("stateLedMission" in changes){
-      this.stateLedMission = changes["stateLedMission"].currentValue ?? 0
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   const relevantChange =
+  //     ('stateLedMission' in changes && !changes['stateLedMission'].firstChange) ||
+  //     ('path' in changes && !changes['path'].firstChange) ||
+  //     ('selectedState' in changes && !changes['selectedState'].firstChange);
+
+  //   if (relevantChange) {
+  //     this.mapRendered = false;
+  //     this.debouncedRedraw();
+  //   }
+  // }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if ('stateLedMission' in changes && this.mapRendered) {
+      // Only update colors when already rendered
+      this.stateLedMission = changes['stateLedMission'].currentValue ?? 0;
+      this.updateDistrictColors();
+    } else {
+      const relevantChange =
+        ('path' in changes && !changes['path'].firstChange) ||
+        ('selectedState' in changes && !changes['selectedState'].firstChange);
+
+      if (relevantChange) {
+        this.mapRendered = false;
+        this.debouncedRedraw();
+      }
     }
-    // if (changes?.stateLedMission?.currentValue) {
-    //   this.stateLedMission = changes?.stateLedMission?.currentValue;
-    // }
+  }
+
+
+  private redrawTimeout: any;
+
+  private debouncedRedraw(): void {
+    clearTimeout(this.redrawTimeout);
+    this.redrawTimeout = setTimeout(() => {
+      this.tryDrawMap();
+    }, 300);
+  }
+
+  private tryDrawMap(): void {
+    // ensure all data available before rendering
+    if (!this.mapRendered && this.path && this.selectedState && this.legends) {
+      this.drawMap();
+      this.mapRendered = true;
+    }
+  }
+
+  private updateDistrictColors(): void {
+    const svg = d3.select('#state-map-container svg');
+    if (svg.empty()) return;
+
+    d3.json(`${this.baseUrl}${this.dataFetchPath}`).then((data: any) => {
+      const districtsData = data.result.districts || {};
+
+      svg.selectAll<SVGPathElement, any>('.district-path')
+        .transition()
+        .duration(400)
+        .attr('fill', (d: any) => {
+          const districtCode = d.properties.dt_code;
+          const districtInfo = districtsData[districtCode];
+          if (districtInfo) {
+            return this.legends[districtInfo.type]?.color || '#fff';
+          } else {
+            // color logic depending on stateLedMission
+            return this.stateLedMission > 0
+              ? this.legends['category_2']?.color
+              : '#fff';
+          }
+        });
+    }).catch((err) => console.error('Error updating district colors:', err));
   }
 
   private resizeTimeout: any;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    clearTimeout(this.resizeTimeout);
-    this.resizeTimeout = setTimeout(() => this.drawMap(), 200);
+    if (!(window.innerWidth <= 768)) {
+      clearTimeout(this.resizeTimeout);
+      this.resizeTimeout = setTimeout(() => this.drawMap(), 200);
+    }
   }
 
   private drawMap(): void {
     d3.select('#state-map-container svg').remove();
+    d3.select(this.mapContainer.nativeElement).select('svg').remove();
 
     const container = this.mapContainer.nativeElement;
     const containerWidth = container.offsetWidth;
@@ -376,5 +442,6 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
     }).catch((error: any) => {
       console.error('Error loading or processing data:', error);
     });
+    this.mapRendered = true;
   }
 }

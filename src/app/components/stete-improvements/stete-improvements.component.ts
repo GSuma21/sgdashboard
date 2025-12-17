@@ -36,7 +36,6 @@ export class StateImprovementsComponent implements OnInit {
   constructor(private route: ActivatedRoute) {
     route.data.subscribe((data:any)=>{
       this.pageConfig = data
-      console.log(this.pageConfig)
     })
   }
 
@@ -71,7 +70,7 @@ export class StateImprovementsComponent implements OnInit {
   }
 
   getProgramsList() {
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/states/${this.stateCode}/${this.pageConfig.type == "communityDetails"? 'WLC':'state-program'}.json`).then((data: any) => {
+    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/states/${this.stateCode}/${(this.pageConfig.type == "communityDetails" || this.pageConfig.type == "communityDashboard") ? 'WLC':'state-program'}.json`).then((data: any) => {
       this.programsList= data
     }).catch((error: any) => {
       console.error('Error loading page data:', error);

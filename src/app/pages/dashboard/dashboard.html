@@ -1,5 +1,5 @@
 <div class="landing-container">
-  <div *ngFor="let section of pageData" [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
+  <div *ngFor="let section of pageData" [style.width]="(window.innerWidth <= 1024 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
     <!-- Main Section -->
     <ng-container *ngIf="section.type === 'dashboard-main'">
       <section [ngClass]="section.styles.section">
@@ -7,7 +7,7 @@
           <h3 class="">{{ section.header }}</h3>
           <h4 class="">{{ section.subHeader }}</h4>
           <p class="">{{ section.description }}</p>
-          <button class="community-button" (click)="openCommunityDetails()">Know more about community led initiatives<img src="assets/icons/arrow.svg" class="arrow" alt="" aria-hidden="true">
+          <button class="community-button" (click)="openCommunityDetails()">{{section.linkForCommunityInitiatves}}<img src="assets/icons/arrow.svg" class="arrow" alt="" aria-hidden="true">
           </button>
         </div>
       </section>
@@ -18,8 +18,8 @@
       <section [ngClass]="section.styles.section" class="metrics-container section-position-container">
         <div class="dashboard-container">
           <h3 class=""><img src="assets/icons/flag.svg" class="flag" alt="" aria-hidden="true">{{ section.header }}</h3>
-          <h4 class="">{{ section.subHeader }}</h4>
-          <div class="dashboard-indicator">
+          <h4 class="p-3 p-md-0">{{ section.subHeader }}</h4>
+          <div class="dashboard-indicator mt-3 mt-md-4">
             <div *ngFor="let item of section.indicators" class="goal-values">
               <h4>{{item.value}}</h4>
               <p>{{item.label}}</p>
