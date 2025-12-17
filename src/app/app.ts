@@ -3,11 +3,12 @@ import { Router, RouterModule } from '@angular/router';
 import { ThemeService } from './core/services/theme';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './pages/dashboard/dashboard';
+import { FooterComponent } from './components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, CommonModule, DashboardComponent],
+  imports: [RouterModule, CommonModule, DashboardComponent,FooterComponent],
   template: `
     <header class="app-header" *ngIf="showHeader">
       <nav class="container">
@@ -39,6 +40,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard';
     <main class="app-content" [class.no-header]="!showHeader">
       <router-outlet></router-outlet>
     </main>
+    <app-footer></app-footer>
   `,
   styleUrl: './app.css'
 })
