@@ -3,13 +3,13 @@
     <img class="meta-icon" src="assets/icons/crown.svg" *ngIf="storyOfWeek" class="crown">
     <section class="d-flex justify-content-between">
       <div class="w-100 pt-5">
-        <span class="quote-icon px-3">“</span>
-        <h3 class="card-title mx-4">{{ story.title }}</h3>
+        <span class="quote-icon px-1">“</span>
+        <h3 class="card-title">{{ story.title }}</h3>
 
         <div class="card-meta px-4">
           <img class="meta-icon" src="assets/icons/user_dial.svg">
           <div class="meta-text ml-2">
-            <p class="mb-0">{{ story.leader }}</p>
+            <p class="mb-0 leader-text">{{ story.leader }}</p>
             <p class="location mb-0">{{ story.location }}</p>
           </div>
         </div>

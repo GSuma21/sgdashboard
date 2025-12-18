@@ -28,36 +28,48 @@
   color: #333;
   padding-bottom: 2rem;
   border-bottom: 1px solid;
-  width: 50%;
+  width: 80%;
+  margin-top: -30px;
+  margin-left: 45px;
+
 }
 
 .card-meta {
   display: flex;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   margin-top: 1rem;
   .meta-icon {
       font-size: 20px;
       margin-right: 10px;
       color: #7a1fa2;
+      width: 30px;
   }
   .location {
       font-size: 12px;
-      color: #888;
+      color: #000000;
+  }
+
+  .leader-text{
+    font-weight: 700;
+    font-size: 13px;
+    color: #000000;
+
   }
 }
 
 #flow-img {
   position: absolute;
-  bottom: 0;
+  bottom: -34px;
+  width: 160%;
 }
 
 .card-actions {
   display: flex;
   align-items: center;
-  padding: 2.2rem 0;
+  padding: 1rem 0;
   position: relative;
-  margin-top: 3rem;
+  margin-top: 2.5rem;
   z-index: 2; // Keep actions above the purple background ::after
 
   .action-item {
@@ -91,10 +103,10 @@
 
   .read-story-btn {
       margin-left: auto;
-      padding: 10px 20px;
-      background-color: white;
-      color: #7a1fa2;
-      border: none;
+      padding: 7px 20px;
+      background-color: transparent;
+      color: #ffffff;
+      border: 1px solid black;
       border-radius: 4px;
       font-weight: 600;
       cursor: pointer;
@@ -113,8 +125,8 @@
   border-radius: 5px;
 
   .card-image {
-      width: 279px;
-      height: 292px;
+      width: 200px;
+      height: 200px;
       object-fit: cover;
       display: block;
       padding-right:2rem;
