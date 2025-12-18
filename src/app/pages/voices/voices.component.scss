@@ -23,7 +23,6 @@ h2 {
     font-size: 24px;
 }
 
-/* Data Indicators Section */
 .data-indicators-section {
     padding: 5rem 0;
     text-align: center;
@@ -57,7 +56,7 @@ color: var(--primary-color);
 display: grid;
 grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 gap: 1.5rem;
-align-items: stretch; /* Ensure all grid items stretch to the same height */
+align-items: stretch;
 }
 
 .story-card {
@@ -70,4 +69,30 @@ align-items: stretch; /* Ensure all grid items stretch to the same height */
 }
 app-improvement-story {
     width: 100%;
+}
+
+
+.margin-spacing{
+    margin: 30px;
+}
+
+.main-section h2{
+    font-size: 25px;
+}
+
+.main-section p{
+    font-size: 17px;
+}
+
+.indicator-section h2{
+    font-size: 25px;
+}
+
+.indicator-section{
+    padding-bottom: 5px;
+}
+
+.indicator-section .indicators{
+    margin: 0px 70px;
+    padding-top: 40px;
 }

@@ -1,8 +1,8 @@
 <div class="landing-container">
-  <div *ngFor="let section of pageData" [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
+  <div *ngFor="let section of pageData" [ngClass]="'section-position-' + section.position" class="margin-spacing">
     <!-- Data Indicators Section -->
     <ng-container *ngIf="section.type === 'branch-animation'">
-      <section [ngClass]="section.styles.section">
+      <section [ngClass]="section.styles.section" class="main-section">
         <h2>Voices from the ground</h2>
         <p class="animation-description">This space highlights voices from the community identifying issues, finding
           contextual solutions, and implementing them to solve education barriers.
@@ -11,10 +11,10 @@
     </ng-container>
 
     <ng-container *ngIf="section.type === 'data-indicators'">
-      <section [ngClass]="section.styles.section">
+      <section [ngClass]="section.styles.section" class="indicator-section">
         <div class="indicators-section">
           <h2 [ngClass]="section.styles.title">{{ section.title }}</h2>
-          <div class="row justify-content-center">
+          <div class="row justify-content-center indicators">
             <app-indicator-card class="col-sm-4 col-md-4 col-lg-4"
               *ngFor="let indicator of section.indicators; let i = index" [value]="indicator.value"
               [label]="indicator.label" [icon]="indicator.icon"
