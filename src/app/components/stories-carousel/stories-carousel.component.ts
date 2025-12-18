@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ImprovementStoryComponent } from '../improvement-story/improvement-story.component';
-import { SgFirebaseService } from '../../../firebase/firestore-service';
+import { v4 as uuidv4 } from 'uuid'
 
 @Component({
   selector: 'app-stories-carousel',
@@ -65,6 +65,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   ];
 
   // 2. New variable to hold groups of slides
+  browserId = this.getBrowserId();
   chunkedSlides: any[][] = [];
 
   // State Management
@@ -108,6 +109,17 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   resetAutoSlide(): void {
     clearInterval(this.slideInterval);
     this.startAutoSlide();
+  }
+
+  getBrowserId() {
+    let id = localStorage.getItem("browserId");
+  
+    if (!id) {
+      id = uuidv4();
+      localStorage.setItem("browserId", id);
+    }
+  
+    return id;
   }
 
   ngOnDestroy(): void {

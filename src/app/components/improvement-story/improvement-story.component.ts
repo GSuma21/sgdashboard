@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, input } from '@angular/core';
 import { SgFirebaseService } from '../../../firebase/firestore-service';
-import { v4 as uuidv4 } from 'uuid'
 import { ACTIONS, ActionType } from '../../../constants/actionContants';
 
 @Component({
@@ -14,24 +13,14 @@ import { ACTIONS, ActionType } from '../../../constants/actionContants';
 export class ImprovementStoryComponent {
   ACTIONS = ACTIONS;
   @Input() story:any = [];
+  @Input() browserId!: string;
   @Input() storyOfWeek:boolean = false;
 
   constructor(private sg:SgFirebaseService) {}
 
-  getBrowserId() {
-    let id = localStorage.getItem("browserId");
-  
-    if (!id) {
-      id = uuidv4();
-      localStorage.setItem("browserId", id);
-    }
-  
-    return id;
-  }
-
   async onAction(storyId: any, action: ActionType) {
 
-    const browserId = this.getBrowserId();
+    const browserId = this.browserId;
     const record: any = await this.sg.getRecord(storyId, browserId);
   
     if (!record) {
