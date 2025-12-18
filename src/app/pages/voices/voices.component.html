@@ -25,13 +25,13 @@
     </ng-container>
 
     <ng-container *ngIf="section.type === 'heat-map'">
-      <section [ngClass]="section.styles.section">
-        <div class="indicators-section">
+      <section [ngClass]="section.styles.section" class="heat-map-section">
+        <!-- <div class="indicators-section"> -->
           <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
           <div class="row justify-content-center">
             <app-heat-map [themes]="heatmapThemes" [allVoices]="heatmapVoices"></app-heat-map>
           </div>
-        </div>
+        <!-- </div> -->
       </section>
     </ng-container>
 

@@ -1,7 +1,7 @@
 .container {
     display: flex;
     gap: 40px;
-    padding: 20px;
+    // padding: 20px;
     font-family: 'Roboto', sans-serif;
     background-color: #fff;
     max-height: 50rem; // Limit height as requested
@@ -14,8 +14,8 @@
   }
 
   .section-title {
-    font-size: 1.2rem;
-    font-weight: 700;
+    font-size: 1rem;
+    font-weight: 600;
     margin-bottom: 20px;
     color: #000;
   }
@@ -24,7 +24,7 @@
     flex: 1;
     min-width: 0;
     overflow-y: auto; // Allow scrolling within the panel if content is too long
-    padding-right: 10px; // Space for scrollbar
+    // padding-right: 10px;
   }
 
   .right-panel {
@@ -39,11 +39,11 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-auto-rows: 100px;
-    gap: 10px;
+    gap: 6px;
   }
 
   .heatmap-item {
-    border-radius: 8px;
+    border-radius: 3px;
     padding: 15px;
     color: white;
     cursor: pointer;
@@ -93,8 +93,8 @@
     }
 
     .theme-title {
-      font-size: 1rem;
-      font-weight: 500;
+      font-size: 1.2rem;
+      font-weight: 700;
       margin: 0 0 5px 0;
       line-height: 1.2;
       // Text overflow handling
@@ -103,6 +103,8 @@
       line-clamp: 2; // Standard property
       -webkit-box-orient: vertical;
       overflow: hidden;
+    color: white;
+
     }
 
     .voice-count {
@@ -218,3 +220,7 @@
       text-align: right;
     }
   }
+.icon-img{
+  width: 19px;
+  height: 19px;
+}
