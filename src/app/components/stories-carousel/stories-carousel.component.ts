@@ -63,20 +63,39 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   autoSlideDelay: number = 5000;
 
   constructor(private utils:UtilsService,private sg:SgFirebaseService, private cdr: ChangeDetectorRef) {}
-
   async ngOnInit() {
+    try {
+      this.browserId = this.utils.getBrowserId();
+  
+      const storyIds = this.slides.map(s => s.storyId);
 
-    this.browserId = this.utils.getBrowserId();
+        if (!storyIds.length) {
+        this.chunkedSlides = this.chunkArray(this.slides, 2);
+        this.startAutoSlide();
+        return;
+      }
+  
+      const countsArray = await this.sg.getStoryCountsBulk(storyIds);
+  
+      this.slides = this.utils.applyCountsToList(this.slides, countsArray);
+  
+    } catch (error) {
+      
+      console.error('Failed to load story counts:', error);
+  
+      this.slides = this.slides.map((slide:any) => ({
+        ...slide,
+        likesCount: slide.likesCount ?? 0,
+        shareCount: slide.shareCount ?? 0,
+        downloadCount: slide.downloadCount ?? 0
+      }));
 
-    const storyIds = this.slides.map((s:any) => s.storyId);
-
-    const countsArray = await this.sg.getStoryCountsBulk(storyIds);
-
-    this.slides = this.utils.applyCountsToList(this.slides, countsArray);
-
-    this.chunkedSlides = this.chunkArray(this.slides, 2);
-    this.startAutoSlide();
+    } finally {
+      this.chunkedSlides = this.chunkArray(this.slides, 2);
+      this.startAutoSlide();
+    }
   }
+  
 
  async  onActionCompleted(event: any) {
     this.slides= this.utils.updateStoryCounts(this.slides,event)  

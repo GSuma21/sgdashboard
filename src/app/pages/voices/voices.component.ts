@@ -67,17 +67,36 @@ export class VoicesComponent implements OnInit {
   }]
 
   constructor(private utils:UtilsService, private sg:SgFirebaseService) { }
-
   async ngOnInit() {
-
-    this.browserId = this.utils.getBrowserId();
-
-    const storyIds = ['1231'];
-
-    const countsArray = await this.sg.getStoryCountsBulk(storyIds);
-    this.story = this.utils.applyCountsToList(this.story, countsArray);    
-    this.fetchPageData();
+    try {
+      this.browserId = this.utils.getBrowserId();
+  
+      const storyIds = ['1231'];
+  
+      if (!storyIds.length) {
+        this.fetchPageData();
+        return;
+      }
+  
+      const countsArray = await this.sg.getStoryCountsBulk(storyIds);
+  
+      this.story = this.utils.applyCountsToList(this.story, countsArray);
+  
+    } catch (error) {
+      console.error('Failed to load story counts:', error);
+  
+      this.story = this.story.map((item:any) => ({
+        ...item,
+        likesCount: item.likesCount ?? 0,
+        shareCount: item.shareCount ?? 0,
+        downloadCount: item.downloadCount ?? 0
+      }));
+  
+    } finally {
+      this.fetchPageData();
+    }
   }
+  
 
 
   onActionCompleted(event: any) {
