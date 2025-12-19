@@ -16,6 +16,7 @@ h2 {
     font-style: Bold;
     font-size: 36px;
 }
+
 .animation-description {
     font-family: Manrope;
     font-weight: 400;
@@ -46,17 +47,17 @@ h2 {
 }
 
 .section-title {
-font-size: 2.8rem;
-font-weight: 700;
-margin-bottom: 3.5rem;
-color: var(--primary-color);
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 3.5rem;
+    color: var(--primary-color);
 }
 
 .data-indicators-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-gap: 1.5rem;
-align-items: stretch;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    align-items: stretch;
 }
 
 .story-card {
@@ -67,34 +68,37 @@ align-items: stretch;
     overflow: hidden;
     min-height: 350px;
 }
+
 app-improvement-story {
     width: 100%;
 }
 
 
-.margin-spacing{
+.margin-spacing {
     margin: 30px;
 }
 
-.main-section h2{
-    font-size: 25px;
+.main-section {
+    h2 {
+        font-size: 25px;
+    }
+
+    p {
+        font-size: 17px;
+    }
 }
 
-.main-section p{
-    font-size: 17px;
-}
-
-.indicator-section h2{
-    font-size: 25px;
-}
-
-.indicator-section{
+.indicator-section {
     padding-bottom: 5px;
-}
 
-.indicator-section .indicators{
-    margin: 0px 70px;
-    padding-top: 40px;
+    h2 {
+        font-size: 25px;
+    }
+
+    .indicators {
+        margin: 0px 70px;
+        padding-top: 40px;
+    }
 }
 
 // .more-stories-section{
@@ -102,3 +106,28 @@ app-improvement-story {
 //     width: 100%;
 // }
 
+@media (max-width: 768px) {
+    .main-section {
+        h2 {
+            font-size: 16px;
+            margin-bottom: 18px;
+        }
+    
+        p {
+            font-size: 11px;
+        }
+    }
+
+    .indicator-section {
+        // padding-bottom: 5px;
+    
+        h2 {
+            font-size: 22px;
+        }
+    
+        .indicators {
+            margin: 0px 0px;
+            padding-top: 40px;
+        }
+    }
+}
