@@ -1,0 +1,28 @@
+<div class="modal-backdrop" (click)="closeModal()"></div>
+
+<div class="share-modal">
+  <!-- Close -->
+  <button class="close-btn" (click)="closeModal()">✕</button>
+
+  <h3 class="title">Help us amplify this story</h3>
+
+  <div class="section">
+    <p class="label">Share on:</p>
+
+    <div class="share-icons">
+      <button class="icon linkedin">in</button>
+      <button class="icon whatsapp">🟢</button>
+      <button class="icon facebook">f</button>
+      <button class="icon instagram">📸</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <p class="label">Copy Link:</p>
+
+    <div class="copy-box">
+      <input #linkInput type="text" [value]="shareLink" readonly />
+      <button (click)="copyLink(linkInput)">📋</button>
+    </div>
+  </div>
+</div>

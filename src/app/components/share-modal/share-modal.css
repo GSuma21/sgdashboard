@@ -1,0 +1,109 @@
+/* Backdrop */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1200;
+  }
+  
+  /* Modal */
+  .share-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 420px;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    z-index: 1201;
+  }
+  
+  /* Close */
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+    color: red;
+  }
+  
+  /* Title */
+  .title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  
+  /* Sections */
+  .section {
+    margin-bottom: 16px;
+  }
+  
+  .label {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  /* Share Icons */
+  .share-icons {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    color: #fff;
+  }
+  
+  .linkedin { background: #0a66c2; }
+  .whatsapp { background: #25d366; }
+  .facebook { background: #1877f2; }
+  .instagram { background: #e4405f; }
+  
+  /* Copy */
+  .copy-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .copy-box input {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    font-size: 13px;
+    outline: none;
+  }
+  
+  .copy-box button {
+    border: none;
+    background: #f2f2f2;
+    padding: 0 12px;
+    cursor: pointer;
+  }
+
+  
+  @media (max-width: 768px) {
+    .share-modal {
+      width: 100%;
+      bottom: 250px;
+      top: auto;
+      left: 0;
+      transform: none;
+      border-radius: 16px 16px 0 0;
+      padding: 16px;
+    }
+  }
+  

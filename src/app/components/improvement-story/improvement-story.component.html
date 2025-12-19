@@ -24,7 +24,7 @@
         <div class="action-item">
           <span class="like-icon">♡</span> {{ story.likes }}
         </div>
-        <div class="action-item">
+        <div class="action-item" (click)="showShareModal = true">
           <span class="read-icon"></span> {{ story.reads }}
         </div>
       </section>
@@ -40,3 +40,8 @@
   *ngIf="showModal"
   (close)="showModal = false">
 </app-story-model>
+
+<app-share-modal
+  *ngIf="showShareModal"
+  (close)="showShareModal = false">
+</app-share-modal>
