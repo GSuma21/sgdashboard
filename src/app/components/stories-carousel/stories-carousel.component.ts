@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy , ChangeDetectorRef} from '@angular/core';
 import { ImprovementStoryComponent } from '../improvement-story/improvement-story.component';
-import { v4 as uuidv4 } from 'uuid'
+import { UtilsService } from '../../services/utils.services';
+import { SgFirebaseService } from '../../../firebase/firestore-service';
+import { ACTIONS } from '../../../constants/actionContants';
 
 @Component({
   selector: 'app-stories-carousel',
@@ -20,9 +22,6 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       subtitle: 'subtitle',
       leader: 'Women Leader',
       location: 'Karnool, Bihar',
-      likes: 2203,
-      share:2203,
-      download:2203,
       reads: 2203,
       imageUrl: 'assets/image-1.jpg',
     },
@@ -32,9 +31,6 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       subtitle: 'Micro improvements',
       leader: 'Women Leader',
       location: 'Muzaffarpur, Bihar',
-      likes: 1800,
-      share:2203,
-      download:2203,
       reads: 1900,
       imageUrl: 'assets/image-2.jpg',
     },
@@ -44,28 +40,22 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       subtitle: 'Community Upliftment',
       leader: 'Youth Volunteer',
       location: 'Patna, Bihar',
-      likes: 1500,
-      share:2203,
-      download:2203,
       reads: 1800,
       imageUrl: 'assets/image-3.jpg',
     },
     {
-      storyId:'1234',
+      storyId:'1235',
       title: 'Rural Education Initiative',
       subtitle: 'Education',
       leader: 'School Principal',
       location: 'Gaya, Bihar',
-      likes: 3100,
-      share:2203,
-      download:2203,
       reads: 2950,
       imageUrl: 'assets/image-4.jpg',
     },
   ];
 
   // 2. New variable to hold groups of slides
-  browserId = this.getBrowserId();
+  browserId:any;
   chunkedSlides: any[][] = [];
 
   // State Management
@@ -73,19 +63,33 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   slideInterval: any;
   autoSlideDelay: number = 5000;
 
-  constructor() {}
+  constructor(private utils:UtilsService,private sg:SgFirebaseService, private cdr: ChangeDetectorRef) {}
 
-  async ngOnInit(){
-    // Split the raw slides into groups of 2
+  async ngOnInit() {
+
+    this.browserId = this.utils.getBrowserId();
+
+    const storyIds = this.slides.map((s:any) => s.storyId);
+
+    const countsArray = await this.sg.getStoryCountsBulk(storyIds);
+
+    this.slides = this.utils.applyCountsToList(this.slides, countsArray);
+
     this.chunkedSlides = this.chunkArray(this.slides, 2);
     this.startAutoSlide();
+  }
+
+ async  onActionCompleted(event: any) {
+    this.slides= this.utils.updateStoryCounts(this.slides,event)  
+    this.chunkedSlides = this.chunkArray(this.slides, 2);
+    this.cdr.detectChanges();
   }
 
   // Helper to chunk the array
   chunkArray(arr: any[], chunkSize: number): any[][] {
     const results = [];
-    while (arr.length) {
-      results.push(arr.splice(0, chunkSize));
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      results.push(arr.slice(i, i + chunkSize));
     }
     return results;
   }
@@ -109,17 +113,6 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   resetAutoSlide(): void {
     clearInterval(this.slideInterval);
     this.startAutoSlide();
-  }
-
-  getBrowserId() {
-    let id = localStorage.getItem("browserId");
-  
-    if (!id) {
-      id = uuidv4();
-      localStorage.setItem("browserId", id);
-    }
-  
-    return id;
   }
 
   ngOnDestroy(): void {

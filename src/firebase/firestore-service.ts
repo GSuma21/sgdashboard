@@ -3,126 +3,112 @@ import {
   Firestore,
   collection,
   doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  getDocs
+  getDocs,
+  increment,
+  runTransaction,
+  documentId, query, where
 } from '@angular/fire/firestore';
-import { FIREBASE_PATHS } from '../constants/actionContants';
+import { ActionType, FIREBASE_PATHS,ACTIONS } from '../constants/actionContants';
 
 @Injectable({ providedIn: 'root' })
 export class SgFirebaseService {
+  limit:any=100;
 
   private firestore = inject(Firestore);
   private injector = inject(Injector);
 
-  // ------------------------------------------
-  // GET RECORD (browserId)
-  // ------------------------------------------
-  async getRecord(storyId: string, browserId: string) {
+
+  async getStoryCountsBulk(storyIds: string[]) {
     return await runInInjectionContext(this.injector, async () => {
+  
+      if (storyIds.length > this.limit) {
+        throw new Error('Firestore supports max 100 storyIds per request');
+      }
 
-      const ref = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId, FIREBASE_PATHS.SUB_COLLECTION, browserId);
-      const snap = await getDoc(ref);
+      const snap = await getDocs(query(
+        collection(this.firestore, FIREBASE_PATHS.ROOT),
+        where(documentId(), 'in', storyIds)
+      ));
 
-      return snap.exists() ? snap.data() : null;
+      return snap.docs.map((docSnap:any) => ({
+        storyId: docSnap.id,
+        ...docSnap.data()
+      }));
     });
   }
+  
 
-  // ------------------------------------------
-  // CREATE RECORD (browserId)
-  // ------------------------------------------
-  async createRecord(storyId: string, browserId: string, data: any) {
-    return await runInInjectionContext(this.injector, async () => {
-
+async updateAction(storyId: string,browserId: string,action: ActionType,) {
+  return await runInInjectionContext(this.injector, async () => {
+    return await runTransaction(this.firestore, async (tx) => {
       const storyRef = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId);
-      await setDoc(storyRef, {
-        likesCount: 0,
-        shareCount: 0,
-        downloadCount: 0
+      const browserRef = doc(storyRef, FIREBASE_PATHS.SUB_COLLECTION, browserId);
+
+      const storySnap = await tx.get(storyRef);
+
+      if (!storySnap.exists()) {
+        tx.set(storyRef, {
+          likesCount: action === ACTIONS.LIKE ? 1 : 0,
+          shareCount:action === ACTIONS.SHARE ? 1 : 0,
+          downloadCount: action === ACTIONS.DOWNLOAD ? 1 : 0
+        }, { merge: true });
+
+        tx.set(browserRef, {
+          like: action === ACTIONS.LIKE ? 1 : 0,
+          share: action === ACTIONS.SHARE ? 1 : 0,
+          download: action === ACTIONS.DOWNLOAD ? 1 : 0
+        });
+
+        return {
+          status: 201, 
+          success: true,
+          message: 'Story and browser record created',
+          action,
+          storyId:storyId,
+          diff: 1
+        };;
+      }
+
+      const browserSnap = await tx.get(browserRef);
+
+      const record = browserSnap.exists()
+        ? (browserSnap.data() as { like: number; share: number; download: number })
+        : { like: 0, share: 0, download: 0 };
+
+      const oldValue = record[action as keyof typeof record] || 0;
+
+      const newValue = action === ACTIONS.LIKE ? (oldValue === 1 ? 0 : 1) : oldValue + 1;
+
+      tx.set(browserRef, {
+        like: action === ACTIONS.LIKE ? newValue : record.like,
+        share: action === ACTIONS.SHARE ? newValue : record.share,
+        download: action === ACTIONS.DOWNLOAD ? newValue : record.download
       }, { merge: true });
 
-      const browserRef = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId, FIREBASE_PATHS.SUB_COLLECTION, browserId);
-
-      await setDoc(browserRef, {
-        like: data.like ?? 0,
-        share: data.share ?? 0,
-        download: data.download ?? 0
-      });
-
-      await this.updateStoryTotals(storyId);
-
-      return browserRef;
-    });
-  }
-
-  // ------------------------------------------
-  // UPDATE RECORD (browserId)
-  // ------------------------------------------
-  async updateRecord(storyId: string, browserId: string, data: any) {
-    return await runInInjectionContext(this.injector, async () => {
-
-      const ref = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId, FIREBASE_PATHS.SUB_COLLECTION, browserId);
-
-      await updateDoc(ref, data);
-
-      await this.updateStoryTotals(storyId);
-
-    });
-  }
-
-  // ------------------------------------------
-  // RE-CALCULATE TOTALS (likes, share, download)
-  // ------------------------------------------
-  async updateStoryTotals(storyId: string) {
-    return await runInInjectionContext(this.injector, async () => {
-
-      const browsersRef = collection(this.firestore, FIREBASE_PATHS.ROOT, storyId, FIREBASE_PATHS.SUB_COLLECTION);
-      const snap = await getDocs(browsersRef);
-
-      let likes = 0, shares = 0, downloads = 0;
-
-      snap.forEach(docSnap => {
-        const d: any = docSnap.data();
-        likes += d.like || 0;
-        shares += d.share || 0;
-        downloads += d.download || 0;
-      });
-
-      const storyRef = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId);
-
-      await updateDoc(storyRef, {
-        likesCount: likes,
-        shareCount: shares,
-        downloadCount: downloads
-      });
-
-      return { likes, shares, downloads };
-    });
-  }
-
-
-  // ------------------------------------------
-  // GET-CALCULATE TOTALS (likes, share, download)
-  // ------------------------------------------
-  async getStoryCounts(storyId: string) {
-    return await runInInjectionContext(this.injector, async () => {
-  
-      const storyRef = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId);
-      const snap = await getDoc(storyRef);
-  
-      if (!snap.exists()) {
-        return { likesCount: 0, shareCount: 0, downloadCount: 0 };
-      }
-  
-      const data: any = snap.data();
-  
-      return {
-        likesCount: data.likesCount || 0,
-        shareCount: data.shareCount || 0,
-        downloadCount: data.downloadCount || 0
+      const fieldMap: Record<ActionType, string> = {
+        [ACTIONS.LIKE]: 'likesCount',
+        [ACTIONS.SHARE]: 'shareCount',
+        [ACTIONS.DOWNLOAD]: 'downloadCount'
       };
+
+      const diff =action === ACTIONS.LIKE ? (newValue === 1 ? 1 : -1) : 1;
+
+      tx.update(storyRef, {
+        [fieldMap[action]]: increment(diff)
+      });
+
+      return {
+        status: 200,
+        success: true,
+        message: 'Action updated successfully',
+        action,
+        storyId:storyId,
+        diff:diff
+    };
     });
-  }
+  });
+}
+
+
   
 }

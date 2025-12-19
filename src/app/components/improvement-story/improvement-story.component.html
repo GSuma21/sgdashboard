@@ -22,13 +22,13 @@
     <div class="card-actions d-flex justify-content-between px-4">
       <section class="d-flex">
         <button class="action-item" (click)="onAction(story.storyId, ACTIONS.LIKE)">
-          <span class="like-icon">♡</span> {{ story.likes }}
+          <span class="like-icon">♡</span> {{ story.likesCount }}
         </button>
         <button class="action-item" (click)="onAction(story.storyId, ACTIONS.SHARE)">
-          <span class="share-icon">🔗</span> {{ story.share }}
+          <span class="share-icon">🔗</span> {{ story.shareCount }}
         </button>
         <button class="action-item" (click)="onAction(story.storyId, ACTIONS.DOWNLOAD)">
-          <span class="download-icon">⬇️</span> {{ story.download }}
+          <span class="download-icon">⬇️</span> {{ story.downloadCount }}
         </button>
         <div class="action-item">
           <span class="read-icon"></span> {{ story.reads }}

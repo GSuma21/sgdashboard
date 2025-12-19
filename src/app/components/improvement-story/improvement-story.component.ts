@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, input } from '@angular/core';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { SgFirebaseService } from '../../../firebase/firestore-service';
 import { ACTIONS, ActionType } from '../../../constants/actionContants';
 
@@ -15,33 +15,24 @@ export class ImprovementStoryComponent {
   @Input() story:any = [];
   @Input() browserId!: string;
   @Input() storyOfWeek:boolean = false;
+  @Output() actionCompleted = new EventEmitter<any>();
 
   constructor(private sg:SgFirebaseService) {}
 
   async onAction(storyId: any, action: ActionType) {
-
-    const browserId = this.browserId;
-    const record: any = await this.sg.getRecord(storyId, browserId);
+    try {
+      const res = await this.sg.updateAction(
+        storyId,
+        this.browserId,
+        action
+      );
+      if(res?.status === 200){
+        this.actionCompleted.emit(res);
+      }
   
-    if (!record) {
-      await this.sg.createRecord(storyId, browserId, {
-        like: action === ACTIONS.LIKE ? 1 : 0,
-        share: action === ACTIONS.SHARE ? 1 : 0,
-        download: action === ACTIONS.DOWNLOAD ? 1 : 0
-      });
-      return;
+    } catch (err) {
+      console.error(err);
     }
-  
-    const oldValue = record[action] || 0;
-  
-    const newValue =
-      action === ACTIONS.LIKE
-        ? oldValue === 1 ? 0 : 1  
-        : oldValue + 1; 
-  
-    await this.sg.updateRecord(storyId, browserId, {
-      [action]: newValue
-    });
   }
   
   

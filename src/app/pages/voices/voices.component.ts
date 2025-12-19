@@ -11,6 +11,8 @@ import { HeatMapComponent } from '../../components/heat-map/heat-map.component';
 import { MultiAxisChartComponent } from '../../components/multi-axis-chart/multi-axis-chart.component';
 import { LineChartComponent } from '../../components/line-chart/line-chart';
 import { VerticalCarouselComponent } from '../../components/vertical-carousel/vertical-carousel.component';
+import { UtilsService } from '../../services/utils.services';
+import { SgFirebaseService } from '../../../firebase/firestore-service';
 
 @Component({
   selector: 'app-voices',
@@ -25,6 +27,7 @@ export class VoicesComponent implements OnInit {
 
   pageData: any = [];
   window: any = window;
+  browserId:any;
 
   heatmapThemes: any = [
     { id: '1', title: 'Child Marriage', count: 24, color: 'purple', gridClass: 'span-2-2', icon: 'https://storage.googleapis.com/dev-sg-dashboard/sg-dashboard/assets/icons/poverty_and_economic_barriers.svg' },
@@ -53,20 +56,32 @@ export class VoicesComponent implements OnInit {
     { id: 'v8', text: 'We need better classrooms.', author: 'Teacher', themeId: '4', color: 'blue' }
   ];
 
-  story = {
+  story = [{
     title: 'Stars, Charts, and Change',
     subtitle: 'subtitle',
     leader: 'Women Leader',
     location: 'Karnool, Bihar',
-    likes: 2203,
+    storyId:'1231',
     reads: 2203,
     imageUrl: 'assets/image-1.jpg',
+  }]
+
+  constructor(private utils:UtilsService, private sg:SgFirebaseService) { }
+
+  async ngOnInit() {
+
+    this.browserId = this.utils.getBrowserId();
+
+    const storyIds = ['1231'];
+
+    const countsArray = await this.sg.getStoryCountsBulk(storyIds);
+    this.story = this.utils.applyCountsToList(this.story, countsArray);    
+    this.fetchPageData();
   }
 
-  constructor() { }
 
-  ngOnInit(): void {
-    this.fetchPageData();
+  onActionCompleted(event: any) {
+      this.story = this.utils.updateStoryCounts(this.story,event)    
   }
 
   fetchPageData(): void {
