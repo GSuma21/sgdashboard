@@ -11,11 +11,12 @@ import { HeatMapComponent } from '../../components/heat-map/heat-map.component';
 import { MultiAxisChartComponent } from '../../components/multi-axis-chart/multi-axis-chart.component';
 import { LineChartComponent } from '../../components/line-chart/line-chart';
 import { VerticalCarouselComponent } from '../../components/vertical-carousel/vertical-carousel.component';
+import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
   selector: 'app-voices',
   standalone:true,
-  imports: [CommonModule, RouterModule, IndicatorCardComponent,StoriesCarouselComponent, ImprovementStoryComponent,HeatMapComponent,MultiAxisChartComponent, LineChartComponent, VerticalCarouselComponent],
+  imports: [CommonModule, RouterModule, IndicatorCardComponent,StoriesCarouselComponent, ImprovementStoryComponent,HeatMapComponent,MultiAxisChartComponent, LineChartComponent, VerticalCarouselComponent, VoicesAnimationsComponent],
   templateUrl: './voices.component.html',
   styleUrls: ['./voices.component.scss']
 })
@@ -70,18 +71,18 @@ export class VoicesComponent implements OnInit {
   }
 
   fetchPageData(): void {
-    d3.json(`./assets/voices.json`).then((data: any) => {
-      this.pageData = data;
-      console.log(data)
-    }).catch((error: any) => {
-      console.error('Error loading page data:', error);
-    });
-    // d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICES_PAGE}`).then((data: any) => {
+    // d3.json(`./assets/voices.json`).then((data: any) => {
     //   this.pageData = data;
     //   console.log(data)
     // }).catch((error: any) => {
     //   console.error('Error loading page data:', error);
     // });
+    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICES_PAGE}`).then((data: any) => {
+      this.pageData = data;
+      console.log(data)
+    }).catch((error: any) => {
+      console.error('Error loading page data:', error);
+    });
   }
 
 }
