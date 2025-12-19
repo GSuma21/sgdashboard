@@ -13,6 +13,6 @@ import { ShareModal } from '../share-modal/share-modal';
 export class ImprovementStoryComponent {
   @Input() story:any = [];
   @Input() storyOfWeek:boolean = false;
-  showModal = false;
+  showStoryModal = false;
   showShareModal = false;
 }

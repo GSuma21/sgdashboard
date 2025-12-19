@@ -1,7 +1,6 @@
 <div class="modal-backdrop" (click)="closeModal()"></div>
 
 <div class="share-modal">
-  <!-- Close -->
   <button class="close-btn" (click)="closeModal()">✕</button>
 
   <h3 class="title">Help us amplify this story</h3>
@@ -10,11 +9,27 @@
     <p class="label">Share on:</p>
 
     <div class="share-icons">
-      <button class="icon linkedin">in</button>
-      <button class="icon whatsapp">🟢</button>
-      <button class="icon facebook">f</button>
-      <button class="icon instagram">📸</button>
-    </div>
+        <button class="share-item linkedin">
+          <span>LinkedIn</span>
+          <img src="assets/icons/linkedin.svg" alt="LinkedIn" />
+        </button>
+      
+        <button class="share-item whatsapp">
+          <span>WhatsApp</span>
+          <img src="assets/icons/whatsapp.svg" alt="WhatsApp" />
+        </button>
+      
+        <button class="share-item facebook">
+          <span>Facebook</span>
+          <img src="assets/icons/facebook.svg" alt="Facebook" />
+        </button>
+      
+        <button class="share-item instagram">
+          <span>Instagram</span>
+          <img src="assets/icons/instagram.svg" alt="Instagram" />
+        </button>
+      </div>
+      
   </div>
 
   <div class="section">
