@@ -1,5 +1,4 @@
 <div class="container">
-    <!-- Left Panel: Heatmap -->
     <div class="left-panel">
         <h2 class="section-title">Themes beneath the voices</h2>
         <div class="heatmap-grid">
@@ -8,7 +7,6 @@
                 (mouseenter)="setActiveTheme(theme.id)">
                 <div class="content">
                     <div class="icon" *ngIf="theme.icon">
-                        <!-- Placeholder for icon, using text or a simple shape for now -->
                         <img [src]="theme.icon" alt="icon" class="icon-img" />
                     </div>
                     <h3 class="theme-title">{{ theme.title }}</h3>
@@ -18,7 +16,6 @@
         </div>
     </div>
 
-    <!-- Right Panel: Similar Voices -->
     <div class="right-panel">
         <h2 class="section-title">What we are hearing</h2>
         <div class="voices-grid" [@voicesAnimation]="displayedVoices.length">

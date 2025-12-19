@@ -58,12 +58,7 @@
     font-weight: 600;
     color: #fff;
   }
-  
-  /* .linkedin { background: #0a66c2; }
-  .whatsapp { background: #25d366; }
-  .facebook { background: #1877f2; }
-  .instagram { background: #e4405f; } */
-  
+
   .copy-box {
     display: flex;
     align-items: center;
@@ -114,13 +109,6 @@
     color: #000;
     font-weight: 600;
   }
-  
-  /* Brand colors (optional but matches reference feel) */
-  /* .linkedin span { color: #0a66c2; }
-  .whatsapp span { color: #25d366; }
-  .facebook span { color: #1877f2; }
-  .instagram span { color: #e4405f; } */
-  
   
   @media (max-width: 768px) {
     .share-modal {

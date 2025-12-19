@@ -70,7 +70,7 @@
   padding: 1rem 0;
   position: relative;
   margin-top: 2.5rem;
-  z-index: 2; // Keep actions above the purple background ::after
+  z-index: 2;
 
   .action-item {
       display: flex;
@@ -90,7 +90,6 @@
           margin-right: 5px;
       }
       .read-icon {
-          // Placeholder for the book icon in the image
           width: 14px;
           height: 14px;
           background-color: white;
@@ -119,7 +118,7 @@
 }
 
 .card-image-wrapper {
-  width: 40%; // Image takes 40% of the card width
+  width: 40%;
   overflow: hidden;
   margin-right: 2rem;
   border-radius: 5px;
@@ -134,9 +133,8 @@
   }
 }
 
-// Ensure the cards are horizontally aligned
 .slide-item.active > .story-card {
   &:first-child {
-      margin-right: 20px; // Space between the two visible cards
+      margin-right: 20px;
   }
 }
