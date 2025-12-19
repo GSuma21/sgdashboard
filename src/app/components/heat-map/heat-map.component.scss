@@ -224,3 +224,32 @@
   width: 19px;
   height: 19px;
 }
+
+@media (max-width: 768px) {
+  .heatmap-item {
+    // .content{
+    // justify-content: center;
+    // }
+    // .icon{
+    //   margin: 0px;
+    //   top: 0px !important;
+    //   float:left;
+    // }
+
+    // .theme-title{
+    //   margin-top: 50px;
+    // }
+  }
+
+  .voice-card{
+margin-bottom: 40px;
+
+    .quote-icon{
+      margin-bottom: -30px; 
+    }
+    .quote-text{
+      margin-left: 20px;
+      font-size: 13px;
+    }
+  }
+}
