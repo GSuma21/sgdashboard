@@ -35,11 +35,10 @@ mat-card {
     border: 2px solid var(--primary-color);
     border-radius: 15px;
     background-color: var(--primary-color);
-    color: white;
+    color: white !important;
     font-weight: 800;
     padding: 2px 20px;
     font-size: 0.9rem;
-
 }
 
 .year-button:active {
