@@ -55,7 +55,6 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   currentChunkIndex: number = 0;
   slideInterval: any;
   autoSlideDelay: number = 5000;
-  stopCarosal = false;
 
   constructor() {}
 
@@ -83,12 +82,10 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   }
 
   startAutoSlide(): void {
-    if(this.stopCarosal){
       this.slideInterval = setInterval(() => {
         this.nextSlide();
       }, this.autoSlideDelay);
-    }
-  
+
   }
 
   resetAutoSlide(): void {

@@ -1,7 +1,14 @@
 <div class="modal-backdrop" (click)="closeModal()"></div>
 
 <div class="modal-container" role="dialog">
-  <button class="close-btn" (click)="closeModal()">✕</button>
+  <button
+  class="close-btn"
+  (click)="closeModal()"
+  aria-label="Close dialog"
+  title="Close"
+>
+  ✕
+</button>
 
   <div class="meta-actions">
     <h2 class="modal-title">
@@ -42,11 +49,11 @@ A cluster coordinator, worked with Jyoti Mahila Sameeksha in a village in Muzaff
     <h4 class="photos-title">Photos:</h4>
 
     <div class="photo-row">
-      <img [src]="dummyImgeUrl" />
-      <img [src]="dummyImgeUrl" />
-      <img [src]="dummyImgeUrl" />
-      <img [src]="dummyImgeUrl" />
-      <img [src]="dummyImgeUrl" />
+      <img [src]="dummyImageUrl" />
+      <img [src]="dummyImageUrl" />
+      <img [src]="dummyImageUrl" />
+      <img [src]="dummyImageUrl" />
+      <img [src]="dummyImageUrl" />
     </div>
   </div>
 
