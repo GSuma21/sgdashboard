@@ -13,24 +13,24 @@
         <span>LinkedIn</span>
         <i class="bi bi-linkedin"></i>
       </button>
-    
+
       <button class="share-item whatsapp" (click)="share('whatsapp')">
         <span>WhatsApp</span>
         <i class="bi bi-whatsapp"></i>
       </button>
-    
+
       <button class="share-item facebook" (click)="share('facebook')">
         <span>Facebook</span>
         <i class="bi bi-facebook"></i>
       </button>
-    
+
       <button class="share-item instagram" (click)="share('instagram')">
         <span>Instagram</span>
         <i class="bi bi-instagram"></i>
       </button>
     </div>
-    
-      
+
+
   </div>
 
   <div class="section">
@@ -38,13 +38,9 @@
 
     <div class="copy-box">
       <input #linkInput type="text" [value]="shareLink" readonly />
-      <button
-  (click)="copyLink(linkInput)"
-  aria-label="Copy link to clipboard"
-  title="Copy link"
->
-<i class="bi bi-copy"></i>
-</button>
+      <button (click)="copyLink(linkInput)" aria-label="Copy link to clipboard" title="Copy link">
+        <i class="bi bi-copy"></i>
+      </button>
 
     </div>
   </div>

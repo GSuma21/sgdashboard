@@ -11,12 +11,12 @@ import { HeatMapComponent } from '../../components/heat-map/heat-map.component';
 import { MultiAxisChartComponent } from '../../components/multi-axis-chart/multi-axis-chart.component';
 import { LineChartComponent } from '../../components/line-chart/line-chart';
 import { VerticalCarouselComponent } from '../../components/vertical-carousel/vertical-carousel.component';
-import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
+// import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
   selector: 'app-voices',
   standalone:true,
-  imports: [CommonModule, RouterModule, IndicatorCardComponent,StoriesCarouselComponent, ImprovementStoryComponent,HeatMapComponent,MultiAxisChartComponent, LineChartComponent, VerticalCarouselComponent, VoicesAnimationsComponent],
+  imports: [CommonModule, RouterModule, IndicatorCardComponent,StoriesCarouselComponent, ImprovementStoryComponent,HeatMapComponent,MultiAxisChartComponent, LineChartComponent, VerticalCarouselComponent],
   templateUrl: './voices.component.html',
   styleUrls: ['./voices.component.scss']
 })

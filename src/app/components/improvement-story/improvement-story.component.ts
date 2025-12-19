@@ -15,4 +15,20 @@ export class ImprovementStoryComponent {
   @Input() storyOfWeek:boolean = false;
   showStoryModal = false;
   showShareModal = false;
+
+  openStoryModal(): void {
+    this.showStoryModal = true;
+  }
+
+  closeStoryModal(): void {
+    this.showStoryModal = false;
+  }
+
+  openShareModal(): void {
+    this.showShareModal = true;
+  }
+
+  closeShareModal(): void {
+    this.showShareModal = false;
+  }
 }

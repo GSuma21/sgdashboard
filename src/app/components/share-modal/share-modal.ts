@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-share-modal',
@@ -11,7 +12,7 @@ import { CommonModule } from '@angular/common';
 export class ShareModal  implements OnInit, OnDestroy {
   @Output() close = new EventEmitter<void>();
 
-  shareLink = 'https://shikshagraha_dashboard.org/1+support+++';
+  shareLink = environment.shareLink;
   shareText = `Hello everyone, I really appreciated this story and wanted to share it with you.
   Do take a moment to read it and help spread the word.`;
   
@@ -49,9 +50,9 @@ export class ShareModal  implements OnInit, OnDestroy {
     const text = encodeURIComponent(this.shareText);
   
     const shareUrls: Record<string, string> = {
-      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
-      whatsapp: `https://wa.me/?text=${text}%0A%0A${url}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`
+      linkedin: environment.linkedin + `${url}`,
+      whatsapp: environment.whatsapp + `${url}`,
+      facebook: environment.facebook + `${url}`
     };
   
     if (platform === 'instagram') {

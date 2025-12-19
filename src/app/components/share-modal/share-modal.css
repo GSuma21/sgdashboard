@@ -54,20 +54,19 @@
     .share-item.linkedin i {
       color: #0A66C2;
     }
-    
-    .share-item.whatsapp i {
-      color: #25D366;
-    }
-    
-    .share-item.facebook i {
-      color: #1877F2;
-    }
-    
-    .share-item.instagram i {
-      color: #E4405F;
-    }
-    
     color: #fff;
+  }
+
+  .share-item.whatsapp i {
+    color: #25D366;
+  }
+  
+  .share-item.facebook i {
+    color: #1877F2;
+  }
+  
+  .share-item.instagram i {
+    color: #E4405F;
   }
 
   .copy-box {
