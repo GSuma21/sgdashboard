@@ -107,3 +107,57 @@
     min-height: 350px;
 }
 
+@media (max-width: 768px) {
+
+    :host {
+      padding: 10px 0;
+      overflow-x: hidden;
+    }
+
+    .carousel-container {
+        width: 50%;
+    }
+  
+    .carousel-title {
+      margin-left: 0;
+      font-size: 18px;
+    }
+  
+    .carousel-wrapper {
+      min-height: auto;
+
+      position: relative;
+    padding: 0 10px; 
+    }
+  
+    .slides-area {
+      margin: 0;              // 🔥 remove side margins
+      width: 100%;
+    }
+  
+    .slide-group {
+      flex-direction: row; // 🔥 stack cards vertically
+      gap: 10px;
+    }
+  
+    .story-card {
+        flex: 0 0 100%;  
+      width: 100%;            // 🔥 full width card
+      min-height: auto;
+    }
+  
+    .nav-button {
+      width: 32px;
+      height: 32px;
+      border-width: 2px;
+    }
+  
+    .prev {
+      left: -1px;              // keep inside screen
+    }
+  
+    .next {
+      right: -1px;
+    }
+  }
+  
