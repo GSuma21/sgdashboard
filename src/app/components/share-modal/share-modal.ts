@@ -12,7 +12,9 @@ export class ShareModal  implements OnInit, OnDestroy {
   @Output() close = new EventEmitter<void>();
 
   shareLink = 'https://shikshagraha_dashboard.org/1+support+++';
-
+  shareText = `Hello everyone, I really appreciated this story and wanted to share it with you.
+  Do take a moment to read it and help spread the word.`;
+  
   ngOnInit() {
     document.body.classList.add('modal-open');
   }
@@ -42,24 +44,22 @@ export class ShareModal  implements OnInit, OnDestroy {
     alert('Failed to copy link. Please copy manually.');
   }
   
-  
-
   share(platform: 'linkedin' | 'whatsapp' | 'facebook' | 'instagram') {
     const url = encodeURIComponent(this.shareLink);
-    const text = encodeURIComponent('Check out this story');
+    const text = encodeURIComponent(this.shareText);
   
     const shareUrls: Record<string, string> = {
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
-      whatsapp: `https://wa.me/?text=${text}%20${url}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-      instagram: 'https://www.instagram.com/sharer/sharer.php?u=${url}'
+      whatsapp: `https://wa.me/?text=${text}%0A%0A${url}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`
     };
   
-    if (shareUrls[platform]) {
-      window.open(shareUrls[platform], '_blank');
-    } else {
-      alert('Instagram sharing is supported via the mobile app only.');
+    if (platform === 'instagram') {
+      alert('Instagram sharing works only via mobile app. Please copy the link.');
+      return;
     }
+  
+    window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
   }
   
 }
