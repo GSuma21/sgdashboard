@@ -1,5 +1,5 @@
 .footer-container {
-    background-color: #7D3C98;
+    background-color: #7e3288;
     /* Purple background */
     color: white;
     padding: 40px 20px;
@@ -7,17 +7,6 @@
     /* Assuming Inter or similar */
     position: relative;
     overflow: hidden;
-
-    /* Dandelion background effect - placeholder using radial gradients or image if available */
-    background-image:
-        radial-gradient(circle at 10% 90%, rgba(255, 255, 255, 0.1) 0%, transparent 20%),
-        radial-gradient(circle at 90% 90%, rgba(255, 255, 255, 0.1) 0%, transparent 20%);
-
-    /* If actual assets are available, we would use:
-  background-image: url('/assets/roots.svg');
-  background-repeat: no-repeat;
-  background-position: bottom center;
-  */
 }
 
 .footer-content {
@@ -34,6 +23,7 @@
     position: absolute;
     bottom: 0;
     width: 100%;
+    left: 0;
 }
 
 .left-section {
