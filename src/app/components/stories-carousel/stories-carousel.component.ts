@@ -11,7 +11,6 @@ import { ImprovementStoryComponent } from '../improvement-story/improvement-stor
 })
 
 export class StoriesCarouselComponent implements OnInit, OnDestroy {
-  // 1. Raw Data (Add enough items to test multiple pages)
   slides = [
     {
       title: 'Stars, Charts, and Change',
@@ -51,23 +50,20 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     },
   ];
 
-  // 2. New variable to hold groups of slides
   chunkedSlides: any[][] = [];
 
-  // State Management
   currentChunkIndex: number = 0;
   slideInterval: any;
   autoSlideDelay: number = 5000;
+  stopCarosal = false;
 
   constructor() {}
 
   ngOnInit(): void {
-    // Split the raw slides into groups of 2
     this.chunkedSlides = this.chunkArray(this.slides, 2);
     this.startAutoSlide();
   }
 
-  // Helper to chunk the array
   chunkArray(arr: any[], chunkSize: number): any[][] {
     const results = [];
     while (arr.length) {
@@ -87,9 +83,12 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   }
 
   startAutoSlide(): void {
-    this.slideInterval = setInterval(() => {
-      this.nextSlide();
-    }, this.autoSlideDelay);
+    if(this.stopCarosal){
+      this.slideInterval = setInterval(() => {
+        this.nextSlide();
+      }, this.autoSlideDelay);
+    }
+  
   }
 
   resetAutoSlide(): void {

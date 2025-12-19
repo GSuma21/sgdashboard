@@ -1,11 +1,10 @@
 :host {
     display: block;
     padding: 20px 0;
-    background-color: #DFDFDF; // Light background for contrast
+    background-color: #DFDFDF;
 }
 
 .carousel-container {
-    // width: 100%;
     margin: 0 auto;
     padding: 0 10px;
     position: relative;
@@ -24,8 +23,8 @@
     display: flex;
     align-items: center;
     position: relative;
-    overflow: hidden; // Important to hide non-active slides
-    min-height: 400px; // Ensure the container has height
+    overflow: hidden;
+    min-height: 400px;
 }
 
 .nav-button {
@@ -69,13 +68,12 @@
 .slides-area {
     display: flex;
     flex: 1;
-    margin: 0 60px; /* Increased margin to ensure buttons don't overlap cards */
+    margin: 0 60px;
     position: relative;
     height: 100%;
     overflow: hidden;
 }
 
-/* This represents one "Page" containing 2 cards */
 .slide-group {
     position: absolute;
     width: 100%;
@@ -84,11 +82,9 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.5s ease-in-out;
-
-    /* Flex layout to put 2 cards side by side */
     display: flex;
     justify-content: space-between;
-    gap: 20px; /* Gap between the two cards */
+    gap: 20px;
 }
 
 .slide-group.active {
@@ -97,7 +93,6 @@
     position: relative;
 }
 
-/* --- Updated Card Styling --- */
 .story-card {
     display: flex;
     background-color: white;
@@ -131,18 +126,18 @@
     }
   
     .slides-area {
-      margin: 0;              // 🔥 remove side margins
+      margin: 0;
       width: 100%;
     }
   
     .slide-group {
-      flex-direction: row; // 🔥 stack cards vertically
+      flex-direction: row;
       gap: 10px;
     }
   
     .story-card {
         flex: 0 0 100%;  
-      width: 100%;            // 🔥 full width card
+      width: 100%;
       min-height: auto;
     }
   
@@ -153,11 +148,10 @@
     }
   
     .prev {
-      left: -1px;              // keep inside screen
+      left: -1px;
     }
   
     .next {
       right: -1px;
     }
   }
-  
