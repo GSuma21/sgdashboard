@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { SgFirebaseService } from '../../../firebase/firestore-service';
-import { ACTIONS, ActionType } from '../../../constants/actionContants';
+import { ACTIONS, ActionType } from '../../../constants/actionConstants';
 
 @Component({
   selector: 'app-improvement-story',
@@ -26,7 +26,7 @@ export class ImprovementStoryComponent {
         this.browserId,
         action
       );
-      if(res?.status === 200){
+      if(res?.status){
         this.actionCompleted.emit(res);
       }
   

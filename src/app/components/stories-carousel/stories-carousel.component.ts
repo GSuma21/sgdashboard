@@ -3,7 +3,6 @@ import { Component, OnInit, OnDestroy , ChangeDetectorRef} from '@angular/core';
 import { ImprovementStoryComponent } from '../improvement-story/improvement-story.component';
 import { UtilsService } from '../../services/utils.services';
 import { SgFirebaseService } from '../../../firebase/firestore-service';
-import { ACTIONS } from '../../../constants/actionContants';
 
 @Component({
   selector: 'app-stories-carousel',

@@ -8,7 +8,7 @@ import {
   runTransaction,
   documentId, query, where
 } from '@angular/fire/firestore';
-import { ActionType, FIREBASE_PATHS,ACTIONS } from '../constants/actionContants';
+import { ActionType, FIREBASE_PATHS,ACTIONS,BrowserId } from '../constants/actionConstants';
 
 @Injectable({ providedIn: 'root' })
 export class SgFirebaseService {
@@ -20,7 +20,10 @@ export class SgFirebaseService {
 
   async getStoryCountsBulk(storyIds: string[]) {
     return await runInInjectionContext(this.injector, async () => {
-  
+      if (!storyIds || storyIds.length === 0) {
+        return [];
+      }
+      
       if (storyIds.length > this.limit) {
         throw new Error('Firestore supports max 100 storyIds per request');
       }
@@ -38,7 +41,7 @@ export class SgFirebaseService {
   }
   
 
-async updateAction(storyId: string,browserId: string,action: ActionType,) {
+async updateAction(storyId: string,browserId:BrowserId,action: ActionType,) {
   return await runInInjectionContext(this.injector, async () => {
     return await runTransaction(this.firestore, async (tx) => {
       const storyRef = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId);
@@ -66,7 +69,7 @@ async updateAction(storyId: string,browserId: string,action: ActionType,) {
           action,
           storyId:storyId,
           diff: 1
-        };;
+        };
       }
 
       const browserSnap = await tx.get(browserRef);

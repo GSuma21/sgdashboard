@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
-import { ACTIONS } from '../../constants/actionContants';
+import { ACTIONS, BrowserId } from '../../constants/actionConstants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
-    browserId: any;
 
     constructor() {}
 
-    getBrowserId() {
+    getBrowserId():BrowserId {
         let id = localStorage.getItem("browserId");
     
         if (!id) {
