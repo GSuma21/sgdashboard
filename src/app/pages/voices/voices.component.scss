@@ -75,7 +75,7 @@ app-improvement-story {
 
 
 .margin-spacing {
-    margin: 30px;
+    margin: 70px !important;
 }
 
 .main-section {
@@ -127,5 +127,9 @@ app-improvement-story {
 
     .section-sub-title{
         margin-left: -15px;
+    }
+
+    .margin-spacing {
+        margin: 30px !important;
     }
 }
