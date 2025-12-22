@@ -1,27 +1,37 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, input } from '@angular/core';
-import { StoryModel } from '../story-model/story-model';
-import { ShareModal } from '../share-modal/share-modal';
+import { Component, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 
-type ModalType = 'story' | 'share';
+import { StoryModel } from '../story-model/story-model';
+import { ShareModal } from '../share-modal/share-modal';
+
 @Component({
   selector: 'app-improvement-story',
   standalone: true,
-  imports: [CommonModule, StoryModel, ShareModal, MatIconModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './improvement-story.component.html',
   styleUrl: './improvement-story.component.scss'
 })
 export class ImprovementStoryComponent {
-  @Input() story:any = [];
-  @Input() storyOfWeek:boolean = false;
+  @Input() story: any;
+  @Input() storyOfWeek = false;
 
-  modals:any = {
-    story: false,
-    share: false
-  };
+  constructor(private dialog: MatDialog) {}
 
-  toggleModal(type: ModalType, state: boolean): void {
-    this.modals[type] = state;
+  openStoryModal(): void {
+    this.dialog.open(StoryModel, {
+      width: '900px',
+      panelClass: 'story-dialog',
+      autoFocus: false
+    });
+  }
+
+  openShareModal(): void {
+    this.dialog.open(ShareModal, {
+      width: '520px',
+      panelClass: 'share-dialog',
+      autoFocus: false
+    });
   }
 }
