@@ -86,7 +86,7 @@ export class firebaseService {
 
     return await runInInjectionContext(this.injector, async () => {
 
-      return await runTransaction(this.firestore, async (tx) => {
+      return await runTransaction(this.firestore, async (transaction) => {
   
         const storyRef = doc(this.firestore,FIREBASE_PATHS.ROOT,story.storyId);
   
@@ -99,9 +99,9 @@ export class firebaseService {
   
           if (story.like === 0) {
             // UNLIKE → delete browserId
-            tx.delete(browserRef);
+            transaction.delete(browserRef);
   
-            tx.set(
+            transaction.set(
               storyRef,
               { 
                 likesCount: action === ACTIONS.LIKE ?story.shareCount -1  :story.likesCount,
@@ -120,9 +120,9 @@ export class firebaseService {
           }
   
           // LIKE → add browserId
-          tx.set(browserRef, {});
+          transaction.set(browserRef, {});
   
-          tx.set(
+          transaction.set(
             storyRef,
             { 
               likesCount: action === ACTIONS.LIKE ?story.shareCount +1  :story.likesCount,
@@ -144,7 +144,7 @@ export class firebaseService {
          * SHARE / DOWNLOAD
          * ===================================================== */
   
-        tx.set(
+        transaction.set(
           storyRef,
           { 
             likesCount:story.likesCount,
