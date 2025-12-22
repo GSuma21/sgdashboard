@@ -6,9 +6,9 @@ export interface HeatmapTheme {
   id: string;
   title: string;
   count: number;
-  color: string; // CSS class or hex
-  gridClass: string; // For grid layout positioning/sizing
-  icon?: string; // Placeholder for icon name
+  color: string;
+  gridClass: string;
+  icon?: string;
 }
 
 export interface VoiceQuote {
@@ -16,7 +16,7 @@ export interface VoiceQuote {
   text: string;
   author: string;
   themeId: string;
-  color: string; // To match the theme
+  color: string;
 }
 
 @Component({
@@ -27,7 +27,7 @@ export interface VoiceQuote {
   styleUrl: './heat-map.component.scss',
   animations: [
     trigger('voicesAnimation', [
-      transition('* => *', [ // Trigger when the list changes
+      transition('* => *', [
         query(':enter', [
           style({ opacity: 0, transform: 'translateY(20px)' }),
           stagger('10ms', [
@@ -50,7 +50,6 @@ export class HeatMapComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['themes'] && this.themes.length > 0 && !this.activeThemeId) {
-      // Default to the first theme if none selected
       this.setActiveTheme(this.themes[0].id);
     }
   }

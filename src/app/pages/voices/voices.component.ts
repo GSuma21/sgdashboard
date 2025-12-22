@@ -13,12 +13,12 @@ import { LineChartComponent } from '../../components/line-chart/line-chart';
 import { VerticalCarouselComponent } from '../../components/vertical-carousel/vertical-carousel.component';
 import { UtilsService } from '../../services/utils.services';
 import { firebaseService } from '../../../firebase/firestore-service';
-import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
+// import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
   selector: 'app-voices',
   standalone:true,
-  imports: [CommonModule, RouterModule, IndicatorCardComponent,StoriesCarouselComponent, ImprovementStoryComponent,HeatMapComponent,MultiAxisChartComponent, LineChartComponent, VerticalCarouselComponent, VoicesAnimationsComponent],
+  imports: [CommonModule, RouterModule, IndicatorCardComponent,StoriesCarouselComponent, ImprovementStoryComponent,HeatMapComponent,MultiAxisChartComponent, LineChartComponent, VerticalCarouselComponent],
   templateUrl: './voices.component.html',
   styleUrls: ['./voices.component.scss']
 })

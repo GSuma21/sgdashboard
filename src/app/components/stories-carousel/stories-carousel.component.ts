@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy , ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ImprovementStoryComponent } from '../improvement-story/improvement-story.component';
-import { UtilsService } from '../../services/utils.services';
-import { firebaseService } from '../../../firebase/firestore-service';
 
 @Component({
   selector: 'app-stories-carousel',
@@ -13,41 +11,40 @@ import { firebaseService } from '../../../firebase/firestore-service';
 })
 
 export class StoriesCarouselComponent implements OnInit, OnDestroy {
-  // 1. Raw Data (Add enough items to test multiple pages)
   slides = [
     {
-      storyId:'1231',
       title: 'Stars, Charts, and Change',
       subtitle: 'subtitle',
       leader: 'Women Leader',
       location: 'Karnool, Bihar',
+      likes: 2203,
       reads: 2203,
       imageUrl: 'assets/image-1.jpg',
     },
     {
-      storyId:'1232',
       title: 'One Centre, Many Futures',
       subtitle: 'Micro improvements',
       leader: 'Women Leader',
       location: 'Muzaffarpur, Bihar',
+      likes: 1800,
       reads: 1900,
       imageUrl: 'assets/image-2.jpg',
     },
     {
-      storyId:'1243',
       title: 'Digital Empowerment',
       subtitle: 'Community Upliftment',
       leader: 'Youth Volunteer',
       location: 'Patna, Bihar',
+      likes: 1500,
       reads: 1800,
       imageUrl: 'assets/image-3.jpg',
     },
     {
-      storyId:'1247',
       title: 'Rural Education Initiative',
       subtitle: 'Education',
       leader: 'School Principal',
       location: 'Gaya, Bihar',
+      likes: 3100,
       reads: 2950,
       imageUrl: 'assets/image-4.jpg',
     },
@@ -56,11 +53,13 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   browserId:any;
   chunkedSlides: any[][] = [];
 
-  // State Management
   currentChunkIndex: number = 0;
   slideInterval: any;
   autoSlideDelay: number = 5000;
 
+  constructor() {}
+
+  ngOnInit(): void {
   constructor(private utils:UtilsService,private sg:firebaseService, private cdr: ChangeDetectorRef) {}
   async ngOnInit() {
     try {
@@ -103,14 +102,13 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
  async  onStoryAction(event: any) {
     this.slides=this.utils.updateStoryCounts(this.slides,event)  
     this.chunkedSlides = this.chunkArray(this.slides, 2);
-    this.cdr.detectChanges();
+    this.startAutoSlide();
   }
 
-  // Helper to chunk the array
   chunkArray(arr: any[], chunkSize: number): any[][] {
     const results = [];
-    for (let i = 0; i < arr.length; i += chunkSize) {
-      results.push(arr.slice(i, i + chunkSize));
+    while (arr.length) {
+      results.push(arr.splice(0, chunkSize));
     }
     return results;
   }
@@ -126,9 +124,10 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   }
 
   startAutoSlide(): void {
-    this.slideInterval = setInterval(() => {
-      this.nextSlide();
-    }, this.autoSlideDelay);
+      this.slideInterval = setInterval(() => {
+        this.nextSlide();
+      }, this.autoSlideDelay);
+
   }
 
   resetAutoSlide(): void {
