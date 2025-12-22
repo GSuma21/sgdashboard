@@ -13,6 +13,7 @@ export class UtilsService {
         let id = localStorage.getItem("browserId");
     
         if (!id) {
+          // Generates or retrieves a UUID used as a unique browser identifier for tracking purposes.
           id = uuidv4();
           localStorage.setItem("browserId", id);
         }
@@ -20,17 +21,18 @@ export class UtilsService {
         return id;
     }
 
-    updateStoryCounts(list: any[],event:any): any[] {
+    updateStoryCounts(list: any[],data:any): any[] {
       return list.map((slide: any) => {
-        if (String(slide.storyId) !== String(event.storyId)) {
+
+        if (slide.storyId !== data.storyId) {
           return slide;
         }
     
-        switch (event.action) {
+        switch (data.action) {
           case ACTIONS.LIKE:
             return {
               ...slide,
-              likesCount: slide.likesCount + event.diff
+              likesCount: slide.likesCount + data.diff
             };
     
           case ACTIONS.SHARE:
@@ -50,30 +52,5 @@ export class UtilsService {
         }
       });
     }
-
-
-    applyCountsToList(
-      list: any[],
-      countsArray: any[]
-    ): any[] {
-      const countsMap = new Map(
-        countsArray.map(item => [item.storyId, item])
-      );
-    
-      return list.map(item => {
-        const counts = countsMap.get(item.storyId);
-    
-        return {
-          ...item,
-          likesCount: counts?.likesCount ?? 0,
-          shareCount: counts?.shareCount ?? 0,
-          downloadCount: counts?.downloadCount ?? 0
-        };
-      });
-    }
-    
-    
-
-
  
 }

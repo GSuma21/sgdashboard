@@ -6,111 +6,163 @@ import {
   getDocs,
   increment,
   runTransaction,
-  documentId, query, where
+  getDoc,
+  documentId, query, where,
+  deleteField,
+  collectionGroup
 } from '@angular/fire/firestore';
-import { ActionType, FIREBASE_PATHS,ACTIONS,BrowserId } from '../constants/actionConstants';
+import { ActionType, FIREBASE_PATHS,ACTIONS,BrowserId, APP_LIMITS } from '../constants/actionConstants';
 
 @Injectable({ providedIn: 'root' })
-export class SgFirebaseService {
-  limit:any=100;
+export class firebaseService {
 
   private firestore = inject(Firestore);
   private injector = inject(Injector);
 
 
-  async getStoryCountsBulk(storyIds: string[]) {
+  async getStoryCountsBulk(storyIds: string[],browserId: string) {
     return await runInInjectionContext(this.injector, async () => {
-      if (!storyIds || storyIds.length === 0) {
+  
+      if (!storyIds?.length) {
         return [];
       }
-      
-      if (storyIds.length > this.limit) {
-        throw new Error('Firestore supports max 100 storyIds per request');
+  
+      if (storyIds.length > APP_LIMITS.STORY_ID_QUERY_LIMIT) {
+        throw new Error('Max 100 storyIds allowed');
       }
+  
+      /* -------------------------------------------------
+       * 1️⃣ Fetch ALL story documents (SINGLE API call)
+       * ------------------------------------------------- */
+      const storySnap = await getDocs(query(collection(this.firestore, FIREBASE_PATHS.ROOT),where(documentId(), 'in', storyIds)));
+  
+      const storyMap = new Map<string, any>();
+      storySnap.docs.forEach(docSnap => {storyMap.set(docSnap.id, docSnap.data())});
+  
+      /* -------------------------------------------------
+       * 2️⃣ Check browser likes in PARALLEL (Promise.all)
+       * ------------------------------------------------- */
+      const likeChecks = storyIds.map(storyId =>
 
-      const snap = await getDocs(query(
-        collection(this.firestore, FIREBASE_PATHS.ROOT),
-        where(documentId(), 'in', storyIds)
-      ));
+        getDoc(
+          doc(
+            this.firestore,
+            FIREBASE_PATHS.ROOT,
+            storyId,
+            FIREBASE_PATHS.SUB_COLLECTION,
+            browserId
+          )
+        )
+      );
+  
+      const browserSnaps = await Promise.all(likeChecks);
+  
+      const likeMap = new Map<string, number>();
 
-      return snap.docs.map((docSnap:any) => ({
-        storyId: docSnap.id,
-        ...docSnap.data()
-      }));
+      browserSnaps.forEach((snap, index) => {
+        likeMap.set(storyIds[index], snap.exists() ? 1 : 0)
+      });
+  
+      /* -------------------------------------------------
+       * 3️⃣ Merge results in memory (NO API calls)
+       * ------------------------------------------------- */
+      return storyIds.map(storyId => {
+        const data = storyMap.get(storyId);
+  
+        return {
+          storyId,
+          likesCount: data?.likesCount ?? 0,
+          shareCount: data?.shareCount ?? 0,
+          downloadCount: data?.downloadCount ?? 0,
+          like: likeMap.get(storyId) ?? 0
+        };
+      });
     });
   }
   
 
-async updateAction(storyId: string,browserId:BrowserId,action: ActionType,) {
-  return await runInInjectionContext(this.injector, async () => {
-    return await runTransaction(this.firestore, async (tx) => {
-      const storyRef = doc(this.firestore, FIREBASE_PATHS.ROOT, storyId);
-      const browserRef = doc(storyRef, FIREBASE_PATHS.SUB_COLLECTION, browserId);
 
-      const storySnap = await tx.get(storyRef);
+  async updateRecord(story: any,browserId: BrowserId,action: ActionType) {
 
-      if (!storySnap.exists()) {
-        tx.set(storyRef, {
-          likesCount: action === ACTIONS.LIKE ? 1 : 0,
-          shareCount:action === ACTIONS.SHARE ? 1 : 0,
-          downloadCount: action === ACTIONS.DOWNLOAD ? 1 : 0
-        }, { merge: true });
+    return await runInInjectionContext(this.injector, async () => {
 
-        tx.set(browserRef, {
-          like: action === ACTIONS.LIKE ? 1 : 0,
-          share: action === ACTIONS.SHARE ? 1 : 0,
-          download: action === ACTIONS.DOWNLOAD ? 1 : 0
-        });
-
+      return await runTransaction(this.firestore, async (tx) => {
+  
+        const storyRef = doc(this.firestore,FIREBASE_PATHS.ROOT,story.storyId);
+  
+        const browserRef = doc(storyRef,FIREBASE_PATHS.SUB_COLLECTION,browserId);
+  
+        /* =====================================================
+         * LIKE
+         * ===================================================== */
+        if (action === ACTIONS.LIKE) {
+  
+          if (story.like === 0) {
+            // UNLIKE → delete browserId
+            tx.delete(browserRef);
+  
+            tx.set(
+              storyRef,
+              { 
+                likesCount: action === ACTIONS.LIKE ?story.shareCount -1  :story.likesCount,
+              shareCount: story.shareCount,
+              downloadCount: story.downloadCount
+              },
+              { merge: true }
+            );
+  
+            return {
+              status: 200,
+              storyId: story.storyId,
+              action,
+              diff: -1
+            };
+          }
+  
+          // LIKE → add browserId
+          tx.set(browserRef, {});
+  
+          tx.set(
+            storyRef,
+            { 
+              likesCount: action === ACTIONS.LIKE ?story.shareCount +1  :story.likesCount,
+              shareCount: story.shareCount,
+              downloadCount: story.downloadCount
+             },
+            { merge: true }
+          );
+  
+          return {
+            status: 200,
+            storyId: story.storyId,
+            action,
+            diff: 1
+          };
+        }
+  
+        /* =====================================================
+         * SHARE / DOWNLOAD
+         * ===================================================== */
+  
+        tx.set(
+          storyRef,
+          { 
+            likesCount:story.likesCount,
+            shareCount:action === ACTIONS.SHARE ? story.shareCount+1 : story.shareCount,
+            downloadCount:action === ACTIONS.DOWNLOAD ? story.downloadCount+1 : story.downloadCount
+          },
+          { merge: true }
+        );
+  
         return {
-          status: 201, 
-          success: true,
-          message: 'Story and browser record created',
+          status: 200,
+          storyId: story.storyId,
           action,
-          storyId:storyId,
-          diff: 1
+          diff:1
         };
-      }
-
-      const browserSnap = await tx.get(browserRef);
-
-      const record = browserSnap.exists()
-        ? (browserSnap.data() as { like: number; share: number; download: number })
-        : { like: 0, share: 0, download: 0 };
-
-      const oldValue = record[action as keyof typeof record] || 0;
-
-      const newValue = action === ACTIONS.LIKE ? (oldValue === 1 ? 0 : 1) : oldValue + 1;
-
-      tx.set(browserRef, {
-        like: action === ACTIONS.LIKE ? newValue : record.like,
-        share: action === ACTIONS.SHARE ? newValue : record.share,
-        download: action === ACTIONS.DOWNLOAD ? newValue : record.download
-      }, { merge: true });
-
-      const fieldMap: Record<ActionType, string> = {
-        [ACTIONS.LIKE]: 'likesCount',
-        [ACTIONS.SHARE]: 'shareCount',
-        [ACTIONS.DOWNLOAD]: 'downloadCount'
-      };
-
-      const diff =action === ACTIONS.LIKE ? (newValue === 1 ? 1 : -1) : 1;
-
-      tx.update(storyRef, {
-        [fieldMap[action]]: increment(diff)
       });
-
-      return {
-        status: 200,
-        success: true,
-        message: 'Action updated successfully',
-        action,
-        storyId:storyId,
-        diff:diff
-    };
     });
-  });
-}
+  }
 
 
   

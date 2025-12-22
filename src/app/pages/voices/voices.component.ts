@@ -12,7 +12,7 @@ import { MultiAxisChartComponent } from '../../components/multi-axis-chart/multi
 import { LineChartComponent } from '../../components/line-chart/line-chart';
 import { VerticalCarouselComponent } from '../../components/vertical-carousel/vertical-carousel.component';
 import { UtilsService } from '../../services/utils.services';
-import { SgFirebaseService } from '../../../firebase/firestore-service';
+import { firebaseService } from '../../../firebase/firestore-service';
 import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
@@ -28,7 +28,7 @@ export class VoicesComponent implements OnInit {
 
   pageData: any = [];
   window: any = window;
-  browserId:any;
+  browserId:string='';
 
   heatmapThemes: any = [
     { id: '1', title: 'Child Marriage', count: 24, color: 'purple', gridClass: 'span-2-2', icon: 'https://storage.googleapis.com/dev-sg-dashboard/sg-dashboard/assets/icons/poverty_and_economic_barriers.svg' },
@@ -62,26 +62,29 @@ export class VoicesComponent implements OnInit {
     subtitle: 'subtitle',
     leader: 'Women Leader',
     location: 'Karnool, Bihar',
-    storyId:'1231',
+    storyId:'1341',
     reads: 2203,
     imageUrl: 'assets/image-1.jpg',
   }]
 
-  constructor(private utils:UtilsService, private sg:SgFirebaseService) { }
+  constructor(private utils:UtilsService, private sg:firebaseService) { }
   async ngOnInit() {
     try {
       this.browserId = this.utils.getBrowserId();
   
-      const storyIds = ['1231'];
+      const storyIds = this.story.map(s => s.storyId);
   
       if (!storyIds.length) {
         this.fetchPageData();
         return;
       }
   
-      const countsArray = await this.sg.getStoryCountsBulk(storyIds);
-  
-      this.story = this.utils.applyCountsToList(this.story, countsArray);
+      const counts = await this.sg.getStoryCountsBulk(storyIds,this.browserId);
+    
+      this.story = this.story.map(slide => ({
+        ...slide,
+        ...counts.find(c => c.storyId === slide.storyId)
+      }));
   
     } catch (error) {
       console.error('Failed to load story counts:', error);

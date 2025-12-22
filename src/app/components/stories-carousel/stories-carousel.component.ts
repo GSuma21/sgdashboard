@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy , ChangeDetectorRef} from '@angular/core';
 import { ImprovementStoryComponent } from '../improvement-story/improvement-story.component';
 import { UtilsService } from '../../services/utils.services';
-import { SgFirebaseService } from '../../../firebase/firestore-service';
+import { firebaseService } from '../../../firebase/firestore-service';
 
 @Component({
   selector: 'app-stories-carousel',
@@ -34,7 +34,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       imageUrl: 'assets/image-2.jpg',
     },
     {
-      storyId:'1233',
+      storyId:'1243',
       title: 'Digital Empowerment',
       subtitle: 'Community Upliftment',
       leader: 'Youth Volunteer',
@@ -43,7 +43,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       imageUrl: 'assets/image-3.jpg',
     },
     {
-      storyId:'1235',
+      storyId:'1247',
       title: 'Rural Education Initiative',
       subtitle: 'Education',
       leader: 'School Principal',
@@ -53,7 +53,6 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     },
   ];
 
-  // 2. New variable to hold groups of slides
   browserId:any;
   chunkedSlides: any[][] = [];
 
@@ -62,22 +61,25 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   slideInterval: any;
   autoSlideDelay: number = 5000;
 
-  constructor(private utils:UtilsService,private sg:SgFirebaseService, private cdr: ChangeDetectorRef) {}
+  constructor(private utils:UtilsService,private sg:firebaseService, private cdr: ChangeDetectorRef) {}
   async ngOnInit() {
     try {
       this.browserId = this.utils.getBrowserId();
   
       const storyIds = this.slides.map(s => s.storyId);
 
-        if (!storyIds.length) {
+      if (!storyIds.length) {
         this.chunkedSlides = this.chunkArray(this.slides, 2);
         this.startAutoSlide();
         return;
       }
   
-      const countsArray = await this.sg.getStoryCountsBulk(storyIds);
-  
-      this.slides = this.utils.applyCountsToList(this.slides, countsArray);
+      const counts = await this.sg.getStoryCountsBulk(storyIds,this.browserId);
+
+      this.slides = this.slides.map(slide => ({
+        ...slide,
+        ...counts.find(c => c.storyId === slide.storyId)
+      }));
   
     } catch (error) {
       
@@ -87,7 +89,8 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
         ...slide,
         likesCount: slide.likesCount ?? 0,
         shareCount: slide.shareCount ?? 0,
-        downloadCount: slide.downloadCount ?? 0
+        downloadCount: slide.downloadCount ?? 0,
+        like:slide.like ?? 0
       }));
 
     } finally {
@@ -98,7 +101,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   
 
  async  onActionCompleted(event: any) {
-    this.slides= this.utils.updateStoryCounts(this.slides,event)  
+    this.slides=this.utils.updateStoryCounts(this.slides,event)  
     this.chunkedSlides = this.chunkArray(this.slides, 2);
     this.cdr.detectChanges();
   }

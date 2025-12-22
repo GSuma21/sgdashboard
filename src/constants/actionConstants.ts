@@ -9,6 +9,10 @@ export const FIREBASE_PATHS = {
     SUB_COLLECTION: "browsers"
   } as const;
 
+  export const APP_LIMITS = {
+    STORY_ID_QUERY_LIMIT: 100
+  } as const;
+
 export type BrowserId = string;
   
 export type ActionType = typeof ACTIONS[keyof typeof ACTIONS];

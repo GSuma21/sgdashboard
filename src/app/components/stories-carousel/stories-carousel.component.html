@@ -13,7 +13,7 @@
              [ngClass]="{'active': i === currentChunkIndex}">
 
           <div class="story-card" *ngFor="let slide of chunk">
-            <app-improvement-story [story]="slide" [browserId]="browserId" (actionCompleted)="onActionCompleted($event)"></app-improvement-story>
+            <app-improvement-story [story]="slide" [browserId]="browserId" (actionProcessed)="onActionCompleted($event)"></app-improvement-story>
           </div>
         </div>
       </div>

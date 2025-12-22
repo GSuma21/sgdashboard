@@ -78,8 +78,8 @@
         <div class="indicators-section">
           <h5 [ngClass]="section.styles.title">{{ section.title }}</h5>
           <div class="row justify-content-center">
-            <div class="story-card">
-              <app-improvement-story [story]="story[0]" [storyOfWeek]="true" [browserId]="browserId" (actionCompleted)="onActionCompleted($event)"></app-improvement-story>
+            <div class="story-card" *ngFor="let slide of story">
+              <app-improvement-story [story]="slide" [storyOfWeek]="true" [browserId]="browserId" (actionProcessed)="onActionCompleted($event)"></app-improvement-story>
             </div>
           </div>
         </div>

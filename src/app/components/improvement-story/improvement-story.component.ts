@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { SgFirebaseService } from '../../../firebase/firestore-service';
+import { firebaseService } from '../../../firebase/firestore-service';
 import { ACTIONS, ActionType } from '../../../constants/actionConstants';
-
 @Component({
   selector: 'app-improvement-story',
   standalone: true,
@@ -15,21 +14,19 @@ export class ImprovementStoryComponent {
   @Input() story:any = [];
   @Input() browserId!: string;
   @Input() storyOfWeek:boolean = false;
-  @Output() actionCompleted = new EventEmitter<any>();
+  @Output() actionProcessed = new EventEmitter<any>();
 
-  constructor(private sg:SgFirebaseService) {}
+  constructor(private sg:firebaseService) {}
 
-  async onAction(storyId: any, action: ActionType) {
+  async handleUserClick(story: any, action: ActionType) { 
     try {
-      const res = await this.sg.updateAction(
-        storyId,
+      const res = await this.sg.updateRecord(
+        action === ACTIONS.LIKE? { ...story, like: story.like ? 0 : 1 }: story,
         this.browserId,
-        action
+        action,
       );
-      if(res?.status){
-        this.actionCompleted.emit(res);
-      }
   
+      res?.status && this.actionProcessed.emit(res);
     } catch (err) {
       console.error(err);
     }
