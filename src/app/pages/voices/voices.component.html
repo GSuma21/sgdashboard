@@ -83,7 +83,7 @@
     </ng-container>
 
     <ng-container *ngIf="section.type === 'more-stories'">
-      <section class="more-stories-section">
+      <section [ngClass]="section.styles.section" [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)" class="more-stories-section">
           <div class="row">
               <app-stories-carousel></app-stories-carousel>
           </div>
