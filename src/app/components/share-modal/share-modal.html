@@ -9,22 +9,22 @@
     <div class="share-icons">
       <button class="share-item linkedin" (click)="share('linkedin')">
         <span>LinkedIn</span>
-        <i class="bi bi-linkedin"></i>
+        <mat-icon>work</mat-icon>
       </button>
 
       <button class="share-item whatsapp" (click)="share('whatsapp')">
         <span>WhatsApp</span>
-        <i class="bi bi-whatsapp"></i>
+        <mat-icon>chat</mat-icon>
       </button>
 
       <button class="share-item facebook" (click)="share('facebook')">
         <span>Facebook</span>
-        <i class="bi bi-facebook"></i>
+        <mat-icon>public</mat-icon>
       </button>
 
       <button class="share-item instagram" (click)="share('instagram')">
         <span>Instagram</span>
-        <i class="bi bi-instagram"></i>
+        <mat-icon>photo_camera</mat-icon>
       </button>
     </div>
 
@@ -37,7 +37,7 @@
     <div class="copy-box">
       <input #linkInput type="text" [value]="shareLink" readonly />
       <button (click)="copyLink(linkInput)" aria-label="Copy link to clipboard" title="Copy link">
-        <i class="bi bi-copy"></i>
+        <mat-icon>content_copy</mat-icon>
       </button>
 
     </div>
