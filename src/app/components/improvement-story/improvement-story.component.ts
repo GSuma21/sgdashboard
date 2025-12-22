@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { firebaseService } from '../../../firebase/firestore-service';
 import { ACTIONS, ActionType } from '../../../constants/actionConstants';
-import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -18,12 +17,12 @@ import { ShareModal } from '../share-modal/share-modal';
 })
 export class ImprovementStoryComponent {
   ACTIONS = ACTIONS;
-  @Input() story:any = [];
   @Input() browserId!: string;
   @Input() storyOfWeek:boolean = false;
+  @Input() story: any;
   @Output() storyAction = new EventEmitter<any>();
 
-  constructor(private sg:firebaseService) {}
+  constructor(private sg:firebaseService,private dialog: MatDialog) {}
 
   async handleUserClick(story: any, action: ActionType) { 
     try {
@@ -39,12 +38,6 @@ export class ImprovementStoryComponent {
     }
   }
   
-  
-  @Input() story: any;
-  @Input() storyOfWeek = false;
-
-  constructor(private dialog: MatDialog) {}
-
   openStoryModal(): void {
     this.dialog.open(StoryModel, {
       width: '900px',

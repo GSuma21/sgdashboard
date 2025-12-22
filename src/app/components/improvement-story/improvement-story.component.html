@@ -30,11 +30,6 @@
         <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.DOWNLOAD)">
           <span class="download-icon">⬇️</span> {{ story.downloadCount }}
         </button>
-        <div class="action-item">
-          <span class="read-icon"></span> {{ story.reads }}
-        <div class="action-item">
-          <mat-icon>favorite</mat-icon> {{ story.likes }}
-        </div>
         <div class="action-item" (click)="openShareModal()">
           <mat-icon>share</mat-icon> {{ story.reads }}
         </div>
