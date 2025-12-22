@@ -1,0 +1,43 @@
+<div class="animation-container">
+  <img src="assets/animations/background.svg" class="bg-img" style="position: absolute; width:100%; height:100%; object-fit: cover;">
+
+  <div class="branch-wrapper">
+
+    <img [src]="BRANCH_IMG"
+         class="branch-img"
+         [@branchState]="growthStep">
+
+    <ng-container *ngFor="let node of storyNodes; let i = index">
+
+      <ng-container *ngIf="i < growthStep">
+
+        <div class="dandelion-flower"
+             *ngIf="dandelionsVisible.has(i)"
+             [style.top]="node.dandelionTop"
+             [style.left]="node.dandelionLeft"
+             @dandelionPop>
+           <img [src]="FLOWER_IMG" class="dandelion-image">
+        </div>
+
+        <div class="bubble problem bubble-problem"
+             *ngIf="problemsVisible.has(i)"
+             [ngStyle]="getBubbleStyle(node, 'problem')"
+             @bubblePop>
+             <img src="assets/animations/challenge.svg" class="mb-2">
+          <p><strong>{{ node.problem }}</strong></p>
+          <p style="text-align: right; font-style: italic; font-size: 0.8em;">- {{ node.author }}</p>
+        </div>
+
+        <div class="bubble solution bubble-solution"
+             *ngIf="solutionsVisible.has(i)"
+             [ngStyle]="getBubbleStyle(node, 'solution')"
+             @bubblePop>
+             <img src="assets/animations/solution.svg" class="mb-2">
+          <p>{{ node.solution }}</p>
+        </div>
+
+      </ng-container>
+    </ng-container>
+
+  </div>
+</div>
