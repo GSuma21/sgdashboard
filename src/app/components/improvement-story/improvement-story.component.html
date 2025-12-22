@@ -22,10 +22,10 @@
     <div class="card-actions d-flex justify-content-between px-4">
       <section class="d-flex">
         <div class="action-item">
-          <span class="like-icon">♡</span> {{ story.likes }}
+          <mat-icon>favorite</mat-icon> {{ story.likes }}
         </div>
         <div class="action-item" (click)="openShareModal()">
-          <span class="read-icon"></span> {{ story.reads }}
+          <mat-icon>share</mat-icon>  {{ story.reads }}
         </div>
       </section>
       <button class="read-story-btn" (click)="openStoryModal()">Read Story</button>

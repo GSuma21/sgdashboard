@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-story-model',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './story-model.html',
   styleUrl: './story-model.css'
 })

@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, input } from '@angular/core';
 import { StoryModel } from '../story-model/story-model';
 import { ShareModal } from '../share-modal/share-modal';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-improvement-story',
   standalone: true,
-  imports: [CommonModule, StoryModel, ShareModal],
+  imports: [CommonModule, StoryModel, ShareModal, MatIconModule],
   templateUrl: './improvement-story.component.html',
   styleUrl: './improvement-story.component.scss'
 })
