@@ -11,7 +11,7 @@ export const environment = {
         messagingSenderId: "MESSAGE_SENDER_ID",
         appId: "APP_ID",
         measurementId: "MEASUREMENT_ID"
-    }
+    },
     shareLink : 'https://shikshagraha_dashboard.org',
     linkedin: 'https://www.linkedin.com/sharing/share-offsite//?url=',
     whatsapp: 'https://wa.me/?text=${text}%0A%0A',
