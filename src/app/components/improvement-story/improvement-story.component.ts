@@ -4,6 +4,7 @@ import { StoryModel } from '../story-model/story-model';
 import { ShareModal } from '../share-modal/share-modal';
 import { MatIconModule } from '@angular/material/icon';
 
+type ModalType = 'story' | 'share';
 @Component({
   selector: 'app-improvement-story',
   standalone: true,
@@ -14,22 +15,13 @@ import { MatIconModule } from '@angular/material/icon';
 export class ImprovementStoryComponent {
   @Input() story:any = [];
   @Input() storyOfWeek:boolean = false;
-  showStoryModal = false;
-  showShareModal = false;
 
-  openStoryModal(): void {
-    this.showStoryModal = true;
-  }
+  modals:any = {
+    story: false,
+    share: false
+  };
 
-  closeStoryModal(): void {
-    this.showStoryModal = false;
-  }
-
-  openShareModal(): void {
-    this.showShareModal = true;
-  }
-
-  closeShareModal(): void {
-    this.showShareModal = false;
+  toggleModal(type: ModalType, state: boolean): void {
+    this.modals[type] = state;
   }
 }
