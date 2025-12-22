@@ -100,7 +100,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   }
   
 
- async  onActionCompleted(event: any) {
+ async  onStoryAction(event: any) {
     this.slides=this.utils.updateStoryCounts(this.slides,event)  
     this.chunkedSlides = this.chunkArray(this.slides, 2);
     this.cdr.detectChanges();

@@ -103,7 +103,7 @@ export class VoicesComponent implements OnInit {
   
 
 
-  onActionCompleted(event: any) {
+  onStoryAction(event: any) {
       this.story = this.utils.updateStoryCounts(this.story,event)    
   }
 

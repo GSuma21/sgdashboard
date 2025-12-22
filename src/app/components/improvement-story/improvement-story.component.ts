@@ -14,7 +14,7 @@ export class ImprovementStoryComponent {
   @Input() story:any = [];
   @Input() browserId!: string;
   @Input() storyOfWeek:boolean = false;
-  @Output() actionProcessed = new EventEmitter<any>();
+  @Output() storyAction = new EventEmitter<any>();
 
   constructor(private sg:firebaseService) {}
 
@@ -26,7 +26,7 @@ export class ImprovementStoryComponent {
         action,
       );
   
-      res?.status && this.actionProcessed.emit(res);
+      res?.status && this.storyAction.emit(res);
     } catch (err) {
       console.error(err);
     }
