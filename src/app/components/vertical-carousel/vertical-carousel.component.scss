@@ -1,8 +1,7 @@
-/* --- Global / Container Styles --- */
 .community-feed-container {
   max-width: 600px;
-  height: 485px;
-  padding: 20px;
+  height: 380px;
+  padding: 20px 10px;
   border-radius: 15px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background-color: #d0d0d0;
@@ -15,15 +14,12 @@
   color: #333;
 }
 
-/* --- Scrolling Mechanism & Visual Effect --- */
 .feed-scroller {
-  /* Set a fixed height for the viewing window */
   height: 100%;
   overflow: hidden;
   position: relative;
 }
 
-/* ** THE CRUCIAL MASKING EFFECT ** */
 .feed-scroller::before {
   content: '';
   position: absolute;
@@ -32,50 +28,33 @@
   right: 0;
   bottom: 0;
   z-index: 10;
-  /* Make sure the mask is on top of the cards */
   pointer-events: none;
-  /* Allows interaction beneath the mask */
 
-  /* Create a vertical gradient mask:
-     - Transparent at the center (where the active card is)
-     - White/Light Gray at the top and bottom (where cards are dim/faded) */
-  background: linear-gradient(to bottom,
+background: linear-gradient(to bottom,
       rgba(247, 247, 247, 0) 0%,
-      /* Top fade */
       rgba(247, 247, 247, 0) 25%,
-      /* Clear area start */
       rgba(247, 247, 247, 0) 75%,
-      /* Clear area end */
       #dbcedb 100%
-      /* Bottom fade */
     );
 }
 
 .scroll-track {
   display: flex;
   flex-direction: column;
-  /* animation removed, controlled by JS */
   transform: translateY(0);
 }
 
-/* Hover pause handled by JS if needed, or just standard CSS for pausing the JS loop?
-   Actually, for a step-based JS carousel, hover-pause is usually done by clearing the interval.
-   We'll leave the hover state empty here. */
-/* Hover pause handled by JS if needed. Currently no-op. */
-
-/* --- Individual Card Styling (Adjusted for the Dimming Effect) --- */
 .feed-card {
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.05);
 
-  padding: 18px 25px;
+  padding: 18px 10px;
   margin-bottom: 20px;
   width: 100%;
   box-sizing: border-box;
   flex-shrink: 0;
 
-  /* Add subtle blur and dimness to all cards by default. */
   filter: grayscale(100%) brightness(90%);
   opacity: 0.6;
   transform: scale(0.95);
@@ -87,11 +66,9 @@
     transform: scale(1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     z-index: 2;
-    /* Ensure active card is above others if overlaps occur */
   }
 }
 
-/* Content Typography (Unchanged) */
 .main-text {
   color: #4a4a4a;
   font-size: 14.5px;

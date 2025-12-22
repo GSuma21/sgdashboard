@@ -4,6 +4,8 @@
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+  padding-bottom: 26px;
+  overflow: hidden; 
 }
 
 .quote-icon {
@@ -11,8 +13,8 @@
   font-weight: 900;
   line-height: 0.5;
   color: #7a1fa2;
-  margin-bottom: 20px;
-  padding-top: 3rem;
+  padding-top: 0rem;
+  position: absolute;
 }
 
 .crown {
@@ -28,37 +30,56 @@
   color: #333;
   padding-bottom: 2rem;
   border-bottom: 1px solid;
-  width: 50%;
+  width: 130px;
+  max-width: 130px;
+  white-space: normal; 
+  word-break: break-word;
+  overflow-wrap: break-word;
+  margin-top: 1rem;
+  margin-left: 45px;
+
 }
 
 .card-meta {
   display: flex;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   margin-top: 1rem;
   .meta-icon {
       font-size: 20px;
       margin-right: 10px;
       color: #7a1fa2;
+      width: 30px;
   }
   .location {
       font-size: 12px;
-      color: #888;
+      color: #000000;
+  }
+
+  .leader-text{
+    font-weight: 700;
+    font-size: 13px;
+    color: #000000;
+
   }
 }
 
 #flow-img {
   position: absolute;
+  left: 0;
   bottom: 0;
+  width: 100%;
+  height: 151px;
+  display: block;
 }
 
 .card-actions {
   display: flex;
   align-items: center;
-  padding: 2.2rem 0;
+  padding: 1rem 0;
   position: relative;
-  margin-top: 3rem;
-  z-index: 2; // Keep actions above the purple background ::after
+  margin-top: 2.5rem;
+  z-index: 2;
 
   .action-item {
       display: flex;
@@ -68,7 +89,7 @@
       padding: 8px 12px;
       margin-right: 15px;
       border: 1px solid white;
-      border-radius: 20px;
+      border-radius: 5px;
       background: white;
       color: purple;
       font-weight: 700;
@@ -78,7 +99,6 @@
           margin-right: 5px;
       }
       .read-icon {
-          // Placeholder for the book icon in the image
           width: 14px;
           height: 14px;
           background-color: white;
@@ -91,10 +111,10 @@
 
   .read-story-btn {
       margin-left: auto;
-      padding: 10px 20px;
-      background-color: white;
-      color: #7a1fa2;
-      border: none;
+      padding: 7px 20px;
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border: 1px solid black;
       border-radius: 4px;
       font-weight: 600;
       cursor: pointer;
@@ -102,19 +122,20 @@
 
       &:hover {
           background-color: #e0e0e0;
+          color: var(--primary-color);
       }
   }
 }
 
 .card-image-wrapper {
-  width: 40%; // Image takes 40% of the card width
+  width: 40%;
   overflow: hidden;
   margin-right: 2rem;
   border-radius: 5px;
 
   .card-image {
-      width: 279px;
-      height: 292px;
+      width: 200px;
+      height: 200px;
       object-fit: cover;
       display: block;
       padding-right:2rem;
@@ -122,9 +143,21 @@
   }
 }
 
-// Ensure the cards are horizontally aligned
 .slide-item.active > .story-card {
   &:first-child {
-      margin-right: 20px; // Space between the two visible cards
+      margin-right: 20px;
   }
+}
+
+mat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  line-height: 1;
+  vertical-align: middle;
+  color: var(--primary-color);
+  margin-right: 5px;
 }
