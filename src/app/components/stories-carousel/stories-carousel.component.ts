@@ -13,44 +13,7 @@ import { firebaseService } from '../../../firebase/firestore-service';
 })
 
 export class StoriesCarouselComponent implements OnInit, OnDestroy {
-  slides = [
-    {
-      storyId:'1231',
-      title: 'Stars, Charts, and Change',
-      subtitle: 'subtitle',
-      leader: 'Women Leader',
-      location: 'Karnool, Bihar',
-      reads: 2203,
-      imageUrl: 'assets/image-1.jpg',
-    },
-    {
-      storyId:'1232',
-      title: 'One Centre, Many Futures',
-      subtitle: 'Micro improvements',
-      leader: 'Women Leader',
-      location: 'Muzaffarpur, Bihar',
-      reads: 1900,
-      imageUrl: 'assets/image-2.jpg',
-    },
-    {
-      storyId:'1243',
-      title: 'Digital Empowerment',
-      subtitle: 'Community Upliftment',
-      leader: 'Youth Volunteer',
-      location: 'Patna, Bihar',
-      reads: 1800,
-      imageUrl: 'assets/image-3.jpg',
-    },
-    {
-      storyId:'1247',
-      title: 'Rural Education Initiative',
-      subtitle: 'Education',
-      leader: 'School Principal',
-      location: 'Gaya, Bihar',
-      reads: 2950,
-      imageUrl: 'assets/image-4.jpg',
-    },
-  ];
+  slides: any[] = [];
 
   browserId:any;
   chunkedSlides: any[][] = [];

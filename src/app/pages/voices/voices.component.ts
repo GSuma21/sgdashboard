@@ -57,15 +57,7 @@ export class VoicesComponent implements OnInit {
     { id: 'v8', text: 'We need better classrooms.', author: 'Teacher', themeId: '4', color: 'blue' }
   ];
 
-  story = [{
-    title: 'Stars, Charts, and Change',
-    subtitle: 'subtitle',
-    leader: 'Women Leader',
-    location: 'Karnool, Bihar',
-    storyId:'1341',
-    reads: 2203,
-    imageUrl: 'assets/image-1.jpg',
-  }]
+  story:any[]=[]
 
   constructor(private utils:UtilsService, private sg:firebaseService) { }
   async ngOnInit() {
