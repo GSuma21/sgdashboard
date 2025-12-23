@@ -7,7 +7,6 @@ body {
     display: flex;
     flex-wrap: wrap;
     overflow-x: hidden;
-    justify-content: center;
 }
 
 h2 {
@@ -25,7 +24,6 @@ h2 {
 }
 
 .data-indicators-section {
-    padding: 5rem 0;
     text-align: center;
     background-color: var(--background-color);
     margin: auto;
@@ -47,10 +45,9 @@ h2 {
 }
 
 .section-title {
-    font-size: 2.8rem;
-    font-weight: 700;
-    margin-bottom: 3.5rem;
-    color: var(--primary-color);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4rem;
 }
 
 .data-indicators-grid {
@@ -73,12 +70,8 @@ app-improvement-story {
     width: 100%;
 }
 
-
-.margin-spacing {
-    margin: 70px !important;
-}
-
 .main-section {
+    margin: 30px;
     h2 {
         font-size: 25px;
     }
@@ -89,7 +82,9 @@ app-improvement-story {
 }
 
 .indicator-section {
-    padding-bottom: 5px;
+    margin-bottom: 55px;
+    margin-left: 30px;
+
 
     h2 {
         font-size: 25px;
@@ -99,6 +94,11 @@ app-improvement-story {
         margin: 0px 70px;
         padding-top: 40px;
     }
+}
+
+.line-chart-section{
+    margin-left: 70px;
+    width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -127,9 +127,5 @@ app-improvement-story {
 
     .section-sub-title{
         margin-left: -15px;
-    }
-
-    .margin-spacing {
-        margin: 30px !important;
     }
 }

@@ -3,10 +3,11 @@
     *ngFor="let section of pageData"
     [ngClass]="'section-position-' + section.position"
     [ngSwitch]="section.type"
+    [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)"
   >
 
     <ng-container *ngSwitchCase="'branch-animation'">
-      <section [ngClass]="section.styles.section" class="main-section margin-spacing">
+      <section [ngClass]="section.styles.section" class="main-section">
         <h2>Voices from the ground</h2>
         <p class="animation-description">
           This space highlights voices from the community identifying issues, finding
@@ -17,7 +18,7 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'data-indicators'">
-      <section [ngClass]="section.styles.section" class="indicator-section margin-spacing">
+      <section [ngClass]="section.styles.section" class="indicator-section">
         <div class="indicators-section">
           <h2 [ngClass]="section.styles.title">{{ section.title }}</h2>
 
@@ -38,7 +39,7 @@
 
     <ng-container *ngSwitchCase="'heat-map'">
       <section [ngClass]="section.styles.section">
-        <div class="row justify-content-center">
+        <div class="row mx-2">
           <app-heat-map
             [themes]="heatmapThemes"
             [allVoices]="heatmapVoices">
@@ -48,7 +49,7 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'leaders-engaged'">
-      <section [ngClass]="section.styles.section" class="margin-spacing">
+      <section [ngClass]="section.styles.section">
         <div class="indicators-section">
           <div class="row justify-content-center">
             <div class="box-shadow">
@@ -60,9 +61,9 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'community-feed'">
-      <section class="margin-spacing" [ngClass]="section.styles.section">
+      <section [ngClass]="section.styles.section">
         <div class="indicators-section">
-          <h5 [ngClass]="section.styles.title">{{ section.title }}</h5>
+          <h5 [ngClass]="section.styles.title" class="section-title">{{ section.title }}</h5>
 
           <div class="row justify-content-center">
             <div class="box-shadow">
@@ -74,8 +75,8 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'micro-improvements-so-far'">
-      <section [ngClass]="section.styles.section" class="margin-spacing">
-        <div class="indicators-section">
+      <section [ngClass]="section.styles.section">
+        <div class="indicators-section line-chart-section">
           <div class="row justify-content-center">
             <div class="box-shadow">
               <app-line-chart [data]="section.data"></app-line-chart>
@@ -86,8 +87,8 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'story-of-the-week'">
-      <section class="margin-spacing" [ngClass]="section.styles.section">
-        <h5 [ngClass]="section.styles.title">{{ section.title }}</h5>
+      <section [ngClass]="section.styles.section">
+        <h5 [ngClass]="section.styles.title" class="section-title">{{ section.title }}</h5>
 
         <div class="row justify-content-center">
           <div class="story-card">
@@ -108,9 +109,9 @@
       </section>
     </ng-container>
 
-    <!-- <ng-container *ngSwitchCase="'section-heading'">
+    <ng-container *ngSwitchCase="'section-heading'">
       <h3 [ngClass]="section.styles.title">{{ section.title }}</h3>
-    </ng-container> -->
+    </ng-container>
 
   </div>
 </div>

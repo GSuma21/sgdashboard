@@ -22,13 +22,13 @@
 .left-panel {
   flex: 1;
   min-width: 0;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .right-panel {
   flex: 1;
   min-width: 0;
-  overflow-y: auto;
+  overflow-y: hidden;
   padding-right: 10px;
 }
 
@@ -186,10 +186,9 @@
   overflow: hidden;
 
   .quote-icon {
-    font-size: 3rem;
-    line-height: 1;
+    font-size: 2rem;
+    line-height: 0.5;
     opacity: 0.5;
-    margin-bottom: 10px;
   }
 
   .quote-text {
