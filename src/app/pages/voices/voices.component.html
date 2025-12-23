@@ -3,7 +3,7 @@
     *ngFor="let section of pageData"
     [ngClass]="'section-position-' + section.position"
     [ngSwitch]="section.type"
-    [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)"
+    [style.width]="(isMobile ? '100%' : section.width)"
   >
 
     <ng-container *ngSwitchCase="'branch-animation'">

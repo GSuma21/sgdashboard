@@ -25,16 +25,14 @@
 .left-panel {
   flex: 1;
   min-width: 0;
-  overflow: hidden;
-  max-width: fit-content;
+  overflow-x: auto;
 
 }
 
 .right-panel {
   flex: 1;
   min-width: 0;
-  overflow-y: hidden;
-  max-width: fit-content;
+  overflow-y: auto;
 
 }
 
@@ -115,7 +113,7 @@
     margin: 0;
   }
 
-  .text-center {
+  .text-spacing {
     display: flex;
     flex-direction: column;
     justify-content: center;
