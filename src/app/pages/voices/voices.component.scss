@@ -104,7 +104,12 @@ app-improvement-story {
 
 .heat-map{
     margin: 0px 0.5rem;
+    app-heat-map{
+        width: 100%;
+    }
 }
+
+
 
 @media (max-width: 768px) {
     .main-section {

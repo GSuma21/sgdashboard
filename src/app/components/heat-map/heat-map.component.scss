@@ -5,6 +5,9 @@
   background-color: #fff;
   max-height: 50rem;
   overflow: hidden;
+  margin: 0px 30px;
+  padding: 0px;
+  max-width: fit-content;
 
   @media (max-width: 1024px) {
     flex-direction: column;
@@ -23,13 +26,16 @@
   flex: 1;
   min-width: 0;
   overflow: hidden;
+  max-width: fit-content;
+
 }
 
 .right-panel {
   flex: 1;
   min-width: 0;
   overflow-y: hidden;
-  padding-right: 10px;
+  max-width: fit-content;
+
 }
 
 .heatmap-grid {
@@ -231,6 +237,8 @@
   justify-content: space-between;
   min-height: 180px;
   overflow: hidden;
+  max-width: inherit;
+
 
   .quote-icon {
     font-size: 2rem;
@@ -325,4 +333,11 @@
       font-size: 13px;
     }
   }
+.container{
+  margin: 0px;
+  padding: 10px;
+}
+.right-panel {
+  padding: 10px;
+}
 }
