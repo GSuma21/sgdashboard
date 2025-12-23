@@ -27,25 +27,25 @@ export class VoicesAnimationsComponent implements OnInit {
       problem: "I don't go to school because I don't have an Aadhaar card.",
       author: "Women Leader, Patna, Bihar",
       solution: "I worked on a micro-improvement project to help 9 children...",
-      dandelionTop: '56%', dandelionLeft: '10%'
+      dandelionTop: '69%', dandelionLeft: '12%'
     },
     {
       problem: "Child marriage is a prevalent issue...",
       author: "Farmer Leader, Patna, Bihar",
       solution: "I, a farmer from Danapur, addressed the security problem...",
-      dandelionTop: '50%', dandelionLeft: '38%'
+      dandelionTop: '63%', dandelionLeft: '38%'
     },
     {
       problem: "Due to lack of school in the village...",
       author: "Women Leader, Patna, Bihar",
       solution: "I improved attendance at my school...",
-      dandelionTop: '54%', dandelionLeft: '60%'
+      dandelionTop: '59%', dandelionLeft: '60%'
     },
     {
       problem: "In rural areas, girls often drop out...",
       author: "Women Leader, Patna, Bihar",
       solution: "A farmer from Danapur addressed security issues...",
-      dandelionTop: '41%', dandelionLeft: '80%'
+      dandelionTop: '68%', dandelionLeft: '80%'
     }
   ];
 
@@ -87,7 +87,7 @@ export class VoicesAnimationsComponent implements OnInit {
     };
 
     if (type === 'problem') {
-      style.top = `${flowerTop + 16}%`; // Bottom of flower
+      style.top = `${flowerTop + 10}%`; // Bottom of flower
     } else {
       style.top = `${flowerTop - 35}%`; // Top of flower
     }
