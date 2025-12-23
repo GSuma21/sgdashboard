@@ -3,10 +3,14 @@
 
     <ng-container *ngIf="section.type === 'branch-animation'">
       <section [ngClass]="section.styles.section" class="main-section margin-spacing">
-        <h2>Voices from the ground</h2>
-        <p class="animation-description">This space highlights voices from the community identifying issues, finding
+        <h2 class="ml-4">Voices from the ground</h2>
+        <p class="animation-description mb-4 ml-3">This space highlights voices from the community identifying issues,
+          finding
           contextual solutions, and implementing them to solve education barriers.
           Women leaders are at the forefront of making this change possible.</p>
+        <p class="ml-3 pb-3 sub-description">From the cracks of struggle emerge the flowers of community-led solutions
+        </p>
+        <app-voices-animations></app-voices-animations>
       </section>
     </ng-container>
 
@@ -26,10 +30,10 @@
 
     <ng-container *ngIf="section.type === 'heat-map'">
       <section [ngClass]="section.styles.section">
-          <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
-          <div class="row justify-content-center">
-            <app-heat-map [themes]="heatmapThemes" [allVoices]="heatmapVoices"></app-heat-map>
-          </div>
+        <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
+        <div class="row justify-content-center">
+          <app-heat-map [themes]="heatmapThemes" [allVoices]="heatmapVoices"></app-heat-map>
+        </div>
       </section>
     </ng-container>
 
@@ -73,20 +77,21 @@
     </ng-container>
     <ng-container *ngIf="section.type === 'story-of-the-week'">
       <section class="margin-spacing" [ngClass]="section.styles.section">
-          <h5 [ngClass]="section.styles.title">{{ section.title }}</h5>
-          <div class="row justify-content-center">
-            <div class="story-card" *ngFor="let slide of story">
-              <app-improvement-story [story]="slide" [storyOfWeek]="true" [browserId]="browserId" (storyAction)="onStoryAction($event)"></app-improvement-story>
-            </div>
+        <h5 [ngClass]="section.styles.title">{{ section.title }}</h5>
+        <div class="row justify-content-center">
+          <div class="story-card" *ngFor="let slide of story">
+            <app-improvement-story [story]="slide" [storyOfWeek]="true" [browserId]="browserId"
+              (storyAction)="onStoryAction($event)"></app-improvement-story>
           </div>
+        </div>
       </section>
     </ng-container>
 
     <ng-container *ngIf="section.type === 'more-stories'">
       <section [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)">
-          <div class="row">
-              <app-stories-carousel></app-stories-carousel>
-          </div>
+        <div class="row">
+          <app-stories-carousel></app-stories-carousel>
+        </div>
       </section>
     </ng-container>
 
@@ -95,4 +100,3 @@
     </ng-container> -->
   </div>
 </div>
-<!-- <app-voices-animations></app-voices-animations> -->

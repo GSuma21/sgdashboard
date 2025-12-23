@@ -21,7 +21,13 @@ h2 {
     font-family: Manrope;
     font-weight: 400;
     font-style: Regular;
-    font-size: 24px;
+    font-size: 20px;
+    color: #5f6b7d;
+}
+
+.sub-description {
+    font-weight: 900;
+    font-size: 1.2rem;
 }
 
 .data-indicators-section {
@@ -107,18 +113,18 @@ app-improvement-story {
             font-size: 16px;
             margin-bottom: 18px;
         }
-    
+
         p {
             font-size: 14px;
         }
     }
 
     .indicator-section {
-    
+
         h2 {
             font-size: 22px;
         }
-    
+
         .indicators {
             margin: 0px 0px;
             padding-top: 40px;
