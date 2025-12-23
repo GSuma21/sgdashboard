@@ -13,12 +13,13 @@ import { LineChartComponent } from '../../components/line-chart/line-chart';
 import { VerticalCarouselComponent } from '../../components/vertical-carousel/vertical-carousel.component';
 import { UtilsService } from '../../services/utils.services';
 import { firebaseService } from '../../../firebase/firestore-service';
+import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 // import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
   selector: 'app-voices',
   standalone:true,
-  imports: [CommonModule, RouterModule, IndicatorCardComponent,StoriesCarouselComponent, ImprovementStoryComponent,HeatMapComponent,MultiAxisChartComponent, LineChartComponent, VerticalCarouselComponent],
+  imports: [CommonModule, RouterModule, IndicatorCardComponent,StoriesCarouselComponent, ImprovementStoryComponent,HeatMapComponent,MultiAxisChartComponent, LineChartComponent, VerticalCarouselComponent, VoicesAnimationsComponent],
   templateUrl: './voices.component.html',
   styleUrls: ['./voices.component.scss']
 })
@@ -65,38 +66,38 @@ export class VoicesComponent implements OnInit {
   async ngOnInit() {
     try {
       this.browserId = this.utils.getBrowserId();
-  
+
       const storyIds = this.story.map(s => s.storyId);
-  
+
       if (!storyIds.length) {
         this.fetchPageData();
         return;
       }
-  
+
       const counts = await this.sg.getStoryCountsBulk(storyIds,this.browserId);
-    
+
       this.story = this.story.map(slide => ({
         ...slide,
         ...counts.find(c => c.storyId === slide.storyId)
       }));
-  
+
     } catch (error) {
       console.error('Failed to load story counts:', error);
-  
+
       this.story = this.story.map((item:any) => ({
         ...item,
         likesCount: item.likesCount ?? 0,
         shareCount: item.shareCount ?? 0,
         downloadCount: item.downloadCount ?? 0
       }));
-  
+
     } finally {
       this.fetchPageData();
     }
   }
   
   onStoryAction(event: any) {
-      this.story = this.utils.updateStoryCounts(this.story,event)    
+      this.story = this.utils.updateStoryCounts(this.story,event)
   }
 
   fetchPageData(): void {

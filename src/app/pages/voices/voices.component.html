@@ -8,12 +8,14 @@
 
     <ng-container *ngSwitchCase="'branch-animation'">
       <section [ngClass]="section.styles.section" class="main-section">
-        <h2>Voices from the ground</h2>
-        <p class="animation-description">
-          This space highlights voices from the community identifying issues, finding
+         <h2 class="ml-4">Voices from the ground</h2>
+        <p class="animation-description mb-4 ml-3">This space highlights voices from the community identifying issues,
+          finding
           contextual solutions, and implementing them to solve education barriers.
-          Women leaders are at the forefront of making this change possible.
+          Women leaders are at the forefront of making this change possible.</p>
+        <p class="ml-3 pb-3 sub-description">From the cracks of struggle emerge the flowers of community-led solutions
         </p>
+        <app-voices-animations></app-voices-animations>
       </section>
     </ng-container>
 
@@ -85,20 +87,15 @@
         </div>
       </section>
     </ng-container>
-
-    <ng-container *ngSwitchCase="'story-of-the-week'">
-      <section [ngClass]="section.styles.section">
+    <ng-container *ngIf="section.type === 'story-of-the-week'">
+      <section class="margin-spacing" [ngClass]="section.styles.section">
         <h5 [ngClass]="section.styles.title" class="section-title">{{ section.title }}</h5>
-
         <div class="row justify-content-center">
-          <div class="story-card">
-            <app-improvement-story
-              [story]="story"
-              [storyOfWeek]="true"
-              [browserId]="browserId" (storyAction)="onStoryAction($event)">
-            </app-improvement-story>
-            </div>
+          <div class="story-card" *ngFor="let slide of story">
+            <app-improvement-story [story]="slide" [storyOfWeek]="true" [browserId]="browserId"
+              (storyAction)="onStoryAction($event)"></app-improvement-story>
           </div>
+        </div>
       </section>
     </ng-container>
 
