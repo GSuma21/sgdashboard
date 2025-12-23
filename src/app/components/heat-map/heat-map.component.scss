@@ -5,6 +5,9 @@
   background-color: #fff;
   max-height: 50rem;
   overflow: hidden;
+  margin: 0px 30px;
+  padding: 0px;
+  max-width: fit-content;
 
   @media (max-width: 1024px) {
     flex-direction: column;
@@ -22,14 +25,15 @@
 .left-panel {
   flex: 1;
   min-width: 0;
-  overflow-y: auto;
+  overflow-x: auto;
+
 }
 
 .right-panel {
   flex: 1;
   min-width: 0;
   overflow-y: auto;
-  padding-right: 10px;
+
 }
 
 .heatmap-grid {
@@ -40,7 +44,7 @@
 }
 
 .heatmap-item {
-  border-radius: 3px;
+  border-radius: 6px;
   padding: 15px;
   color: white;
   cursor: pointer;
@@ -56,6 +60,8 @@
     transform: scale(1.02) translateY(-5px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
     z-index: 10;
+  border-radius: 10px;
+
   }
 
   &.grey {
@@ -77,7 +83,6 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    justify-content: space-between;
   }
 
   .icon {
@@ -107,6 +112,15 @@
     opacity: 0.9;
     margin: 0;
   }
+
+  .text-spacing {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    flex-grow: 1;
+    text-align: left;
+  }
 }
 
 .span-2-2 {
@@ -130,27 +144,56 @@
 }
 
 .purple {
-  background-color: #512da8;
+  background-color: #572E9199;
+
+}
+.purple.active {
+  background-color: #572E91;
+
+}
+.light-purple {
+  background-color: #572E9199;
 }
 
-.light-purple {
-  background-color: #9575cd;
+.light-purple.active {
+  background-color: #802B80;
 }
 
 .brown {
-  background-color: #a1887f;
+  background-color: #961C0080;
 }
 
+
+.brown.active {
+  background-color: #D94D3F;
+}
+
+.brown-light{
+  background-color: #CA7862CC;
+}
+
+
+.brown-light.active{
+  background-color: #CA7862;
+}
 .blue {
   background-color: #64b5f6;
 }
 
 .pink {
-  background-color: #f06292;
+  background-color: #E0338A99;
+}
+
+.pink.active {
+  background-color: #E0338A;
 }
 
 .green {
-  background-color: #aed581;
+  background-color: #8DC162CC;
+}
+
+.green.active {
+  background-color: #90db52cc;
 }
 
 .cyan {
@@ -158,11 +201,19 @@
 }
 
 .orange {
-  background-color: #ffb74d;
+  background-color: #FF9911CC;
+}
+
+.orange.active {
+  background-color: #FF9911;
 }
 
 .beige {
-  background-color: #dce775;
+  background-color: #E2C968;
+}
+
+.beige.active {
+  background-color: #f2d14c;
 }
 
 .grey {
@@ -184,12 +235,13 @@
   justify-content: space-between;
   min-height: 180px;
   overflow: hidden;
+  max-width: inherit;
+
 
   .quote-icon {
-    font-size: 3rem;
-    line-height: 1;
+    font-size: 2rem;
+    line-height: 0.5;
     opacity: 0.5;
-    margin-bottom: 10px;
   }
 
   .quote-text {
@@ -217,6 +269,55 @@
   height: 19px;
 }
 
+.span-2-2 .theme-title {
+  font-size: 1.35rem;
+}
+
+.span-2-2 .voice-count {
+  font-size: 0.9rem;
+}
+
+.span-2-1 .theme-title,
+.span-1-2 .theme-title {
+  font-size: 1.1rem;
+}
+
+.span-2-1 .voice-count,
+.span-1-2 .voice-count {
+  font-size: 0.75rem;
+}
+
+.span-1-1 .theme-title {
+  font-size: 0.9rem;
+}
+
+.span-1-1 .voice-count {
+  font-size: 0.65rem;
+}
+
+.span-2-2 .icon-img {
+  width: 22px;
+  height: 22px;
+}
+
+.span-1-1 .icon-img {
+  width: 14px;
+  height: 14px;
+}
+
+.heatmap-item {
+  font-size: clamp(0.75rem, 1.2vw, 1.1rem);
+}
+
+.theme-title {
+  font-size: 1em;
+}
+
+.voice-count {
+  font-size: 0.7em;
+}
+
+
 @media (max-width: 768px) {
   .voice-card {
     margin-bottom: 40px;
@@ -230,4 +331,11 @@
       font-size: 13px;
     }
   }
+.container{
+  margin: 0px;
+  padding: 10px;
+}
+.right-panel {
+  padding: 10px;
+}
 }
