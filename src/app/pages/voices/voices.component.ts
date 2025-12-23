@@ -100,18 +100,18 @@ export class VoicesComponent implements OnInit {
   }
 
   fetchPageData(): void {
-    d3.json(`./assets/voices.json`).then((data: any) => {
-      this.pageData = data;
-      console.log(data)
-    }).catch((error: any) => {
-      console.error('Error loading page data:', error);
-    });
-    // d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICES_PAGE}`).then((data: any) => {
+    // d3.json(`./assets/voices.json`).then((data: any) => {
     //   this.pageData = data;
     //   console.log(data)
     // }).catch((error: any) => {
     //   console.error('Error loading page data:', error);
     // });
+    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICES_PAGE}`).then((data: any) => {
+      this.pageData = data;
+      console.log(data)
+    }).catch((error: any) => {
+      console.error('Error loading page data:', error);
+    });
   }
 
 }
