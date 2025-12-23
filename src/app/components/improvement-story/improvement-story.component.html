@@ -21,12 +21,16 @@
     </section>
     <div class="card-actions d-flex justify-content-between px-4">
       <section class="d-flex">
-        <div class="action-item">
-          <mat-icon>favorite</mat-icon> {{ story.likes }}
-        </div>
-        <div class="action-item" (click)="openShareModal()">
-          <mat-icon>share</mat-icon> {{ story.reads }}
-        </div>
+        <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.LIKE)">
+          <mat-icon class="action-icon">{{ story.like ? 'favorite' : 'favorite_border' }}</mat-icon>
+          {{ story.likesCount }}
+        </button>
+      
+        <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.SHARE)"> 
+          <mat-icon class="action-icon">share</mat-icon>
+          {{ story.shareCount }}
+        </button>
+        
       </section>
       <button class="read-story-btn" (click)="openStoryModal()">
         Read Story
