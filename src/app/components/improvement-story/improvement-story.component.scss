@@ -171,4 +171,28 @@ mat-icon {
   .crown {
     width: 70px;
   }
+  .read-story-btn {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 768px) { 
+
+
+  .card-actions {
+  .action-item {
+    font-size: 11px;
+    padding: 5px;
+  }
+  .read-story-btn {
+    font-size: 12px;
+  }
+}
+  .like-icon {
+    width: 10px;
+}
+.read-icon {
+    width: 12px;
+    height: 12px;
+}
 }

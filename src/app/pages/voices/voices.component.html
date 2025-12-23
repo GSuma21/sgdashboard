@@ -39,7 +39,7 @@
 
     <ng-container *ngSwitchCase="'heat-map'">
       <section [ngClass]="section.styles.section">
-        <div class="row mx-2">
+        <div class="row heat-map">
           <app-heat-map
             [themes]="heatmapThemes"
             [allVoices]="heatmapVoices">
@@ -61,7 +61,7 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'community-feed'">
-      <section [ngClass]="section.styles.section">
+      <section [ngClass]="section.styles.section" class="community-section">
         <div class="indicators-section">
           <h5 [ngClass]="section.styles.title" class="section-title">{{ section.title }}</h5>
 

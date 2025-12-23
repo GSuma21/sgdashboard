@@ -99,6 +99,7 @@ mat-card {
 @media (max-width: 768px) {
   .chart-container {
     min-height: 300px;
+    width: 80vw;
   }
 
   .chart {

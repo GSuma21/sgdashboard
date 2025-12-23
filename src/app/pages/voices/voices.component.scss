@@ -102,8 +102,13 @@ app-improvement-story {
     width: 100%;
 }
 
+.heat-map{
+    margin: 0px 0.5rem;
+}
+
 @media (max-width: 768px) {
     .main-section {
+        margin: 20px;
         h2 {
             font-size: 16px;
             margin-bottom: 18px;
@@ -115,7 +120,7 @@ app-improvement-story {
     }
 
     .indicator-section {
-    
+        margin-left: 20px;
         h2 {
             font-size: 22px;
         }
@@ -127,6 +132,18 @@ app-improvement-story {
     }
 
     .section-sub-title{
-        margin-left: -15px;
+        margin-left: 20px !important;
+    }
+
+    .heat-map{
+        margin: 0px;
+    }
+    .community-section{
+        margin: 35px;
+    }
+
+    .line-chart-section{
+        margin-left: 0px;
+        margin-top: 20px;
     }
 }
