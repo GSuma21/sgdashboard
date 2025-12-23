@@ -30,7 +30,6 @@ h2 {
     font-size: 1.2rem;
 }
 
-/* Data Indicators Section */
 .data-indicators-section {
     padding: 5rem 0;
     text-align: center;
@@ -47,7 +46,7 @@ h2 {
     font-family: Manrope;
     font-weight: 700;
     font-style: Bold;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 120%;
     letter-spacing: 0%;
     color: black;
@@ -65,7 +64,6 @@ h2 {
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.5rem;
     align-items: stretch;
-    /* Ensure all grid items stretch to the same height */
 }
 
 .story-card {
@@ -79,4 +77,65 @@ h2 {
 
 app-improvement-story {
     width: 100%;
+}
+
+
+.margin-spacing {
+    margin: 70px !important;
+}
+
+.main-section {
+    h2 {
+        font-size: 25px;
+    }
+
+    p {
+        font-size: 17px;
+    }
+}
+
+.indicator-section {
+    padding-bottom: 5px;
+
+    h2 {
+        font-size: 25px;
+    }
+
+    .indicators {
+        margin: 0px 70px;
+        padding-top: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-section {
+        h2 {
+            font-size: 16px;
+            margin-bottom: 18px;
+        }
+
+        p {
+            font-size: 14px;
+        }
+    }
+
+    .indicator-section {
+
+        h2 {
+            font-size: 22px;
+        }
+
+        .indicators {
+            margin: 0px 0px;
+            padding-top: 40px;
+        }
+    }
+
+    .section-sub-title{
+        margin-left: -15px;
+    }
+
+    .margin-spacing {
+        margin: 30px !important;
+    }
 }

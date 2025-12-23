@@ -1,0 +1,45 @@
+<div class="share-modal">
+  <button class="close-btn" (click)="closeModal()">✕</button>
+
+  <h3 class="title">Help us amplify this story</h3>
+
+  <div class="section">
+    <p class="label">Share on:</p>
+
+    <div class="share-icons">
+      <button class="share-item linkedin" (click)="share('linkedin')">
+        <span>LinkedIn</span>
+        <mat-icon>work</mat-icon>
+      </button>
+
+      <button class="share-item whatsapp" (click)="share('whatsapp')">
+        <span>WhatsApp</span>
+        <mat-icon>chat</mat-icon>
+      </button>
+
+      <button class="share-item facebook" (click)="share('facebook')">
+        <span>Facebook</span>
+        <mat-icon>public</mat-icon>
+      </button>
+
+      <button class="share-item instagram" (click)="share('instagram')">
+        <span>Instagram</span>
+        <mat-icon>photo_camera</mat-icon>
+      </button>
+    </div>
+
+
+  </div>
+
+  <div class="section">
+    <p class="label">Copy Link:</p>
+
+    <div class="copy-box">
+      <input #linkInput type="text" [value]="shareLink" readonly />
+      <button (click)="copyLink(linkInput)" aria-label="Copy link to clipboard" title="Copy link">
+        <mat-icon>content_copy</mat-icon>
+      </button>
+
+    </div>
+  </div>
+</div>
