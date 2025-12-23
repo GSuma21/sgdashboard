@@ -11,6 +11,8 @@ import { HeatMapComponent } from '../../components/heat-map/heat-map.component';
 import { MultiAxisChartComponent } from '../../components/multi-axis-chart/multi-axis-chart.component';
 import { LineChartComponent } from '../../components/line-chart/line-chart';
 import { VerticalCarouselComponent } from '../../components/vertical-carousel/vertical-carousel.component';
+import { UtilsService } from '../../services/utils.services';
+import { firebaseService } from '../../../firebase/firestore-service';
 // import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
@@ -26,6 +28,7 @@ export class VoicesComponent implements OnInit {
 
   pageData: any = [];
   window: any = window;
+  browserId:string='';
 
   heatmapThemes: any = [
     { id: '1', title: 'Child Marriage', count: 24, color: 'purple', gridClass: 'span-2-2', icon: 'https://storage.googleapis.com/dev-sg-dashboard/sg-dashboard/assets/icons/poverty_and_economic_barriers.svg' },
@@ -54,20 +57,46 @@ export class VoicesComponent implements OnInit {
     { id: 'v8', text: 'We need better classrooms.', author: 'Teacher', themeId: '4', color: 'blue' }
   ];
 
-  story = {
-    title: 'Stars, Charts, and Change',
-    subtitle: 'subtitle',
-    leader: 'Women Leader',
-    location: 'Karnool, Bihar',
-    likes: 2203,
-    reads: 2203,
-    imageUrl: 'assets/image-1.jpg',
+  story:any[]=[]
+
+  constructor(private utils:UtilsService, private sg:firebaseService) { }
+  async ngOnInit() {
+    try {
+      this.browserId = this.utils.getBrowserId();
+  
+      const storyIds = this.story.map(s => s.storyId);
+  
+      if (!storyIds.length) {
+        this.fetchPageData();
+        return;
+      }
+  
+      const counts = await this.sg.getStoryCountsBulk(storyIds,this.browserId);
+    
+      this.story = this.story.map(slide => ({
+        ...slide,
+        ...counts.find(c => c.storyId === slide.storyId)
+      }));
+  
+    } catch (error) {
+      console.error('Failed to load story counts:', error);
+  
+      this.story = this.story.map((item:any) => ({
+        ...item,
+        likesCount: item.likesCount ?? 0,
+        shareCount: item.shareCount ?? 0,
+        downloadCount: item.downloadCount ?? 0
+      }));
+  
+    } finally {
+      this.fetchPageData();
+    }
   }
+  
 
-  constructor() { }
 
-  ngOnInit(): void {
-    this.fetchPageData();
+  onStoryAction(event: any) {
+      this.story = this.utils.updateStoryCounts(this.story,event)    
   }
 
   fetchPageData(): void {
