@@ -64,6 +64,8 @@ export class VoicesComponent implements OnInit {
     imageUrl: 'assets/image-1.jpg',
   }
 
+  isMobile = window.innerWidth <= 768;
+
   constructor() { }
 
   ngOnInit(): void {
