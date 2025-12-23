@@ -4,14 +4,12 @@ import {
   collection,
   doc,
   getDocs,
-  increment,
   runTransaction,
   getDoc,
   documentId, query, where,
-  deleteField,
-  collectionGroup
 } from '@angular/fire/firestore';
-import { ActionType, FIREBASE_PATHS,ACTIONS,BrowserId, APP_LIMITS } from '../constants/actionConstants';
+import { ActionType,ACTIONS,BrowserId, APP_LIMITS } from '../constants/actionConstants';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class firebaseService {
@@ -34,7 +32,7 @@ export class firebaseService {
       /* -------------------------------------------------
        * 1️⃣ Fetch ALL story documents (SINGLE API call)
        * ------------------------------------------------- */
-      const storySnap = await getDocs(query(collection(this.firestore, FIREBASE_PATHS.ROOT),where(documentId(), 'in', storyIds)));
+      const storySnap = await getDocs(query(collection(this.firestore, environment.firebasePaths.root),where(documentId(), 'in', storyIds)));
   
       const storyMap = new Map<string, any>();
       storySnap.docs.forEach(docSnap => {storyMap.set(docSnap.id, docSnap.data())});
@@ -47,9 +45,9 @@ export class firebaseService {
         getDoc(
           doc(
             this.firestore,
-            FIREBASE_PATHS.ROOT,
+            environment.firebasePaths.root,
             storyId,
-            FIREBASE_PATHS.SUB_COLLECTION,
+            environment.firebasePaths.subCollection,
             browserId
           )
         )
@@ -88,9 +86,9 @@ export class firebaseService {
 
       return await runTransaction(this.firestore, async (transaction) => {
   
-        const storyRef = doc(this.firestore,FIREBASE_PATHS.ROOT,story.storyId);
+        const storyRef = doc(this.firestore,environment.firebasePaths.root,story.storyId);
   
-        const browserRef = doc(storyRef,FIREBASE_PATHS.SUB_COLLECTION,browserId);
+        const browserRef = doc(storyRef,environment.firebasePaths.subCollection,browserId);
   
         /* =====================================================
          * LIKE
@@ -104,7 +102,7 @@ export class firebaseService {
             transaction.set(
               storyRef,
               { 
-                likesCount: action === ACTIONS.LIKE ?story.shareCount -1  :story.likesCount,
+              likesCount: story.shareCount-1,
               shareCount: story.shareCount,
               downloadCount: story.downloadCount
               },
@@ -125,7 +123,7 @@ export class firebaseService {
           transaction.set(
             storyRef,
             { 
-              likesCount: action === ACTIONS.LIKE ?story.shareCount +1  :story.likesCount,
+              likesCount: story.shareCount+1,
               shareCount: story.shareCount,
               downloadCount: story.downloadCount
              },

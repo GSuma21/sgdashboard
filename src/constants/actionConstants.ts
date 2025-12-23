@@ -4,10 +4,6 @@ export const ACTIONS = {
     DOWNLOAD: "download"
   } as const;
 
-export const FIREBASE_PATHS = {
-    ROOT: "sg-dashboard",
-    SUB_COLLECTION: "browsers"
-  } as const;
 
   export const APP_LIMITS = {
     STORY_ID_QUERY_LIMIT: 100

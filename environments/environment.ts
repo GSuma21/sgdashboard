@@ -3,6 +3,10 @@ export const environment = {
     storageURL:'https://storage.googleapis.com',
     bucketName:'dev-sg-dashboard',
     folderName:'sg-dashboard',
+    firebasePaths: {
+        root: 'sg-dashboard',
+        subCollection: 'browsers'
+    },
     firebaseConfig:{
         apiKey: "API_KEY",
         authDomain: "AUTH_DOMAIN",
