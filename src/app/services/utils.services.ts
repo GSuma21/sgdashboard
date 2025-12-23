@@ -32,7 +32,8 @@ export class UtilsService {
           case ACTIONS.LIKE:
             return {
               ...slide,
-              likesCount: slide.likesCount + data.diff
+              likesCount: slide.likesCount + data.diff,
+              like:!slide.like
             };
     
           case ACTIONS.SHARE:

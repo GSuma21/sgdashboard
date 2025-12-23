@@ -22,17 +22,15 @@
     <div class="card-actions d-flex justify-content-between px-4">
       <section class="d-flex">
         <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.LIKE)">
-          <span class="like-icon">♡</span> {{ story.likesCount }}
+          <mat-icon class="action-icon">{{ story.like ? 'favorite' : 'favorite_border' }}</mat-icon>
+          {{ story.likesCount }}
         </button>
-        <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.SHARE)">
-          <span class="share-icon">🔗</span> {{ story.shareCount }}
+      
+        <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.SHARE)"> 
+          <mat-icon class="action-icon">share</mat-icon>
+          {{ story.shareCount }}
         </button>
-        <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.DOWNLOAD)">
-          <span class="download-icon">⬇️</span> {{ story.downloadCount }}
-        </button>
-        <div class="action-item" (click)="openShareModal()">
-          <mat-icon>share</mat-icon> {{ story.reads }}
-        </div>
+        
       </section>
       <button class="read-story-btn" (click)="openStoryModal()">
         Read Story

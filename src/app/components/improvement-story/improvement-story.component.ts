@@ -25,7 +25,10 @@ export class ImprovementStoryComponent {
   constructor(private sg:firebaseService,private dialog: MatDialog) {}
 
   async handleUserClick(story: any, action: ActionType) { 
+
     try {
+      action === ACTIONS.SHARE &&  await this.openShareModal()
+
       const res = await this.sg.updateRecord(
         action === ACTIONS.LIKE? { ...story, like: story.like ? 0 : 1 }: story,
         this.browserId,
