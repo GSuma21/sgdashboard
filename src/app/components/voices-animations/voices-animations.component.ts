@@ -27,25 +27,25 @@ export class VoicesAnimationsComponent implements OnInit {
       problem: "I don't go to school because I don't have an Aadhaar card.",
       author: "Women Leader, Patna, Bihar",
       solution: "I worked on a micro-improvement project to help 9 children...",
-      dandelionTop: '69%', dandelionLeft: '12%'
+      dandelionTop: '77%', dandelionLeft: '10%'
     },
     {
       problem: "Child marriage is a prevalent issue...",
       author: "Farmer Leader, Patna, Bihar",
       solution: "I, a farmer from Danapur, addressed the security problem...",
-      dandelionTop: '63%', dandelionLeft: '38%'
+      dandelionTop: '73%', dandelionLeft: '37%'
     },
     {
       problem: "Due to lack of school in the village...",
       author: "Women Leader, Patna, Bihar",
       solution: "I improved attendance at my school...",
-      dandelionTop: '59%', dandelionLeft: '60%'
+      dandelionTop: '60%', dandelionLeft: '60%'
     },
     {
       problem: "In rural areas, girls often drop out...",
       author: "Women Leader, Patna, Bihar",
       solution: "A farmer from Danapur addressed security issues...",
-      dandelionTop: '68%', dandelionLeft: '80%'
+      dandelionTop: '74%', dandelionLeft: '89%'
     }
   ];
 
@@ -56,6 +56,10 @@ export class VoicesAnimationsComponent implements OnInit {
   async playAnimation() {
     this.showDandelionBase = true;
     await this.delay(500);
+
+    // Initial growth to 25%
+    this.growthStep = 0.5;
+    await this.delay(1000);
 
     for (let i = 0; i < this.storyNodes.length; i++) {
       // 1. Grow Branch Segment
