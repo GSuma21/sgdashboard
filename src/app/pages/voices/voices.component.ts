@@ -31,7 +31,7 @@ export class VoicesComponent implements OnInit {
     { id: '1', title: 'Child Marriage', count: 24, color: 'purple', gridClass: 'span-2-2', icon: 'https://storage.googleapis.com/dev-sg-dashboard/sg-dashboard/assets/icons/poverty_and_economic_barriers.svg' },
     { id: '2', title: 'Village Education', count: 21, color: 'light-purple', gridClass: 'span-2-2', icon: 'https://storage.googleapis.com/dev-sg-dashboard/sg-dashboard/assets/icons/legal_document_linked_barriers.svg' },
     { id: '3', title: 'School is far from village', count: 13, color: 'brown', gridClass: 'span-1-2', icon: 'https://storage.googleapis.com/dev-sg-dashboard/sg-dashboard/assets/icons/early_marriage.svg' },
-    { id: '4', title: 'Infrastructure', count: 21, color: 'blue', gridClass: 'span-2-2', icon: 'https://storage.googleapis.com/dev-sg-dashboard/sg-dashboard/assets/icons/distance_and_accessibility_issues.svg' },
+    { id: '4', title: 'Infrastructure', count: 21, color: 'brown-light', gridClass: 'span-2-2', icon: 'https://storage.googleapis.com/dev-sg-dashboard/sg-dashboard/assets/icons/distance_and_accessibility_issues.svg' },
     { id: '5', title: 'Water and sanitation', count: 8, color: 'pink', gridClass: 'span-2-1', icon: 'https://storage.googleapis.com/dev-sg-dashboard/sg-dashboard/assets/icons/parental_attitudes_and_socio-cultural_barriers.svg' },
     { id: '6', title: 'Documents missing', count: 8, color: 'green', gridClass: 'span-1-1', icon: 'https://storage.googleapis.com/dev-sg-dashboard/sg-dashboard/assets/icons/school_infrastructure.svg' },
     { id: '8', title: 'Financial Constraints', count: 8, color: 'orange', gridClass: 'span-2-1', icon: 'https://storage.googleapis.com/dev-sg-dashboard/sg-dashboard/assets/icons/teacher_capacity_and__quality_issues.svg' },
@@ -50,8 +50,8 @@ export class VoicesComponent implements OnInit {
     { id: 'v6', text: 'We want to study but there are no facilities.', author: 'Student', themeId: '2', color: 'light-purple' },
 
     // Infrastructure Voices (Blue)
-    { id: 'v7', text: 'The road to school is broken and dangerous.', author: 'Parent', themeId: '4', color: 'blue' },
-    { id: 'v8', text: 'We need better classrooms.', author: 'Teacher', themeId: '4', color: 'blue' }
+    { id: 'v7', text: 'The road to school is broken and dangerous.', author: 'Parent', themeId: '4', color: 'brown-light' },
+    { id: 'v8', text: 'We need better classrooms.', author: 'Teacher', themeId: '4', color: 'brown-light' }
   ];
 
   story = {
