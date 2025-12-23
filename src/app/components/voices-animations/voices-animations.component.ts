@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Animations } from './animations';
 import { CommonModule } from '@angular/common';
 
@@ -10,9 +10,10 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   animations: Animations
 })
-export class VoicesAnimationsComponent implements OnInit {
+export class VoicesAnimationsComponent implements OnInit, OnDestroy {
   showDandelionBase = false;
   growthStep = 0;
+  private isDestroyed = false;
 
   // Persistence: Tracks exactly which elements remain on screen
   dandelionsVisible = new Set<number>();
@@ -53,30 +54,41 @@ export class VoicesAnimationsComponent implements OnInit {
     this.playAnimation();
   }
 
+  ngOnDestroy() {
+    this.isDestroyed = true;
+  }
+
   async playAnimation() {
     this.showDandelionBase = true;
     await this.delay(500);
+    if (this.isDestroyed) return;
 
-    // Initial growth to 25%
+
     this.growthStep = 0.5;
     await this.delay(1000);
+    if (this.isDestroyed) return;
 
     for (let i = 0; i < this.storyNodes.length; i++) {
+      if (this.isDestroyed) return;
       // 1. Grow Branch Segment
       this.growthStep = i + 1;
       await this.delay(1500); // Wait for growth
+      if (this.isDestroyed) return;
 
       // 2. SHOW CHALLENGE (Problem) FIRST
       this.problemsVisible.add(i);
       await this.delay(2000); // Wait for reading
+      if (this.isDestroyed) return;
 
       // 3. SHOW DANDELION (Pops in)
       this.dandelionsVisible.add(i);
       await this.delay(500); // Wait for pop animation
+      if (this.isDestroyed) return;
 
       // 4. SHOW SOLUTION
       this.solutionsVisible.add(i);
       await this.delay(3500); // Wait for reading before starting next loop
+      if (this.isDestroyed) return;
 
       // Note: We do NOT remove them. They stay on screen.
     }
