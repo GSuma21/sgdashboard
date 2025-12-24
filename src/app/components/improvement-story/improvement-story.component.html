@@ -2,7 +2,7 @@
   <div class="card-content">
     <img class="meta-icon crown" src="assets/icons/crown.svg" *ngIf="storyOfWeek">
     <section class="d-flex justify-content-between">
-      <div class="w-100 pt-5">
+      <div class="w-100 pt-4 pt-md-5">
         <span class="quote-icon px-1">“</span>
         <h3 class="card-title">{{ story.title }}</h3>
 
@@ -19,7 +19,7 @@
         <img src="https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/c9/02/72/0c/81/v1_E10/E10666ZH.jpg?w=500&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=5384416e9acca61b261ca0d6b624920116ef2e330a2732795e2ffc03684e3aeb" alt="Story Image" class="card-image">
       </div>
     </section>
-    <div class="card-actions d-flex justify-content-between px-4">
+    <div class="card-actions d-flex justify-content-between px-3 px-md-4">
       <section class="d-flex">
         <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.LIKE)">
           <mat-icon class="action-icon">{{ story.like ? 'favorite' : 'favorite_border' }}</mat-icon>
