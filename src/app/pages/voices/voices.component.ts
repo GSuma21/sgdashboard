@@ -59,56 +59,52 @@ export class VoicesComponent implements OnInit {
     { id: 'v8', text: 'We need better classrooms.', author: 'Teacher', themeId: '4', color: 'brown-light' }
   ];
 
-  story:any[]=[];
+  story:any=[];
   isMobile = window.innerWidth <= 768;
 
 
   constructor(private utils:UtilsService, private sg:firebaseService) { }
   async ngOnInit() {
-    try {
-      this.getStoryOfWeek()
-      this.browserId = this.utils.getBrowserId();
+    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then((data: any) => {
+      this.story= data["data"][0];
+      debugger;
+      try {
+        this.browserId = this.utils.getBrowserId();
 
-      const storyIds = this.story.map(s => s.id);
+        const storyIds = [this.story.id]
 
-      if (!storyIds.length) {
+        if (!storyIds.length) {
+          this.fetchPageData();
+          return;
+        }
+
+        this.sg.getStoryCountsBulk(storyIds,this.browserId).then((res:any) => {
+          this.story = this.story.map((slide:any) => ({
+            ...slide,
+            ...res.find((c:any) => c.storyId === slide.id)
+          }));
+        })
+
+      } catch (error) {
+        console.error('Failed to load story counts:', error);
+
+        this.story = this.story.map((item:any) => ({
+          ...item,
+          likesCount: item.likesCount ?? 0,
+          shareCount: item.shareCount ?? 0,
+          downloadCount: item.downloadCount ?? 0
+        }));
+
+      } finally {
         this.fetchPageData();
-        return;
       }
-
-      const counts = await this.sg.getStoryCountsBulk(storyIds,this.browserId);
-
-      this.story = this.story.map(slide => ({
-        ...slide,
-        ...counts.find(c => c.storyId === slide.id)
-      }));
-
-    } catch (error) {
-      console.error('Failed to load story counts:', error);
-
-      this.story = this.story.map((item:any) => ({
-        ...item,
-        likesCount: item.likesCount ?? 0,
-        shareCount: item.shareCount ?? 0,
-        downloadCount: item.downloadCount ?? 0
-      }));
-
-    } finally {
-      this.fetchPageData();
-    }
-  }
-
-  getStoryOfWeek(){
-      d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then((data: any) => {
-        this.story= data["data"][0];
-        console.log(data, "story of the week-2") 
-       }).catch((error: any) => {
-          console.error('Error loading page data:', error);
-      });
+     }).catch((error: any) => {
+        console.error('Error loading page data:', error);
+    });
   }
 
 
-  
+
   onStoryAction(event: any) {
       this.story = this.utils.updateStoryCounts(this.story,event)
   }

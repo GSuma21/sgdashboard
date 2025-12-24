@@ -27,57 +27,57 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
 
   constructor(private utils:UtilsService,private sg:firebaseService, private cdr: ChangeDetectorRef) {}
   async ngOnInit() {
-    try {
-  
-      this.getStories()
-      
-      this.browserId = this.utils.getBrowserId();
-  
-      const storyIds = this.slides.map(s => s.id);
-
-      if (!storyIds.length) {
-        this.chunkedSlides = this.chunkArray(this.slides, 2);
-        this.startAutoSlide();
-        return;
-      }
-  
-      const counts= await this.sg.getStoryCountsBulk(storyIds,this.browserId);
-
-      this.slides = this.slides.map(slide => ({
-        ...slide,
-        ...counts.find(c => c.storyId === slide.id)
-      }));
-  
-    } catch (error) {
-      
-      console.error('Failed to load story counts:', error);
-  
-      this.slides = this.slides.map((slide:any) => ({
-        ...slide,
-        likesCount: slide.likesCount ?? 0,
-        shareCount: slide.shareCount ?? 0,
-        downloadCount: slide.downloadCount ?? 0,
-        like:slide.like ?? 0
-      }));
-
-    } finally {
-      this.chunkedSlides = this.chunkArray(this.slides, 2);
-      this.startAutoSlide();
-    }
-  }
-
-  getStories(){
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then((data: any) => {
       this.slides= data["data"];
-      console.log(data, "story of the week") 
+      try {
+
+        this.getStories()
+
+        this.browserId = this.utils.getBrowserId();
+
+        const storyIds = this.slides.map(s => s.id);
+
+        if (!storyIds.length) {
+          this.chunkedSlides = this.chunkArray(this.slides, 2);
+          this.startAutoSlide();
+          return;
+        }
+
+        this.sg.getStoryCountsBulk(storyIds,this.browserId).then((res)=> {
+          this.slides = this.slides.map(slide => ({
+            ...slide,
+            ...res.find(c => c.storyId === slide.id)
+          }));
+        })
+
+      } catch (error) {
+
+        console.error('Failed to load story counts:', error);
+
+        this.slides = this.slides.map((slide:any) => ({
+          ...slide,
+          likesCount: slide.likesCount ?? 0,
+          shareCount: slide.shareCount ?? 0,
+          downloadCount: slide.downloadCount ?? 0,
+          like:slide.like ?? 0
+        }));
+
+      } finally {
+        this.chunkedSlides = this.chunkArray(this.slides, 2);
+        this.startAutoSlide();
+      }
+      console.log(data, "story of the week")
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
   }
-  
+
+  getStories(){
+  }
+
 
  async  onStoryAction(event: any) {
-    this.slides=this.utils.updateStoryCounts(this.slides,event)  
+    this.slides=this.utils.updateStoryCounts(this.slides,event)
     this.chunkedSlides = this.chunkArray(this.slides, 2);
     this.startAutoSlide();
   }

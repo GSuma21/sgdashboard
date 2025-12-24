@@ -23,14 +23,14 @@
       <section class="d-flex">
         <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.LIKE)">
           <mat-icon class="action-icon">{{ story.like ? 'favorite' : 'favorite_border' }}</mat-icon>
-          {{ story.likesCount }}
+          {{ story.likesCount ? story.likesCount : 0 }}
         </button>
-      
-        <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.SHARE)"> 
+
+        <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.SHARE)">
           <mat-icon class="action-icon">share</mat-icon>
-          {{ story.shareCount }}
+          {{ story.shareCount ? story.shareCount : 0 }}
         </button>
-        
+
       </section>
       <button class="read-story-btn" (click)="openStoryModal()">
         Read Story
