@@ -81,7 +81,7 @@ export class VoicesComponent implements OnInit {
 
         this.story = {
           ...this.story,
-          ...counts
+          ...counts[0] 
         };
 
         console.log('slides--2',this.story)
