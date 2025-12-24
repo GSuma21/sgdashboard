@@ -27,7 +27,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
 
   constructor(private utils:UtilsService,private sg:firebaseService, private cdr: ChangeDetectorRef) {}
   async ngOnInit() {
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then((data: any) => {
+    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
       this.slides= data["data"];
       try {
         this.browserId = this.utils.getBrowserId();
@@ -40,12 +40,14 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.sg.getStoryCountsBulk(storyIds,this.browserId).then((res)=> {
-          this.slides = this.slides.map(slide => ({
-            ...slide,
-            ...res.find(c => c.storyId === slide.id)
-          }));
-        })
+        const counts= await this.sg.getStoryCountsBulk(storyIds,this.browserId);
+
+        this.slides = this.slides.map(slide => ({
+          ...slide,
+          ...counts.find(c => c.storyId === slide.id)
+        }));
+
+        console.log('slides--2',this.slides)
 
       } catch (error) {
 
