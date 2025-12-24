@@ -29,7 +29,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     try {
   
-      await this.getStories()
+      this.getStories()
       
       this.browserId = this.utils.getBrowserId();
   

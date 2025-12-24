@@ -66,7 +66,7 @@ export class VoicesComponent implements OnInit {
   constructor(private utils:UtilsService, private sg:firebaseService) { }
   async ngOnInit() {
     try {
-      await this.getStoryOfWeek()
+      this.getStoryOfWeek()
       this.browserId = this.utils.getBrowserId();
 
       const storyIds = this.story.map(s => s.id);
