@@ -15,6 +15,7 @@ import { UtilsService } from '../../services/utils.services';
 import { firebaseService } from '../../../firebase/firestore-service';
 import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 import { STORY_OF_THE_WEEK  } from '../../../constants/urlConstants';
+import { ACTIONS } from '../../../constants/actionConstants';
 // import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
@@ -107,7 +108,16 @@ export class VoicesComponent implements OnInit {
 
 
   onStoryAction(event: any) {
-      this.story = this.utils.updateStoryCounts(this.story,event)
+      this.story = {
+        ...this.story,
+        ...(event.action === ACTIONS.LIKE && {
+          likesCount: this.story.likesCount + event.diff,
+          like: !this.story.like
+        }),
+        ...(event.action === ACTIONS.SHARE && {
+          shareCount: this.story.shareCount + event.diff
+        })
+      };
   }
 
   fetchPageData(): void {
