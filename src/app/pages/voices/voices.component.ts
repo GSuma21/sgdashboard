@@ -111,11 +111,11 @@ export class VoicesComponent implements OnInit {
       this.story = {
         ...this.story,
         ...(event.action === ACTIONS.LIKE && {
-          likesCount: this.story.likesCount + event.diff,
+          likesCount: (this.story.likesCount ?? 0) + event.diff,
           like: !this.story.like
         }),
         ...(event.action === ACTIONS.SHARE && {
-          shareCount: this.story.shareCount + event.diff
+          shareCount: (this.story.shareCount ?? 0) + event.diff
         })
       };
   }
