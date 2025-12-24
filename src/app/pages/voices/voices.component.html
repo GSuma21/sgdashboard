@@ -1,9 +1,14 @@
 <div class="landing-container">
-  <div *ngFor="let section of pageData" [ngClass]="'section-position-' + section.position">
+  <div
+    *ngFor="let section of pageData"
+    [ngClass]="'section-position-' + section.position"
+    [ngSwitch]="section.type"
+    [style.width]="(isMobile ? '100%' : section.width)"
+  >
 
-    <ng-container *ngIf="section.type === 'branch-animation'">
-      <section [ngClass]="section.styles.section" class="main-section margin-spacing">
-        <h2 class="ml-4">Voices from the ground</h2>
+    <ng-container *ngSwitchCase="'branch-animation'">
+      <section [ngClass]="section.styles.section" class="main-section">
+         <h2 class="ml-4">Voices from the ground</h2>
         <p class="animation-description mb-4 ml-3">This space highlights voices from the community identifying issues,
           finding
           contextual solutions, and implementing them to solve education barriers.
@@ -14,33 +19,40 @@
       </section>
     </ng-container>
 
-    <ng-container *ngIf="section.type === 'data-indicators'">
-      <section [ngClass]="section.styles.section" class="indicator-section margin-spacing">
+    <ng-container *ngSwitchCase="'data-indicators'">
+      <section [ngClass]="section.styles.section" class="indicator-section">
         <div class="indicators-section">
           <h2 [ngClass]="section.styles.title">{{ section.title }}</h2>
+
           <div class="row justify-content-center indicators">
-            <app-indicator-card class="col-sm-4 col-md-4 col-lg-4"
-              *ngFor="let indicator of section.indicators; let i = index" [value]="indicator.value"
-              [label]="indicator.label" [icon]="indicator.icon"
-              [style.--animation-delay.s]="i * 0.1"></app-indicator-card>
+            <app-indicator-card
+              class="col-12 col-md-6 col-lg-4"
+              *ngFor="let indicator of section.indicators; let i = index"
+              [value]="indicator.value"
+              [label]="indicator.label"
+              [icon]="indicator.icon"
+              [style.--animation-delay.s]="i * 0.1"
+            >
+            </app-indicator-card>
           </div>
         </div>
       </section>
     </ng-container>
 
-    <ng-container *ngIf="section.type === 'heat-map'">
+    <ng-container *ngSwitchCase="'heat-map'">
       <section [ngClass]="section.styles.section">
-        <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
-        <div class="row justify-content-center">
-          <app-heat-map [themes]="heatmapThemes" [allVoices]="heatmapVoices"></app-heat-map>
+        <div class="row heat-map">
+          <app-heat-map
+            [themes]="heatmapThemes"
+            [allVoices]="heatmapVoices">
+          </app-heat-map>
         </div>
       </section>
     </ng-container>
 
-    <ng-container *ngIf="section.type === 'leaders-engaged'">
-      <section [ngClass]="section.styles.section" class="margin-spacing">
+    <ng-container *ngSwitchCase="'leaders-engaged'">
+      <section [ngClass]="section.styles.section">
         <div class="indicators-section">
-          <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
           <div class="row justify-content-center">
             <div class="box-shadow">
               <app-multi-axis-chart></app-multi-axis-chart>
@@ -50,10 +62,11 @@
       </section>
     </ng-container>
 
-    <ng-container *ngIf="section.type === 'community-feed'">
-      <section class="margin-spacing" [ngClass]="section.styles.section">
+    <ng-container *ngSwitchCase="'community-feed'">
+      <section [ngClass]="section.styles.section" class="community-section">
         <div class="indicators-section">
-          <h5 [ngClass]="section.styles.title">{{ section.title }}</h5>
+          <h5 [ngClass]="section.styles.title" class="section-title">{{ section.title }}</h5>
+
           <div class="row justify-content-center">
             <div class="box-shadow">
               <app-vertical-carousel></app-vertical-carousel>
@@ -63,10 +76,9 @@
       </section>
     </ng-container>
 
-    <ng-container *ngIf="section.type === 'micro-improvements-so-far'">
-      <section [ngClass]="section.styles.section" class="margin-spacing">
-        <div class="indicators-section">
-          <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
+    <ng-container *ngSwitchCase="'micro-improvements-so-far'">
+      <section [ngClass]="section.styles.section">
+        <div class="indicators-section line-chart-section">
           <div class="row justify-content-center">
             <div class="box-shadow">
               <app-line-chart [data]="section.data"></app-line-chart>
@@ -77,7 +89,7 @@
     </ng-container>
     <ng-container *ngIf="section.type === 'story-of-the-week'">
       <section class="margin-spacing" [ngClass]="section.styles.section">
-        <h5 [ngClass]="section.styles.title">{{ section.title }}</h5>
+        <h5 [ngClass]="section.styles.title" class="section-title">{{ section.title }}</h5>
         <div class="row justify-content-center">
           <div class="story-card" *ngFor="let slide of story">
             <app-improvement-story [story]="slide" [storyOfWeek]="true" [browserId]="browserId"
@@ -87,16 +99,17 @@
       </section>
     </ng-container>
 
-    <ng-container *ngIf="section.type === 'more-stories'">
-      <section [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)">
+    <ng-container *ngSwitchCase="'more-stories'">
+      <section [style.width]="isMobile ? '100%' : section.width">
         <div class="row">
           <app-stories-carousel></app-stories-carousel>
         </div>
       </section>
     </ng-container>
 
-    <!-- <ng-container *ngIf="section.type === 'section-heading'">
-            <h3 [ngClass]="section.styles.title">{{ section.title }}</h3>
-    </ng-container> -->
+    <ng-container *ngSwitchCase="'section-heading'">
+      <h3 [ngClass]="section.styles.title">{{ section.title }}</h3>
+    </ng-container>
+
   </div>
 </div>

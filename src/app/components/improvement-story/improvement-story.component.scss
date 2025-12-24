@@ -2,10 +2,10 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   position: relative;
-  padding-bottom: 26px;
-  overflow: hidden; 
+  padding-bottom: 35px;
+  padding-bottom: 0;
 }
 
 .quote-icon {
@@ -19,8 +19,11 @@
 
 .crown {
   position: absolute;
-  top: -2rem;
-  left: -2rem;
+  top: -30px;    
+  left: -30px;       
+  z-index: 999;      
+  width: 48px;       
+  height: auto;
 }
 
 .card-title {
@@ -30,8 +33,8 @@
   color: #333;
   padding-bottom: 2rem;
   border-bottom: 1px solid;
-  width: 130px;
-  max-width: 130px;
+  width: 180px;
+  max-width: 180px;
   white-space: normal; 
   word-break: break-word;
   overflow-wrap: break-word;
@@ -43,7 +46,8 @@
 .card-meta {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
+  margin-left: 25px;
   margin-top: 1rem;
   .meta-icon {
       font-size: 20px;
@@ -68,17 +72,18 @@
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 100%;
-  height: 151px;
   display: block;
+  width: 100%;
+  height: unset;
+  pointer-events: none;
+  border-radius: 10px;
 }
 
 .card-actions {
   display: flex;
   align-items: center;
-  padding: 1rem 0;
-  position: relative;
-  margin-top: 2.5rem;
+  margin-top: 1rem;
+  padding: 0.5rem 0;
   z-index: 2;
 
   .action-item {
@@ -162,7 +167,36 @@ mat-icon {
   margin-right: 5px;
 }
 
+@media (min-width: 768px) {
+  .crown {
+    width: 70px;
+  }
+  .read-story-btn {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 768px) { 
+
+
+  .card-actions {
+  .action-item {
+    font-size: 11px;
+    padding: 5px;
+  }
+  .read-story-btn {
+    font-size: 12px;
+  }
+}
+  .like-icon {
+    width: 10px;
+}
+.read-icon {
+    width: 12px;
+    height: 12px;
+}
 
 .action-icon {
   font-size: 20px;
+}
 }
