@@ -3,6 +3,9 @@ import { Component, OnInit, OnDestroy , ChangeDetectorRef} from '@angular/core';
 import { ImprovementStoryComponent } from '../improvement-story/improvement-story.component';
 import { UtilsService } from '../../services/utils.services';
 import { firebaseService } from '../../../firebase/firestore-service';
+import * as d3 from 'd3';
+import { environment } from '../../../../environments/environment';
+import { STORY_OF_THE_WEEK  } from '../../../constants/urlConstants';
 
 @Component({
   selector: 'app-stories-carousel',
@@ -25,9 +28,12 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   constructor(private utils:UtilsService,private sg:firebaseService, private cdr: ChangeDetectorRef) {}
   async ngOnInit() {
     try {
+  
+      this.getStories()
+      
       this.browserId = this.utils.getBrowserId();
   
-      const storyIds = this.slides.map(s => s.storyId);
+      const storyIds = this.slides.map(s => s.id);
 
       if (!storyIds.length) {
         this.chunkedSlides = this.chunkArray(this.slides, 2);
@@ -35,11 +41,11 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
         return;
       }
   
-      const counts = await this.sg.getStoryCountsBulk(storyIds,this.browserId);
+      const counts= await this.sg.getStoryCountsBulk(storyIds,this.browserId);
 
       this.slides = this.slides.map(slide => ({
         ...slide,
-        ...counts.find(c => c.storyId === slide.storyId)
+        ...counts.find(c => c.storyId === slide.id)
       }));
   
     } catch (error) {
@@ -58,6 +64,15 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       this.chunkedSlides = this.chunkArray(this.slides, 2);
       this.startAutoSlide();
     }
+  }
+
+  getStories(){
+    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then((data: any) => {
+      this.slides= data["data"];
+      console.log(data, "story of the week") 
+    }).catch((error: any) => {
+      console.error('Error loading page data:', error);
+    });
   }
   
 

@@ -14,6 +14,7 @@ import { VerticalCarouselComponent } from '../../components/vertical-carousel/ve
 import { UtilsService } from '../../services/utils.services';
 import { firebaseService } from '../../../firebase/firestore-service';
 import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
+import { STORY_OF_THE_WEEK  } from '../../../constants/urlConstants';
 // import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
@@ -65,9 +66,10 @@ export class VoicesComponent implements OnInit {
   constructor(private utils:UtilsService, private sg:firebaseService) { }
   async ngOnInit() {
     try {
+      this.getStoryOfWeek()
       this.browserId = this.utils.getBrowserId();
 
-      const storyIds = this.story.map(s => s.storyId);
+      const storyIds = this.story.map(s => s.id);
 
       if (!storyIds.length) {
         this.fetchPageData();
@@ -78,7 +80,7 @@ export class VoicesComponent implements OnInit {
 
       this.story = this.story.map(slide => ({
         ...slide,
-        ...counts.find(c => c.storyId === slide.storyId)
+        ...counts.find(c => c.storyId === slide.id)
       }));
 
     } catch (error) {
@@ -95,6 +97,17 @@ export class VoicesComponent implements OnInit {
       this.fetchPageData();
     }
   }
+
+  getStoryOfWeek(){
+      d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then((data: any) => {
+        this.story= data["data"][0];
+        console.log(data, "story of the week-2") 
+       }).catch((error: any) => {
+          console.error('Error loading page data:', error);
+      });
+  }
+
+
   
   onStoryAction(event: any) {
       this.story = this.utils.updateStoryCounts(this.story,event)

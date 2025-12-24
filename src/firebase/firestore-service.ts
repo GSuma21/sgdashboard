@@ -86,7 +86,7 @@ export class firebaseService {
 
       return await runTransaction(this.firestore, async (transaction) => {
   
-        const storyRef = doc(this.firestore,environment.firebasePaths.root,story.storyId);
+        const storyRef = doc(this.firestore,environment.firebasePaths.root,story.id);
   
         const browserRef = doc(storyRef,environment.firebasePaths.subCollection,browserId);
   
@@ -111,7 +111,7 @@ export class firebaseService {
   
             return {
               status: 200,
-              storyId: story.storyId,
+              storyId: story.id,
               action,
               diff: -1
             };
@@ -132,7 +132,7 @@ export class firebaseService {
   
           return {
             status: 200,
-            storyId: story.storyId,
+            storyId: story.id,
             action,
             diff: 1
           };
@@ -154,7 +154,7 @@ export class firebaseService {
   
         return {
           status: 200,
-          storyId: story.storyId,
+          storyId: story.id,
           action,
           diff:1
         };
