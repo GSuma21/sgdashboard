@@ -9,28 +9,28 @@
         <div class="card-meta px-4">
           <img class="meta-icon" src="assets/icons/user_dial.svg">
           <div class="meta-text ml-2">
-            <p class="mb-0 leader-text">{{ story.leader }}</p>
-            <p class="location mb-0">{{ story.location }}</p>
+            <p class="mb-0 leader-text">{{ story.role }}</p>
+            <p class="location mb-0">{{ story.district }},{{ story.state }}</p>
           </div>
         </div>
       </div>
       <div class="card-image-wrapper">
         <!-- <img [src]="story.imageUrl" alt="Story Image" class="card-image"> -->
-        <img src="https://elements-resized.envatousercontent.com/envato-dam-assets-production/EVA/TRX/c9/02/72/0c/81/v1_E10/E10666ZH.jpg?w=500&cf_fit=scale-down&mark-alpha=18&mark=https%3A%2F%2Felements-assets.envato.com%2Fstatic%2Fwatermark4.png&q=85&format=auto&s=5384416e9acca61b261ca0d6b624920116ef2e330a2732795e2ffc03684e3aeb" alt="Story Image" class="card-image">
+        <img [src]="story?.photos?.[0]" alt="Story Image" class="card-image">
       </div>
     </section>
-    <div class="card-actions d-flex justify-content-between px-3 px-md-4">
+    <div class="card-actions d-flex justify-content-between px-3 px-md-4 pb-3">
       <section class="d-flex">
         <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.LIKE)">
           <mat-icon class="action-icon">{{ story.like ? 'favorite' : 'favorite_border' }}</mat-icon>
-          {{ story.likesCount }}
+          {{ story.likesCount ? story.likesCount : 0 }}
         </button>
-      
-        <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.SHARE)"> 
+
+        <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.SHARE)">
           <mat-icon class="action-icon">share</mat-icon>
-          {{ story.shareCount }}
+          {{ story.shareCount ? story.shareCount : 0 }}
         </button>
-        
+
       </section>
       <button class="read-story-btn" (click)="openStoryModal()">
         Read Story
