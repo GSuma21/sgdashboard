@@ -65,7 +65,7 @@ export class VoicesComponent implements OnInit {
 
   constructor(private utils:UtilsService, private sg:firebaseService) { }
   async ngOnInit() {
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then((data: any) => {
+    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
       this.story= data["data"][0];
       try {
         this.browserId = this.utils.getBrowserId();
@@ -77,12 +77,14 @@ export class VoicesComponent implements OnInit {
           return;
         }
 
-        this.sg.getStoryCountsBulk(storyIds,this.browserId).then((res:any) => {
-          this.story = this.story.map((slide:any) => ({
-            ...slide,
-            ...res.find((c:any) => c.storyId === slide.id)
-          }));
-        })
+        const counts= await this.sg.getStoryCountsBulk(storyIds,this.browserId);
+
+        this.story = {
+          ...this.story,
+          ...counts
+        };
+
+        console.log('slides--2',this.story)
 
       } catch (error) {
         console.error('Failed to load story counts:', error);
@@ -109,18 +111,18 @@ export class VoicesComponent implements OnInit {
   }
 
   fetchPageData(): void {
-    // d3.json(`./assets/voices.json`).then((data: any) => {
-    //   this.pageData = data;
-    //   console.log(data)
-    // }).catch((error: any) => {
-    //   console.error('Error loading page data:', error);
-    // });
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICES_PAGE}`).then((data: any) => {
+    d3.json(`./assets/voices.json`).then((data: any) => {
       this.pageData = data;
       console.log(data)
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+    // d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICES_PAGE}`).then((data: any) => {
+    //   this.pageData = data;
+    //   console.log(data)
+    // }).catch((error: any) => {
+    //   console.error('Error loading page data:', error);
+    // });
   }
 
 }
