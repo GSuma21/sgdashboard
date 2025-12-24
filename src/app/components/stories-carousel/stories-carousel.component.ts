@@ -30,9 +30,6 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then((data: any) => {
       this.slides= data["data"];
       try {
-
-        this.getStories()
-
         this.browserId = this.utils.getBrowserId();
 
         const storyIds = this.slides.map(s => s.id);
@@ -71,10 +68,6 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       console.error('Error loading page data:', error);
     });
   }
-
-  getStories(){
-  }
-
 
  async  onStoryAction(event: any) {
     this.slides=this.utils.updateStoryCounts(this.slides,event)

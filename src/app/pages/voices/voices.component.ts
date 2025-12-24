@@ -67,7 +67,6 @@ export class VoicesComponent implements OnInit {
   async ngOnInit() {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then((data: any) => {
       this.story= data["data"][0];
-      debugger;
       try {
         this.browserId = this.utils.getBrowserId();
 
@@ -88,12 +87,12 @@ export class VoicesComponent implements OnInit {
       } catch (error) {
         console.error('Failed to load story counts:', error);
 
-        this.story = this.story.map((item:any) => ({
-          ...item,
-          likesCount: item.likesCount ?? 0,
-          shareCount: item.shareCount ?? 0,
-          downloadCount: item.downloadCount ?? 0
-        }));
+        // this.story = this.story.map((item:any) => ({
+        //   ...item,
+        //   likesCount: item.likesCount ?? 0,
+        //   shareCount: item.shareCount ?? 0,
+        //   downloadCount: item.downloadCount ?? 0
+        // }));
 
       } finally {
         this.fetchPageData();
