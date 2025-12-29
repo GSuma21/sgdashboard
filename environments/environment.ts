@@ -18,6 +18,6 @@ export const environment = {
     },
     shareLink : 'https://shikshagraha_dashboard.org',
     linkedin: 'https://www.linkedin.com/sharing/share-offsite//?url=',
-    whatsapp: 'https://wa.me/?text=${text}%0A%0A',
+    whatsapp: 'https://wa.me/?',
     facebook: 'https://www.facebook.com/sharer/sharer.php?u='
 };
