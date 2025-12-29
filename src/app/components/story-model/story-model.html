@@ -73,7 +73,7 @@
   <div>
     <h4 class="photos-title">Photos:</h4>
     <div class="photo-row">
-      @for(image of story.photos;track $index){
+      @for(image of story.photos || [];track $index){
         <img [src]='image' />
       }
     </div>

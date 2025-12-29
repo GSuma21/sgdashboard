@@ -32,6 +32,12 @@ export class StoryModel {
       this.util.getBrowserId(),
       action,
     );
+
+    if (!res || !res.action) {
+      console.warn('updateRecord returned invalid response:', res);
+      return;
+    }
+    
     this.story = {
       ...this.story,
       ...(res.action === ACTIONS.LIKE && {
