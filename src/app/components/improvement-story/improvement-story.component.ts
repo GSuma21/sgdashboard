@@ -43,10 +43,15 @@ export class ImprovementStoryComponent {
   }
   
   openStoryModal(): void {
-    this.dialog.open(StoryModel, {
+    const dialogRef= this.dialog.open(StoryModel, {
       width: '900px',
       panelClass: 'story-dialog',
-      autoFocus: false
+      autoFocus: false,
+      data:this.story,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return;
+      this.storyAction.emit(result)
     });
   }
 
