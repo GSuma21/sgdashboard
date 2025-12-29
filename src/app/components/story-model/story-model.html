@@ -19,7 +19,7 @@
 
       <div class="lang-switch-container">
         
-        <span class="lang-label" *ngIf="!isLangOn && story?.lang?.length > 0">{{ story.lang[0]?.code || 'Eng'}}</span>
+        <span class="lang-label" *ngIf="!isLangOn && story?.lang?.length > 0">{{ story.lang?.[0]?.code || 'Eng'}}</span>
       
         <div class="lang-toggle-wrapper">
           <input
@@ -36,7 +36,7 @@
           <div class="toggle-button-text"></div>
         </div>
 
-        <span class="lang-label" *ngIf="isLangOn && story?.lang?.length > 1">{{ story.lang[1]?.code || 'Hin' }}</span>
+        <span class="lang-label" *ngIf="isLangOn && story?.lang?.length > 1">{{ story.lang?.[1]?.code || 'Hin' }}</span>
 
       </div>
     
@@ -74,7 +74,7 @@
     <h4 class="photos-title">Photos:</h4>
     <div class="photo-row">
       @for(image of story.photos || [];track $index){
-        <img [src]='image' />
+        <img [src]='image' alt="Story Image" />
       }
     </div>
   </div>
