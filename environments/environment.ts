@@ -16,7 +16,7 @@ export const environment = {
         appId: "APP_ID",
         measurementId: "MEASUREMENT_ID"
     },
-    shareLink : 'https://shikshagraha_dashboard.org',
+    shareLink : 'https://dashboard.shikshagraha.org/',
     linkedin: 'https://www.linkedin.com/sharing/share-offsite//?url=',
     whatsapp: 'https://wa.me/?',
     facebook: 'https://www.facebook.com/sharer/sharer.php?u='
