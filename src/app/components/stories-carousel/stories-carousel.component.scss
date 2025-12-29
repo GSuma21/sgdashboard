@@ -89,52 +89,54 @@
 }
 
 @media (max-width: 768px) {
-
-    :host {
-      padding: 10px 0;
-      overflow-x: hidden;
-    }
-
-    .carousel-container {
-        margin: 0px 15px;
-    }
-  
-    .carousel-title {
-      margin-left: 0;
-      font-size: 18px;
-    }
-  
-    .carousel-wrapper {
-      min-height: auto;
-
-      position: relative;
-    padding: 0 5px; 
-    }
-  
-    .slides-area {
-      margin: 0px 30px;
-      width: 100%;
-    }
-  
-    .slide-group {
-      flex-direction: row;
-      gap: 10px;
-      width: 80%;
-    }
-  
-    .story-card {
-        flex: 0 0 100%;  
-      width: 100%;
-      min-height: auto;
-    }
-  
-    .nav-button {
-      width: 27px;
-      height: 27px;
-      border-width: 2px;
-    }
-
-    .story-card {
-      border-radius: 3px;
-    }
+  .carousel-container {
+     margin: 0px 15px;
   }
+
+  .carousel-title {
+     margin-left: 0;
+     font-size: 18px;
+  }
+
+  .carousel-wrapper {
+     min-height: auto;
+     padding: 0 5px;
+  }
+
+  .slides-area {
+     margin: 0;
+     width: 100%;
+     overflow: hidden;
+     display: flex; /* Add flex to line up items horizontally */
+  }
+
+  .slide-group {
+     flex-shrink: 0; /* Prevent shrinking of the slide groups */
+     width: 100%; /* Make each slide group take up 100% of the width */
+     opacity: 0;
+     visibility: hidden;
+     transition: opacity 0.5s ease-in-out; /* Add smooth transition for opacity */
+  }
+
+  .slide-group.active {
+     opacity: 1;
+     visibility: visible; /* Only the active slide will be visible */
+  }
+
+  .story-card {
+     width: 100%;  /* Ensure each card takes up the full width */
+     min-height: auto;
+     border-radius: 3px;
+     min-width: 100%;
+  }
+
+  .nav-button {
+     width: 27px;
+     height: 27px;
+     border-width: 2px;
+  }
+
+  .story-card {
+     border-radius: 3px;
+  }
+}

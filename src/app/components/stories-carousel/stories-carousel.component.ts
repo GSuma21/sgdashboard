@@ -1,79 +1,91 @@
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy , ChangeDetectorRef} from '@angular/core';
 import { ImprovementStoryComponent } from '../improvement-story/improvement-story.component';
 import { UtilsService } from '../../services/utils.services';
 import { firebaseService } from '../../../firebase/firestore-service';
 import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
-import { STORY_OF_THE_WEEK  } from '../../../constants/urlConstants';
+import { STORY_OF_THE_WEEK } from '../../../constants/urlConstants';
 
 @Component({
   selector: 'app-stories-carousel',
   standalone: true,
   imports: [CommonModule, ImprovementStoryComponent],
   templateUrl: './stories-carousel.component.html',
-  styleUrl: './stories-carousel.component.scss'
+  styleUrls: ['./stories-carousel.component.scss']
 })
 
 export class StoriesCarouselComponent implements OnInit, OnDestroy {
   slides: any[] = [];
-
-  browserId:any;
+  browserId: any;
   chunkedSlides: any[][] = [];
-
   currentChunkIndex: number = 0;
   slideInterval: any;
   autoSlideDelay: number = 5000;
+  chunkSize: number = 2;
 
-  constructor(private utils:UtilsService,private sg:firebaseService, private cdr: ChangeDetectorRef) {}
+  constructor(private utils: UtilsService, private sg: firebaseService, private cdr: ChangeDetectorRef) {}
+
   async ngOnInit() {
+    this.adjustChunkSize();
+
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
-      this.slides= data["data"];
+      this.slides = data["data"];
       try {
         this.browserId = this.utils.getBrowserId();
-
         const storyIds = this.slides.map(s => s.id);
 
         if (!storyIds.length) {
-          this.chunkedSlides = this.chunkArray(this.slides, 2);
+          this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
           this.startAutoSlide();
           return;
         }
 
-        const counts= await this.sg.getStoryCountsBulk(storyIds,this.browserId);
+        const counts = await this.sg.getStoryCountsBulk(storyIds, this.browserId);
 
         this.slides = this.slides.map(slide => ({
           ...slide,
           ...counts.find(c => c.storyId === slide.id)
         }));
-
-        console.log('slides--2',this.slides)
+        console.log('slides--2', this.slides);
 
       } catch (error) {
-
         console.error('Failed to load story counts:', error);
-
-        this.slides = this.slides.map((slide:any) => ({
+        this.slides = this.slides.map((slide: any) => ({
           ...slide,
           likesCount: slide.likesCount ?? 0,
           shareCount: slide.shareCount ?? 0,
           downloadCount: slide.downloadCount ?? 0,
-          like:slide.like ?? 0
+          like: slide.like ?? 0
         }));
-
       } finally {
-        this.chunkedSlides = this.chunkArray(this.slides, 2);
+        this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
         this.startAutoSlide();
       }
-      console.log(data, "story of the week")
+
+      console.log(data, "story of the week");
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+
+    window.addEventListener('resize', this.adjustChunkSize.bind(this));
   }
 
- async  onStoryAction(event: any) {
-    this.slides=this.utils.updateStoryCounts(this.slides,event)
-    this.chunkedSlides = this.chunkArray(this.slides, 2);
+  adjustChunkSize() {
+    const screenWidth = window.innerWidth;
+    if (screenWidth < 768) {
+      this.chunkSize = 1;
+    } else {
+      this.chunkSize = 2;
+    }
+
+    this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
+    this.currentChunkIndex = 0;
+  }
+
+  async onStoryAction(event: any) {
+    this.slides = this.utils.updateStoryCounts(this.slides, event);
+    this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
     this.startAutoSlide();
   }
 
@@ -87,36 +99,30 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
 
   nextSlide(): void {
     this.currentChunkIndex = (this.currentChunkIndex + 1) % this.chunkedSlides.length;
-  
-    const slidesArea = document.querySelector('.slides-area') as HTMLElement;
-    const slideWidth = slidesArea.offsetWidth; 
-    slidesArea.scrollTo({
-      left: slideWidth * this.currentChunkIndex,
-      behavior: 'smooth'
-    });
-  
-    this.resetAutoSlide();
-  }
-  
-  prevSlide(): void {
-    this.currentChunkIndex = (this.currentChunkIndex - 1 + this.chunkedSlides.length) % this.chunkedSlides.length;
-  
     const slidesArea = document.querySelector('.slides-area') as HTMLElement;
     const slideWidth = slidesArea.offsetWidth;
     slidesArea.scrollTo({
       left: slideWidth * this.currentChunkIndex,
       behavior: 'smooth'
     });
-  
     this.resetAutoSlide();
   }
-  
+
+  prevSlide(): void {
+    this.currentChunkIndex = (this.currentChunkIndex - 1 + this.chunkedSlides.length) % this.chunkedSlides.length;
+    const slidesArea = document.querySelector('.slides-area') as HTMLElement;
+    const slideWidth = slidesArea.offsetWidth;
+    slidesArea.scrollTo({
+      left: slideWidth * this.currentChunkIndex,
+      behavior: 'smooth'
+    });
+    this.resetAutoSlide();
+  }
 
   startAutoSlide(): void {
-      this.slideInterval = setInterval(() => {
-        this.nextSlide();
-      }, this.autoSlideDelay);
-
+    this.slideInterval = setInterval(() => {
+      this.nextSlide();
+    }, this.autoSlideDelay);
   }
 
   resetAutoSlide(): void {
@@ -128,5 +134,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     if (this.slideInterval) {
       clearInterval(this.slideInterval);
     }
+
+    window.removeEventListener('resize', this.adjustChunkSize.bind(this));
   }
 }
