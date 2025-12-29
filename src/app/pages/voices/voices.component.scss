@@ -155,9 +155,9 @@ app-improvement-story {
         }
     }
 
-    .section-sub-title{
-        margin-left: 20px !important;
-    }
+    // .section-sub-title{
+    //     margin-left: 20px !important;
+    // }
 
     .heat-map{
         margin: 0px;
@@ -182,11 +182,21 @@ app-improvement-story {
         }
 
         .story-card{
-            width: 90%;
+            width: 80%;
             margin: 0px 35px 0px 20px;
         }
 
         .community-section .box-shadow{
             width: 100%;
         }
+
+        .section-heading-spacing{
+            margin-top: -30px !important;
+        }
+
+        .community-spacing{
+            margin-left: -38px;
+        }
+
+
 }
