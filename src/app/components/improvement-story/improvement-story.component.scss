@@ -242,5 +242,18 @@ mat-icon {
 #flow-img {
   border-radius: 3px;
 }
+
+.tall-card {
+  height: 190px;
+}
+
+.tall-card .card-actions{
+  margin-top: -13px;
+}
+
+.tall-card .card-actions .read-story-btn{
+  padding : 5px 12px;
+}
+
 }
 
