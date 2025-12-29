@@ -38,6 +38,7 @@ h2 {
 .box-shadow {
     box-shadow: 0px 4px 12px 0px #00000040;
     border-radius: 7%;
+    width:80%;
 }
 
 .section-sub-title {
@@ -157,4 +158,10 @@ app-improvement-story {
         margin-left: 0px;
         margin-top: 20px;
     }
+
+        .box-shadow {
+            box-shadow: 0px 4px 12px 0px #00000040;
+            border-radius: 7%;
+            width: 100%;
+        }
 }
