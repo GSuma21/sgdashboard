@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartType, Chart, registerables } from 'chart.js';
@@ -12,80 +12,95 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './multi-axis-chart.component.html',
   styleUrls: ['./multi-axis-chart.component.scss']
 })
-export class MultiAxisChartComponent {
+export class MultiAxisChartComponent implements OnChanges {
   year = '2025';
+  @Input() chartData: any;
 
-  constructor() {
-    Chart.register(...registerables);
-  }
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   public lineChartData: ChartConfiguration['data'] = {
-    datasets: [
-      {
-        data: [65, 59, 80, 81],
-        label: 'Series A',
-        type: 'bar',
-        backgroundColor: '#592e91',
-        borderColor: '#592e91',
-        hoverBackgroundColor: '#592e91',
-        hoverBorderColor: '#592e91',
-        yAxisID: 'y'
-      },
-      {
-        data: [4500, 4800, 4900, 4950],
-        label: 'Series B',
-        type: 'line',
-        backgroundColor: (context: any) => {
-          const chart = context.chart;
-          const { ctx, chartArea } = chart;
-          if (!chartArea) {
-            return undefined;
-          }
-          const activeElements = chart.getActiveElements();
-          const isDatasetActive = activeElements.some((el: any) => el.datasetIndex === context.datasetIndex);
-          return isDatasetActive ? 'rgba(255, 0, 255, 0.2)' : 'rgba(255, 0, 255, 0)';
-        },
-        borderColor: '#fe9a11',
-        pointBackgroundColor: '#fe9a11',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: '#fe9a11',
-        fill: 'origin',
-        yAxisID: 'y1'
-      }
-    ],
-    labels: ['Q1 (Apr - Jun)', 'Q2 (Jul - Sept)', 'Q3 (Oct - Dec)', 'Q4 (Jan - Mar)']
+    labels: ['Q1 (Apr - Jun)', 'Q2 (Jul - Sept)', 'Q3 (Oct - Dec)', 'Q4 (Jan - Mar)'],
+    datasets: []
   };
 
   public lineChartOptions: ChartConfiguration['options'] = {
     elements: {
-      line: {
-        tension: 0.5
-      }
-    },
+       line: {
+         tension: 0.5 
+        } 
+      },
     onHover: (event, chartElement) => {
       (event.native?.target as HTMLElement).style.cursor = chartElement[0] ? 'pointer' : 'default';
     },
     scales: {
-      // We use this empty structure as a placeholder for dynamic theming.
       y: {
-        position: 'left',
-      },
+         position: 'left',
+         },
       y1: {
         position: 'right',
-        grid: {
-          color: 'rgba(255,0,0,0.3)',
+        grid: { 
+          color: 'rgba(255,0,0,0.3)', 
         },
-        ticks: {
+        ticks: { 
           color: 'black'
-        }
+         }
       }
     },
-    plugins: {
+    plugins: { 
       legend: { display: true },
     }
   };
 
   public lineChartType: ChartType = 'line';
+
+  constructor() {
+    Chart.register(...registerables);
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['chartData'] && this.chartData) {
+      const labels = ['Q1 (Apr - Jun)', 'Q2 (Jul - Sept)', 'Q3 (Oct - Dec)', 'Q4 (Jan - Mar)'];
+      const dialoguesData = this.chartData["Pariticipating in dialogues"] || [];
+      let microImprovementsData = this.chartData["Leading Micro Improvements"] || [];
+
+      // Hide trailing zeros for line
+      const lastNonZeroIndex = microImprovementsData
+        .map((v: number, i: number) => ({ v, i }))
+        .filter((item: any) => item.v && item.v > 0)
+        .map((item: any) => item.i)
+        .pop();
+
+      if (lastNonZeroIndex !== undefined) {
+        microImprovementsData = microImprovementsData.slice(0, lastNonZeroIndex + 1);
+      } else {
+        microImprovementsData = [];
+      }
+
+      this.lineChartData = {
+        labels,
+        datasets: [
+          {
+            type: 'line',
+            data: microImprovementsData,
+            label: 'Leading Micro Improvements',
+            borderColor: '#fe9a11',
+            pointBackgroundColor: '#fe9a11',
+            yAxisID: 'y1',
+            tension: 0.4,
+            fill: false,
+          },
+          {
+            type: 'bar',
+            data: dialoguesData,
+            label: 'Pariticipating in dialogues',
+            backgroundColor: '#592e91',
+            yAxisID: 'y',
+          }
+        ]
+      };
+
+      this.chart?.update(); // redraw chart
+    }
+  }
+
 }
