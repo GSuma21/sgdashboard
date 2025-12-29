@@ -19,7 +19,7 @@
 
       <div class="lang-switch-container">
         
-        <span class="lang-label" *ngIf="!isLangOn">{{ story.lang[0]?.code || 'Eng'}}</span>
+        <span class="lang-label" *ngIf="!isLangOn && story?.lang?.length > 0"></span>>{{ story.lang[0]?.code || 'Eng'}}</span>
       
         <div class="lang-toggle-wrapper">
           <input
@@ -36,7 +36,7 @@
           <div class="toggle-button-text"></div>
         </div>
 
-        <span class="lang-label"*ngIf="isLangOn">{{ story.lang[1]?.code || 'Hin' }}</span>
+        <span class="lang-label" *ngIf="isLangOn && story?.lang?.length > 1">{{ story.lang[1]?.code || 'Hin' }}</span>
 
       </div>
     
