@@ -23,8 +23,11 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   slideInterval: any;
   autoSlideDelay: number = 5000;
   chunkSize: number = 2;
+  private resizeHandler: () => void;
 
-  constructor(private utils: UtilsService, private sg: firebaseService, private cdr: ChangeDetectorRef) {}
+  constructor(private utils: UtilsService, private sg: firebaseService, private cdr: ChangeDetectorRef) {
+    this.resizeHandler = this.adjustChunkSize.bind(this);
+  }
 
   async ngOnInit() {
     this.adjustChunkSize();
@@ -68,20 +71,24 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       console.error('Error loading page data:', error);
     });
 
-    window.addEventListener('resize', this.adjustChunkSize.bind(this));
+    window.addEventListener('resize', this.resizeHandler);
   }
 
   adjustChunkSize() {
     const screenWidth = window.innerWidth;
-    if (screenWidth < 768) {
-      this.chunkSize = 1;
-    } else {
-      this.chunkSize = 2;
+  
+    const newChunkSize = screenWidth < 768 ? 1 : 2;
+  
+    if (newChunkSize !== this.chunkSize) {
+      this.chunkSize = newChunkSize;
+      this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
+  
+      if (this.currentChunkIndex >= this.chunkedSlides.length) {
+        this.currentChunkIndex = this.chunkedSlides.length - 1;
+      }
     }
-
-    this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
-    this.currentChunkIndex = 0;
   }
+  
 
   async onStoryAction(event: any) {
     this.slides = this.utils.updateStoryCounts(this.slides, event);
@@ -135,6 +142,6 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       clearInterval(this.slideInterval);
     }
 
-    window.removeEventListener('resize', this.adjustChunkSize.bind(this));
+    window.removeEventListener('resize', this.resizeHandler);
   }
 }
