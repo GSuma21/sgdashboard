@@ -8,12 +8,12 @@
 
     <ng-container *ngSwitchCase="'branch-animation'">
       <section [ngClass]="section.styles.section" class="main-section">
-         <h2 class="ml-4">Voices from the ground</h2>
-        <p class="animation-description mb-4 ml-3">This space highlights voices from the community identifying issues,
+         <h2 class="ml-2 black">Voices from the ground</h2>
+        <p class="animation-description mb-4 ml-2">This space highlights voices from the community identifying issues,
           finding
           contextual solutions, and implementing them to solve education barriers.
           Women leaders are at the forefront of making this change possible.</p>
-        <p class="ml-3 pb-3 sub-description">From the cracks of struggle emerge the flowers of community-led solutions
+        <p class="ml-2 ml-md-3 sub-description">From the cracks of struggle emerge the flowers of community-led solutions
         </p>
         <app-voices-animations></app-voices-animations>
       </section>
@@ -24,7 +24,7 @@
         <div class="indicators-section">
           <h2 [ngClass]="section.styles.title">{{ section.title }}</h2>
 
-          <div class="row justify-content-center indicators">
+          <div class="row indicators">
             <app-indicator-card
               class="col-12 col-md-6 col-lg-4"
               *ngFor="let indicator of section.indicators; let i = index"

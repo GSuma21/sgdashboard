@@ -6,23 +6,30 @@
   opacity: 0;
   transform: translateY(30px) scale(0.95);
   animation: slideInUpScale 0.6s forwards;
-  width: 70%;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
 }
 
 .indicator-icon {
   min-width: 25%;
-  max-width: 35%;
+  max-width: 30%;
   object-fit: contain;
   padding-right: 7%;
-  width:100px;
+  width:inherit;
   height: 100px;
 }
 
+.indicator-content {
+  display: flex;
+  align-items: stretch;
+}
+
 .divider {
-  width: 0.2%;
-  min-height: 30%;
-  max-height: 60%;
-  background-color: #aaa;
+  width: 3px;
+  height: 80px;
+  background-color: #dddada ;
 }
 
 .indicator-container {
@@ -68,6 +75,14 @@
     margin-bottom: 10px;
   }
   .divider {
-    height: 80px;
+    height: 70px;
+  }
+  .indicator-icon {
+    min-width: 20%;
+    max-width: 25%;
+  }
+
+  .indicator-card {
+    margin-right: 65px;
   }
 }

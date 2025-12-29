@@ -33,7 +33,7 @@ import { FooterComponent } from './components/footer/footer.component';
           <a routerLink="/" (click)="closeMenu()"  routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
           <a routerLink="/dashboard" (click)="closeMenu()"  routerLinkActive="active-link">Dashboard</a>
           <a routerLink="/network-health" (click)="closeMenu()"  routerLinkActive="active-link">Network Health</a>
-          <a routerLink="/voices" (click)="closeMenu()"  routerLinkActive="active-link">Voices from the ground</a>
+          <a routerLink="/voices-from-the-ground" (click)="closeMenu()"  routerLinkActive="active-link">Voices from the ground</a>
         </div>
       </nav>
     </header>
