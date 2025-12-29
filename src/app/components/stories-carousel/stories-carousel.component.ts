@@ -87,13 +87,30 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
 
   nextSlide(): void {
     this.currentChunkIndex = (this.currentChunkIndex + 1) % this.chunkedSlides.length;
+  
+    const slidesArea = document.querySelector('.slides-area') as HTMLElement;
+    const slideWidth = slidesArea.offsetWidth; 
+    slidesArea.scrollTo({
+      left: slideWidth * this.currentChunkIndex,
+      behavior: 'smooth'
+    });
+  
     this.resetAutoSlide();
   }
-
+  
   prevSlide(): void {
     this.currentChunkIndex = (this.currentChunkIndex - 1 + this.chunkedSlides.length) % this.chunkedSlides.length;
+  
+    const slidesArea = document.querySelector('.slides-area') as HTMLElement;
+    const slideWidth = slidesArea.offsetWidth;
+    slidesArea.scrollTo({
+      left: slideWidth * this.currentChunkIndex,
+      behavior: 'smooth'
+    });
+  
     this.resetAutoSlide();
   }
+  
 
   startAutoSlide(): void {
       this.slideInterval = setInterval(() => {
