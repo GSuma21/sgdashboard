@@ -44,8 +44,7 @@
         <mat-icon class="hint-icon">info</mat-icon>
       
         <span class="hint-text">
-          Use toggle to switch to the language to its original record language.
-          By default language is English
+          Use the toggle to switch to the original recorded language. The default language is English.
         </span>
       </span>
     
@@ -74,7 +73,7 @@
     <h4 class="photos-title">Photos:</h4>
     <div class="photo-row">
       @for(image of story.photos || [];track $index){
-        <img [src]='image' alt="Story Image" />
+        <img [src]='image' [alt]="'Story photo ' + ($index + 1)" />
       }
     </div>
   </div>
