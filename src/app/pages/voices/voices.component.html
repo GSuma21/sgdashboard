@@ -42,9 +42,7 @@
     <ng-container *ngSwitchCase="'heat-map'">
       <section [ngClass]="section.styles.section">
         <div class="row heat-map">
-          <app-heat-map
-            [themes]="heatmapThemes"
-            [allVoices]="heatmapVoices">
+          <app-heat-map>
           </app-heat-map>
         </div>
       </section>
@@ -55,7 +53,7 @@
         <div class="indicators-section">
           <div class="row justify-content-center">
             <div class="box-shadow">
-              <app-multi-axis-chart></app-multi-axis-chart>
+              <app-multi-axis-chart  [data]="section.data"></app-multi-axis-chart>
             </div>
           </div>
         </div>
