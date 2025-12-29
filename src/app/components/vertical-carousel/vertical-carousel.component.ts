@@ -30,8 +30,10 @@ export class VerticalCarouselComponent implements OnInit, AfterViewInit, OnDestr
   getFeedData() {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${MICRO_IMPROVEMENT_FEED}`).then((data: any) => {
       this.feedData = data["data"];
-      this.extendedFeed = [...this.feedData, ...this.feedData, ...this.feedData];
-      this.currentIndex = this.feedData.length; // Start at the first item of the middle set
+      if (this.feedData) {
+        this.extendedFeed = [...this.feedData, ...this.feedData, ...this.feedData];
+        this.currentIndex = this.feedData.length; // Start at the first item of the middle set
+      }
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
