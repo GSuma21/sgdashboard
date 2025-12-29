@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import * as d3 from 'd3';
+import { environment } from '../../../../environments/environment';
+import { MICRO_IMPROVEMENT_FEED } from '../../../constants/urlConstants';
 
 @Component({
   selector: 'app-vertical-carousel',
@@ -12,40 +15,7 @@ export class VerticalCarouselComponent implements OnInit, AfterViewInit, OnDestr
   @ViewChild('scrollTrack') scrollTrack!: ElementRef<HTMLElement>;
   @ViewChildren('feedCard') feedCards!: QueryList<ElementRef<HTMLElement>>;
 
-  feedData: any = [
-    {
-      id: 1,
-      mainText: "The Head teacher went door-to-door in the village to raise awareness about education. At school, children were encouraged using charts and were especially recognised if they had over 80% attendance. For children who were not coming to school, they were reached out through Meena Manch.",
-      highlightedText: "The children who had dropped out of school have started coming to school again",
-      author: "Community Coordinator",
-      location: "Muzaffarpur, Bihar",
-      type: 'education'
-    },
-    {
-      id: 2,
-      mainText: "Told parents about the deficiencies in their child's education, Used storytelling to convey the importance of education",
-      highlightText: "People from the community came to learn about the importance of education",
-      author: "Samaj Sewa",
-      location: "Sitamarhi, Bihar",
-      type: 'education'
-    },
-    {
-      id: 3,
-      mainText: "Discussed the issue in the school management committee meeting. Met with gram panchayat members to request local transport support. Arranged a shared auto service for children from distant hamlets",
-      highlightedText: "Attendance improved from 68% to over 90%, children are more regular and punctual, and parents feel more connected to the school",
-      author: "Headmaster",
-      location: "Sitamarhi, Bihar",
-      type: 'education'
-    },
-    {
-      id: 4,
-      mainText: "I along with members of Meena Manch visited a girl's home, spoke with her parents about the illegality and consequences of child marriage, and encouraged them to cancel the wedding plans.",
-      highlightedText: "The intervention successfully convinced the parents, protecting the girl and cancelling the child marriage.",
-      author: "Cluster State Coordinator",
-      location: "Muzaffarpur, Bihar",
-      type: 'social'
-    }
-  ];
+ feedData:any;
 
   extendedFeed: any[] = [];
   currentIndex = 0; // Will be initialized to start of middle buffer
@@ -54,11 +24,17 @@ export class VerticalCarouselComponent implements OnInit, AfterViewInit, OnDestr
   private pauseDuration = 3000;
 
   ngOnInit() {
-    // Create triple buffer: [Clone Before] [Original] [Clone After]
-    // Actually, simpler: [Original] [Original] [Original]
-    // We start in the middle set.
-    this.extendedFeed = [...this.feedData, ...this.feedData, ...this.feedData];
-    this.currentIndex = this.feedData.length; // Start at the first item of the middle set
+    this.getFeedData() // get a community feed data
+  }
+
+  getFeedData() {
+    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${MICRO_IMPROVEMENT_FEED}`).then((data: any) => {
+      this.feedData = data["data"];
+      this.extendedFeed = [...this.feedData, ...this.feedData, ...this.feedData];
+      this.currentIndex = this.feedData.length; // Start at the first item of the middle set
+    }).catch((error: any) => {
+      console.error('Error loading page data:', error);
+    });
   }
 
   ngAfterViewInit() {
