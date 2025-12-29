@@ -53,5 +53,11 @@ export class UtilsService {
         }
       });
     }
+
+    updateStory(list: any[], updatedData: any): any[] {
+      return list.map(item =>
+        item.id === updatedData.id ? { ...item, ...updatedData } : item
+      );
+    }
  
 }
