@@ -31,7 +31,10 @@ export class StoryModel {
 
   async handleUserClick(story:any,action: ActionType){
     try{
-    action === ACTIONS.SHARE &&  await this.openShareModal()
+      if (action === ACTIONS.SHARE) {
+        this.openShareModal();
+      }
+      
     const res = await this.sg.updateRecord(
       action === ACTIONS.LIKE? { ...story, like: story.like ? 0 : 1 }: story,
       this.util.getBrowserId(),
