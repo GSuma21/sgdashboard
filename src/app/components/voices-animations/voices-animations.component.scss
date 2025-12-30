@@ -15,6 +15,10 @@
   max-height: 20vh;
 }
 
+.bg-img {
+  height: 780px ;
+}
+
 .branch-wrapper {
   position: absolute;
   top: 20%;
@@ -30,6 +34,7 @@
     object-position: bottom left;
     display: block;
     transform: translateX(-40px);
+    // height: 679px;
   }
 }
 
@@ -136,5 +141,29 @@
     img {
       width: 20px;
     }
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .branch-wrapper {
+    top: 10%;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .branch-wrapper {
+    top: 4%;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  .branch-wrapper {
+    top: -10%;
+  }
+}
+
+@media screen and (min-width: 2500px) {
+  .branch-wrapper {
+    top: -30%;
   }
 }
