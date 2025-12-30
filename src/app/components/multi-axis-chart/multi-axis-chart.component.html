@@ -1,19 +1,16 @@
 <div class="chart-container">
   <div class="header-row">
-  <mat-card-title>Leaders engaged</mat-card-title>
-
-  <div class="legend">
-    <div class="legend-item">
-      <span class="dot orange"></span>
-      <span class="text">Leading Micro improvements</span>
-    </div>
-
-    <div class="legend-item">
-      <span class="dot purple"></span>
-      <span class="text">Participating in dialogues</span>
+    <mat-card-title>{{chartData.title}}</mat-card-title>
+    <div class="legend">
+      @for (legend of chartData?.legends; track $index) {
+      <div class="legend-item">
+        <span class="dot" [ngClass]="$index === 0 ? 'orange' : 'purple'">
+        </span>
+        <span class="text">{{ legend }}</span>
+      </div>
+      }
     </div>
   </div>
-</div>
 
 
     <div class="year-buttons">

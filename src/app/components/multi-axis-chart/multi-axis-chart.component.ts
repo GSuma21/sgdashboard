@@ -59,8 +59,8 @@ export class MultiAxisChartComponent {
 
   ngOnInit(): void {
     const labels = ['Q1 (Apr - Jun)', 'Q2 (Jul - Sept)', 'Q3 (Oct - Dec)', 'Q4 (Jan - Mar)'];
-      const dialoguesData = this.chartData["Participating in dialogues"] || [];
-      let microImprovementsData = this.chartData["Leading Micro Improvements"] || [];
+      const dialoguesData = this.chartData?.data?.["Participating in dialogues"] || [];
+      let microImprovementsData = this.chartData?.data?.["Leading Micro Improvements"] || [];
 
       // Hide trailing zeros for line
       const lastNonZeroIndex = microImprovementsData
