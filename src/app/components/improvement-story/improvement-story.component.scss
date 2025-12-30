@@ -4,8 +4,7 @@
   flex-direction: column;
   justify-content: flex-start;
   position: relative;
-  padding-bottom: 35px;
-  padding-bottom: 0;
+  padding-bottom: 6%;
 }
 
 .quote-icon {
@@ -74,9 +73,9 @@
   bottom: 0;
   display: block;
   width: 100%;
-  height: unset;
+  height: auto;
   pointer-events: none;
-  border-radius: 10px;
+  border-radius: 2%;
 }
 
 .card-actions {
