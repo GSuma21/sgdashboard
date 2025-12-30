@@ -3,7 +3,7 @@
     width: 100%;
     max-width: 500px;
     margin: 20px auto;
-    padding: 2rem;
+    padding: 1rem;
 }
 #chart {
     max-width:600px;
@@ -52,3 +52,42 @@ mat-card {
         min-width: 350px;
     }
 }
+
+.legend {
+  display: flex;;
+  font-family: Arial, sans-serif;
+  gap: 2px;
+  align-items: center;
+  justify-content: end;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.dot.orange {
+  background-color: #f4a21e;
+}
+
+.dot.purple {
+  background-color: #5b2dab;
+}
+
+.text {
+  font-size: 10px;
+  color: #333;
+}
+
+.header-row{
+ display: grid;
+  grid-template-columns: 30% 70%;
+}
+
