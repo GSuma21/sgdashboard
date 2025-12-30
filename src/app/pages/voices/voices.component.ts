@@ -81,7 +81,7 @@ export class VoicesComponent implements OnInit {
 
 
   onStoryAction(event: any) {
-      this.story = {
+      this.story = event.status ? {
         ...this.story,
         ...(event.action === ACTIONS.LIKE && {
           likesCount: (this.story.likesCount ?? 0) + event.diff,
@@ -90,7 +90,7 @@ export class VoicesComponent implements OnInit {
         ...(event.action === ACTIONS.SHARE && {
           shareCount: (this.story.shareCount ?? 0) + event.diff
         })
-      };
+      }: event;
   }
 
   fetchPageData(): void {
