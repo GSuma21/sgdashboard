@@ -10,8 +10,8 @@
                         <img [src]="theme.icon" alt="icon" class="icon-img" />
                     </div>
                     <div class="text-spacing">
-                    <h3 class="theme-title">{{ theme.title }}</h3>
-                    <p class="voice-count" *ngIf="theme.count > 0">{{ theme.count }} Voices raised</p>
+                    <h3 class="theme-title">{{ theme.label }}</h3>
+                    <p class="voice-count" *ngIf="theme.value > 0">{{ theme.value }} Voices raised</p>
                 </div>
                 </div>
             </div>
@@ -23,8 +23,8 @@
         <div class="voices-grid" [@voicesAnimation]="displayedVoices.length">
             <div *ngFor="let voice of displayedVoices" class="voice-card active" [ngClass]="voice.color">
                 <div class="quote-icon">“</div>
-                <p class="quote-text">{{ voice.text }}</p>
-                <p class="quote-author">– {{ voice.author }}</p>
+                <p class="quote-text">{{ voice.description }}</p>
+                <p class="quote-author">– {{ voice.voice_by }}</p>
             </div>
         </div>
     </div>
