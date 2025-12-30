@@ -1,7 +1,7 @@
 .animation-container {
   position: relative;
   width: 97vw;
-  height: 100vh;
+  height: 780px;
   overflow: hidden;
   left: 1%;
 }
@@ -111,5 +111,30 @@
 
   &:hover {
     font-size: 14px !important;
+  }
+}
+
+// Fix for small screens (less than medium laptops)
+@media screen and (max-width: 1279px) {
+  .bubble {
+    width: 180px; // Reduced from 300px
+    padding: 10px; // Reduced from 18px
+
+    &.bubble-problem,
+    &.bubble-solution {
+      font-size: 9px; // Reduced from 12px
+
+      &:hover {
+        font-size: 10px !important; // Reduced hover size
+      }
+    }
+
+    p {
+      margin-bottom: 4px;
+    }
+
+    img {
+      width: 20px;
+    }
   }
 }
