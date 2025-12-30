@@ -17,7 +17,7 @@
     "position": "center",
     "title": "Monthly Progress",
     "data": [
-      { "name": "Curriculam and pedagogy", "value": 35 },
+      { "name": "Curriculum and pedagogy", "value": 35 },
       { "name": "Leadership", "value": 25 },
       { "name": "Community Engagement", "value": 20 },
       { "name": "Infrastructure", "value": 10 },
@@ -34,7 +34,7 @@
     "position": "center",
     "title": "Monthly Progress",
     "data": [
-      { "name": "Curriculam and pedagogy", "value": 35 },
+      { "name": "Curriculum and pedagogy", "value": 35 },
       { "name": "Leadership", "value": 25 },
       { "name": "Community Engagement", "value": 20 },
       { "name": "Infrastructure", "value": 10 },

@@ -62,7 +62,7 @@
     "position": "left",
     "title": "Voices of improvement",
     "styles": {
-      "title": "section-sub-title mt-5 ml-2 pl-2",
+      "title": "section-sub-title mt-5 ml-2 pl-2 section-heading-spacing",
       "section": "my-5 pl-2"
     }
   },
@@ -72,7 +72,7 @@
     "position": "left",
     "title": "Story of the week",
     "styles": {
-      "section": "ml-4 p-0",
+      "section": "ml-2 ml-md-4 p-0",
       "title": "section-sub-title my-4"
     }
   },
@@ -83,7 +83,7 @@
     "title": "Community Feed",
     "styles": {
       "section": "ml-5 p-0",
-      "title": "section-sub-title my-4"
+      "title": "section-sub-title my-4 community-spacing"
     }
   },
   {

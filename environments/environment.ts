@@ -13,11 +13,10 @@ export const environment = {
         projectId: "PROJECT_ID",
         storageBucket: "STORAGE_BUCKET",
         messagingSenderId: "MESSAGE_SENDER_ID",
-        appId: "APP_ID",
-        measurementId: "MEASUREMENT_ID"
+        appId: "APP_ID"
     },
-    shareLink : 'https://shikshagraha_dashboard.org',
+    shareLink : 'https://dashboard.shikshagraha.org/',
     linkedin: 'https://www.linkedin.com/sharing/share-offsite//?url=',
-    whatsapp: 'https://wa.me/?text=${text}%0A%0A',
+    whatsapp: 'https://wa.me/?',
     facebook: 'https://www.facebook.com/sharer/sharer.php?u='
 };
