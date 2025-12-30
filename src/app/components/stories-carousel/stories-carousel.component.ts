@@ -47,8 +47,6 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
           ...counts.find(c => c.storyId === slide.id)
         }));
 
-        console.log('slides--2',this.slides)
-
       } catch (error) {
 
         console.error('Failed to load story counts:', error);
@@ -65,14 +63,13 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
         this.chunkedSlides = this.chunkArray(this.slides, 2);
         this.startAutoSlide();
       }
-      console.log(data, "story of the week")
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
   }
 
  async  onStoryAction(event: any) {
-    this.slides=this.utils.updateStoryCounts(this.slides,event)
+    this.slides = event.status ? this.utils.updateStoryCounts(this.slides,event) : this.utils.updateStory(this.slides,event)
     this.chunkedSlides = this.chunkArray(this.slides, 2);
     this.startAutoSlide();
   }

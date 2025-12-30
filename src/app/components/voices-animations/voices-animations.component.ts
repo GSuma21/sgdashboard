@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Animations } from './animations';
 import { CommonModule } from '@angular/common';
 
@@ -28,34 +28,79 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       problem: "I don't go to school because I don't have an Aadhaar card.",
       author: "Women Leader, Patna, Bihar",
       solution: "I worked on a micro-improvement project to help 9 children...",
-      dandelionTop: '77%', dandelionLeft: '10%'
+      dandelionTop: '73%', dandelionLeft: '10%',
+      responsivePositions: [
+        { minWidth: 1440, top: '80%', left: '10%' }, // Large Laptops & Desktops
+        { minWidth: 1280, top: '72%', left: '10%' }, // Standard Laptops
+        { minWidth: 1024, top: '57%', left: '8%' }, // Small Laptops
+        { minWidth: 0,    top: '77%', left: '10%' }  // Fallback
+      ]
     },
     {
       problem: "Child marriage is a prevalent issue...",
       author: "Farmer Leader, Patna, Bihar",
       solution: "I, a farmer from Danapur, addressed the security problem...",
-      dandelionTop: '73%', dandelionLeft: '37%'
+      dandelionTop: '73%', dandelionLeft: '37%',
+      responsivePositions: [
+        { minWidth: 1440, top: '74%', left: '37%' },
+        { minWidth: 1280, top: '66%', left: '37%' },
+        { minWidth: 1024, top: '52%', left: '35%' },
+        { minWidth: 0,    top: '73%', left: '37%' }
+      ]
     },
     {
       problem: "Due to lack of school in the village...",
       author: "Women Leader, Patna, Bihar",
       solution: "I improved attendance at my school...",
-      dandelionTop: '60%', dandelionLeft: '60%'
+      dandelionTop: '60%', dandelionLeft: '60%',
+      responsivePositions: [
+        { minWidth: 1440, top: '62%', left: '60%' },
+        { minWidth: 1280, top: '56%', left: '60%' },
+        { minWidth: 1024, top: '42%', left: '58%' },
+        { minWidth: 0,    top: '60%', left: '60%' }
+      ]
     },
     {
       problem: "In rural areas, girls often drop out...",
       author: "Women Leader, Patna, Bihar",
       solution: "A farmer from Danapur addressed security issues...",
-      dandelionTop: '74%', dandelionLeft: '89%'
+      dandelionTop: '74%', dandelionLeft: '89%',
+      responsivePositions: [
+        { minWidth: 1440, top: '76%', left: '89%' },
+        { minWidth: 1280, top: '67%', left: '89%' },
+        { minWidth: 1024, top: '53%', left: '87%' },
+        { minWidth: 0,    top: '74%', left: '89%' }
+      ]
     }
   ];
 
   ngOnInit() {
+    this.updatePositions();
     this.playAnimation();
   }
 
   ngOnDestroy() {
     this.isDestroyed = true;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.updatePositions();
+  }
+
+  updatePositions() {
+    const width = window.innerWidth;
+    this.storyNodes.forEach(node => {
+      // Find the best matching breakpoint (largest minWidth that is <= current width)
+      const match = node.responsivePositions
+        .sort((a, b) => b.minWidth - a.minWidth) // Sort descending
+        .find(bp => width >= bp.minWidth);
+
+      if (match) {
+        node.dandelionTop = match.top;
+        node.dandelionLeft = match.left;
+      }
+    });
   }
 
   async playAnimation() {

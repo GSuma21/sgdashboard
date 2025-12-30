@@ -1,83 +1,79 @@
 <div class="modal-container" role="dialog">
-  <button
-  class="close-btn"
-  (click)="closeModal()"
-  aria-label="Close dialog"
-  title="Close"
->
-  ✕
-</button>
+  <button class="close-btn" (click)="closeModal()" aria-label="Close dialog" title="Close">
+    <mat-icon aria-hidden="true">close</mat-icon>
+  </button>
 
   <div class="meta-actions">
-    <h2 class="modal-title">
-      Stars, Charts, and Change: A Micro improvement that reignited love for learning
-    </h2>
+    <h2 class="modal-title">{{ story.title }}</h2>
   
     <div class="counts-section">
-      <span class="count">
-        <mat-icon>favorite</mat-icon>
-        2,203
+      <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.LIKE)">
+        <mat-icon class="action-icon">{{ story.like ? 'favorite' : 'favorite_border' }}</mat-icon>
+        {{ story.likesCount ? story.likesCount : 0 }}
+      </button>
+
+      <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.SHARE)">
+        <mat-icon class="action-icon">share</mat-icon>
+        {{ story.shareCount ? story.shareCount : 0 }}
+      </button>
+
+      <div class="lang-switch-container">
+        
+        <span class="lang-label" *ngIf="!isLangOn && story?.lang?.length > 0">{{ story.lang?.[0]?.code || 'Eng'}}</span>
+      
+        <div class="lang-toggle-wrapper">
+          <input
+            type="checkbox"
+            id="toggle-button-checkbox"
+            [checked]="isLangOn"
+            (change)="toggleLanguage()"
+          />
+      
+          <label class="toggle-button-switch" for="toggle-button-checkbox">
+            <mat-icon class="toggle-icon">translate</mat-icon>
+          </label>
+      
+          <div class="toggle-button-text"></div>
+        </div>
+
+        <span class="lang-label" *ngIf="isLangOn && story?.lang?.length > 1">{{ story.lang?.[1]?.code || 'Hin' }}</span>
+
+      </div>
+    
+      <span class="hint-wrapper">
+        <mat-icon class="hint-icon">info</mat-icon>
+      
+        <span class="hint-text">
+          Use the toggle to switch to the original recorded language. The default language is English.
+        </span>
       </span>
     
-      <span class="count">
-        <mat-icon>share</mat-icon>
-        2,204
-      </span>
-    
-      <span class="lang">
-        <mat-icon>translate</mat-icon>
-      </span>
-    
-      <span class="hint">
-        Hin
-        <mat-icon>info</mat-icon>
-      </span>
     </div>
     
   </div>
   
 
   <div class="meta-row">
+
     <div class="meta-item">
       <mat-icon>person</mat-icon>
-      <h4>Women Leader</h4>
+      <h4>{{story.role}}</h4>
     </div>
-
     <div class="meta-item">
       <mat-icon>location_on</mat-icon>
-      <h4>Muzaffarpur, Bihar</h4>
+      <h4>{{story.district}}, {{story.state}}</h4>
     </div>
-
-    
   </div>
 
   <div class="modal-content">
-    <p>
-A cluster coordinator, worked with Jyoti Mahila Sameeksha in a village in Muzaffarpur, Bandra, Bihar. She noticed that children were not interested in studies and were unable to attend school, leading to a decrease in attendance. To address this issue, Vibha organized a Shiksha Chaupal in the community, where children and parents were made aware of the importance of education. The importance of education was discussed in detail, and children were encouraged through charts present in the school. Those who scored 80 to 100% were given green stars and applauded. However, Vibha faced a challenge where people were focusing more on the schemes available in schools rather than education. She overcame this by explaining the importance of education and the rule that to get the benefit of the scheme, they had to have a minimum of 70% attendance in school. With the help of School Head Master Bhola Paswan, Vibha was able to complete this solution in 2 to 3 months. As a result, children who had dropped out of school started attending again, and those who used to come only three to four days a month started coming regularly.
-    </p>
+    <p>{{story.content}}</p>
   </div>
 
-  <div class="">
+  <div>
     <h4 class="photos-title">Photos:</h4>
-
     <div class="photo-row">
-      <img [src]="dummyImageUrl" />
-      <img [src]="dummyImageUrl" />
-      <img [src]="dummyImageUrl" />
-      <img [src]="dummyImageUrl" />
-      <img [src]="dummyImageUrl" />
+      @for(image of story.photos || [];track $index){
+        <img [src]='image' [alt]="'Story photo ' + ($index + 1)" />
+      }
     </div>
   </div>
-
-  <div class="modal-footer">
-    <div class="download-btns">
-      <button class="download-btn">
-        Download story
-      </button>
-      <div class="download-data">
-        <mat-icon>download</mat-icon>
-
-      <span class="count">2220</span>
-    </div>
-  </div>
-</div>
