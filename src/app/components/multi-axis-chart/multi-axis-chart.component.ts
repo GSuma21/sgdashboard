@@ -47,7 +47,7 @@ export class MultiAxisChartComponent {
       }
     },
     plugins: { 
-      legend: { display: true },
+      legend: { display: false },
     }
   };
 
