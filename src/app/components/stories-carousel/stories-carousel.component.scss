@@ -22,77 +22,61 @@
 }
 
 .carousel-wrapper {
-    display: flex;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    min-height: 400px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  min-height: 400px;
 }
 
+
 .nav-button {
-    background: none;
-    border:4px solid black;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: background-color 0.2s;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-
-    svg {
-        fill: black;
-        width: 20px;
-        height: 20px;
-    }
-
-    &:hover {
-        background-color: #5d1792;
-        svg {
-            fill: white;
-        }
-    }
+  background: none;
+  border: 4px solid black;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: background-color 0.2s;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .prev {
-    left: 0;
+  left: 0;
 }
 
 .next {
-    right: 0;
+  right: 0;
 }
 
 .slides-area {
-    display: flex;
-    flex: 1;
-    margin: 0 60px;
-    position: relative;
-    height: 100%;
-    overflow: hidden;
+  display: flex;
+  flex: 1;
+  margin: 0 60px;
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.5s ease-in-out; 
 }
 
 .slide-group {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease-in-out;
-    display: flex;
-    justify-content: space-between;
-    gap: 50px;
+  display: flex;
+  justify-content: space-between;
+  gap: 50px;
+  flex-shrink: 0;
+  width: 100%;
 }
 
 .slide-group.active {
-    opacity: 1;
-    visibility: visible;
-    position: relative;
+  opacity: 1;
+  visibility: visible;
+  position: relative;
 }
 
 .story-card {
@@ -101,60 +85,55 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     height: auto;
-    // min-height: 350px;
     width: 100%;
 }
 
 @media (max-width: 768px) {
-
-    :host {
-      padding: 10px 0;
-      overflow-x: hidden;
-    }
-
-    .carousel-container {
-        margin: 0px 20px;
-    }
-  
-    .carousel-title {
-      margin-left: 0;
-      font-size: 18px;
-    }
-  
-    .carousel-wrapper {
-      min-height: auto;
-
-      position: relative;
-    padding: 0 10px; 
-    }
-  
-    .slides-area {
-      margin: 0;
-      width: 100%;
-    }
-  
-    .slide-group {
-      flex-direction: row;
-      gap: 10px;
-    }
-  
-    .story-card {
-        flex: 0 0 100%;  
-      width: 100%;
-      min-height: auto;
-    }
-  
-    .nav-button {
-      width: 32px;
-      height: 32px;
-      border-width: 2px;
-    }
-  
-    .prev {
-      left: -1px;
-    }
-  
-    .next {
-      right: -1px;
-    }
+  .carousel-container {
+     margin: 0px 15px;
   }
+
+  .carousel-title {
+     margin-left: 0;
+     font-size: 18px;
+  }
+
+  .carousel-wrapper {
+     min-height: auto;
+     padding: 0 5px;
+  }
+
+  .slides-area {
+     margin: 0;
+     width: 100%;
+     overflow: hidden;
+     display: flex;
+  }
+
+  .slide-group {
+     flex-shrink: 0;
+     width: 100%;
+     opacity: 0;
+     visibility: hidden;
+     transition: opacity 0.5s ease-in-out;
+  }
+
+  .slide-group.active {
+     opacity: 1;
+     visibility: visible;
+  }
+
+  .story-card {
+     width: 100%;
+     min-height: auto;
+     border-radius: 3px;
+     min-width: 100%;
+     border-radius: 3px;
+  }
+
+  .nav-button {
+     width: 27px;
+     height: 27px;
+     border-width: 2px;
+  }
+}

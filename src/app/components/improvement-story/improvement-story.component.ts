@@ -21,6 +21,7 @@ export class ImprovementStoryComponent {
   @Input() storyOfWeek:boolean = false;
   @Input() story: any;
   @Output() storyAction = new EventEmitter<any>();
+  @Input() customClass: any;
 
   constructor(private sg:firebaseService,private dialog: MatDialog) {}
 

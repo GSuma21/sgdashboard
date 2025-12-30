@@ -51,7 +51,6 @@
   margin-top: 1rem;
   .meta-icon {
       font-size: 20px;
-      margin-right: 10px;
       color: #7a1fa2;
       width: 30px;
   }
@@ -135,7 +134,7 @@
 .card-image-wrapper {
   width: 40%;
   overflow: hidden;
-  margin-right: 2rem;
+  margin-right: 1rem;
   border-radius: 5px;
 
   .card-image {
@@ -180,12 +179,15 @@ mat-icon {
 
 
   .card-actions {
+    margin-top: -30px;
   .action-item {
-    font-size: 11px;
-    padding: 5px;
+    font-size: 9px;
+    padding: 0px 4px;
   }
   .read-story-btn {
-    font-size: 12px;
+    font-size: 8px;
+    padding: 5px;
+
   }
 }
   .like-icon {
@@ -197,6 +199,61 @@ mat-icon {
 }
 
 .action-icon {
-  font-size: 20px;
+  font-size: 15px;
 }
+.card-content {
+  height: 170px;
 }
+
+.quote-icon{
+  font-size: 3rem;
+}
+
+.card-title {
+  font-size: 10px;
+  font-weight: 800;
+  padding-bottom: 0.5rem;
+  width: 90px;
+  margin-left: 25px;
+}
+
+.card-meta {
+  margin-left: 0px;
+  .meta-icon {
+    width: 20px;
+  }
+  .leader-text{
+    font-size: 8px;
+  }
+  .location{
+    font-size: 8px;
+  }
+}
+
+.card-image-wrapper {
+  .card-image {
+      width: 125px;
+      height: 125px;
+      padding-right:0.5rem;
+
+  }
+}
+
+#flow-img {
+  border-radius: 3px;
+}
+
+.tall-card {
+  height: 190px;
+}
+
+.tall-card .card-actions{
+  margin-top: -13px;
+}
+
+.tall-card .card-actions .read-story-btn{
+  padding : 5px 12px;
+}
+
+}
+

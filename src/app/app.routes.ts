@@ -24,7 +24,7 @@ export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
     { path: 'country-view', component: CountryView },
     { path: 'network-health', component: NetworkHealth },
-    { path: 'voices', component: VoicesComponent },
+    { path: 'voices-from-the-ground', component: VoicesComponent },
     { path: 'community-led-improvements', component: ImprovementDetailsComponent},
     { path: 'state-view/:state/:code', component: StateImprovementsComponent, data: pageDataConfig.stateDetails},
   {

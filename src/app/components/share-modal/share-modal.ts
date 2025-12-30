@@ -40,7 +40,7 @@ Do take a moment to read it and help spread the word.`;
 
     const shareUrls: Record<string, string> = {
       linkedin: environment.linkedin + `${url}`,
-      whatsapp: environment.whatsapp + `${url}`,
+      whatsapp: environment.whatsapp + `text=${text}%0A%0A` +`${url}`,
       facebook: environment.facebook + `${url}`
     };
 
