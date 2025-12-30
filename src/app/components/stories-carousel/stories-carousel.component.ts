@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImprovementStoryComponent } from '../improvement-story/improvement-story.component';
 import { UtilsService } from '../../services/utils.services';
@@ -6,13 +6,13 @@ import { firebaseService } from '../../../firebase/firestore-service';
 import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
 import { STORY_OF_THE_WEEK } from '../../../constants/urlConstants';
-
+import { Renderer2 } from '@angular/core';
 @Component({
   selector: 'app-stories-carousel',
   standalone: true,
   imports: [CommonModule, ImprovementStoryComponent],
   templateUrl: './stories-carousel.component.html',
-  styleUrls: ['./stories-carousel.component.scss']
+  styleUrl: './stories-carousel.component.scss'
 })
 
 export class StoriesCarouselComponent implements OnInit, OnDestroy {
@@ -25,7 +25,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   chunkSize: number = 2;
   private resizeHandler: () => void;
 
-  constructor(private utils: UtilsService, private sg: firebaseService, private cdr: ChangeDetectorRef) {
+  constructor(private utils: UtilsService, private sg: firebaseService, private renderer: Renderer2 ) {
     this.resizeHandler = this.adjustChunkSize.bind(this);
   }
 
@@ -101,31 +101,21 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     return results;
   }
 
-  nextSlide(): void {
-    this.currentChunkIndex = (this.currentChunkIndex + 1) % this.chunkedSlides.length;
+  navigateSlide(direction: number): void {
+    this.currentChunkIndex = (this.currentChunkIndex + direction + this.chunkedSlides.length) % this.chunkedSlides.length;
+  
     const slidesArea = document.querySelector('.slides-area') as HTMLElement;
     const slideWidth = slidesArea.offsetWidth;
-    slidesArea.scrollTo({
-      left: slideWidth * this.currentChunkIndex,
-      behavior: 'smooth'
-    });
+  
+    this.renderer.setStyle(slidesArea, 'scrollBehavior', 'smooth');
+    slidesArea.scrollLeft = slideWidth * this.currentChunkIndex;
+  
     this.resetAutoSlide();
-  }
-
-  prevSlide(): void {
-    this.currentChunkIndex = (this.currentChunkIndex - 1 + this.chunkedSlides.length) % this.chunkedSlides.length;
-    const slidesArea = document.querySelector('.slides-area') as HTMLElement;
-    const slideWidth = slidesArea.offsetWidth;
-    slidesArea.scrollTo({
-      left: slideWidth * this.currentChunkIndex,
-      behavior: 'smooth'
-    });
-    this.resetAutoSlide();
-  }
+  }  
 
   startAutoSlide(): void {
     this.slideInterval = setInterval(() => {
-      this.nextSlide();
+      this.navigateSlide(1);
     }, this.autoSlideDelay);
   }
 
