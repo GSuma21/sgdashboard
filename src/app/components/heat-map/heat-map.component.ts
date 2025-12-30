@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { environment } from '../../../../environments/environment';
@@ -45,7 +45,7 @@ export interface VoiceQuote {
     ])
   ]
 })
-export class HeatMapComponent {
+export class HeatMapComponent implements OnInit {
   themes: HeatmapTheme[] = [];
   heatmapThemes:any
   heatmapThemeConfig: Record<string, any> = {
@@ -106,7 +106,6 @@ export class HeatMapComponent {
 
 
   ngOnInit(): void {
-
     this.getThemeData()
   }
 

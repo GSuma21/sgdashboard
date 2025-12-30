@@ -60,7 +60,7 @@ export class MultiAxisChartComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['chartData'] && this.chartData) {
       const labels = ['Q1 (Apr - Jun)', 'Q2 (Jul - Sept)', 'Q3 (Oct - Dec)', 'Q4 (Jan - Mar)'];
-      const dialoguesData = this.chartData["Pariticipating in dialogues"] || [];
+      const dialoguesData = this.chartData["Participating in dialogues"] || [];
       let microImprovementsData = this.chartData["Leading Micro Improvements"] || [];
 
       // Hide trailing zeros for line
@@ -92,7 +92,7 @@ export class MultiAxisChartComponent implements OnChanges {
           {
             type: 'bar',
             data: dialoguesData,
-            label: 'Pariticipating in dialogues',
+            label: 'Participating in dialogues',
             backgroundColor: '#592e91',
             yAxisID: 'y',
           }
