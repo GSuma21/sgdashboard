@@ -5,6 +5,8 @@ import { MAT_DIALOG_DATA, MatDialogRef , MatDialogModule} from '@angular/materia
 import { ACTIONS,ActionType } from '../../../constants/actionConstants';
 import { firebaseService } from '../../../firebase/firestore-service';
 import { UtilsService } from '../../services/utils.services';
+import { MatDialog } from '@angular/material/dialog';
+import { ShareModal } from '../share-modal/share-modal';
 
 @Component({
   selector: 'app-story-model',
@@ -23,10 +25,13 @@ export class StoryModel {
     @Inject(MAT_DIALOG_DATA) public story: any,
     private sg:firebaseService,
     private util:UtilsService,
+    private dialog: MatDialog
   ) {
   }
 
   async handleUserClick(story:any,action: ActionType){
+    try{
+    action === ACTIONS.SHARE &&  await this.openShareModal()
     const res = await this.sg.updateRecord(
       action === ACTIONS.LIKE? { ...story, like: story.like ? 0 : 1 }: story,
       this.util.getBrowserId(),
@@ -48,6 +53,9 @@ export class StoryModel {
         shareCount: (this.story.shareCount ?? 0) + res.diff
       })
     };
+    }catch (err) {
+      console.error(err);
+    }
   }
 
   toggleLanguage() {
@@ -61,5 +69,13 @@ export class StoryModel {
 
   closeModal() {
     this.dialogRef.close(this.story);
+  }
+
+  openShareModal(): void {
+    this.dialog.open(ShareModal, {
+      width: '520px',
+      panelClass: 'share-dialog',
+      autoFocus: false
+    });
   }
 }
