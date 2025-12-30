@@ -1,8 +1,8 @@
 <section>
-  <div class="card-content">
+  <div class="card-content" [ngClass]="customClass">
     <img class="meta-icon crown" src="assets/icons/crown.svg" *ngIf="storyOfWeek">
     <section class="d-flex justify-content-between">
-      <div class="w-100 pt-5">
+      <div class="w-100 pt-4 pt-md-5">
         <span class="quote-icon px-1">“</span>
         <h3 class="card-title">{{ story.title }}</h3>
 
@@ -19,7 +19,7 @@
         <img [src]="story?.photos?.[0]" alt="Story Image" class="card-image">
       </div>
     </section>
-    <div class="card-actions d-flex justify-content-between px-4 pb-3">
+    <div class="card-actions d-flex justify-content-between px-3 px-md-4 pb-3">
       <section class="d-flex">
         <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.LIKE)">
           <mat-icon class="action-icon">{{ story.like ? 'favorite' : 'favorite_border' }}</mat-icon>
@@ -33,7 +33,7 @@
 
       </section>
       <button class="read-story-btn" (click)="openStoryModal()">
-        Read Story
+        <u>Read Story</u>
       </button>
     </div>
     <svg width="832" height="151" viewBox="0 0 832 151" fill="none" xmlns="http://www.w3.org/2000/svg" id="flow-img">

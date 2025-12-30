@@ -25,8 +25,10 @@ h2 {
 }
 
 .sub-description {
-    font-weight: 900;
+    font-weight: 600;
     font-size: 1.2rem;
+    color: black;
+    margin-bottom: 0px;
 }
 
 .data-indicators-section {
@@ -95,11 +97,12 @@ app-improvement-story {
 
 
     h2 {
-        font-size: 25px;
+        font-size: 28px;
+        margin-left: 10px;
     }
 
     .indicators {
-        margin: 0px 70px;
+        margin: 0px 120px;
         padding-top: 40px;
     }
 }
@@ -114,6 +117,13 @@ app-improvement-story {
     app-heat-map{
         width: 100%;
     }
+}
+
+.black{
+    color: black;
+}
+.indicators-section .row {
+    justify-content: center !important;
 }
 
 
@@ -133,8 +143,10 @@ app-improvement-story {
 
     .indicator-section {
         margin-left: 20px;
+        margin-bottom: 0px;
         h2 {
             font-size: 22px;
+            margin-left: 10px;
         }
 
         .indicators {
@@ -143,9 +155,9 @@ app-improvement-story {
         }
     }
 
-    .section-sub-title{
-        margin-left: 20px !important;
-    }
+    // .section-sub-title{
+    //     margin-left: 20px !important;
+    // }
 
     .heat-map{
         margin: 0px;
@@ -162,6 +174,29 @@ app-improvement-story {
         .box-shadow {
             box-shadow: 0px 4px 12px 0px #00000040;
             border-radius: 7%;
+        }
+
+        .width-spacing{
+            width: 80%;
+
+        }
+
+        .story-card{
+            width: 80%;
+            margin: 0px 35px 0px 20px;
+        }
+
+        .community-section .box-shadow{
             width: 100%;
         }
+
+        .section-heading-spacing{
+            margin-top: -30px !important;
+        }
+
+        .community-spacing{
+            margin-left: -38px;
+        }
+
+
 }

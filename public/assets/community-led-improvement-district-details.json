@@ -31,9 +31,7 @@
         {
             "title":"program 1",
             "status":"In Progress",
-            "gallery":[
-                "link","link"
-            ],
+            "gallery": [],
             "partners":[]
         }
     ],
