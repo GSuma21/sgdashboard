@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartType, Chart, registerables } from 'chart.js';
@@ -12,7 +12,7 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './multi-axis-chart.component.html',
   styleUrls: ['./multi-axis-chart.component.scss']
 })
-export class MultiAxisChartComponent implements OnChanges {
+export class MultiAxisChartComponent {
   year = '2025';
   @Input() chartData: any;
 
@@ -57,9 +57,8 @@ export class MultiAxisChartComponent implements OnChanges {
     Chart.register(...registerables);
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['chartData'] && this.chartData) {
-      const labels = ['Q1 (Apr - Jun)', 'Q2 (Jul - Sept)', 'Q3 (Oct - Dec)', 'Q4 (Jan - Mar)'];
+  ngOnInit(): void {
+    const labels = ['Q1 (Apr - Jun)', 'Q2 (Jul - Sept)', 'Q3 (Oct - Dec)', 'Q4 (Jan - Mar)'];
       const dialoguesData = this.chartData["Participating in dialogues"] || [];
       let microImprovementsData = this.chartData["Leading Micro Improvements"] || [];
 
@@ -98,9 +97,6 @@ export class MultiAxisChartComponent implements OnChanges {
           }
         ]
       };
-
-      this.chart?.update(); // redraw chart
-    }
-  }
-
+ }
+ 
 }
