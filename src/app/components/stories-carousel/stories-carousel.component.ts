@@ -85,12 +85,10 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
 
  async  onStoryAction(event: any) {
     this.slides = event.status ? this.utils.updateStoryCounts(this.slides,event) : this.utils.updateStory(this.slides,event)
     this.chunkedSlides = this.chunkArray(this.slides, 2);
-    this.startAutoSlide();
   }
 
   chunkArray(arr: any[], chunkSize: number): any[][] {
@@ -101,8 +99,10 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     return results;
   }
 
-  navigateSlide(direction: number): void {
-    this.currentChunkIndex = (this.currentChunkIndex + direction + this.chunkedSlides.length) % this.chunkedSlides.length;
+  navigateSlide(direction: number, reset = true): void {
+    this.currentChunkIndex =
+      (this.currentChunkIndex + direction + this.chunkedSlides.length) %
+      this.chunkedSlides.length;
   
     const slidesArea = document.querySelector('.slides-area') as HTMLElement;
     const slideWidth = slidesArea.offsetWidth;
@@ -110,25 +110,35 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     this.renderer.setStyle(slidesArea, 'scrollBehavior', 'smooth');
     slidesArea.scrollLeft = slideWidth * this.currentChunkIndex;
   
-    this.resetAutoSlide();
-  }  
-
+    if (reset) {
+      this.resetAutoSlide();
+    }
+  }
+  
   startAutoSlide(): void {
+    if (this.slideInterval) return;
+  
     this.slideInterval = setInterval(() => {
-      this.navigateSlide(1);
+      this.navigateSlide(1, false);
     }, this.autoSlideDelay);
+  }
+  
+  stopAutoSlide(): void {
+    if (this.slideInterval) {
+      clearInterval(this.slideInterval);
+      this.slideInterval = null;
+    }
   }
 
   resetAutoSlide(): void {
-    clearInterval(this.slideInterval);
-    this.startAutoSlide();
+    this.stopAutoSlide();
+  this.startAutoSlide();
   }
 
   ngOnDestroy(): void {
     if (this.slideInterval) {
       clearInterval(this.slideInterval);
     }
-
     window.removeEventListener('resize', this.resizeHandler);
   }
 }
