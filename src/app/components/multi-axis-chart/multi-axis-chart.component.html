@@ -1,5 +1,17 @@
 <div class="chart-container">
-    <mat-card-title>Leaders engaged</mat-card-title>
+  <div class="header-row">
+    <mat-card-title>{{chartData.title}}</mat-card-title>
+    <div class="legend">
+      @for (legend of chartData?.legends; track $index) {
+      <div class="legend-item">
+        <span class="dot" [ngClass]="$index === 0 ? 'orange' : 'purple'">
+        </span>
+        <span class="text">{{ legend }}</span>
+      </div>
+      }
+    </div>
+  </div>
+
 
     <div class="year-buttons">
       <!-- <button mat-button *ngFor="let item of data" class="year-button"
