@@ -182,7 +182,7 @@ mat-icon {
 }
 
 .tall-card .card-title{
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 
 @media (min-width: 768px) {
@@ -196,7 +196,7 @@ mat-icon {
 
 @media (max-width: 768px) { 
   .card-actions {
-    margin-top: -30px;
+    margin-top: 12px;
   .action-item {
     font-size: 9px;
     padding: 0px 4px;
@@ -218,7 +218,7 @@ mat-icon {
   font-size: 15px;
 }
 .card-content {
-  height: 170px;
+  height: 195px;
 }
 
 .quote-icon{
@@ -250,7 +250,6 @@ mat-icon {
   .card-image {
       width: 125px;
       height: 125px;
-      padding-right:0.5rem;
   }
 }
 
@@ -259,11 +258,11 @@ mat-icon {
 }
 
 .tall-card {
-  height: 190px;
+  height: 198px;
 }
 
 .tall-card .card-actions{
-  margin-top: -13px;
+  margin-top: -10px;
 }
 
 .tall-card .card-actions .read-story-btn{
@@ -275,17 +274,35 @@ mat-icon {
 }
 
 .card-title {
-  font-size: 12px;
+  font-size: 10px;
   margin-left: 25px;
   width: 100%;
 }
 
 .card-image-wrapper {
   flex: 0 0 45%;
-  max-width: 45%;
+  margin-top: 15px;
 }
 
 .card-image {
   aspect-ratio: 1 / 1;
+}
+
+.story-text{
+  margin-top: 25px;
+}
+
+@media (max-width: 480px) {
+  .tall-card .card-actions{
+    margin-top: -13px;
+  }
+
+  .card-image-wrapper .card-image {
+    width: 110px;
+    height: 120px;
+}
+.card-title{
+  margin-top: 1rem;
+}
 }
 }
