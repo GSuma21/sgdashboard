@@ -19,6 +19,7 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
   dandelionsVisible = new Set<number>();
   problemsVisible = new Set<number>();
   solutionsVisible = new Set<number>();
+  expandedSolutions = new Set<number>();
 
   readonly BRANCH_IMG = 'assets/animations/branch_4.svg';
   readonly FLOWER_IMG = 'assets/animations/dandelion.svg';
@@ -30,10 +31,14 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       solution: "I worked on a micro-improvement project to help 9 children...",
       dandelionTop: '73%', dandelionLeft: '10%',
       responsivePositions: [
-        { minWidth: 1440, top: '80%', left: '10%' }, // Large Laptops & Desktops
-        { minWidth: 1280, top: '72%', left: '10%' }, // Standard Laptops
-        { minWidth: 1024, top: '57%', left: '8%' }, // Small Laptops
-        { minWidth: 0,    top: '77%', left: '10%' }  // Fallback
+        { minWidth: 2480, top: '116%', left: '11%' },
+        { minWidth: 1830, top: '85%', left: '11%' },
+        { minWidth: 1450, top: '67%', left: '10%' },
+        { minWidth: 1440, top: '62%', left: '10%' },
+        { minWidth: 1366, top: '59%', left: '10%' },
+        { minWidth: 1280, top: '55%', left: '10%' },
+        { minWidth: 1024, top: '43%', left: '8%' },
+        { minWidth: 0,    top: '77%', left: '10%' }
       ]
     },
     {
@@ -42,9 +47,13 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       solution: "I, a farmer from Danapur, addressed the security problem...",
       dandelionTop: '73%', dandelionLeft: '37%',
       responsivePositions: [
-        { minWidth: 1440, top: '74%', left: '37%' },
-        { minWidth: 1280, top: '66%', left: '37%' },
-        { minWidth: 1024, top: '52%', left: '35%' },
+        { minWidth: 2480, top: '84%', left: '37%' },
+        { minWidth: 1830, top: '82%', left: '37%' },
+        { minWidth: 1450, top: '64%', left: '37%' },
+        { minWidth: 1440, top: '59%', left: '37%' },
+        { minWidth: 1366, top: '57%', left: '37%' },
+        { minWidth: 1280, top: '52%', left: '37%' },
+        { minWidth: 1024, top: '41%', left: '35%' },
         { minWidth: 0,    top: '73%', left: '37%' }
       ]
     },
@@ -54,9 +63,13 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       solution: "I improved attendance at my school...",
       dandelionTop: '60%', dandelionLeft: '60%',
       responsivePositions: [
-        { minWidth: 1440, top: '62%', left: '60%' },
-        { minWidth: 1280, top: '56%', left: '60%' },
-        { minWidth: 1024, top: '42%', left: '58%' },
+        { minWidth: 2480, top: '88%', left: '60%' },
+        { minWidth: 1830, top: '68%', left: '60%' },
+        { minWidth: 1450, top: '52%', left: '60%' },
+        { minWidth: 1440, top: '49%', left: '60%' },
+        { minWidth: 1366, top: '47%', left: '60%' },
+        { minWidth: 1280, top: '43%', left: '60%' },
+        { minWidth: 1024, top: '34%', left: '58%' },
         { minWidth: 0,    top: '60%', left: '60%' }
       ]
     },
@@ -66,9 +79,13 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       solution: "A farmer from Danapur addressed security issues...",
       dandelionTop: '74%', dandelionLeft: '89%',
       responsivePositions: [
-        { minWidth: 1440, top: '76%', left: '89%' },
-        { minWidth: 1280, top: '67%', left: '89%' },
-        { minWidth: 1024, top: '53%', left: '87%' },
+        { minWidth: 2480, top: '112%', left: '89%' },
+        { minWidth: 1830, top: '82%', left: '89%' },
+        { minWidth: 1450, top: '64%', left: '89%' },
+        { minWidth: 1440, top: '59%', left: '89%' },
+        { minWidth: 1366, top: '57%', left: '89%' },
+        { minWidth: 1280, top: '53%', left: '89%' },
+        { minWidth: 1024, top: '41%', left: '87%' },
         { minWidth: 0,    top: '74%', left: '89%' }
       ]
     }
@@ -153,6 +170,14 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       style.top = `${flowerTop - 35}%`; // Top of flower
     }
     return style;
+  }
+
+  toggleSolution(index: number) {
+    if (this.expandedSolutions.has(index)) {
+      this.expandedSolutions.delete(index);
+    } else {
+      this.expandedSolutions.add(index);
+    }
   }
 
   delay(ms: number) { return new Promise(res => setTimeout(res, ms)); }
