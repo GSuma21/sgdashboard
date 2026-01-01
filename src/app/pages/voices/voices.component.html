@@ -66,9 +66,7 @@
           <h5 [ngClass]="section.styles.title" class="section-title">{{ section.title }}</h5>
 
           <div class="row justify-content-center">
-            <div class="box-shadow">
               <app-vertical-carousel></app-vertical-carousel>
-            </div>
           </div>
         </div>
       </section>
@@ -105,7 +103,7 @@
       </section>
     </ng-container>
 
-    <ng-container *ngSwitchCase="'section-heading'">
+    <ng-container *ngSwitchCase="'section-heading'" class="section-heading">
       <h3 [ngClass]="section.styles.title">{{ section.title }}</h3>
     </ng-container>
 
