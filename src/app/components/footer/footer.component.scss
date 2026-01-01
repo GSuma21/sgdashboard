@@ -1,10 +1,8 @@
 .footer-container {
     background-color: #7e3288;
-    /* Purple background */
     color: white;
     padding: 40px 20px;
     font-family: 'Inter', sans-serif;
-    /* Assuming Inter or similar */
     position: relative;
     overflow: hidden;
 }
@@ -154,7 +152,6 @@
     }
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .footer-content {
         flex-direction: column;
@@ -163,6 +160,7 @@
 
     .left-section {
         padding-right: 0;
+        margin-bottom: 0px;
 
         .links-area {
             flex-direction: column;
@@ -172,5 +170,9 @@
 
     .right-section {
         justify-content: center;
+    }
+
+    .social-area {
+        width: 100%;
     }
 }
