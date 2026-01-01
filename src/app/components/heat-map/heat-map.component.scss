@@ -330,14 +330,20 @@
 @media (max-width: 768px) {
   .voice-card {
     margin-bottom: 40px;
+    padding: 10px 0px 0px 10px;
 
     .quote-icon {
       margin-bottom: -30px;
+      width: 20px;
     }
 
     .quote-text {
-      margin-left: 20px;
+      margin-left: 15px;
       font-size: 13px;
+      margin-top: 25px;
+    }
+    .quote-author{
+      margin-left: 15px;
     }
   }
 .container{
@@ -347,7 +353,12 @@
 .right-panel {
   padding: 10px;
 }
+
+.quote-container {
+  margin-left: 10px;
 }
+}
+
 
 .theme1{
    background-color: #572e91;
