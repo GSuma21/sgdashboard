@@ -19,6 +19,7 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
   dandelionsVisible = new Set<number>();
   problemsVisible = new Set<number>();
   solutionsVisible = new Set<number>();
+  expandedSolutions = new Set<number>();
 
   readonly BRANCH_IMG = 'assets/animations/branch_4.svg';
   readonly FLOWER_IMG = 'assets/animations/dandelion.svg';
@@ -30,9 +31,9 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       solution: "I worked on a micro-improvement project to help 9 children...",
       dandelionTop: '73%', dandelionLeft: '10%',
       responsivePositions: [
-        { minWidth: 2560, top: '116%', left: '11%' },
-        { minWidth: 1910, top: '85%', left: '11%' },
-        { minWidth: 1536, top: '67%', left: '10%' },
+        { minWidth: 2480, top: '116%', left: '11%' },
+        { minWidth: 1830, top: '85%', left: '11%' },
+        { minWidth: 1450, top: '67%', left: '10%' },
         { minWidth: 1440, top: '62%', left: '10%' },
         { minWidth: 1366, top: '59%', left: '10%' },
         { minWidth: 1280, top: '55%', left: '10%' },
@@ -46,9 +47,9 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       solution: "I, a farmer from Danapur, addressed the security problem...",
       dandelionTop: '73%', dandelionLeft: '37%',
       responsivePositions: [
-        { minWidth: 2560, top: '84%', left: '37%' },
-        { minWidth: 1910, top: '82%', left: '37%' },
-        { minWidth: 1536, top: '64%', left: '37%' },
+        { minWidth: 2480, top: '84%', left: '37%' },
+        { minWidth: 1830, top: '82%', left: '37%' },
+        { minWidth: 1450, top: '64%', left: '37%' },
         { minWidth: 1440, top: '59%', left: '37%' },
         { minWidth: 1366, top: '57%', left: '37%' },
         { minWidth: 1280, top: '52%', left: '37%' },
@@ -62,9 +63,9 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       solution: "I improved attendance at my school...",
       dandelionTop: '60%', dandelionLeft: '60%',
       responsivePositions: [
-        { minWidth: 2560, top: '88%', left: '60%' },
-        { minWidth: 1910, top: '68%', left: '60%' },
-        { minWidth: 1536, top: '52%', left: '60%' },
+        { minWidth: 2480, top: '88%', left: '60%' },
+        { minWidth: 1830, top: '68%', left: '60%' },
+        { minWidth: 1450, top: '52%', left: '60%' },
         { minWidth: 1440, top: '49%', left: '60%' },
         { minWidth: 1366, top: '47%', left: '60%' },
         { minWidth: 1280, top: '43%', left: '60%' },
@@ -78,9 +79,9 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       solution: "A farmer from Danapur addressed security issues...",
       dandelionTop: '74%', dandelionLeft: '89%',
       responsivePositions: [
-        { minWidth: 2560, top: '112%', left: '89%' },
-        { minWidth: 1910, top: '82%', left: '89%' },
-        { minWidth: 1536, top: '64%', left: '89%' },
+        { minWidth: 2480, top: '112%', left: '89%' },
+        { minWidth: 1830, top: '82%', left: '89%' },
+        { minWidth: 1450, top: '64%', left: '89%' },
         { minWidth: 1440, top: '59%', left: '89%' },
         { minWidth: 1366, top: '57%', left: '89%' },
         { minWidth: 1280, top: '53%', left: '89%' },
@@ -169,6 +170,14 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       style.top = `${flowerTop - 35}%`; // Top of flower
     }
     return style;
+  }
+
+  toggleSolution(index: number) {
+    if (this.expandedSolutions.has(index)) {
+      this.expandedSolutions.delete(index);
+    } else {
+      this.expandedSolutions.add(index);
+    }
   }
 
   delay(ms: number) { return new Promise(res => setTimeout(res, ms)); }

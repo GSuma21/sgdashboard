@@ -1,6 +1,5 @@
 <div class="animation-container">
-  <img src="assets/animations/background.svg" class="bg-img"
-    style="position: absolute; width:100%; object-fit: cover;">
+  <img src="assets/animations/background.svg" class="bg-img" style="position: absolute; width:100%; object-fit: cover;">
 
   <div class="branch-wrapper">
 
@@ -25,7 +24,13 @@
         <div class="bubble solution bubble-solution" *ngIf="solutionsVisible.has(i)"
           [ngStyle]="getBubbleStyle(node, 'solution')" @bubblePop>
           <img src="assets/animations/solution.svg" class="mb-2">
-          <p>{{ node.solution }}</p>
+          <p>
+            {{ (expandedSolutions.has(i) || node.solution.length <= 200) ? node.solution : (node.solution | slice:0:200)
+              + '...' }} <span *ngIf="node.solution.length > 200 && !expandedSolutions.has(i)" class="read-more"
+              (click)="toggleSolution(i)">Read more</span>
+              <span *ngIf="node.solution.length > 200 && expandedSolutions.has(i)" class="read-more"
+                (click)="toggleSolution(i)">Read less</span>
+          </p>
         </div>
 
       </ng-container>
