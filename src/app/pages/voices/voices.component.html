@@ -103,9 +103,12 @@
       </section>
     </ng-container>
 
-    <ng-container *ngSwitchCase="'section-heading'" class="section-heading">
-      <h3 [ngClass]="section.styles.title">{{ section.title }}</h3>
+    <ng-container *ngSwitchCase="'section-heading'">
+      <div class="section-heading">
+        <h3 [ngClass]="section.styles.title">{{ section.title }}</h3>
+      </div>
     </ng-container>
+    
 
   </div>
 </div>

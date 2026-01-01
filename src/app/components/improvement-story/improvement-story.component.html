@@ -18,7 +18,7 @@
       <div class="card-image-wrapper">
         <img
           [src]="story?.photos?.[0]"
-          alt="Story Image"
+          [alt]="story?.title || ('Story from ' + story?.role)"
           class="card-image"
         />
       </div>

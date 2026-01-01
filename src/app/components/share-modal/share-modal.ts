@@ -25,7 +25,7 @@ Do take a moment to read it and help spread the word.`;
     this.dialogRef.close();
   }
 
-  async copyLink(input: any) {
+  async copyLink(input: HTMLInputElement | HTMLTextAreaElement) {
     try {
       await navigator.clipboard.writeText(input.value);
       alert('Link & text copied to clipboard');

@@ -22,7 +22,7 @@
         <h2 class="section-title">What we are hearing</h2>
         <div class="voices-grid" [@voicesAnimation]="displayedVoices.length">
             <div *ngFor="let voice of displayedVoices" class="voice-card active" [ngClass]="voice.color">
-                <img src="/assets/icons/quote.png" alt="" class="quote-icon">
+                <img src="/assets/icons/quote.png" alt="Quotation mark icon" class="quote-icon">
                 <div class="quote-container">
                     <p class="quote-text">{{ voice.description }}</p>
                     <p class="quote-author">– {{ voice.voice_by }}</p>
