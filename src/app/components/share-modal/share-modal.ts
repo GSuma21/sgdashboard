@@ -25,12 +25,12 @@ Do take a moment to read it and help spread the word.`;
     this.dialogRef.close();
   }
 
-  async copyLink(input: HTMLInputElement) {
+  async copyLink(input: any) {
     try {
       await navigator.clipboard.writeText(input.value);
-      alert('Link copied to clipboard');
+      alert('Link & text copied to clipboard');
     } catch {
-      alert('Failed to copy link. Please copy manually.');
+      alert('Failed to copy link & text. Please copy manually.');
     }
   }
 
