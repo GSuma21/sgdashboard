@@ -17,7 +17,7 @@
 
 .section-title {
   font-size: 1.2rem;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 20px;
   color: #000;
 }
@@ -42,12 +42,11 @@
   grid-template-columns: repeat(5, 1fr);
   grid-auto-rows: 100px;
   gap: 6px;
-  margin-left: 15px;
 }
 
 .heatmap-item {
   border-radius: 6px;
-  padding: 15px;
+  padding: 5px;
   color: white;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -361,46 +360,46 @@
 
 
 .theme1{
-   background-color: #572e91;
+   background-color: #9569ce;
 }
 .theme1.active{
    background-color: #572e91;
 }
 .theme2{
-   background-color: #aa8bb9;
+   background-color: #8d5aa6;
 }
 .theme2.active{
    background-color: #802B80;
 }
 .theme3{
-   background-color: #c19085;
+   background-color: #be7666;
 }
 .theme3.active{
    background-color: #961c00;
 }
 .theme4{
-   background-color: #8cb5eb;
+   background-color: #709dd7;
 }
 .theme4.active{
    background-color: #1177ff;
 }
 .theme5{
-   background-color: #df99bc;
+   background-color: #dd8cb5;
 }
 .theme5.active{
    background-color: #e03389;
 }
 .theme6{
-   background-color: #b9d3a4;
+   background-color: #6BB977;
 }
 .theme6.active{
-   background-color: #90db52cc;
+   background-color: #278637;
 }
 .theme7{
-   background-color: #99dde4;
+   background-color: #61989F;
 }
 .theme7.active{
-   background-color: #88d7e0;
+   background-color: #0F97AA;
 }
 .theme8{
    background-color: #ebc28c;
@@ -409,14 +408,14 @@
    background-color: #ff9911;
 }
 .theme9{
-   background-color: #dfd5af;
+   background-color:#BA776F;
 }
 .theme9.active{ 
-   background-color: #e4d493;
+   background-color:  #EE4533;
 }
 .theme10{
-   background-color: #d6b5ac;
+   background-color:  #e0c774;
 }
 .theme10.active{
-   background-color: #e8a896;
+   background-color:#e0b004;
 }
