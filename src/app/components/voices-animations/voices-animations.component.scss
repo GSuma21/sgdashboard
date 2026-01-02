@@ -1,6 +1,6 @@
 .animation-container {
   position: relative;
-  width: 97vw;
+  width: 95vw;
   height: 780px;
   overflow: hidden;
   left: 1%;
@@ -118,6 +118,10 @@
   &:hover {
     font-size: 14px !important;
   }
+}
+
+.read-more {
+  color: #1e40af;
 }
 
 // Fix for small screens (less than medium laptops)

@@ -3,7 +3,7 @@
 
   <div class="branch-wrapper">
 
-    <img [src]="BRANCH_IMG" class="branch-img" [@branchState]="growthStep">
+    <img [src]="BRANCH_IMG" class="branch-img" [@branchState]="growthStep" *ngIf="storyNodes.length > 0">
 
     <ng-container *ngFor="let node of storyNodes; let i = index">
 
