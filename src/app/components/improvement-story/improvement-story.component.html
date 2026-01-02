@@ -4,20 +4,20 @@
     <section class="d-flex justify-content-between story-body">
       <div class="story-text">
         <span class="quote-icon px-1">“</span>
-        <h3 class="card-title">{{ story.title }}</h3>
+        <h3 class="card-title">{{ story?.lang[0]?.data?.title }}</h3>
     
         <div class="card-meta px-4">
           <img class="meta-icon" src="assets/icons/user_dial.svg">
           <div class="meta-text ml-2">
-            <p class="mb-0 leader-text">{{ story.role }}</p>
-            <p class="location mb-0">{{ story.district }}, {{ story.state }}</p>
+            <p class="mb-0 leader-text">{{ story?.lang[0]?.data?.role }}</p>
+            <p class="location mb-0">{{ story?.lang[0]?.data?.district }}, {{ story?.lang[0]?.data?.state }}</p>
           </div>
         </div>
       </div>
     
       <div class="card-image-wrapper">
         <img [src]="story?.photos?.[0]" 
-          [alt]="story?.title || ('Story from ' + story?.role)"
+          [alt]="story?.title || ('Story from ' + story?.lang[0]?.data?.role)"
           class="card-image"
         />
       </div>
