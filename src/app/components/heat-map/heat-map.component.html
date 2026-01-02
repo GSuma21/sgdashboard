@@ -1,7 +1,7 @@
 <div class="container">
     <div class="left-panel">
         <h2 class="section-title">Themes beneath the voices</h2>
-        <div class="heatmap-grid">
+        <div class="heatmap-grid" *ngIf="themes && themes.length">
             <div *ngFor="let theme of themes" class="heatmap-item" [ngClass]="theme.gridClass"
                 [class.active]="activeThemeId === theme.id" [class]="theme.color"
                 (mouseenter)="setActiveTheme(theme.id)">
