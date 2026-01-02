@@ -17,7 +17,7 @@
     
       <div class="card-image-wrapper">
         <img [src]="story?.photos?.[0]" 
-          [alt]="story?.title || ('Story from ' + story?.lang[0]?.data?.role)"
+          [alt]="story?.lang[0]?.data?.title || ('Story from ' + story?.lang[0]?.data?.role)"
           class="card-image"
         />
       </div>

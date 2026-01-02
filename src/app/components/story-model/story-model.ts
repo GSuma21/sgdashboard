@@ -85,6 +85,10 @@ export class StoryModel {
   
     if (!langObj?.data) {
       console.warn('Language data not found for index:', index);
+      this.currentStory = {
+        ...this.story,
+        activeLangCode: ''
+      };
       return;
     }
   
