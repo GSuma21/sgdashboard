@@ -9,8 +9,8 @@
           <p class="network-description">{{ section.description }}</p>
         </div>
         <div class="network-section">
-          <div class="glossary">
-            {{ pageData.glossary?.title ?  pageData.glossary?.title : "Glossary" }} <mat-icon (click)="openGlossary()">info</mat-icon>
+          <div class="glossary" (click)="openGlossary()">
+            {{ pageData.glossary?.title ?  pageData.glossary?.title : "Glossary" }} <mat-icon >info</mat-icon>
           </div>
         </div>
       </section>
@@ -22,7 +22,7 @@
         <!-- Close icon -->
         <mat-icon class="dialog-close" mat-dialog-close>close</mat-icon>
     
-        <h2 class="dialog-title">{{ pageData?.glossary?.title }}</h2>
+        <h2 class="dialog-title">{{ pageData?.glossary?.title || 'Glossary' }}</h2>
     
         <div *ngFor="let info of pageData.glossary.informations">
           <h3>{{ info?.title }}</h3>

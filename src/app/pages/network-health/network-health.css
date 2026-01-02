@@ -352,14 +352,7 @@ app-slider-carousel {
   display: flex;
   flex-direction: row;
   gap: 2px;
-}
-
-/* Dialog container */
-::ng-deep .mat-dialog-container {
-  padding: 0;
-  border-radius: 10px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  font-family: 'Inter', 'Roboto', sans-serif;
+  cursor: pointer;
 }
 
 /* Dialog content wrapper */

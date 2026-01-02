@@ -58,16 +58,20 @@ export class NetworkHealth implements OnInit {
   }
 
   openGlossary() {
-  this.dialog.open(this.glossaryTemplate, {
-    width: '600px',
-    maxWidth: '1000px',
-    position: {
-      right: '10%',
-      top: '11%'
-    },
-    panelClass: 'glossary-side-dialog',
-    backdropClass: 'glossary-backdrop'
-  });
-}
+    if (!this.glossaryTemplate) {
+      console.error('Glossary template not found');
+      return; // stop execution to avoid runtime error
+    }
+    this.dialog.open(this.glossaryTemplate, {
+      width: '600px',
+      maxWidth: '1000px',
+      position: {
+        right: '10%',
+        top: '11%'
+      },
+      panelClass: 'glossary-side-dialog',
+      backdropClass: 'glossary-backdrop'
+    });
+  }
 
 }
