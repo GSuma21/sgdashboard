@@ -80,7 +80,7 @@
   
   .copy-box button {
     border: none;
-    background: #f2f2f2;
+    background: #fff;
     padding: 0 12px;
     cursor: pointer;
   }
@@ -163,6 +163,20 @@ mat-icon {
   color: var(--primary-color);
   margin-right: 5px;
 }
+
+.copy-box textarea {
+  flex: 1;
+  border: none;
+  padding: 8px;
+  font-size: 13px;
+  outline: none;
+  resize: none;
+  min-height: 80px;
+  font-family: inherit;
+  line-height: 1.4;
+  scrollbar-width: none;
+}
+
   
   @media (max-width: 768px) {
     .share-modal {

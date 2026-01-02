@@ -74,7 +74,14 @@ h2 {
     overflow: visible;
     width: 85%;
     margin-top: 15px;
-}
+}.community-feed-container {
+    width: 100%;
+    height: 380px;
+    padding: 20px 10px;
+    border-radius: 15px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #d0d0d0;
+  }
 
 app-improvement-story {
     width: 100%;
@@ -108,7 +115,6 @@ app-improvement-story {
 }
 
 .line-chart-section{
-    // margin-left: 70px;
     width: 100%;
 }
 
@@ -124,6 +130,14 @@ app-improvement-story {
 }
 .indicators-section .row {
     justify-content: center !important;
+}
+
+.section-heading{
+    margin-left: 30px;
+}
+
+.community-section{
+    width: 83%;
 }
 
 
@@ -155,15 +169,8 @@ app-improvement-story {
         }
     }
 
-    // .section-sub-title{
-    //     margin-left: 20px !important;
-    // }
-
     .heat-map{
         margin: 0px;
-    }
-    .community-section{
-        margin: 35px;
     }
 
     .line-chart-section{
@@ -198,5 +205,7 @@ app-improvement-story {
             margin-left: -38px;
         }
 
-
+        .section-heading {
+            margin-left: 10px;
+        }
 }

@@ -53,6 +53,14 @@ mat-card {
     }
 }
 
+@media (max-width: 540px) {
+  .chart-container {
+      
+    max-width: 320px;
+    min-width: 310px;
+}
+}
+
 .legend {
   display: flex;;
   font-family: Arial, sans-serif;

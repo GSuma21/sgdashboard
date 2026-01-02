@@ -231,24 +231,22 @@
 
 .voice-card {
   border-radius: 8px;
-  padding: 20px;
+  padding: 30px 0px 0px 40px;
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   min-height: 180px;
   overflow: hidden;
   max-width: inherit;
 
 
   .quote-icon {
-    font-size: 2rem;
-    line-height: 0.5;
-    opacity: 0.5;
+    width: 25px;
   }
 
   .quote-text {
-    font-size: 0.95rem;
+    font-size: 0.8rem;
     line-height: 1.4;
     margin-bottom: 15px;
     flex-grow: 1;
@@ -320,18 +318,32 @@
   font-size: 0.7em;
 }
 
+.quote-container{
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  margin-left: 28px;
+  margin-top: 5px;
+  padding-right: 10px;
+}
 
 @media (max-width: 768px) {
   .voice-card {
     margin-bottom: 40px;
+    padding: 10px 0px 0px 10px;
 
     .quote-icon {
       margin-bottom: -30px;
+      width: 20px;
     }
 
     .quote-text {
-      margin-left: 20px;
+      margin-left: 15px;
       font-size: 13px;
+      margin-top: 25px;
+    }
+    .quote-author{
+      margin-left: 15px;
     }
   }
 .container{
@@ -341,7 +353,12 @@
 .right-panel {
   padding: 10px;
 }
+
+.quote-container {
+  margin-left: 10px;
 }
+}
+
 
 .theme1{
    background-color: #572e91;
