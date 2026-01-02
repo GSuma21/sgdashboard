@@ -32,13 +32,20 @@
   </div>
 
   <div class="section">
-    <p class="label">Copy Link:</p>
+    <p class="label">Copy Text:</p>
 
     <div class="copy-box">
-      <input #linkInput type="text" [value]="shareLink" readonly />
-      <button (click)="copyLink(linkInput)" aria-label="Copy link to clipboard" title="Copy link">
-        <mat-icon>content_copy</mat-icon>
-      </button>
+      <textarea
+      #linkInput
+      readonly
+      [value]="shareLink + '\n\n' + shareText">
+    </textarea>
+    <button
+    (click)="copyLink(linkInput)"
+    aria-label="Copy link to clipboard"
+    title="Copy link">
+    <mat-icon>content_copy</mat-icon>
+  </button>
 
     </div>
   </div>

@@ -89,3 +89,16 @@ background: linear-gradient(to bottom,
   margin-top: 15px;
   font-style: italic;
 }
+
+@media (max-width: 768px) {
+.community-feed-container {
+  width: 100%;
+  margin-left: -16px;
+}
+
+@media (max-width: 480px) {
+  .community-feed-container {
+    width: 100%;
+  }
+}
+}

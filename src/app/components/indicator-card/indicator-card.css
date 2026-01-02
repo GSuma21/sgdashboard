@@ -13,8 +13,8 @@
 }
 
 .indicator-icon {
-  min-width: 25%;
-  max-width: 30%;
+  min-width: 33%;
+  max-width: 33%;
   object-fit: contain;
   padding-right: 7%;
   width:inherit;
@@ -27,7 +27,7 @@
 }
 
 .divider {
-  width: 3px;
+  width: 2px;
   height: 80px;
   background-color: #dddada ;
 }
@@ -50,7 +50,7 @@
 
 .indicator-label {
   width: 100%;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--background-color-dark);
   opacity: 0.8;

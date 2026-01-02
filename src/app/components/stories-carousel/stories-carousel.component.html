@@ -1,26 +1,27 @@
-<div class="carousel-container">
-    <h2 class="carousel-title">More stories of Micro Improvements</h2>
+  <div class="carousel-container">
+      <h2 class="carousel-title">More stories of Micro Improvements</h2>
 
-    <div class="carousel-wrapper">
+      <div class="carousel-wrapper">
 
-      <button class="nav-button prev" (click)="navigateSlide(-1)">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-      </button>
+        <button class="nav-button prev" (click)="navigateSlide(-1)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
 
-      <div class="slides-area">
-        <div *ngFor="let chunk of chunkedSlides; let i = index"
-             class="slide-group"
-             [ngClass]="{'active': i === currentChunkIndex}">
+        <div class="slides-area">
+          <div *ngFor="let chunk of chunkedSlides; let i = index"
+              class="slide-group"
+              [ngClass]="{'active': i === currentChunkIndex}">
 
-          <div class="story-card" *ngFor="let slide of chunk">
-            <app-improvement-story [story]="slide" [browserId]="browserId" (storyAction)="onStoryAction($event)"></app-improvement-story>
+            <div class="story-card" *ngFor="let slide of chunk">
+              <app-improvement-story [story]="slide" [browserId]="browserId"  (storyAction)="onStoryAction($event)"
+              (pauseCarousel)="stopAutoSlide()" (resumeCarousel)="startAutoSlide()"></app-improvement-story>
+            </div>
           </div>
         </div>
+
+        <button class="nav-button next" (click)="navigateSlide(1)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.59 16.59L15.17 11l-5.58-5.59L11 4l7 7-7 7z"/></svg>
+        </button>
+
       </div>
-
-      <button class="nav-button next" (click)="navigateSlide(1)">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.59 16.59L15.17 11l-5.58-5.59L11 4l7 7-7 7z"/></svg>
-      </button>
-
     </div>
-  </div>
