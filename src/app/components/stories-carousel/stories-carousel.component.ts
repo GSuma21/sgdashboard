@@ -34,6 +34,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
 
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
       this.slides = data["data"];
+      this.slides = this.utils.assignColorsToStories(this.slides)
       try {
         this.browserId = this.utils.getBrowserId();
         const storyIds = this.slides.map(s => s.id);

@@ -111,18 +111,13 @@
   .read-story-btn {
       margin-left: auto;
       padding: 9px 25px;
-      background-color: var(--primary-color);
+      background-color: transparent;
       color: #ffffff;
       border: 1px solid black;
       border-radius: 4px;
       font-weight: 800;
       cursor: pointer;
       transition: background-color 0.2s;
-
-      &:hover {
-          background-color: #e0e0e0;
-          color: var(--primary-color);
-      }
   }
 }
 
