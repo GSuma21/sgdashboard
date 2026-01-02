@@ -1,6 +1,6 @@
 .animation-container {
   position: relative;
-  width: 97vw;
+  width: 95vw;
   height: 780px;
   overflow: hidden;
   left: 1%;
@@ -16,7 +16,7 @@
 }
 
 .bg-img {
-  height: 780px ;
+  height: 780px;
 }
 
 .branch-wrapper {
@@ -92,7 +92,8 @@
   }
 
   &.solution {
-    border: 3px solid #388E3C;
+    border: 3px solid #562E91;
+    box-shadow: 0px 4px 20px 0px #562E918C;
   }
 }
 
@@ -117,6 +118,10 @@
   &:hover {
     font-size: 14px !important;
   }
+}
+
+.read-more {
+  color: #1e40af;
 }
 
 // Fix for small screens (less than medium laptops)
