@@ -24,7 +24,7 @@
     
         <h2 class="dialog-title">{{ pageData?.glossary?.title || 'Glossary' }}</h2>
     
-        <div *ngFor="let info of pageData.glossary.informations">
+        <div *ngFor="let info of pageData?.glossary?.informations || []">
           <h3>{{ info?.title }}</h3>
           <p>
             {{ info?.description }}
