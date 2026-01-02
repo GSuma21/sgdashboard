@@ -119,12 +119,6 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
   }
 
   fetchPageData(): void {
-    // d3.json(`./assets/voices.json`).then((data: any) => {
-    //   this.pageData = data;
-    //   console.log(data)
-    // }).catch((error: any) => {
-    //   console.error('Error loading page data:', error);
-    // });
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICE_ANIMATION}`).then((data: any) => {
       this.pageData = data.data.slice(0,4)
       d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICE_ANIMATION_RESOLUTIONS}`).then((response: any) => {
@@ -133,7 +127,6 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
           element.problem = this.pageData[index].challenge
           element.author = this.pageData[index].role + ', ' + this.pageData[index].district + ', ' + this.pageData[index].state,
           element.solution = this.pageData[index].solutions[0].solution;
-
           return element;
         })
         this.updatePositions();
@@ -141,7 +134,6 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
       }).catch((error: any) => {
         console.error('Error loading page data:', error);
       });
-      console.log(this.storyNodes);
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
