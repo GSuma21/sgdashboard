@@ -25,29 +25,39 @@ export class MultiAxisChartComponent {
 
   public lineChartOptions: ChartConfiguration['options'] = {
     elements: {
-       line: {
-         tension: 0.5 
-        } 
-      },
+      line: {
+        tension: 0.5
+      }
+    },
     onHover: (event, chartElement) => {
       (event.native?.target as HTMLElement).style.cursor = chartElement[0] ? 'pointer' : 'default';
     },
     scales: {
       y: {
          position: 'left',
-         },
+        },
       y1: {
         position: 'right',
         grid: { 
-          color: 'rgba(255,0,0,0.3)', 
-        },
+          color: 'rgba(255,0,0,0.3)',
+         },
         ticks: { 
           color: 'black'
          }
       }
     },
-    plugins: { 
+    plugins: {
       legend: { display: false },
+      tooltip: {
+        usePointStyle: true,  // 👈 this makes the hover box round
+        callbacks: {
+          label: (tooltipItem) => {
+            const value = tooltipItem.raw; // hovered value
+            const label = tooltipItem.dataset.label; // dataset label
+            return `${label}: ${value}`;
+          }
+        }
+      }
     }
   };
 
@@ -87,6 +97,9 @@ export class MultiAxisChartComponent {
             yAxisID: 'y1',
             tension: 0.4,
             fill: false,
+            borderWidth: 4,      // line thickness
+            pointRadius: 4,      // dot size
+            pointHoverRadius: 6, // dot size on hover
           },
           {
             type: 'bar',

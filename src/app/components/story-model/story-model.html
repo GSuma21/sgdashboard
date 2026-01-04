@@ -4,22 +4,22 @@
   </button>
 
   <div class="meta-actions">
-    <h2 class="modal-title">{{ story.title }}</h2>
+    <h2 class="modal-title">{{ currentStory.title }}</h2>
   
     <div class="counts-section">
-      <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.LIKE)">
-        <mat-icon class="action-icon">{{ story.like ? 'favorite' : 'favorite_border' }}</mat-icon>
-        {{ story.likesCount ? story.likesCount : 0 }}
+      <button type="button" class="action-item" (click)="handleUserClick(currentStory, ACTIONS.LIKE)">
+        <mat-icon class="action-icon">{{ currentStory.like ? 'favorite' : 'favorite_border' }}</mat-icon>
+        {{ currentStory.likesCount ? currentStory.likesCount : 0 }}
       </button>
 
-      <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.SHARE)">
+      <button type="button" class="action-item" (click)="handleUserClick(currentStory, ACTIONS.SHARE)">
         <mat-icon class="action-icon">share</mat-icon>
-        {{ story.shareCount ? story.shareCount : 0 }}
+        {{ currentStory.shareCount ? currentStory.shareCount : 0 }}
       </button>
 
       <div class="lang-switch-container">
         
-        <span class="lang-label" *ngIf="!isLangOn && story?.lang?.length > 0">{{ story.lang?.[0]?.code || 'Eng'}}</span>
+        <span class="lang-label" *ngIf="isLangOn">{{ currentStory.activeLangCode || 'Eng'}}</span>
       
         <div class="lang-toggle-wrapper">
           <input
@@ -36,15 +36,17 @@
           <div class="toggle-button-text"></div>
         </div>
 
-        <span class="lang-label" *ngIf="isLangOn && story?.lang?.length > 1">{{ story.lang?.[1]?.code || 'Hin' }}</span>
+        <span class="lang-label" *ngIf="!isLangOn">{{ currentStory.activeLangCode || 'Hin' }}</span>
 
       </div>
     
       <span class="hint-wrapper">
-        <mat-icon class="hint-icon">info</mat-icon>
+          <mat-icon class="hint-icon">info</mat-icon>        
       
         <span class="hint-text">
-          Use the toggle to switch to the original recorded language. The default language is English.
+          Use toggle to switch the language<br>
+          &nbsp;to its original recorded language.<br>
+          &nbsp;&nbsp;&nbsp;By default language is English.
         </span>
       </span>
     
@@ -56,23 +58,23 @@
   <div class="meta-row">
 
     <div class="meta-item">
-      <mat-icon>person</mat-icon>
-      <h4>{{story.role}}</h4>
+      <mat-icon class="meta-icon">person</mat-icon>
+      <h4>{{currentStory.role}}</h4>
     </div>
     <div class="meta-item">
-      <mat-icon>location_on</mat-icon>
-      <h4>{{story.district}}, {{story.state}}</h4>
+      <mat-icon class="meta-icon">location_on</mat-icon>
+      <h4>{{currentStory.district}}, {{currentStory.state}}</h4>
     </div>
   </div>
 
   <div class="modal-content">
-    <p>{{story.content}}</p>
+    <p>{{currentStory.content}}</p>
   </div>
 
   <div>
     <h4 class="photos-title">Photos:</h4>
     <div class="photo-row">
-      @for(image of story.photos || [];track $index){
+      @for(image of currentStory.photos || [];track $index){
         <img [src]='image' [alt]="'Story photo ' + ($index + 1)" />
       }
     </div>

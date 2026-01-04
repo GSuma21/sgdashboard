@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IndicatorCardComponent } from '../../components/indicator-card/indicator-card';
@@ -15,20 +15,26 @@ import { NETWORK_HEALTH_PAGE } from '../../../constants/urlConstants';
 import { environment } from '../../../../environments/environment';
 import { WorldMapComponent } from '../world-map/world-map';
 import { ChangeDetectorRef } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+
 
 @Component({
   selector: 'app-network-health',
   standalone:true,
-  imports:[CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, LineChartComponent, PieChartComponent,CountryView, SliderCarouselComponent, CatalysingNetwork1, WorldMapComponent],
+  imports:[CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, LineChartComponent, PieChartComponent,CountryView, SliderCarouselComponent, CatalysingNetwork1, WorldMapComponent, MatIconModule, MatDialogModule, MatButtonModule ],
   templateUrl: './network-health.html',
   styleUrls: ['./network-health.css']
 })
 export class NetworkHealth implements OnInit {
-
+  @ViewChild('glossaryTemplate') glossaryTemplate!: TemplateRef<any>;
   pageData: any = {};
   baseUrl:any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
 
-  constructor(private cdr: ChangeDetectorRef) {}
+
+  constructor(private cdr: ChangeDetectorRef,private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetchPageData();
@@ -49,6 +55,23 @@ export class NetworkHealth implements OnInit {
     if (partnerLogosSection && partnerLogosSection.partners) {
       this.pageData.allLogos = partnerLogosSection.partners.flatMap((p:any) => p.logos);
     }
+  }
+
+  openGlossary() {
+    if (!this.glossaryTemplate) {
+      console.error('Glossary template not found');
+      return; // stop execution to avoid runtime error
+    }
+    this.dialog.open(this.glossaryTemplate, {
+      width: '600px',
+      maxWidth: '1000px',
+      position: {
+        right: '10%',
+        top: '11%'
+      },
+      panelClass: 'glossary-side-dialog',
+      backdropClass: 'glossary-backdrop'
+    });
   }
 
 }

@@ -27,6 +27,9 @@
   background-color: var(--hero-background-color);
   color: var(--text-color);
   animation: fadeIn 1s ease-in-out;
+  display: flex;
+  flex-direction: row;
+
 }
 
 .hero-title {
@@ -344,3 +347,69 @@ app-slider-carousel {
     padding: 40px 2rem 0 2rem;
   }
 }
+
+.glossary{
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  cursor: pointer;
+}
+
+/* Dialog content wrapper */
+.glossary-dialog {
+  padding: 24px 28px;
+  position: relative;
+}
+
+/* Title */
+.dialog-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #2b2b2b;
+}
+
+/* Section headings */
+.glossary-dialog h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 16px;
+  margin-bottom: 6px;
+  color: #2b2b2b;
+}
+
+/* Paragraph text */
+.glossary-dialog p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #6b6b6b;
+  margin: 0;
+}
+
+/* Close (X) button */
+.dialog-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  cursor: pointer;
+  color: #e53935;
+  font-size: 18px;
+}
+
+/* Footer */
+.dialog-actions {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.dialog-actions button {
+  font-size: 13px;
+  text-transform: none;
+}
+
+/* Darken the background behind the dialog */
+::ng-deep .cdk-overlay-backdrop {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+
