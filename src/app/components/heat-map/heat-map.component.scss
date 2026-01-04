@@ -20,6 +20,7 @@
   font-weight: 600;
   margin-bottom: 20px;
   color: #000;
+  margin-left: 5px;
 }
 
 .left-panel {
@@ -42,7 +43,7 @@
   grid-template-columns: repeat(5, 1fr);
   grid-auto-rows: 100px;
   gap: 6px;
-  margin-left: 15px;
+  // margin-left: 15px;
 }
 
 .heatmap-item {
