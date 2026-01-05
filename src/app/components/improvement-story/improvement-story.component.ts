@@ -77,14 +77,18 @@ export class ImprovementStoryComponent {
   
     dialogRef.afterClosed().subscribe(async (res) => {
       if(res === 'ok'){
-        const res = await this.sg.updateRecord(
-          this.story,
-          this.browserId,
-          ACTIONS.SHARE,
-        );
-        this.storyAction.emit(res);
+        try {
+          const res = await this.sg.updateRecord(
+            this.story,
+            this.browserId,
+            ACTIONS.SHARE,
+          );
+          this.storyAction.emit(res);
+          this.resumeCarousel.emit();
+        } catch (error) {
+          console.error('Failed to update share count:', error);
+        }
       }
-      this.resumeCarousel.emit();
     });
   }
 }

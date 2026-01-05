@@ -103,15 +103,19 @@ export class StoryModel {
     });
     dialogRef.afterClosed().subscribe(async (res) => {
       if(res === 'ok'){
-        const data = await this.sg.updateRecord(
-          this.story,
-          this.util.getBrowserId(),
-          ACTIONS.SHARE,
-        );
-        this.currentStory = {
-          ...this.currentStory,
-          shareCount: (this.currentStory.shareCount ?? 0) + data.diff
-        };
+        try {
+          const data = await this.sg.updateRecord(
+            this.story,
+            this.util.getBrowserId(),
+            ACTIONS.SHARE,
+          );
+          this.currentStory = {
+            ...this.currentStory,
+            shareCount: (this.currentStory.shareCount ?? 0) + data.diff
+          };
+        } catch (error) {
+          console.error('Failed to update share count:', error);
+        }
       }
     });
   }
