@@ -3,21 +3,25 @@
     <img class="meta-icon crown" src="assets/icons/crown.svg" *ngIf="storyOfWeek">
     <section class="d-flex justify-content-between story-body">
       <div class="story-text">
-        <span class="quote-icon px-1">“</span>
-        <h3 class="card-title">{{ story.title }}</h3>
+        <span class="quote-icon px-1" [ngStyle]="{ color: story?.color || '#572E91' }">“</span>
+        <h3 class="card-title">
+          <span class="title-text">
+            {{ story?.lang[0]?.data?.title }}
+          </span>
+        </h3>
     
         <div class="card-meta px-4">
           <img class="meta-icon" src="assets/icons/user_dial.svg">
           <div class="meta-text ml-2">
-            <p class="mb-0 leader-text">{{ story.role }}</p>
-            <p class="location mb-0">{{ story.district }}, {{ story.state }}</p>
+            <p class="mb-0 leader-text">{{ story?.lang[0]?.data?.role }}</p>
+            <p class="location mb-0">{{ story?.lang[0]?.data?.district }}, {{ story?.lang[0]?.data?.state }}</p>
           </div>
         </div>
       </div>
     
       <div class="card-image-wrapper">
         <img [src]="story?.photos?.[0]" 
-          [alt]="story?.title || ('Story from ' + story?.role)"
+          [alt]="story?.lang[0]?.data?.title || ('Story from ' + story?.lang[0]?.data?.role)"
           class="card-image"
         />
       </div>
@@ -41,7 +45,7 @@
       </button>
     </div>
     <svg width="832" height="151" viewBox="0 0 832 151" fill="none" xmlns="http://www.w3.org/2000/svg" id="flow-img">
-      <path d="M0 37.9779C0 37.9779 90.0129 0.061928 153.078 0C216.144 -0.061928 259.444 52.1275 334.139 55.5996C408.834 59.0716 444.555 21.7531 519.314 19.1408C594.073 16.5286 672.448 59.1383 747.286 55.5996C822.124 52.0609 865.161 21.6137 931.227 14.8873C997.293 8.16092 1102 14.8873 1102 14.8873V151H0V37.9779Z" fill="#572E91"/>
+      <path d="M0 37.9779C0 37.9779 90.0129 0.061928 153.078 0C216.144 -0.061928 259.444 52.1275 334.139 55.5996C408.834 59.0716 444.555 21.7531 519.314 19.1408C594.073 16.5286 672.448 59.1383 747.286 55.5996C822.124 52.0609 865.161 21.6137 931.227 14.8873C997.293 8.16092 1102 14.8873 1102 14.8873V151H0V37.9779Z" [attr.fill]="story.color || '#572E91' "/>
     </svg>
   </div>
 </section>

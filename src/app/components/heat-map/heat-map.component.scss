@@ -20,6 +20,7 @@
   font-weight: 500;
   margin-bottom: 20px;
   color: #000;
+  margin-left: 5px;
 }
 
 .left-panel {
@@ -328,7 +329,7 @@
 
 @media (max-width: 768px) {
   .voice-card {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
     padding: 10px 0px 0px 10px;
 
     .quote-icon {

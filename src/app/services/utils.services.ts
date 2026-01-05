@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
-import { ACTIONS, BrowserId } from '../../constants/actionConstants';
+import { ACTIONS, BrowserId, SVG_COLORS } from '../../constants/actionConstants';
 
 @Injectable({
   providedIn: 'root',
@@ -59,5 +59,13 @@ export class UtilsService {
         item.id === updatedData.id ? { ...item, ...updatedData } : item
       );
     }
+
+    assignColorsToStories(stories: any[]): any[] {
+      return stories.map((story, index) => ({
+        ...story,
+        color: SVG_COLORS[index % SVG_COLORS.length]
+      }));
+    }
+    
  
 }

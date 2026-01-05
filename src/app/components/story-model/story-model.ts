@@ -18,6 +18,7 @@ templateUrl: './story-model.html',
 export class StoryModel {
   ACTIONS = ACTIONS;
   isLangOn = false;
+  currentStory: any;
   @Output() close = new EventEmitter<void>();
 
   constructor(
@@ -27,6 +28,7 @@ export class StoryModel {
     private util:UtilsService,
     private dialog: MatDialog
   ) {
+    this.setStoryByLangIndex(0);
   }
 
   async handleUserClick(story:any,action: ActionType){
@@ -46,14 +48,14 @@ export class StoryModel {
       return;
     }
     
-    this.story = {
-      ...this.story,
+    this.currentStory = {
+      ...this.currentStory,
       ...(res.action === ACTIONS.LIKE && {
-        likesCount: (this.story.likesCount ?? 0) + res.diff,
-        like: !this.story.like
+        likesCount: (this.currentStory.likesCount ?? 0) + res.diff,
+        like: !this.currentStory.like
       }),
       ...(res.action === ACTIONS.SHARE && {
-        shareCount: (this.story.shareCount ?? 0) + res.diff
+        shareCount: (this.currentStory.shareCount ?? 0) + res.diff
       })
     };
     }catch (err) {
@@ -62,18 +64,41 @@ export class StoryModel {
   }
 
   toggleLanguage() {
-    this.isLangOn = !this.isLangOn;
-
-    const activeLangCode = this.isLangOn
-    ? this.story.lang[1]?.code
-    : this.story.lang[0]?.code;
-
+    this.isLangOn = !this.isLangOn
+    const langIndex = this.isLangOn ? 1 : 0;
+    this.setStoryByLangIndex(langIndex);
   }
 
   closeModal() {
+    this.story = {
+      ...this.story,
+      likesCount:this.currentStory.likesCount,
+      shareCount:this.currentStory.shareCount,
+      like:this.currentStory.like
+    }
     this.dialogRef.close(this.story);
   }
 
+  setStoryByLangIndex(index: number) {
+    const langObj = this.story?.lang?.[index];
+    const lang = this.story?.lang?.[index === 0 ? 1 : 0];
+  
+    if (!langObj?.data) {
+      console.warn('Language data not found for index:', index);
+      this.currentStory = {
+        ...this.story,
+        activeLangCode: ''
+      };
+      return;
+    }
+  
+    this.currentStory = {
+      ...this.story,
+      ...langObj.data,
+      activeLangCode: lang?.code?.slice(0, 3) ?? ''
+    };
+  }
+  
   openShareModal(): void {
     this.dialog.open(ShareModal, {
       width: '520px',

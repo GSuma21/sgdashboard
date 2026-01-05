@@ -10,6 +10,7 @@
     margin: 0 auto;
     padding: 0 10px;
     position: relative;
+    min-height: max-content;
 }
 
 .carousel-title {
@@ -67,7 +68,7 @@
 
 .slide-group {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 50px;
   flex-shrink: 0;
   width: 100%;
@@ -77,15 +78,17 @@
   opacity: 1;
   visibility: visible;
   position: relative;
+  height: fit-content;
 }
 
 .story-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    height: auto;
-    width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: auto;
+  flex: 0 0 calc(50% - 25px);
+  max-width: calc(50% - 25px);
 }
 
 @media (max-width: 768px) {
