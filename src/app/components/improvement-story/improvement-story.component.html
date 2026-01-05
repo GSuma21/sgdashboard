@@ -4,7 +4,11 @@
     <section class="d-flex justify-content-between story-body">
       <div class="story-text">
         <span class="quote-icon px-1" [ngStyle]="{ color: story?.color || '#572E91' }">“</span>
-        <h3 class="card-title">{{ story?.lang[0]?.data?.title }}</h3>
+        <h3 class="card-title">
+          <span class="title-text">
+            {{ story?.lang[0]?.data?.title }}
+          </span>
+        </h3>
     
         <div class="card-meta px-4">
           <img class="meta-icon" src="assets/icons/user_dial.svg">

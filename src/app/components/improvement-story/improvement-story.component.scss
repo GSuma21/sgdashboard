@@ -28,16 +28,22 @@
   font-size: 18px;
   font-weight: 700;
   color: #333;
-  padding-bottom: 0.5rem;
   border-bottom: 1px solid;
-  width: fit-content;
   max-width: 80%;
-  white-space: normal; 
-  word-break: break-word;
-  overflow-wrap: break-word;
-  margin-top: 3rem;
+  margin-top: 1.2rem;
   margin-left: 45px;
 }
+
+.title-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+  max-height: calc(1.3em * 3);
+}
+
 
 .card-meta {
   display: flex;
@@ -197,7 +203,7 @@ mat-icon {
 
 @media (max-width: 768px) { 
   .card-actions {
-    margin-top: 0px;
+    margin-top: 8px;
   .action-item {
     font-size: 9px;
     padding: 0px 4px;
@@ -220,6 +226,7 @@ mat-icon {
 }
 .card-content {
   height: 195px;
+  min-height: 215px;
 }
 
 .quote-icon{
@@ -278,6 +285,9 @@ mat-icon {
   font-size: 10px;
   margin-left: 25px;
   width: 100%;
+
+  line-height: 1.4;
+    max-height: calc(1.4em * 3);
 }
 
 .card-image-wrapper {
@@ -295,15 +305,27 @@ mat-icon {
 
 @media (max-width: 480px) {
   .tall-card .card-actions{
-    margin-top: -18px;
+    margin-top: -5px;
   }
 
   .card-image-wrapper .card-image {
     width: 110px;
-    height: 120px;
+    height: 120px;  
 }
 .card-title{
   margin-top: 1rem;
 }
 }
+}
+
+@media screen and (min-width: 1920px) {
+  #flow-img {
+    bottom: -35px;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  #flow-img {
+    bottom: -75px;
+  }
 }
