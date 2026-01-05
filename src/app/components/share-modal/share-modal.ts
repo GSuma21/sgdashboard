@@ -28,6 +28,7 @@ Do take a moment to read it and help spread the word.`;
   async copyLink(input: HTMLInputElement | HTMLTextAreaElement) {
     try {
       await navigator.clipboard.writeText(input.value);
+      this.dialogRef.close('ok')
       alert('Link & text copied to clipboard');
     } catch {
       alert('Failed to copy link & text. Please copy manually.');
@@ -48,7 +49,7 @@ Do take a moment to read it and help spread the word.`;
       alert('Instagram sharing works only via mobile app. Please copy the link.');
       return;
     }
-
+    this.dialogRef.close('ok')
     window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
   }
 }
