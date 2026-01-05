@@ -41,7 +41,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
 
         if (!storyIds.length) {
           this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
-          // this.startAutoSlide();
+          this.startAutoSlide();
           return;
         }
 
@@ -63,7 +63,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
         }));
       } finally {
         this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
-        // this.startAutoSlide();
+        this.startAutoSlide();
       }
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
@@ -133,7 +133,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
 
   resetAutoSlide(): void {
     this.stopAutoSlide();
-  // this.startAutoSlide();
+  this.startAutoSlide();
   }
 
   ngOnDestroy(): void {
