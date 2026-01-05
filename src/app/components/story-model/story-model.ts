@@ -35,6 +35,7 @@ export class StoryModel {
     try{
       if (action === ACTIONS.SHARE) {
         this.openShareModal();
+        return;
       }
       
     const res = await this.sg.updateRecord(
@@ -50,13 +51,8 @@ export class StoryModel {
     
     this.currentStory = {
       ...this.currentStory,
-      ...(res.action === ACTIONS.LIKE && {
-        likesCount: (this.currentStory.likesCount ?? 0) + res.diff,
-        like: !this.currentStory.like
-      }),
-      ...(res.action === ACTIONS.SHARE && {
-        shareCount: (this.currentStory.shareCount ?? 0) + res.diff
-      })
+      likesCount: (this.currentStory.likesCount ?? 0) + res.diff,
+      like: !this.currentStory.like
     };
     }catch (err) {
       console.error(err);
@@ -100,10 +96,23 @@ export class StoryModel {
   }
   
   openShareModal(): void {
-    this.dialog.open(ShareModal, {
+    const dialogRef=this.dialog.open(ShareModal, {
       width: '520px',
       panelClass: 'share-dialog',
       autoFocus: false
+    });
+    dialogRef.afterClosed().subscribe(async (res) => {
+      if(res === 'ok'){
+        const data = await this.sg.updateRecord(
+          this.story,
+          this.util.getBrowserId(),
+          ACTIONS.SHARE,
+        );
+        this.currentStory = {
+          ...this.currentStory,
+          shareCount: (this.currentStory.shareCount ?? 0) + data.diff
+        };
+      }
     });
   }
 }
