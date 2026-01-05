@@ -49,6 +49,7 @@ export class HeatMapComponent implements OnInit {
   themes: HeatmapTheme[] = [];
   heatmapThemes:any
   heatmapThemeConfig: Record<string, any> = {}
+  heatmapData: Record<string, any> = {}
 
   activeThemeId: string | null = null;
   displayedVoices: VoiceQuote[] = [];
@@ -60,11 +61,12 @@ export class HeatMapComponent implements OnInit {
 
   getThemeData() {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${HEATMAP_THEME}`).then((data: any) => {
-      this.heatmapThemeConfig = data
+      this.heatmapData = data
+      console.log('Heatmap Theme Config:', this.heatmapData);
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
-    if (this.heatmapThemeConfig) {
+    if (this.heatmapData) {
       d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${THEMES_EMERGED}`).then((data: any) => {
         this.themes = (data?.data ?? []).map((item: any) => ({
           id: item.id.split(' ')[0],
@@ -72,13 +74,15 @@ export class HeatMapComponent implements OnInit {
           value: Number(item.value),
           list: (item.list ?? []).map((listItem: any) => ({
             ...listItem,
-            color: this.heatmapThemeConfig[item.id.split(' ')[0]]?.color ?? 'gray',
+            color: this.heatmapData[item.id.split(' ')[0]]?.color ?? 'gray',
           })),
 
-          color: this.heatmapThemeConfig[item.id.split(' ')[0]]?.color ?? 'gray',
-          gridClass: this.heatmapThemeConfig[item.id.split(' ')[0]]?.gridClass ?? 'span-1-1',
-          icon: this.heatmapThemeConfig[item.id.split(' ')[0]]?.icon ?? ''
+          color: this.heatmapData[item.id.split(' ')[0]]?.color ?? 'gray',
+          gridClass: this.heatmapData[item.id.split(' ')[0]]?.gridClass ?? 'span-1-1',
+          icon: this.heatmapData[item.id.split(' ')[0]]?.icon ?? ''
         }));
+
+        this.heatmapThemeConfig = this.heatmapData;
 
         if (this.themes.length > 0) {
           this.setActiveTheme(this.themes[0].id);

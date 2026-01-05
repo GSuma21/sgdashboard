@@ -65,31 +65,41 @@ export class DistrictImprovementsComponent implements OnInit {
   }
 
   getImprovementsData() {
-    let metricsPath = "metrics.json"
-    let pieChartPath = "pie-chart.json"
-    let lineChartPath = "line-chart.json"
-    if(this.isCommunityFlow){
-      metricsPath = "community-metrics.json"
-      pieChartPath = "community-pie-chart.json"
-    }
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${metricsPath}`).then((data: any) => {
-      this.metrics = data.metrics
-      d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${pieChartPath}`).then((data: any) => {
-        this.pieChart = data.data;
-        d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${lineChartPath}`).then((data: any) => {
-          this.lineChart = data.data;
-          this.getProgramsList()
-        }).catch((error: any) => {
-          console.error('Error loading page data:', error);
-        });
-        this.getProgramsList()
-      }).catch((error: any) => {
-        console.error('Error loading page data:', error);
-      });
-    }).catch((error: any) => {
-      console.error('Error loading page data:', error);
-    });
+  let metricsPath = "metrics.json"
+  let pieChartPath = "pie-chart.json"
+  let lineChartPath = "line-chart.json"
+  if (this.isCommunityFlow) {
+    metricsPath = "community-metrics.json"
+    pieChartPath = "community-pie-chart.json"
   }
+  d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${metricsPath}`)
+    .then((data: any) => {
+      this.metrics = data.metrics
+      d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${pieChartPath}`)
+        .then((data: any) => {
+          this.pieChart = data.data
+        })
+        .catch((error: any) => {
+          console.warn('Pie chart data not found, continuing...', error)
+          this.pieChart = []
+        })
+        .finally(() => {
+          d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${lineChartPath}`)
+            .then((data: any) => {
+              this.lineChart = data.data
+              this.getProgramsList()
+            })
+            .catch((error: any) => {
+              console.error('Error loading line chart data:', error)
+              this.lineChart = []
+              this.getProgramsList()
+            })
+        })
+    })
+    .catch((error: any) => {
+      console.error('Error loading metrics data:', error)
+    });
+}
 
   getProgramsList() {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${this.isCommunityFlow ? 'WLC.json':'SLC.json'}`).then((data: any) => {
