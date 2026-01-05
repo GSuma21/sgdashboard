@@ -5,6 +5,40 @@ import { ChartConfiguration, ChartType, Chart, registerables } from 'chart.js';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
+
+// ---------------- Plugin for upside-down right Y-axis title ----------------
+
+const rightYAxisUpsideDownPlugin = {
+  id: 'rightYAxisUpsideDown',
+  afterDraw: (chart: any) => {
+    const ctx = chart.ctx;
+    const chartArea = chart.chartArea;
+
+    const titleLines = [
+      'Leaders–Leading Micro Improvements',
+      '(Count)'
+    ];
+
+    ctx.save();
+
+    // Shift farther right (increase from 25 to 60)
+    // Also add small vertical nudge (+10) to adjust centering if needed
+    ctx.translate(chartArea.right + 80, (chartArea.top + chartArea.bottom) / 2 );
+
+    ctx.rotate(-Math.PI / 2); // bottom-to-top
+    ctx.font = '10px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'black';
+
+    titleLines.forEach((line, i) => {
+      ctx.fillText(line, 0, (i - (titleLines.length - 1) / 2) * 16);
+    });
+
+    ctx.restore();
+  }
+};
+
 @Component({
   selector: 'app-multi-axis-chart',
   standalone: true,
@@ -33,17 +67,36 @@ export class MultiAxisChartComponent {
       (event.native?.target as HTMLElement).style.cursor = chartElement[0] ? 'pointer' : 'default';
     },
     scales: {
-      y: {
-         position: 'left',
+  y: {
+  position: 'left',
+        title: {
+          display: true,
+          text: [
+            'Leaders–Participating in dialogues',
+            '(Thousands)'
+          ],
+          color: 'black',
+          // add font size safely
+          font: {
+            size: 10,           // 10px font
+            weight: 'normal',
+            family: 'sans-serif'
+          } as any  // 👈 TypeScript workaround
         },
+        grid: { color: 'rgba(255,0,0,0.3)' },
+        ticks: { color: 'black' }
+      },
       y1: {
         position: 'right',
-        grid: { 
-          color: 'rgba(255,0,0,0.3)',
-         },
-        ticks: { 
-          color: 'black'
-         }
+        title: { display: false }, // plugin will draw upside-down title
+        grid: { color: 'rgba(255,0,0,0.3)' },
+        ticks: { color: 'black' }
+      }
+    },
+    layout: {
+      padding: {
+        right: 50, // space for your custom right Y-axis title
+        top: 20
       }
     },
     plugins: {
@@ -65,6 +118,7 @@ export class MultiAxisChartComponent {
 
   constructor() {
     Chart.register(...registerables);
+    Chart.register(rightYAxisUpsideDownPlugin);
   }
 
   ngOnInit(): void {
@@ -107,6 +161,13 @@ export class MultiAxisChartComponent {
             label: 'Participating in dialogues',
             backgroundColor: '#592e91',
             yAxisID: 'y',
+            borderRadius: {
+              topLeft: 8,
+              topRight: 8,
+              bottomLeft: 0,
+              bottomRight: 0
+            },
+            borderSkipped: false      // 👈 rounds all corners
           }
         ]
       };
