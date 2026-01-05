@@ -98,6 +98,8 @@ export class DistrictImprovementsComponent implements OnInit {
     })
     .catch((error: any) => {
       console.error('Error loading metrics data:', error)
+      this.metrics = []
+      this.getProgramsList()
     });
 }
 

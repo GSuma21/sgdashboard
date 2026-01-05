@@ -62,7 +62,6 @@ export class HeatMapComponent implements OnInit {
   getThemeData() {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${HEATMAP_THEME}`).then((data: any) => {
       this.heatmapData = data
-      console.log('Heatmap Theme Config:', this.heatmapData);
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });

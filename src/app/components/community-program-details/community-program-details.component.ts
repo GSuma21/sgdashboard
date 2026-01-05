@@ -9,7 +9,7 @@ import { LineChartComponent } from '../../components/line-chart/line-chart';
 import { PieChartComponent } from '../../components/pie-chart/pie-chart';
 import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
-import { COMMUNITY_LED_IMPROVEMENTS_PAGE } from '../../../constants/urlConstants';
+import { COMMUNITY_DASHBOARD_PAGE } from '../../../constants/urlConstants';
 
 @Component({
   selector: 'app-community-program-details',
@@ -28,7 +28,7 @@ export class CommunityProgramDetailsComponent implements OnInit {
   }
 
   fetchPageData(): void {
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_LED_IMPROVEMENTS_PAGE}`).then((data: any) => {
+    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_DASHBOARD_PAGE}`).then((data: any) => {
       this.pageData = data;
       this.prepareLogosForScrolling();
     }).catch((error: any) => {
