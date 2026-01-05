@@ -3,7 +3,8 @@
     <div class="scroll-track" #scrollTrack>
 
       <div *ngFor="let item of extendedFeed; let i = index" class="feed-card" [class.active]="i === currentIndex"
-        #feedCard>
+        #feedCard (mouseenter)="onCardHover(true)"
+        (mouseleave)="onCardHover(false)">
         <div class="feed-content">
           <p class="main-text"> {{ item.action_step }} </p>
           <p class="highlighted-text"> {{ item.impact }} </p>

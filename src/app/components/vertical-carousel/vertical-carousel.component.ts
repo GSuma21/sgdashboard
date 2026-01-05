@@ -22,9 +22,11 @@ export class VerticalCarouselComponent implements OnInit, AfterViewInit, OnDestr
   private intervalId: any;
   private transitionDuration = 500;
   private pauseDuration = 3000;
+  isHovering: boolean = false;
+
 
   ngOnInit() {
-    this.getFeedData() // get a community feed data
+    this.getFeedData()
   }
 
   getFeedData() {
@@ -32,7 +34,7 @@ export class VerticalCarouselComponent implements OnInit, AfterViewInit, OnDestr
       this.feedData = data["data"];
       if (this.feedData) {
         this.extendedFeed = [...this.feedData, ...this.feedData, ...this.feedData];
-        this.currentIndex = this.feedData.length; // Start at the first item of the middle set
+        this.currentIndex = this.feedData.length;
       }
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
@@ -52,9 +54,11 @@ export class VerticalCarouselComponent implements OnInit, AfterViewInit, OnDestr
 
   startCarousel() {
     this.stopCarousel();
+    if (!this.isHovering) {
     this.intervalId = setInterval(() => {
       this.moveNext();
     }, this.pauseDuration);
+  }
   }
 
   stopCarousel() {
@@ -122,5 +126,10 @@ export class VerticalCarouselComponent implements OnInit, AfterViewInit, OnDestr
 
     track.style.transition = animate ? `transform ${this.transitionDuration}ms ease-in-out` : 'none';
     track.style.transform = `translateY(${translateY}px)`;
+  }
+
+  onCardHover(isHovered: boolean): void {
+    this.isHovering = isHovered;
+    this.isHovering ? this.stopCarousel() : this.startCarousel();
   }
 }
