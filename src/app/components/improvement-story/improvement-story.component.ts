@@ -86,7 +86,6 @@ export class ImprovementStoryComponent {
             ACTIONS.SHARE,
           );
           this.storyAction.emit(res);
-          this.resumeCarousel.emit();
         } catch (error) {
           console.error('Failed to update share count:', error);
         }
