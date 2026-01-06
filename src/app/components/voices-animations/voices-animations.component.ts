@@ -4,8 +4,6 @@ import * as d3 from 'd3';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { VOICE_ANIMATION, VOICE_ANIMATION_RESOLUTIONS } from '../../../constants/urlConstants';
-import { ActivatedRoute } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-voices-animations',

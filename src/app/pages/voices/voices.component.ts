@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
 import { VOICES_PAGE } from '../../../constants/urlConstants';
@@ -28,7 +29,7 @@ import { StoryModel } from '../../components/story-model/story-model';
   styleUrls: ['./voices.component.scss']
 })
 
-export class VoicesComponent implements OnInit {
+export class VoicesComponent implements OnInit, OnDestroy {
 
 
   pageData: any = [];
@@ -37,16 +38,16 @@ export class VoicesComponent implements OnInit {
 
   story:any=[];
   isMobile = window.innerWidth <= 768;
+  private queryParamsSubscription: Subscription | undefined;
 
-  constructor(private router:ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService,private route:Router) {
+  constructor(private route :ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService,private router:Router) {
   }
 
   async ngOnInit() {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
       const currentWeek:number = this.getWeekNumber(new Date());
       this.story = data.data.length < currentWeek ? data["data"][data.data.length - 2] : data["data"][currentWeek - 1]  || data["data"][0]; // Fallback to 0 if out of bounds
-      this.router.queryParams.subscribe((res:any) => {
-        console.log(currentWeek)
+      this.queryParamsSubscription = this.route.queryParams.subscribe((res:any) => {
         if(res.storyId) {
           const dialogRef = this.dialog.open(StoryModel, {
             width: '900px',
@@ -56,7 +57,7 @@ export class VoicesComponent implements OnInit {
           });
 
           dialogRef.afterClosed().subscribe(result => {
-            this.route.navigate([], {
+            this.router.navigate([], {
               queryParams: {},
             })
             if (!result) return;
@@ -136,6 +137,12 @@ export class VoicesComponent implements OnInit {
     const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
     const weekNo = Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
     return weekNo;
+  }
+
+  ngOnDestroy() {
+    if (this.queryParamsSubscription) {
+      this.queryParamsSubscription.unsubscribe();
+    }
   }
 
 }
