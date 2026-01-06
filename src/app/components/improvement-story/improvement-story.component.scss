@@ -204,7 +204,7 @@ mat-icon {
 
 @media (max-width: 768px) { 
   .card-actions {
-    margin-top: 8px;
+    margin-top: -33px;
   .action-item {
     font-size: 9px;
     padding: 0px 4px;
@@ -306,7 +306,7 @@ mat-icon {
 
 @media (max-width: 480px) {
   .tall-card .card-actions{
-    margin-top: -5px;
+    margin-top: -35px;
   }
 
   .card-image-wrapper .card-image {

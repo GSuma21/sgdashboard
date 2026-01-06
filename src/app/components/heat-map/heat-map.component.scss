@@ -110,9 +110,10 @@
   }
 
   .voice-count {
-    font-size: 0.8rem;
+    font-size: 17px;
     opacity: 0.9;
-    margin: 0;
+    font-weight: 600;
+    margin-left: 5px;
   }
 
   .text-spacing {
@@ -274,7 +275,7 @@
 }
 
 .span-2-2 .voice-count {
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .span-2-1 .theme-title,
@@ -292,7 +293,7 @@
 }
 
 .span-1-1 .voice-count {
-  font-size: 0.65rem;
+  font-size: 11px;
 }
 
 .span-2-2 .icon-img {
@@ -355,6 +356,30 @@
 
 .quote-container {
   margin-left: 10px;
+}
+
+.span-1-2 .theme-title {
+  font-size: 0.7rem;
+}
+
+.span-2-2 .theme-title {
+  font-size: 0.9rem;
+}
+
+.span-1-1 .theme-title {
+  font-size: 0.6rem;
+}
+
+.span-2-2 .voice-count {
+  font-size: 0.8rem;
+}
+
+.span-1-2 .voice-count {
+  font-size: 0.5rem;
+}
+
+.span-1-1 .voice-count {
+  font-size: 0.5rem;
 }
 }
 
