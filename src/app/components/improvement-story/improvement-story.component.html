@@ -1,4 +1,5 @@
-<section>
+<section (mouseenter)="pauseCarousel.emit()"
+(mouseleave)="resumeCarousel.emit()">
   <div class="card-content" [ngClass]="customClass">
     <img class="meta-icon crown" src="assets/icons/crown.svg" *ngIf="storyOfWeek">
     <section class="d-flex justify-content-between story-body">
