@@ -43,12 +43,10 @@ export class VoicesComponent implements OnInit {
 
   async ngOnInit() {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
-      this.story= data["data"][0];
+      const currentWeek:number = this.getWeekNumber(new Date());
+      this.story = data.data.length < currentWeek ? data["data"][data.data.length - 2] : data["data"][currentWeek - 1]  || data["data"][0]; // Fallback to 0 if out of bounds
       this.router.queryParams.subscribe((res:any) => {
-        console.log(data.data.find((story:any) => {
-          story.id == res.storyId
-          return story;
-        }))
+        console.log(currentWeek)
         if(res.storyId) {
           const dialogRef = this.dialog.open(StoryModel, {
             width: '900px',
@@ -131,6 +129,14 @@ export class VoicesComponent implements OnInit {
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+  }
+
+  getWeekNumber(d: Date): number {
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const weekNo = Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+    return weekNo;
   }
 
 }
