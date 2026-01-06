@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
 import { VOICES_PAGE } from '../../../constants/urlConstants';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IndicatorCardComponent } from '../../components/indicator-card/indicator-card';
 import { StoriesCarouselComponent } from '../../components/stories-carousel/stories-carousel.component';
 import { ImprovementStoryComponent } from '../../components/improvement-story/improvement-story.component';
@@ -38,7 +38,7 @@ export class VoicesComponent implements OnInit {
   story:any=[];
   isMobile = window.innerWidth <= 768;
 
-  constructor(private router:ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService) {
+  constructor(private router:ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService,private route:Router) {
   }
 
   async ngOnInit() {
@@ -52,14 +52,13 @@ export class VoicesComponent implements OnInit {
             width: '900px',
             panelClass: 'story-dialog',
             autoFocus: false,
-            data: data.data.find((story:any) => {
-              story.id == res.storyId
-              return story;
-            }),
+            data: data.data.find((story:any) => story.id == res.storyId),
           });
 
           dialogRef.afterClosed().subscribe(result => {
-
+            this.route.navigate([], {
+              queryParams: {},
+            })
             if (!result) return;
             // this.storyAction.emit(result);
           });
