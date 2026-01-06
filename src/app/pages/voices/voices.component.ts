@@ -44,29 +44,33 @@ export class VoicesComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    this.browserId = this.utils.getBrowserId();
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
       const currentWeek:number = this.getWeekNumber(new Date());
       this.story = data.data.length < currentWeek ? data["data"][data.data.length - 2] : data["data"][currentWeek - 1]  || data["data"][0]; // Fallback to 0 if out of bounds
-      this.queryParamsSubscription = this.route.queryParams.subscribe((res:any) => {
-        if(res.storyId) {
+      this.queryParamsSubscription = this.route.queryParams.subscribe(async (res:any) => {
+        if(res?.storyId) {
+          const values = await this.sg.getStoryCountsBulk([res.storyId],this.browserId);
+          const updateData = data?.data?.find((story:any) => story.id == res.storyId)
           const dialogRef = this.dialog.open(StoryModel, {
             width: '900px',
             panelClass: 'story-dialog',
             autoFocus: false,
-            data: data.data.find((story:any) => story.id == res.storyId),
+            data: {...updateData,...values[0]}
           });
 
           dialogRef.afterClosed().subscribe(result => {
             this.router.navigate([], {
               queryParams: {},
-            })
+              replaceUrl: true
+            }).then(() => {
+              window.location.reload();
+            });
             if (!result) return;
-            // this.storyAction.emit(result);
           });
         }
       })
       try {
-        this.browserId = this.utils.getBrowserId();
 
         const storyIds = [this.story.id]
 
