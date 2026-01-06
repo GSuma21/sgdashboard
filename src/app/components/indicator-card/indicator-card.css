@@ -28,7 +28,6 @@
 
 .divider {
   width: 2px;
-  height: 80px;
   background-color: #dddada ;
 }
 
@@ -55,6 +54,7 @@
   color: var(--background-color-dark);
   opacity: 0.8;
   text-align: left;
+  margin-bottom: 0px;
 
 }
 
@@ -62,7 +62,6 @@
   from { opacity: 0; transform: translateY(30px) scale(0.95); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
-
 
 @media (max-width: 768px) {
   .indicator-value {
@@ -73,9 +72,6 @@
   }
   .indicator-card {
     margin-bottom: 10px;
-  }
-  .divider {
-    height: 70px;
   }
   .indicator-icon {
     min-width: 20%;
