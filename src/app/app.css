@@ -3,7 +3,8 @@
   color: var(--text-color);
   padding: 1rem 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: fixed; /* Make the header fixed */
+  position: fixed;
+  /* Make the header fixed */
   top: 0;
   width: 100%;
   z-index: 1000;
@@ -50,11 +51,13 @@
 }
 
 .app-content {
-  padding-top: 80px; /* Add padding to account for fixed header height */
+  padding-top: 80px;
+  /* Add padding to account for fixed header height */
 }
 
 .app-content.no-header {
-  padding-top: 0; /* remove space when header is not shown */
+  padding-top: 0;
+  /* remove space when header is not shown */
 }
 
 .app-header .nav-links a.active-link {
@@ -76,6 +79,7 @@
   padding: 0.25rem 0.5rem;
   z-index: 1101;
 }
+
 .menu-toggle:focus {
   outline: none;
   box-shadow: none;
@@ -87,7 +91,8 @@
     display: block;
     margin-left: auto;
   }
-  .app-header{
+
+  .app-header {
     padding: 0;
   }
 
@@ -100,7 +105,7 @@
     top: 100%;
     left: 0;
     width: 100%;
-    box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
     padding: 1rem 0;
     z-index: 1100;
   }
@@ -117,4 +122,5 @@
 
 .app-content {
   padding-top: 80px;
+  min-height: 100vh;
 }

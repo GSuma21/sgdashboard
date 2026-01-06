@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
 import { VOICES_PAGE } from '../../../constants/urlConstants';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IndicatorCardComponent } from '../../components/indicator-card/indicator-card';
 import { StoriesCarouselComponent } from '../../components/stories-carousel/stories-carousel.component';
 import { ImprovementStoryComponent } from '../../components/improvement-story/improvement-story.component';
@@ -16,6 +17,8 @@ import { firebaseService } from '../../../firebase/firestore-service';
 import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 import { STORY_OF_THE_WEEK  } from '../../../constants/urlConstants';
 import { ACTIONS } from '../../../constants/actionConstants';
+import { MatDialog } from '@angular/material/dialog';
+import { StoryModel } from '../../components/story-model/story-model';
 // import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
@@ -26,7 +29,7 @@ import { ACTIONS } from '../../../constants/actionConstants';
   styleUrls: ['./voices.component.scss']
 })
 
-export class VoicesComponent implements OnInit {
+export class VoicesComponent implements OnInit, OnDestroy {
 
 
   pageData: any = [];
@@ -35,12 +38,33 @@ export class VoicesComponent implements OnInit {
 
   story:any=[];
   isMobile = window.innerWidth <= 768;
+  private queryParamsSubscription: Subscription | undefined;
 
+  constructor(private route :ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService,private router:Router) {
+  }
 
-  constructor(private utils:UtilsService, private sg:firebaseService) { }
   async ngOnInit() {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
-      this.story= data["data"][0];
+      const currentWeek:number = this.getWeekNumber(new Date());
+      this.story = data.data.length < currentWeek ? data["data"][data.data.length - 2] : data["data"][currentWeek - 1]  || data["data"][0]; // Fallback to 0 if out of bounds
+      this.queryParamsSubscription = this.route.queryParams.subscribe((res:any) => {
+        if(res.storyId) {
+          const dialogRef = this.dialog.open(StoryModel, {
+            width: '900px',
+            panelClass: 'story-dialog',
+            autoFocus: false,
+            data: data.data.find((story:any) => story.id == res.storyId),
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            this.router.navigate([], {
+              queryParams: {},
+            })
+            if (!result) return;
+            // this.storyAction.emit(result);
+          });
+        }
+      })
       try {
         this.browserId = this.utils.getBrowserId();
 
@@ -55,7 +79,7 @@ export class VoicesComponent implements OnInit {
 
         this.story = {
           ...this.story,
-          ...counts[0] 
+          ...counts[0]
         };
 
         console.log('slides--2',this.story)
@@ -105,6 +129,20 @@ export class VoicesComponent implements OnInit {
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+  }
+
+  getWeekNumber(d: Date): number {
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const weekNo = Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+    return weekNo;
+  }
+
+  ngOnDestroy() {
+    if (this.queryParamsSubscription) {
+      this.queryParamsSubscription.unsubscribe();
+    }
   }
 
 }

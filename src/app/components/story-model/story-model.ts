@@ -37,7 +37,7 @@ export class StoryModel {
         this.openShareModal();
         return;
       }
-      
+
     const res = await this.sg.updateRecord(
       action === ACTIONS.LIKE? { ...story, like: story.like ? 0 : 1 }: story,
       this.util.getBrowserId(),
@@ -48,7 +48,7 @@ export class StoryModel {
       console.warn('updateRecord returned invalid response:', res);
       return;
     }
-    
+
     this.currentStory = {
       ...this.currentStory,
       likesCount: (this.currentStory.likesCount ?? 0) + res.diff,
@@ -78,7 +78,7 @@ export class StoryModel {
   setStoryByLangIndex(index: number) {
     const langObj = this.story?.lang?.[index];
     const lang = this.story?.lang?.[index === 0 ? 1 : 0];
-  
+
     if (!langObj?.data) {
       console.warn('Language data not found for index:', index);
       this.currentStory = {
@@ -87,19 +87,22 @@ export class StoryModel {
       };
       return;
     }
-  
+
     this.currentStory = {
       ...this.story,
       ...langObj.data,
       activeLangCode: lang?.code?.slice(0, 3) ?? ''
     };
   }
-  
+
   openShareModal(): void {
     const dialogRef=this.dialog.open(ShareModal, {
       width: '520px',
       panelClass: 'share-dialog',
-      autoFocus: false
+      autoFocus: false,
+      data:{
+        storyId:this.story.id
+      }
     });
     dialogRef.afterClosed().subscribe(async (res) => {
       if(res === 'ok'){

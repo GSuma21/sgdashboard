@@ -12,14 +12,16 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './share-modal.css'
 })
 export class ShareModal {
-  shareLink = environment.shareLink;
+  shareLink ='';
   shareText = `Hello everyone, I really appreciated this story and wanted to share it with you.
 Do take a moment to read it and help spread the word.`;
 
   constructor(
     private dialogRef: MatDialogRef<ShareModal>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.shareLink = window.location.host+'/voices-from-the-ground?'+`storyId=${this.data.storyId}`
+  }
 
   closeModal() {
     this.dialogRef.close();

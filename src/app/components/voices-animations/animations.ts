@@ -2,12 +2,13 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 
 export const Animations = [
   trigger('branchState', [
-    state('0', style({ clipPath: 'circle(0% at 0% 100%)' })),
-    state('0.5', style({ clipPath: 'circle(25% at 0% 100%)' })),
-    state('1', style({ clipPath: 'circle(40% at 0% 100%)' })),
-    state('2', style({ clipPath: 'circle(65% at 0% 100%)' })),
-    state('3', style({ clipPath: 'circle(90% at 0% 100%)' })),
-    state('4', style({ clipPath: 'circle(150% at 0% 100%)' })),
+    state('0', style({ clipPath: 'circle(0% at 0% 100%)', opacity: 0 })),
+    state('0.5', style({ clipPath: 'circle(25% at 0% 100%)', opacity: 1 })),
+    state('1', style({ clipPath: 'circle(40% at 0% 100%)', opacity: 1 })),
+    state('2', style({ clipPath: 'circle(65% at 0% 100%)', opacity: 1 })),
+    state('3', style({ clipPath: 'circle(90% at 0% 100%)', opacity: 1 })),
+    state('4', style({ clipPath: 'circle(150% at 0% 100%)', opacity: 1 })),
+    transition('void => 0', style({ opacity: 0 })),
     transition('* => *', animate('1.5s ease-out'))
   ]),
 
