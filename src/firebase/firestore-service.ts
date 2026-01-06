@@ -102,7 +102,7 @@ export class firebaseService {
             transaction.set(
               storyRef,
               { 
-              likesCount: story.likesCount-1,
+              likesCount: Math.max(0, (story.likesCount ?? 0) - 1),
               shareCount: story.shareCount,
               downloadCount: story.downloadCount
               },

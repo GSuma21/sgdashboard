@@ -93,6 +93,7 @@ export class ImprovementStoryComponent {
           console.error('Failed to update share count:', error);
         }
       }
+      this.resumeCarousel.emit();
     });
   }
 }
