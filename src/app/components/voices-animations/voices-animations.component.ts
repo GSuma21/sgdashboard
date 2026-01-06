@@ -106,9 +106,9 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
     };
 
     if (type === 'problem') {
-      style.top = `${flowerTop + 10}%`; // Bottom of flower
+      style.top = `${flowerTop + 12}%`; // Bottom of flower
     } else {
-      style.top = `${flowerTop - 35}%`; // Top of flower
+      style.top = `${flowerTop - 37}%`; // Top of flower
     }
     return style;
   }

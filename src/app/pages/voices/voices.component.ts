@@ -45,12 +45,19 @@ export class VoicesComponent implements OnInit {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
       this.story= data["data"][0];
       this.router.queryParams.subscribe((res:any) => {
+        console.log(data.data.find((story:any) => {
+          story.id == res.storyId
+          return story;
+        }))
         if(res.storyId) {
           const dialogRef = this.dialog.open(StoryModel, {
             width: '900px',
             panelClass: 'story-dialog',
             autoFocus: false,
-            data: this.story,
+            data: data.data.find((story:any) => {
+              story.id == res.storyId
+              return story;
+            }),
           });
 
           dialogRef.afterClosed().subscribe(result => {
