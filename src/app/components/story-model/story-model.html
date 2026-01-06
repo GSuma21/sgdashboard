@@ -5,7 +5,7 @@
 
   <div class="meta-actions">
     <h2 class="modal-title">{{ currentStory.title }}</h2>
-  
+
     <div class="counts-section">
       <button type="button" class="action-item" (click)="handleUserClick(currentStory, ACTIONS.LIKE)">
         <mat-icon class="action-icon">{{ currentStory.like ? 'favorite' : 'favorite_border' }}</mat-icon>
@@ -16,11 +16,11 @@
         <mat-icon class="action-icon">share</mat-icon>
         {{ currentStory.shareCount ? currentStory.shareCount : 0 }}
       </button>
-      @if(currentStory?.lang?.length > 1){
+      <!-- @if(currentStory?.lang?.length > 1){
       <div class="lang-switch-container">
-        
+
         <span class="lang-label" *ngIf="isLangOn">{{ currentStory.activeLangCode || 'Eng'}}</span>
-      
+
         <div class="lang-toggle-wrapper">
           <input
             type="checkbox"
@@ -28,33 +28,33 @@
             [checked]="isLangOn"
             (change)="toggleLanguage()"
           />
-      
+
           <label class="toggle-button-switch" for="toggle-button-checkbox">
             <mat-icon class="toggle-icon">translate</mat-icon>
           </label>
-      
+
           <div class="toggle-button-text"></div>
         </div>
 
         <span class="lang-label" *ngIf="!isLangOn">{{ currentStory.activeLangCode || 'Hin' }}</span>
 
       </div>
-    
+
       <span class="hint-wrapper">
-          <mat-icon class="hint-icon">info</mat-icon>        
-      
+          <mat-icon class="hint-icon">info</mat-icon>
+
         <span class="hint-text">
           Use toggle to switch the language<br>
           &nbsp;to its original recorded language.<br>
           &nbsp;&nbsp;&nbsp;By default language is English.
         </span>
       </span>
-    }
-    
+    } -->
+
     </div>
-    
+
   </div>
-  
+
 
   <div class="meta-row">
 

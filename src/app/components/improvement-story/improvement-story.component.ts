@@ -23,59 +23,62 @@ export class ImprovementStoryComponent {
   @Input() customClass: any;
   @Output() pauseCarousel = new EventEmitter<boolean>();
   @Output() resumeCarousel = new EventEmitter<boolean>();
-  
+
 
   constructor(private sg:firebaseService,private dialog: MatDialog) {}
 
   async handleUserClick(story: any, action: ActionType) {
     this.pauseCarousel.emit(false);
-  
+
     try {
       if (action === ACTIONS.SHARE) {
         this.openShareModal();
         return;
       }
-  
+
       const res = await this.sg.updateRecord(
-        { ...story, 
-          like: story.like ? 0 : 1 
+        { ...story,
+          like: story.like ? 0 : 1
         },
         this.browserId,
         action,
       );
-  
+
       res?.status && this.storyAction.emit(res);
     } catch (err) {
       console.error(err);
     }
   }
-  
+
   openStoryModal(): void {
-    this.pauseCarousel.emit(true); 
-  
+    this.pauseCarousel.emit(true);
+
     const dialogRef = this.dialog.open(StoryModel, {
       width: '900px',
       panelClass: 'story-dialog',
       autoFocus: false,
       data: this.story,
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       this.resumeCarousel.emit(true);
-  
+
       if (!result) return;
       this.storyAction.emit(result);
     });
   }
-  
+
   openShareModal(): void {
     this.pauseCarousel.emit(true);
     const dialogRef = this.dialog.open(ShareModal, {
       width: '520px',
       panelClass: 'share-dialog',
-      autoFocus: false
+      autoFocus: false,
+      data:{
+        storyId:this.story.id
+      }
     });
-  
+
     dialogRef.afterClosed().subscribe(async (res) => {
       this.resumeCarousel.emit(true);
       if(res === 'ok'){
@@ -90,6 +93,7 @@ export class ImprovementStoryComponent {
           console.error('Failed to update share count:', error);
         }
       }
+      this.resumeCarousel.emit();
     });
   }
 }
