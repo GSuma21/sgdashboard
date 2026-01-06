@@ -51,7 +51,7 @@ export class VoicesComponent implements OnInit, OnDestroy {
       this.queryParamsSubscription = this.route.queryParams.subscribe(async (res:any) => {
         if(res?.storyId) {
           const values = await this.sg.getStoryCountsBulk([res.storyId],this.browserId);
-          const updateData = data?.data?.find((story:any) => story.id == res.storyId)
+          const updateData = data?.data?.find((story:any) => story.id === res.storyId)
           const dialogRef = this.dialog.open(StoryModel, {
             width: '900px',
             panelClass: 'story-dialog',
