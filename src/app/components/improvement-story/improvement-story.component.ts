@@ -28,7 +28,7 @@ export class ImprovementStoryComponent {
   constructor(private sg:firebaseService,private dialog: MatDialog) {}
 
   async handleUserClick(story: any, action: ActionType) {
-    this.pauseCarousel.emit();
+    this.pauseCarousel.emit(false);
   
     try {
       if (action === ACTIONS.SHARE) {
