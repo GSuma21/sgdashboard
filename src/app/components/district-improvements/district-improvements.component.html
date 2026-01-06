@@ -74,8 +74,10 @@
       <app-line-chart [data]="lineChart"></app-line-chart>
     </ng-container>
 
-    <ng-container *ngIf="section.type === 'pie-chart'">
+    @if(pieChart.length){
+      <ng-container *ngIf="section.type === 'pie-chart'">
       <app-pie-chart [pieData]="section.data"></app-pie-chart>
     </ng-container>
+    }
   </div>
 </div>

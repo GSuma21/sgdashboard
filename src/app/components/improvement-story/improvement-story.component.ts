@@ -33,10 +33,13 @@ export class ImprovementStoryComponent {
     try {
       if (action === ACTIONS.SHARE) {
         this.openShareModal();
+        return;
       }
   
       const res = await this.sg.updateRecord(
-        action === ACTIONS.LIKE ? { ...story, like: story.like ? 0 : 1 } : story,
+        { ...story, 
+          like: story.like ? 0 : 1 
+        },
         this.browserId,
         action,
       );
@@ -73,8 +76,21 @@ export class ImprovementStoryComponent {
       autoFocus: false
     });
   
-    dialogRef.afterClosed().subscribe(() => {
+    dialogRef.afterClosed().subscribe(async (res) => {
       this.resumeCarousel.emit(true);
+      if(res === 'ok'){
+        try {
+          const res = await this.sg.updateRecord(
+            this.story,
+            this.browserId,
+            ACTIONS.SHARE,
+          );
+          this.storyAction.emit(res);
+          this.resumeCarousel.emit();
+        } catch (error) {
+          console.error('Failed to update share count:', error);
+        }
+      }
     });
   }
 }

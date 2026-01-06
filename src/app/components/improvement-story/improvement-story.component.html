@@ -20,7 +20,7 @@
         </div>
       </div>
     
-      <div class="card-image-wrapper">
+      <div class="card-image-wrapper" *ngIf="story?.photos?.length">
         <img [src]="story?.photos?.[0]" 
           [alt]="story?.lang[0]?.data?.title || ('Story from ' + story?.lang[0]?.data?.role)"
           class="card-image"

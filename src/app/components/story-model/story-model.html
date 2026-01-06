@@ -16,7 +16,7 @@
         <mat-icon class="action-icon">share</mat-icon>
         {{ currentStory.shareCount ? currentStory.shareCount : 0 }}
       </button>
-
+      @if(currentStory?.lang?.length > 1){
       <div class="lang-switch-container">
         
         <span class="lang-label" *ngIf="isLangOn">{{ currentStory.activeLangCode || 'Eng'}}</span>
@@ -49,6 +49,7 @@
           &nbsp;&nbsp;&nbsp;By default language is English.
         </span>
       </span>
+    }
     
     </div>
     
