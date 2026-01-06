@@ -82,8 +82,6 @@ export class VoicesComponent implements OnInit, OnDestroy {
           ...counts[0]
         };
 
-        console.log('slides--2',this.story)
-
       } catch (error) {
         console.error('Failed to load story counts:', error);
 
@@ -108,7 +106,7 @@ export class VoicesComponent implements OnInit, OnDestroy {
       this.story = event.status ? {
         ...this.story,
         ...(event.action === ACTIONS.LIKE && {
-          likesCount: (this.story.likesCount ?? 0) + event.diff,
+          likesCount: Math.max(0,(this.story.likesCount ?? 0)+ event.diff),
           like: !this.story.like
         }),
         ...(event.action === ACTIONS.SHARE && {
