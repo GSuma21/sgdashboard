@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
 import { VOICES_PAGE } from '../../../constants/urlConstants';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { IndicatorCardComponent } from '../../components/indicator-card/indicator-card';
 import { StoriesCarouselComponent } from '../../components/stories-carousel/stories-carousel.component';
 import { ImprovementStoryComponent } from '../../components/improvement-story/improvement-story.component';
@@ -16,6 +16,8 @@ import { firebaseService } from '../../../firebase/firestore-service';
 import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 import { STORY_OF_THE_WEEK  } from '../../../constants/urlConstants';
 import { ACTIONS } from '../../../constants/actionConstants';
+import { MatDialog } from '@angular/material/dialog';
+import { StoryModel } from '../../components/story-model/story-model';
 // import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
@@ -36,11 +38,28 @@ export class VoicesComponent implements OnInit {
   story:any=[];
   isMobile = window.innerWidth <= 768;
 
+  constructor(private router:ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService) {
+  }
 
-  constructor(private utils:UtilsService, private sg:firebaseService) { }
   async ngOnInit() {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
       this.story= data["data"][0];
+      this.router.queryParams.subscribe((res:any) => {
+        if(res.storyId) {
+          const dialogRef = this.dialog.open(StoryModel, {
+            width: '900px',
+            panelClass: 'story-dialog',
+            autoFocus: false,
+            data: this.story,
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+
+            if (!result) return;
+            // this.storyAction.emit(result);
+          });
+        }
+      })
       try {
         this.browserId = this.utils.getBrowserId();
 
@@ -55,7 +74,7 @@ export class VoicesComponent implements OnInit {
 
         this.story = {
           ...this.story,
-          ...counts[0] 
+          ...counts[0]
         };
 
         console.log('slides--2',this.story)
