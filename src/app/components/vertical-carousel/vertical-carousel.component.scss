@@ -59,6 +59,7 @@ background: linear-gradient(to bottom,
   opacity: 0.6;
   transform: scale(0.95);
   transition: all 0.5s ease;
+  cursor: pointer;
 
   &.active {
     filter: none;

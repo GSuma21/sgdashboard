@@ -21,14 +21,14 @@ export class ImprovementStoryComponent {
   @Input() story: any;
   @Output() storyAction = new EventEmitter<any>();
   @Input() customClass: any;
-  @Output() pauseCarousel = new EventEmitter<void>();
-  @Output() resumeCarousel = new EventEmitter<void>();
+  @Output() pauseCarousel = new EventEmitter<boolean>();
+  @Output() resumeCarousel = new EventEmitter<boolean>();
   
 
   constructor(private sg:firebaseService,private dialog: MatDialog) {}
 
   async handleUserClick(story: any, action: ActionType) {
-    this.pauseCarousel.emit();
+    this.pauseCarousel.emit(false);
   
     try {
       if (action === ACTIONS.SHARE) {
@@ -51,7 +51,7 @@ export class ImprovementStoryComponent {
   }
   
   openStoryModal(): void {
-    this.pauseCarousel.emit();
+    this.pauseCarousel.emit(true); 
   
     const dialogRef = this.dialog.open(StoryModel, {
       width: '900px',
@@ -61,7 +61,7 @@ export class ImprovementStoryComponent {
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      this.resumeCarousel.emit();
+      this.resumeCarousel.emit(true);
   
       if (!result) return;
       this.storyAction.emit(result);
@@ -69,6 +69,7 @@ export class ImprovementStoryComponent {
   }
   
   openShareModal(): void {
+    this.pauseCarousel.emit(true);
     const dialogRef = this.dialog.open(ShareModal, {
       width: '520px',
       panelClass: 'share-dialog',
@@ -76,6 +77,7 @@ export class ImprovementStoryComponent {
     });
   
     dialogRef.afterClosed().subscribe(async (res) => {
+      this.resumeCarousel.emit(true);
       if(res === 'ok'){
         try {
           const res = await this.sg.updateRecord(
