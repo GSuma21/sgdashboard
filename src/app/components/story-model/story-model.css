@@ -37,8 +37,7 @@
   }
 
   .modal-title {
-    font-weight: 600;
-    font-style: Bold;
+    font-weight: bolder;
     font-size: 1.5rem;
     flex: 1;
     margin-top: 2.5rem;
@@ -119,9 +118,8 @@
     color: #555;
     
     h4{
-      font-weight: 800;
-      font-style: Bold;
-      font-size: 1.5rem;
+      font-weight: bolder;
+      font-size: 2rem;
     }
 
     i{
