@@ -115,14 +115,28 @@
 .bubble-solution {
   font-size: 12px;
 
+  p {
+    display: -webkit-box;
+    -webkit-line-clamp: 4; // Show 4 lines by default
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   &:hover {
     font-size: 14px !important;
+    z-index: 1000; // Ensure it's on top
+
+    p {
+      -webkit-line-clamp: unset; // Show full text on hover
+      line-clamp: unset;
+      overflow: visible;
+    }
   }
 }
 
-.read-more {
-  color: #1e40af;
-}
+
 
 // Fix for small screens (less than medium laptops)
 @media screen and (max-width: 1279px) {
