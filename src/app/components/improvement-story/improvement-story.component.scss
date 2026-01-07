@@ -189,6 +189,48 @@ mat-icon {
 }
 
 
+.like-item {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+  padding: 8px 12px;
+  margin-right: 15px;
+  border: 1px solid white;
+  border-radius: 5px;
+  background: white;
+  font-weight: 700;
+  gap: 0.375rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.heart-svg {
+  width: 1.5rem;
+  height: 2rem;
+  fill: transparent;
+  stroke: var(--primary-color);
+  stroke-width: 60;
+  transition: fill 0.2s ease, stroke 0.2s ease, transform 0.2s ease;
+}
+
+
+.heart-svg.liked {
+  fill: #e53935; 
+  stroke: #e53935; 
+  transform: scale(1.05);
+}
+
+.likes-count {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.likes-count.liked {
+  color: #000;
+}
+
 .tall-card .card-image-wrapper{
   margin-bottom: 50px;
 }
@@ -204,7 +246,7 @@ mat-icon {
 
 @media (max-width: 768px) { 
   .card-actions {
-    margin-top: 8px;
+    margin-top: -33px;
   .action-item {
     font-size: 9px;
     padding: 0px 4px;
@@ -306,7 +348,7 @@ mat-icon {
 
 @media (max-width: 480px) {
   .tall-card .card-actions{
-    margin-top: -5px;
+    margin-top: -35px;
   }
 
   .card-image-wrapper .card-image {
