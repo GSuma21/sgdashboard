@@ -39,36 +39,33 @@ Do take a moment to read it and help spread the word.`;
   share(platform: 'linkedin' | 'whatsapp' | 'facebook' | 'instagram') {
     const url = encodeURIComponent(this.shareLink);
     const text = encodeURIComponent(this.shareText);
-
+  
     const shareUrls: Record<string, string> = {
       linkedin: environment.linkedin + `${url}`,
-      whatsapp: environment.whatsapp + `text=${text}%0A%0A` +`${url}`,
+      whatsapp: environment.whatsapp + `text=${text}%0A%0A` + `${url}`,
       facebook: environment.facebook + `${url}`,
-      instagram: environment.instagram
+      instagram: environment.instagram,
     };
-
+  
     this.dialogRef.close('ok');
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
+  
     if (platform === 'instagram') {
-
       if (isMobile) {
         const instagramAppLink = 'instagram://app';
         const instagramWebLink = environment.instagram;
-    
+  
         window.location.href = instagramAppLink;
-    
+
         setTimeout(() => {
           window.open(instagramWebLink, '_blank', 'noopener,noreferrer');
         }, 1500);
       } else {
         window.open(environment.instagram, '_blank', 'noopener,noreferrer');
       }
-    
+  
       return;
     }
-    
-  
     window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
   }
 }
