@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
@@ -35,9 +35,10 @@ export class VoicesComponent implements OnInit, OnDestroy {
   pageData: any = [];
   window: any = window;
   browserId:string='';
-
   story:any=[];
   isMobile = window.innerWidth <= 768;
+  @ViewChild(StoriesCarouselComponent)
+  storyComp!: StoriesCarouselComponent;
   private queryParamsSubscription: Subscription | undefined;
 
   constructor(private route :ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService,private router:Router) {
@@ -48,28 +49,6 @@ export class VoicesComponent implements OnInit, OnDestroy {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
       const currentWeek:number = this.getWeekNumber(new Date());
       this.story = data.data.length < currentWeek ? data["data"][data.data.length - 2] : data["data"][currentWeek - 1]  || data["data"][0]; // Fallback to 0 if out of bounds
-      this.queryParamsSubscription = this.route.queryParams.subscribe(async (res:any) => {
-        if(res?.storyId) {
-          const values = await this.sg.getStoryCountsBulk([res.storyId],this.browserId);
-          const updateData = data?.data?.find((story:any) => story.id === res.storyId)
-          const dialogRef = this.dialog.open(StoryModel, {
-            width: '900px',
-            panelClass: 'story-dialog',
-            autoFocus: false,
-            data: {...updateData,...values[0]}
-          });
-
-          dialogRef.afterClosed().subscribe(result => {
-            this.router.navigate([], {
-              queryParams: {},
-              replaceUrl: true
-            }).then(() => {
-              window.location.reload();
-            });
-            if (!result) return;
-          });
-        }
-      })
       try {
 
         const storyIds = [this.story.id]
@@ -99,6 +78,34 @@ export class VoicesComponent implements OnInit, OnDestroy {
       } finally {
         this.fetchPageData();
       }
+      this.queryParamsSubscription = this.route.queryParams.subscribe(async (res:any) => {
+        if(res?.storyId) {
+          const values = await this.sg.getStoryCountsBulk([res.storyId],this.browserId);
+          const updateData = data?.data?.find((story:any) => story.id === res.storyId)
+          const dialogRef = this.dialog.open(StoryModel, {
+            width: '900px',
+            panelClass: 'story-dialog',
+            autoFocus: false,
+            data: {...updateData,...values[0]}
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            if(result.id === this.story.id){
+              this.story = {
+                ...this.story,
+                likesCount:result.likesCount,
+                shareCount:result.shareCount,
+                like:result.like
+              }
+            }
+            this.storyComp.updateStory(result);
+            this.router.navigate([], {
+              queryParams: {},
+              replaceUrl: true
+            })
+          });
+        }
+      })
      }).catch((error: any) => {
         console.error('Error loading page data:', error);
     });

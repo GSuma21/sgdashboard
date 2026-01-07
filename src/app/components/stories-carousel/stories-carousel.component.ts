@@ -73,6 +73,19 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     window.addEventListener('resize', this.resizeHandler);
   }
 
+  updateStory(updatedStory: any){
+    this.slides = this.slides.map(story =>
+      story.id === updatedStory.id ? {
+        ...story,
+        likesCount:updatedStory.likesCount,
+        shareCount:updatedStory.shareCount,
+        like:updatedStory.like
+      } : story
+    );
+    this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
+    this.startAutoSlide();
+  }
+
   adjustChunkSize() {
     const screenWidth = window.innerWidth;
   
