@@ -35,8 +35,9 @@ export class StoryModel {
     try{
       if (action === ACTIONS.SHARE) {
         this.openShareModal();
+        return;
       }
-      
+
     const res = await this.sg.updateRecord(
       action === ACTIONS.LIKE? { ...story, like: story.like ? 0 : 1 }: story,
       this.util.getBrowserId(),
@@ -47,16 +48,11 @@ export class StoryModel {
       console.warn('updateRecord returned invalid response:', res);
       return;
     }
-    
+
     this.currentStory = {
       ...this.currentStory,
-      ...(res.action === ACTIONS.LIKE && {
-        likesCount: (this.currentStory.likesCount ?? 0) + res.diff,
-        like: !this.currentStory.like
-      }),
-      ...(res.action === ACTIONS.SHARE && {
-        shareCount: (this.currentStory.shareCount ?? 0) + res.diff
-      })
+      likesCount: (this.currentStory.likesCount ?? 0) + res.diff,
+      like: !this.currentStory.like
     };
     }catch (err) {
       console.error(err);
@@ -82,7 +78,7 @@ export class StoryModel {
   setStoryByLangIndex(index: number) {
     const langObj = this.story?.lang?.[index];
     const lang = this.story?.lang?.[index === 0 ? 1 : 0];
-  
+
     if (!langObj?.data) {
       console.warn('Language data not found for index:', index);
       this.currentStory = {
@@ -91,19 +87,39 @@ export class StoryModel {
       };
       return;
     }
-  
+
     this.currentStory = {
       ...this.story,
       ...langObj.data,
       activeLangCode: lang?.code?.slice(0, 3) ?? ''
     };
   }
-  
+
   openShareModal(): void {
-    this.dialog.open(ShareModal, {
+    const dialogRef=this.dialog.open(ShareModal, {
       width: '520px',
       panelClass: 'share-dialog',
-      autoFocus: false
+      autoFocus: false,
+      data:{
+        storyId:this.story.id
+      }
+    });
+    dialogRef.afterClosed().subscribe(async (res) => {
+      if(res === 'ok'){
+        try {
+          const data = await this.sg.updateRecord(
+            this.story,
+            this.util.getBrowserId(),
+            ACTIONS.SHARE,
+          );
+          this.currentStory = {
+            ...this.currentStory,
+            shareCount: (this.currentStory.shareCount ?? 0) + data.diff
+          };
+        } catch (error) {
+          console.error('Failed to update share count:', error);
+        }
+      }
     });
   }
 }

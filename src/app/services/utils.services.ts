@@ -32,7 +32,7 @@ export class UtilsService {
           case ACTIONS.LIKE:
             return {
               ...slide,
-              likesCount: slide.likesCount + data.diff,
+              likesCount: Math.max(0, (slide.likesCount ?? 0) +  data.diff),
               like:!slide.like
             };
     

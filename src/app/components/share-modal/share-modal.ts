@@ -12,14 +12,16 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './share-modal.css'
 })
 export class ShareModal {
-  shareLink = environment.shareLink;
+  shareLink ='';
   shareText = `Hello everyone, I really appreciated this story and wanted to share it with you.
 Do take a moment to read it and help spread the word.`;
 
   constructor(
     private dialogRef: MatDialogRef<ShareModal>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
+  ) {
+    this.shareLink = window.location.host+'/voices-from-the-ground?'+`storyId=${this.data.storyId}`
+  }
 
   closeModal() {
     this.dialogRef.close();
@@ -28,6 +30,7 @@ Do take a moment to read it and help spread the word.`;
   async copyLink(input: HTMLInputElement | HTMLTextAreaElement) {
     try {
       await navigator.clipboard.writeText(input.value);
+      this.dialogRef.close('ok')
       alert('Link & text copied to clipboard');
     } catch {
       alert('Failed to copy link & text. Please copy manually.');
@@ -48,7 +51,7 @@ Do take a moment to read it and help spread the word.`;
       alert('Instagram sharing works only via mobile app. Please copy the link.');
       return;
     }
-
+    this.dialogRef.close('ok')
     window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
   }
 }

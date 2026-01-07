@@ -24,6 +24,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   autoSlideDelay: number = 5000;
   chunkSize: number = 2;
   private resizeHandler: () => void;
+  isModalOpen = false;
 
   constructor(private utils: UtilsService, private sg: firebaseService, private renderer: Renderer2 ) {
     this.resizeHandler = this.adjustChunkSize.bind(this);
@@ -117,7 +118,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   }
   
   startAutoSlide(): void {
-    if (this.slideInterval) return;
+    this.stopAutoSlide();
   
     this.slideInterval = setInterval(() => {
       this.navigateSlide(1, false);
@@ -135,6 +136,24 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     this.stopAutoSlide();
   this.startAutoSlide();
   }
+
+  onPauseCarousel(fromModal = false) {
+    if (fromModal) {
+      this.isModalOpen = true;
+    }
+    this.stopAutoSlide();
+  }
+  
+  onResumeCarousel(fromModal = false) {
+    if (fromModal) {
+      this.isModalOpen = false;
+    }
+  
+    if (this.isModalOpen) return;
+  
+    this.startAutoSlide();
+  }
+  
 
   ngOnDestroy(): void {
     if (this.slideInterval) {

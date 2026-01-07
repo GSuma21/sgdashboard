@@ -14,7 +14,8 @@
 
             <div class="story-card" *ngFor="let slide of chunk">
               <app-improvement-story [story]="slide" [browserId]="browserId"  (storyAction)="onStoryAction($event)"
-              (pauseCarousel)="stopAutoSlide()" (resumeCarousel)="startAutoSlide()"></app-improvement-story>
+              (pauseCarousel)="onPauseCarousel($event)"
+              (resumeCarousel)="onResumeCarousel($event)"></app-improvement-story>
             </div>
           </div>
         </div>
