@@ -25,11 +25,7 @@
           [ngStyle]="getBubbleStyle(node, 'solution')" @bubblePop>
           <img src="assets/animations/solution.svg" class="mb-2">
           <p>
-            {{ (expandedSolutions.has(i) || node.solution.length <= 200) ? node.solution : (node.solution | slice:0:200)
-              + '...' }} <span *ngIf="node.solution.length > 200 && !expandedSolutions.has(i)" class="read-more"
-              (click)="toggleSolution(i)">Read more</span>
-              <span *ngIf="node.solution.length > 200 && expandedSolutions.has(i)" class="read-more"
-                (click)="toggleSolution(i)">Read less</span>
+            {{ node.solution }}
           </p>
         </div>
 
