@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from '../../../../environments/environment';
 import { MatIconModule } from '@angular/material/icon';
-
 @Component({
   selector: 'app-share-modal',
   standalone: true,
@@ -48,22 +47,27 @@ Do take a moment to read it and help spread the word.`;
       instagram: environment.instagram
     };
 
+    this.dialogRef.close('ok');
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-    this.dialogRef.close('ok');
-
     if (platform === 'instagram') {
+
       if (isMobile) {
-        window.location.href = 'instagram://app';
-  
+        const instagramAppLink = 'instagram://app';
+        const instagramWebLink = environment.instagram;
+    
+        window.location.href = instagramAppLink;
+    
         setTimeout(() => {
-          window.open(environment.instagram, '_blank', 'noopener,noreferrer');
+          window.open(instagramWebLink, '_blank', 'noopener,noreferrer');
         }, 1500);
       } else {
         window.open(environment.instagram, '_blank', 'noopener,noreferrer');
       }
+    
       return;
     }
+    
   
     window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
   }
