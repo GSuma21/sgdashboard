@@ -37,11 +37,12 @@
   }
 
   .modal-title {
+    font-weight: 600;
+    font-style: Bold;
+    font-size: 1.5rem;
     flex: 1;
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin-top: 2.5rem;
-  margin-bottom: 0.75rem; 
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem; 
   }
 
   .counts-section{
@@ -66,6 +67,39 @@
     font-weight: 700;
   }
 
+  .like-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .heart-svg {
+    width: 1.5rem;
+    height: 2rem;
+    fill: transparent;
+    stroke: var(--primary-color);
+    stroke-width: 60;
+    transition: fill 0.2s ease, stroke 0.2s ease, transform 0.2s ease;
+  }
+  
+
+  .heart-svg.liked {
+    fill: #e53935; 
+    stroke: #e53935; 
+    transform: scale(1.05);
+  }
+  
+  .count {
+    text-align: center;
+    font-size: 0.9rem;
+  font-weight: 700;
+    color:#000;
+  }
+
   .action-item:focus,
 .action-item:focus-visible,
 .action-item:active {
@@ -85,8 +119,9 @@
     color: #555;
     
     h4{
-      font-size: 1rem;
-      font-weight: 600;
+      font-weight: 800;
+      font-style: Bold;
+      font-size: 1.5rem;
     }
 
     i{
