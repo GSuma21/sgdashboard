@@ -78,39 +78,80 @@ export class VoicesComponent implements OnInit, OnDestroy {
       } finally {
         this.fetchPageData();
       }
-      this.queryParamsSubscription = this.route.queryParams.subscribe(async (res:any) => {
-        if(res?.storyId) {
-          const values = await this.sg.getStoryCountsBulk([res.storyId],this.browserId);
-          const updateData = data?.data?.find((story:any) => story.id === res.storyId)
+
+      this.queryParamsSubscription = this.route.queryParams.subscribe(async (params: any) => {
+        if (!params?.storyId) return;
+      
+        try {
+
+          const values = await this.sg.getStoryCountsBulk(
+            [params.storyId],
+            this.browserId
+          );
+      
+          if (!Array.isArray(values) || !values[0]) {
+            console.warn('Story counts not found for storyId:', params.storyId);
+            return;
+          }
+
+          const updateData = data?.data?.find(
+            (story: any) => story.id === params.storyId
+          );
+      
+          if (!updateData) {
+            console.warn('Story data not found for storyId:', params.storyId);
+            return;
+          }
+
           const dialogRef = this.dialog.open(StoryModel, {
             width: '900px',
             panelClass: 'story-dialog',
             autoFocus: false,
-            data: {...updateData,...values[0]}
+            data: {
+              ...updateData,
+              ...values[0]
+            }
           });
+      
+          dialogRef.afterClosed().subscribe((result: any) => {
+            if (!result || !result.id) {
+              this.clearQueryParams();
+              return;
+            }
 
-          dialogRef.afterClosed().subscribe(result => {
-            if(result.id === this.story.id){
+            if (this.story?.id === result.id) {
               this.story = {
                 ...this.story,
-                likesCount:result.likesCount,
-                shareCount:result.shareCount,
-                like:result.like
-              }
+                likesCount: result.likesCount ?? this.story.likesCount,
+                shareCount: result.shareCount ?? this.story.shareCount,
+                like: result.like ?? this.story.like
+              };
             }
-            this.storyComp.updateStory(result);
-            this.router.navigate([], {
-              queryParams: {},
-              replaceUrl: true
-            })
+            if (this.storyComp) {
+              this.storyComp.updateStory(result);
+            } else {
+              console.warn('StoriesCarouselComponent not initialized yet');
+            }
+      
+            this.clearQueryParams();
           });
+      
+        } catch (error) {
+          console.error('Failed to open story modal:', error);
         }
-      })
+      });
+      
      }).catch((error: any) => {
         console.error('Error loading page data:', error);
     });
   }
 
+  clearQueryParams(): void {
+    this.router.navigate([], {
+      queryParams: {},
+      replaceUrl: true
+    });
+  }
 
 
   onStoryAction(event: any) {

@@ -74,6 +74,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   }
 
   updateStory(updatedStory: any){
+    if(!updatedStory) return
     this.slides = this.slides.map(story =>
       story.id === updatedStory.id ? {
         ...story,
