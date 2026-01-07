@@ -83,13 +83,13 @@ export class MultiAxisChartComponent {
             family: 'sans-serif'
           } as any  // 👈 TypeScript workaround
         },
-        grid: { color: 'rgba(255,0,0,0.3)' },
+        grid: { color: 'rgba(79, 79, 79, 0.1)' },
         ticks: { color: 'black' }
       },
       y1: {
         position: 'right',
         title: { display: false }, // plugin will draw upside-down title
-        grid: { color: 'rgba(255,0,0,0.3)' },
+        grid: { color: 'rgba(79, 79, 79, 0.1)' },
         ticks: { color: 'black' }
       }
     },
