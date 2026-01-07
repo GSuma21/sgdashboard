@@ -52,20 +52,18 @@ Do take a moment to read it and help spread the word.`;
   
     if (platform === 'instagram') {
       if (isMobile) {
-        const instagramAppLink = 'instagram://app';
-        const instagramWebLink = environment.instagram;
-  
-        window.location.href = instagramAppLink;
+        window.location.href = 'instagram://app';
 
         setTimeout(() => {
-          window.open(instagramWebLink, '_blank', 'noopener,noreferrer');
+          window.open(environment.instagram, '_blank', 'noopener,noreferrer');
         }, 1500);
       } else {
         window.open(environment.instagram, '_blank', 'noopener,noreferrer');
       }
-  
       return;
     }
+  
     window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
   }
+  
 }
