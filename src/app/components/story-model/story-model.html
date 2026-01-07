@@ -7,14 +7,18 @@
     <h2 class="modal-title">{{ currentStory.title }}</h2>
 
     <div class="counts-section">
-      <button type="button" class="action-item" (click)="handleUserClick(currentStory, ACTIONS.LIKE)">
-        <mat-icon class="action-icon">{{ currentStory.like ? 'favorite' : 'favorite_border' }}</mat-icon>
-        {{ currentStory.likesCount ? currentStory.likesCount : 0 }}
-      </button>
+      <button type="button" class="like-item" (click)="handleUserClick(currentStory, ACTIONS.LIKE)">
+      <svg class="heart-svg" viewBox="0 -960 960 960" [class.liked]="currentStory.like" aria-hidden="true">
+        <path d="M479.99-148.83q-11.62 0-22.93-3.83-11.3-3.83-20.07-12.84l-54.16-50Q263.5-325.33 175.08-426.17 86.67-527 86.67-639.48q0-89.38 60.06-149.28 60.06-59.91 148.84-59.91 50.6 0 99.01 23.75Q443-801.17 480-750q41-51.17 87.05-74.92 46.06-23.75 97.53-23.75 88.71 0 148.73 59.91 60.02 59.9 60.02 149.28 0 112.48-88.33 213.4-88.33 100.91-207.17 210.25l-54.66 50.5q-9 8.92-20.18 12.71-11.17 3.79-23 3.79Z"/>
+      </svg>
+      <span class="count">{{ currentStory.likesCount || 0 }}</span>
+    </button>
+    
+    
 
       <button type="button" class="action-item" (click)="handleUserClick(currentStory, ACTIONS.SHARE)">
         <mat-icon class="action-icon">share</mat-icon>
-        {{ currentStory.shareCount ? currentStory.shareCount : 0 }}
+        <span class="count">{{ currentStory.shareCount ? currentStory.shareCount : 0 }}</span>
       </button>
       <!-- @if(currentStory?.lang?.length > 1){
       <div class="lang-switch-container">
