@@ -44,14 +44,27 @@ Do take a moment to read it and help spread the word.`;
     const shareUrls: Record<string, string> = {
       linkedin: environment.linkedin + `${url}`,
       whatsapp: environment.whatsapp + `text=${text}%0A%0A` +`${url}`,
-      facebook: environment.facebook + `${url}`
+      facebook: environment.facebook + `${url}`,
+      instagram: environment.instagram
     };
 
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    this.dialogRef.close('ok');
+
     if (platform === 'instagram') {
-      alert('Instagram sharing works only via mobile app. Please copy the link.');
+      if (isMobile) {
+        window.location.href = 'instagram://app';
+  
+        setTimeout(() => {
+          window.open(environment.instagram, '_blank', 'noopener,noreferrer');
+        }, 1500);
+      } else {
+        window.open(environment.instagram, '_blank', 'noopener,noreferrer');
+      }
       return;
     }
-    this.dialogRef.close('ok')
+  
     window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
   }
 }
