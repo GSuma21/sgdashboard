@@ -2,11 +2,11 @@
 <g clip-path="url(#clip0_2544_156080)">
 <rect width="2560" height="937" rx="6.74101" fill="url(#paint0_linear_2544_156080)"/>
 <g filter="url(#filter0_g_2544_156080)">
-<rect x="-3" y="286" width="2560" height="695" fill="#E2C3A0"/>
+<rect x="-3" y="165" width="2560" height="816" fill="#E2C3A0"/>
 </g>
 </g>
 <defs>
-<filter id="filter0_g_2544_156080" x="-103" y="186" width="2760" height="895" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_g_2544_156080" x="-103" y="65" width="2760" height="1016" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feTurbulence type="fractalNoise" baseFrequency="1.4472758769989014 1.4472758769989014" numOctaves="3" seed="3619" />
