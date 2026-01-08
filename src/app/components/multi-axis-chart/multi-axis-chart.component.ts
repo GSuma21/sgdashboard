@@ -15,15 +15,14 @@ const rightYAxisUpsideDownPlugin = {
     const chartArea = chart.chartArea;
 
     const titleLines = [
-      'Leaders–Leading Micro Improvements',
-      '(Count)'
+      'Leaders–Participating in dialogues (Thousands)'
     ];
 
     ctx.save();
 
     // Shift farther right (increase from 25 to 60)
     // Also add small vertical nudge (+10) to adjust centering if needed
-    ctx.translate(chartArea.right + 80, (chartArea.top + chartArea.bottom) / 2 );
+    ctx.translate(chartArea.right + 50, (chartArea.top + chartArea.bottom) / 2 );
 
     ctx.rotate(-Math.PI / 2); // bottom-to-top
     ctx.font = '10px sans-serif';
@@ -72,8 +71,7 @@ export class MultiAxisChartComponent {
         title: {
           display: true,
           text: [
-            'Leaders–Participating in dialogues',
-            '(Thousands)'
+            'Leaders–Leading Micro Improvements'
           ],
           color: 'black',
           // add font size safely
@@ -83,13 +81,13 @@ export class MultiAxisChartComponent {
             family: 'sans-serif'
           } as any  // 👈 TypeScript workaround
         },
-        grid: { color: 'rgba(255,0,0,0.3)' },
+        grid: { color: 'rgba(79, 79, 79, 0.1)' },
         ticks: { color: 'black' }
       },
       y1: {
         position: 'right',
         title: { display: false }, // plugin will draw upside-down title
-        grid: { color: 'rgba(255,0,0,0.3)' },
+        grid: { color: 'rgba(79, 79, 79, 0.1)' },
         ticks: { color: 'black' }
       }
     },
@@ -148,7 +146,7 @@ export class MultiAxisChartComponent {
             label: 'Leading Micro Improvements',
             borderColor: '#fe9a11',
             pointBackgroundColor: '#fe9a11',
-            yAxisID: 'y1',
+            yAxisID: 'y',
             tension: 0.4,
             fill: false,
             borderWidth: 4,      // line thickness
@@ -160,7 +158,8 @@ export class MultiAxisChartComponent {
             data: dialoguesData,
             label: 'Participating in dialogues',
             backgroundColor: '#592e91',
-            yAxisID: 'y',
+            yAxisID: 'y1',
+            barPercentage: 0.7,      // actual bar width
             borderRadius: {
               topLeft: 8,
               topRight: 8,
