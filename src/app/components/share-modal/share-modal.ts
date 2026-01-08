@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from '../../../../environments/environment';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-share-modal',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, MatSnackBarModule],
   templateUrl: './share-modal.html',
   styleUrl: './share-modal.css'
 })
@@ -17,7 +18,8 @@ Do take a moment to read it and help spread the word.`;
 
   constructor(
     private dialogRef: MatDialogRef<ShareModal>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private snackBar: MatSnackBar
   ) {
     this.shareLink = window.location.host+'/voices-from-the-ground?'+`storyId=${this.data.storyId}`
   }
@@ -29,12 +31,32 @@ Do take a moment to read it and help spread the word.`;
   async copyLink(input: HTMLInputElement | HTMLTextAreaElement) {
     try {
       await navigator.clipboard.writeText(input.value);
-      this.dialogRef.close('ok')
-      alert('Link & text copied to clipboard');
+  
+      this.snackBar.open(
+        'Link & text copied to clipboard',
+        '',
+        {
+          duration: 5000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          panelClass: ['success-snackbar']
+        }
+      );
+  
+      this.dialogRef.close('ok');
     } catch {
-      alert('Failed to copy link & text. Please copy manually.');
+      this.snackBar.open(
+        'Failed to copy link & text. Please copy manually.',
+        '',
+        {
+          duration: 4000,
+          horizontalPosition: 'right',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar']
+        }
+      );
     }
-  }
+  }  
 
   share(platform: 'linkedin' | 'whatsapp' | 'facebook' | 'instagram') {
     const url = encodeURIComponent(this.shareLink);
