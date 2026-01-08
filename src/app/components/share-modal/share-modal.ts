@@ -32,27 +32,12 @@ Do take a moment to read it and help spread the word.`;
     try {
       await navigator.clipboard.writeText(input.value);
   
-      this.snackBar.open(
-        'Link & text copied to clipboard',
-        '',
-        {
-          duration: 5000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top'
-        }
-      );
+      this.showSnackBar('Link & text copied to clipboard'); 
   
       this.dialogRef.close('ok');
     } catch {
-      this.snackBar.open(
-        'Failed to copy link & text. Please copy manually.',
-        '',
-        {
-          duration: 4000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top'
-        }
-      );
+      this.showSnackBar('Failed to copy link & text. Please copy manually.');  // Using generalized method
+
     }
   }  
 
@@ -85,5 +70,12 @@ Do take a moment to read it and help spread the word.`;
   
     window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
   }
-  
+
+  showSnackBar(message: string, duration: number = 3000, horizontalPosition: 'left' | 'center' | 'right' = 'right', verticalPosition: 'top' | 'bottom' = 'top') {
+    this.snackBar.open(message, '', {
+      duration: duration,
+      horizontalPosition: horizontalPosition,
+      verticalPosition: verticalPosition,
+    });
+  }
 }
