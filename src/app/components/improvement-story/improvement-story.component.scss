@@ -194,7 +194,7 @@ mat-icon {
   align-items: center;
   color: white;
   font-size: 14px;
-  padding: 8px 12px;
+  padding: 0px 10px;
   margin-right: 15px;
   border: 1px solid white;
   border-radius: 5px;
@@ -207,7 +207,6 @@ mat-icon {
 
 .heart-svg {
   width: 1.5rem;
-  height: 2rem;
   fill: transparent;
   stroke: var(--primary-color);
   stroke-width: 60;
@@ -346,6 +345,11 @@ mat-icon {
   margin-top: 25px;
 }
 
+.heart-svg {
+  width: 1rem;
+}
+}
+
 @media (max-width: 480px) {
   .tall-card .card-actions{
     margin-top: -35px;
@@ -357,7 +361,6 @@ mat-icon {
 }
 .card-title{
   margin-top: 1rem;
-}
 }
 }
 
