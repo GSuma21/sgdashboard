@@ -6,6 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { StoryModel } from '../story-model/story-model';
 import { ShareModal } from '../share-modal/share-modal';
+import { Subject } from 'rxjs';
+import { debounceTime, exhaustMap  } from 'rxjs/operators';
 
 @Component({
   selector: 'app-improvement-story',
@@ -15,6 +17,7 @@ import { ShareModal } from '../share-modal/share-modal';
   styleUrl: './improvement-story.component.scss'
 })
 export class ImprovementStoryComponent {
+  private action$ = new Subject<{ story: any; action: ActionType }>();
   ACTIONS = ACTIONS;
   @Input() browserId!: string;
   @Input() storyOfWeek:boolean = false;
@@ -25,29 +28,37 @@ export class ImprovementStoryComponent {
   @Output() resumeCarousel = new EventEmitter<boolean>();
 
 
-  constructor(private sg:firebaseService,private dialog: MatDialog) {}
+  constructor(private sg:firebaseService,private dialog: MatDialog) {
+    this.action$
+    .pipe(
+      debounceTime(1000),
+      exhaustMap(({ story, action }) => this.processAction(story, action))
+    )
+    .subscribe({
+      next: (res) => res?.status && this.storyAction.emit(res),
+      error: (err) => console.error('Action failed:', err)
+    });
+  }
 
   async handleUserClick(story: any, action: ActionType) {
     this.pauseCarousel.emit(false);
 
-    try {
       if (action === ACTIONS.SHARE) {
         this.openShareModal();
         return;
       }
 
-      const res = await this.sg.updateRecord(
-        { ...story,
-          like: story.like ? 0 : 1
-        },
-        this.browserId,
-        action,
-      );
+      this.action$.next({ story, action });
+  }
 
-      res?.status && this.storyAction.emit(res);
-    } catch (err) {
-      console.error(err);
-    }
+  async processAction(story: any, action: ActionType) {
+    return this.sg.updateRecord(
+      action === ACTIONS.LIKE
+        ? { ...story, like: story.like ? 0 : 1 }
+        : story,
+      this.browserId,
+      action
+    );
   }
 
   openStoryModal(): void {
@@ -82,16 +93,10 @@ export class ImprovementStoryComponent {
     dialogRef.afterClosed().subscribe(async (res) => {
       this.resumeCarousel.emit(true);
       if(res === 'ok'){
-        try {
-          const res = await this.sg.updateRecord(
-            this.story,
-            this.browserId,
-            ACTIONS.SHARE,
-          );
-          this.storyAction.emit(res);
-        } catch (error) {
-          console.error('Failed to update share count:', error);
-        }
+        this.action$.next({
+          story: this.story,
+          action: ACTIONS.SHARE
+        });
       }
       this.resumeCarousel.emit();
     });

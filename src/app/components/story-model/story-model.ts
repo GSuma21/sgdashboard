@@ -7,6 +7,9 @@ import { firebaseService } from '../../../firebase/firestore-service';
 import { UtilsService } from '../../services/utils.services';
 import { MatDialog } from '@angular/material/dialog';
 import { ShareModal } from '../share-modal/share-modal';
+import { Subject } from 'rxjs';
+import { debounceTime, exhaustMap } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-story-model',
@@ -20,6 +23,8 @@ export class StoryModel {
   isLangOn = false;
   currentStory: any;
   @Output() close = new EventEmitter<void>();
+  private action$ = new Subject<{ story: any; action: ActionType }>();
+
 
   constructor(
     private dialogRef: MatDialogRef<StoryModel>,
@@ -29,34 +34,54 @@ export class StoryModel {
     private dialog: MatDialog
   ) {
     this.setStoryByLangIndex(0);
+    this.action$
+    .pipe(
+      debounceTime(1000),
+      exhaustMap(({ story, action }) =>
+        this.processAction(story, action)
+      )
+    )
+    .subscribe({
+      next: (res) => {
+        if (!res?.action) return;
+
+        if (res.action === ACTIONS.LIKE) {
+          this.currentStory = {
+            ...this.currentStory,
+            likesCount: Math.max(
+              0,
+              (this.currentStory.likesCount ?? 0) + res.diff
+            ),
+            like: !this.currentStory.like
+          };
+        }
+
+        if (res.action === ACTIONS.SHARE) {
+          this.currentStory = {
+            ...this.currentStory,
+            shareCount: (this.currentStory.shareCount ?? 0) + res.diff
+          };
+        }
+      },
+      error: (err) => console.error('Action failed:', err)
+    });
   }
 
   async handleUserClick(story:any,action: ActionType){
-    try{
-      if (action === ACTIONS.SHARE) {
-        this.openShareModal();
-        return;
-      }
-
-    const res = await this.sg.updateRecord(
-      action === ACTIONS.LIKE? { ...story, like: story.like ? 0 : 1 }: story,
-      this.util.getBrowserId(),
-      action,
-    );
-
-    if (!res || !res.action) {
-      console.warn('updateRecord returned invalid response:', res);
+    if (action === ACTIONS.SHARE) {
+      this.openShareModal();
       return;
     }
 
-    this.currentStory = {
-      ...this.currentStory,
-      likesCount: (this.currentStory.likesCount ?? 0) + res.diff,
-      like: !this.currentStory.like
-    };
-    }catch (err) {
-      console.error(err);
-    }
+    this.action$.next({ story, action });
+  }
+
+  async processAction(story: any, action: ActionType) {
+    return this.sg.updateRecord(
+      action === ACTIONS.LIKE ? { ...story, like: story.like ? 0 : 1 }: story,
+      this.util.getBrowserId(),
+      action
+    );
   }
 
   toggleLanguage() {
@@ -106,19 +131,10 @@ export class StoryModel {
     });
     dialogRef.afterClosed().subscribe(async (res) => {
       if(res === 'ok'){
-        try {
-          const data = await this.sg.updateRecord(
-            this.story,
-            this.util.getBrowserId(),
-            ACTIONS.SHARE,
-          );
-          this.currentStory = {
-            ...this.currentStory,
-            shareCount: (this.currentStory.shareCount ?? 0) + data.diff
-          };
-        } catch (error) {
-          console.error('Failed to update share count:', error);
-        }
+        this.action$.next({
+          story: this.story,
+          action: ACTIONS.SHARE
+        });
       }
     });
   }
