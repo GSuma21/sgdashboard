@@ -64,16 +64,13 @@ getThemeData() {
   d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${HEATMAP_THEME}`)
     .then((heatmapData: any) => {
       this.heatmapData = heatmapData;
-      console.log(heatmapData)
       return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${THEMES_EMERGED}`);
     })
     .then((data: any) => {
-      console.log(data)
-       const sortedData = data.data
 
   const heatmapConfigs = Object.values(this.heatmapData);
 
-  this.themes = sortedData.map((item: any, index: number) => {
+  this.themes = data.data.map((item: any, index: number) => {
     const id = item.id.split(' ')[0];
 
     // icon strictly by id
