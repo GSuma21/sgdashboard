@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { StoryModel } from '../story-model/story-model';
 import { ShareModal } from '../share-modal/share-modal';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, exhaustMap  } from 'rxjs/operators';
 
 @Component({
@@ -26,10 +26,11 @@ export class ImprovementStoryComponent {
   @Input() customClass: any;
   @Output() pauseCarousel = new EventEmitter<boolean>();
   @Output() resumeCarousel = new EventEmitter<boolean>();
+   private actionSub!: Subscription;
 
 
   constructor(private sg:firebaseService,private dialog: MatDialog) {
-    this.action$
+    this.actionSub = this.action$
     .pipe(
       debounceTime(1000),
       exhaustMap(({ story, action }) => this.processAction(story, action))
@@ -91,14 +92,19 @@ export class ImprovementStoryComponent {
     });
 
     dialogRef.afterClosed().subscribe(async (res) => {
-      this.resumeCarousel.emit(true);
       if(res === 'ok'){
         this.action$.next({
           story: this.story,
           action: ACTIONS.SHARE
         });
       }
-      this.resumeCarousel.emit();
+      this.resumeCarousel.emit(true);
     });
   }
+
+  ngOnDestroy(): void {
+    this.actionSub?.unsubscribe();
+    this.action$.complete(); 
+  }
+
 }

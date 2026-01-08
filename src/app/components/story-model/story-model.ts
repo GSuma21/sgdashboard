@@ -7,7 +7,7 @@ import { firebaseService } from '../../../firebase/firestore-service';
 import { UtilsService } from '../../services/utils.services';
 import { MatDialog } from '@angular/material/dialog';
 import { ShareModal } from '../share-modal/share-modal';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime, exhaustMap } from 'rxjs/operators';
 
 
@@ -24,6 +24,7 @@ export class StoryModel {
   currentStory: any;
   @Output() close = new EventEmitter<void>();
   private action$ = new Subject<{ story: any; action: ActionType }>();
+  private actionSub!: Subscription;
 
 
   constructor(
@@ -34,7 +35,7 @@ export class StoryModel {
     private dialog: MatDialog
   ) {
     this.setStoryByLangIndex(0);
-    this.action$
+    this.actionSub = this.action$
     .pipe(
       debounceTime(1000),
       exhaustMap(({ story, action }) =>
@@ -138,4 +139,11 @@ export class StoryModel {
       }
     });
   }
+
+
+  ngOnDestroy(): void {
+    this.actionSub?.unsubscribe();
+    this.action$.complete(); 
+  }
+
 }
