@@ -136,6 +136,10 @@
   }
 }
 
+.author {
+    text-transform: capitalize;
+}
+
 
 
 // Fix for small screens (less than medium laptops)
@@ -160,6 +164,18 @@
     img {
       width: 20px;
     }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .branch-wrapper {
+    top: 15%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .branch-wrapper {
+    top: 10%;
   }
 }
 
