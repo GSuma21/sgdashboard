@@ -38,8 +38,7 @@ Do take a moment to read it and help spread the word.`;
         {
           duration: 5000,
           horizontalPosition: 'right',
-          verticalPosition: 'top',
-          panelClass: ['success-snackbar']
+          verticalPosition: 'top'
         }
       );
   
@@ -51,8 +50,7 @@ Do take a moment to read it and help spread the word.`;
         {
           duration: 4000,
           horizontalPosition: 'right',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar']
+          verticalPosition: 'top'
         }
       );
     }
