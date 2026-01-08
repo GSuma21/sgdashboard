@@ -10,24 +10,24 @@
             {{ story?.lang[0]?.data?.title }}
           </span>
         </h3>
-    
+
         <div class="card-meta px-4">
           <img class="meta-icon" src="assets/icons/user_dial.svg">
           <div class="meta-text ml-2">
             <p class="mb-0 leader-text">{{ story?.lang[0]?.data?.role }}</p>
-            <p class="location mb-0">{{ story?.lang[0]?.data?.district }}, {{ story?.lang[0]?.data?.state }}</p>
+            <p class="location mb-0">{{ story?.lang[0]?.data?.district }}, {{ story?.lang[0]?.data?.state | titlecase }}</p>
           </div>
         </div>
       </div>
-    
+
       <div class="card-image-wrapper" *ngIf="story?.photos?.length">
-        <img [src]="story?.photos?.[0]" 
+        <img [src]="story?.photos?.[0]"
           [alt]="story?.lang[0]?.data?.title || ('Story from ' + story?.lang[0]?.data?.role)"
           class="card-image"
         />
       </div>
     </section>
-    
+
     <div class="card-actions d-flex justify-content-between px-3 px-md-4 pb-2">
       <section class="d-flex">
         <button type="button" class="like-item" (click)="handleUserClick(story, ACTIONS.LIKE)">
