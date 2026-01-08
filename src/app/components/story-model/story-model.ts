@@ -8,8 +8,7 @@ import { UtilsService } from '../../services/utils.services';
 import { MatDialog } from '@angular/material/dialog';
 import { ShareModal } from '../share-modal/share-modal';
 import { Subject, Subscription } from 'rxjs';
-import { debounceTime, exhaustMap } from 'rxjs/operators';
-
+import { debounceTime, exhaustMap, groupBy, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-story-model',
@@ -37,13 +36,18 @@ export class StoryModel {
     this.setStoryByLangIndex(0);
     this.actionSub = this.action$
     .pipe(
+    groupBy(({ action }) => action),
+    mergeMap((group$) =>
+      group$.pipe(
       debounceTime(1000),
       exhaustMap(({ story, action }) =>
         this.processAction(story, action)
+        )
+      )
       )
     )
     .subscribe({
-      next: (res) => {
+      next: (res:any) => {
         if (!res?.action) return;
 
         if (res.action === ACTIONS.LIKE) {
