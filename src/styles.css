@@ -113,3 +113,19 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
   font-family: 'Inter', 'Roboto', sans-serif;
 }
+
+.heatmap-tooltip {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  color: #000000;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  max-width: 200px;
+  line-height: 1.4;
+  text-align: center;
+   margin-top: -40px !important;
+}
+
+.cdk-overlay-pane:has(.heatmap-tooltip) {
+  margin-top: -50px;
+}

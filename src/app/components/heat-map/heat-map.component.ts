@@ -4,6 +4,7 @@ import { trigger, transition, style, animate, query, stagger } from '@angular/an
 import { environment } from '../../../../environments/environment';
 import { HEATMAP_THEME, THEMES_EMERGED } from '../../../constants/urlConstants';
 import * as d3 from 'd3';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export interface HeatmapTheme {
   id: string;
@@ -26,7 +27,7 @@ export interface VoiceQuote {
 @Component({
   selector: 'app-heat-map',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatTooltipModule],
   templateUrl: './heat-map.component.html',
   styleUrl: './heat-map.component.scss',
   animations: [
@@ -63,31 +64,43 @@ getThemeData() {
   d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${HEATMAP_THEME}`)
     .then((heatmapData: any) => {
       this.heatmapData = heatmapData;
+      console.log(heatmapData)
       return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${THEMES_EMERGED}`);
     })
     .then((data: any) => {
-      this.themes = (data?.data ?? []).map((item: any) => {
-        const id = item.id.split(' ')[0];
-        const heatmap = this.heatmapData[id] ?? {};
-        return {
-          id,
-          label: item.label,
-          value: Number(item.value),
-          list: (item.list ?? []).map((listItem: any) => ({
-            ...listItem,
-            color: heatmap.color ?? 'gray',
-          })),
-          color: heatmap.color ?? 'gray',
-          gridClass: heatmap.gridClass ?? 'span-1-1',
-          icon: heatmap.icon ?? ''
-        };
-      });
+      console.log(data)
+       const sortedData = data.data
 
-      this.heatmapThemeConfig = this.heatmapData;
+  const heatmapConfigs = Object.values(this.heatmapData);
 
-      if (this.themes.length > 0) {
-        this.setActiveTheme(this.themes[0].id);
-      }
+  this.themes = sortedData.map((item: any, index: number) => {
+    const id = item.id.split(' ')[0];
+
+    // icon strictly by id
+    const icon = this.heatmapData[id]?.icon ?? '';
+
+    // color & layout by sorted position
+    const heatmapByOrder = heatmapConfigs[index] ?? {};
+
+    return {
+      id,
+      label: item.label,
+      value: Number(item.value),
+      list: (item.list ?? []).map((listItem: any) => ({
+        ...listItem,
+        color: heatmapByOrder.color ?? 'gray',
+      })),
+      color: heatmapByOrder.color ?? 'gray',
+      gridClass: heatmapByOrder.gridClass ?? 'span-1-1',
+      icon
+    };
+  });
+
+  this.heatmapThemeConfig = this.heatmapData;
+
+  if (this.themes.length > 0) {
+    this.setActiveTheme(this.themes[0].id);
+  }
     })
     .catch((error: any) => {
       console.error('Error loading page data:', error);
