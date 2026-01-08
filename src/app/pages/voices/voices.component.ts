@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
@@ -35,38 +35,21 @@ export class VoicesComponent implements OnInit, OnDestroy {
   pageData: any = [];
   window: any = window;
   browserId:string='';
-
   story:any=[];
   isMobile = window.innerWidth <= 768;
+  @ViewChild(StoriesCarouselComponent)
+  storyComp!: StoriesCarouselComponent;
   private queryParamsSubscription: Subscription | undefined;
 
   constructor(private route :ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService,private router:Router) {
   }
 
   async ngOnInit() {
+    this.browserId = this.utils.getBrowserId();
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
       const currentWeek:number = this.getWeekNumber(new Date());
       this.story = data.data.length < currentWeek ? data["data"][data.data.length - 2] : data["data"][currentWeek - 1]  || data["data"][0]; // Fallback to 0 if out of bounds
-      this.queryParamsSubscription = this.route.queryParams.subscribe((res:any) => {
-        if(res.storyId) {
-          const dialogRef = this.dialog.open(StoryModel, {
-            width: '900px',
-            panelClass: 'story-dialog',
-            autoFocus: false,
-            data: data.data.find((story:any) => story.id == res.storyId),
-          });
-
-          dialogRef.afterClosed().subscribe(result => {
-            this.router.navigate([], {
-              queryParams: {},
-            })
-            if (!result) return;
-            // this.storyAction.emit(result);
-          });
-        }
-      })
       try {
-        this.browserId = this.utils.getBrowserId();
 
         const storyIds = [this.story.id]
 
@@ -95,11 +78,80 @@ export class VoicesComponent implements OnInit, OnDestroy {
       } finally {
         this.fetchPageData();
       }
+
+      this.queryParamsSubscription = this.route.queryParams.subscribe(async (params: any) => {
+        if (!params?.storyId) return;
+      
+        try {
+
+          const values = await this.sg.getStoryCountsBulk(
+            [params.storyId],
+            this.browserId
+          );
+      
+          if (!Array.isArray(values) || !values[0]) {
+            console.warn('Story counts not found for storyId:', params.storyId);
+            return;
+          }
+
+          const updateData = data?.data?.find(
+            (story: any) => story.id === params.storyId
+          );
+      
+          if (!updateData) {
+            console.warn('Story data not found for storyId:', params.storyId);
+            return;
+          }
+
+          const dialogRef = this.dialog.open(StoryModel, {
+            width: '900px',
+            panelClass: 'story-dialog',
+            autoFocus: false,
+            data: {
+              ...updateData,
+              ...values[0]
+            }
+          });
+      
+          dialogRef.afterClosed().subscribe((result: any) => {
+            if (!result || !result.id) {
+              this.clearQueryParams();
+              return;
+            }
+
+            if (this.story?.id === result.id) {
+              this.story = {
+                ...this.story,
+                likesCount: result.likesCount ?? this.story.likesCount,
+                shareCount: result.shareCount ?? this.story.shareCount,
+                like: result.like ?? this.story.like
+              };
+            }
+            if (this.storyComp) {
+              this.storyComp.updateStory(result);
+            } else {
+              console.warn('StoriesCarouselComponent not initialized yet');
+            }
+      
+            this.clearQueryParams();
+          });
+      
+        } catch (error) {
+          console.error('Failed to open story modal:', error);
+        }
+      });
+      
      }).catch((error: any) => {
         console.error('Error loading page data:', error);
     });
   }
 
+  clearQueryParams(): void {
+    this.router.navigate([], {
+      queryParams: {},
+      replaceUrl: true
+    });
+  }
 
 
   onStoryAction(event: any) {

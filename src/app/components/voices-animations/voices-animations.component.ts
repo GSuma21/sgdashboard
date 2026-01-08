@@ -23,7 +23,7 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
   dandelionsVisible = new Set<number>();
   problemsVisible = new Set<number>();
   solutionsVisible = new Set<number>();
-  expandedSolutions = new Set<number>();
+
 
   readonly BRANCH_IMG = 'assets/animations/branch_4.svg';
   readonly FLOWER_IMG = 'assets/animations/dandelion.svg';
@@ -106,18 +106,12 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
     if (type === 'problem') {
       style.top = `${flowerTop + 8}%`; // Bottom of flower
     } else {
-      style.top = `${flowerTop - 37}%`; // Top of flower
+      style.top = `${flowerTop - 34}%`; // Top of flower
     }
     return style;
   }
 
-  toggleSolution(index: number) {
-    if (this.expandedSolutions.has(index)) {
-      this.expandedSolutions.delete(index);
-    } else {
-      this.expandedSolutions.add(index);
-    }
-  }
+
 
   fetchPageData(): void {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICE_ANIMATION}`).then((data: any) => {

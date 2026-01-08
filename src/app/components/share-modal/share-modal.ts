@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from '../../../../environments/environment';
 import { MatIconModule } from '@angular/material/icon';
-
 @Component({
   selector: 'app-share-modal',
   standalone: true,
@@ -40,18 +39,31 @@ Do take a moment to read it and help spread the word.`;
   share(platform: 'linkedin' | 'whatsapp' | 'facebook' | 'instagram') {
     const url = encodeURIComponent(this.shareLink);
     const text = encodeURIComponent(this.shareText);
-
+  
     const shareUrls: Record<string, string> = {
       linkedin: environment.linkedin + `${url}`,
-      whatsapp: environment.whatsapp + `text=${text}%0A%0A` +`${url}`,
-      facebook: environment.facebook + `${url}`
+      whatsapp: environment.whatsapp + `text=${text}%0A%0A` + `${url}`,
+      facebook: environment.facebook + `${url}`,
+      instagram: environment.instagram,
     };
-
+  
+    this.dialogRef.close('ok');
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  
     if (platform === 'instagram') {
-      alert('Instagram sharing works only via mobile app. Please copy the link.');
+      if (isMobile) {
+        window.location.href = 'instagram://app';
+
+        setTimeout(() => {
+          window.open(environment.instagram, '_blank', 'noopener,noreferrer');
+        }, 1500);
+      } else {
+        window.open(environment.instagram, '_blank', 'noopener,noreferrer');
+      }
       return;
     }
-    this.dialogRef.close('ok')
+  
     window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
   }
+  
 }
