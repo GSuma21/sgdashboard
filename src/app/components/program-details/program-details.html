@@ -13,7 +13,7 @@
               </h2>
             </div>
           
-            <button class="view-report-btn" (click)="openReport(programData)">
+            <button class="view-report-btn" (click)="openReport(programData)" *ngIf="programData.report_link">
               <span>View Report</span>
               <mat-icon class="eye-icon">visibility_outlined</mat-icon>
             </button>

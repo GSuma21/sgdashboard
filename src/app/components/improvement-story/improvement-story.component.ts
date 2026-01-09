@@ -32,7 +32,7 @@ export class ImprovementStoryComponent {
   constructor(private sg:firebaseService,private dialog: MatDialog) {
     this.actionSub = this.action$
     .pipe(
-      debounceTime(1000),
+      debounceTime(500),
       exhaustMap(({ story, action }) => this.processAction(story, action))
     )
     .subscribe({
