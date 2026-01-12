@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 
 @Component({
@@ -34,7 +35,7 @@ export class NetworkHealth implements OnInit {
   baseUrl:any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
 
 
-  constructor(private cdr: ChangeDetectorRef,private dialog: MatDialog) {}
+  constructor(private cdr: ChangeDetectorRef,private dialog: MatDialog, private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
     this.fetchPageData();
@@ -62,14 +63,18 @@ export class NetworkHealth implements OnInit {
       console.error('Glossary template not found');
       return; // stop execution to avoid runtime error
     }
+    const isMobile = this.breakpointObserver.isMatched(Breakpoints.Handset);
+    const isTablet = this.breakpointObserver.isMatched(Breakpoints.Tablet);
     this.dialog.open(this.glossaryTemplate, {
-      width: '600px',
+      width: isMobile ? '100%' : '600px',
       maxWidth: '1000px',
-      position: {
-        right: '10%',
-        top: '11%'
-      },
-      panelClass: 'glossary-side-dialog',
+      position: isMobile
+        ? { top: '38%', right: '0%' }
+        : isTablet
+          ? { top: '18%', right: '8%' }
+          : { top: '12%', right: '10%' },
+
+      panelClass:'glossary-side-dialog',
       backdropClass: 'glossary-backdrop'
     });
   }
