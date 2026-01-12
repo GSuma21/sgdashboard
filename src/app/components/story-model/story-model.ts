@@ -39,7 +39,7 @@ export class StoryModel {
     groupBy(({ action }) => action),
     mergeMap((group$) =>
       group$.pipe(
-      debounceTime(1000),
+      debounceTime(500),
       exhaustMap(({ story, action }) =>
         this.processAction(story, action)
         )
@@ -137,7 +137,7 @@ export class StoryModel {
     dialogRef.afterClosed().subscribe(async (res) => {
       if(res === 'ok'){
         this.action$.next({
-          story: this.story,
+          story: this.currentStory,
           action: ACTIONS.SHARE
         });
       }

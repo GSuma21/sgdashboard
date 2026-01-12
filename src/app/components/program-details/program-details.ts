@@ -5,10 +5,11 @@ import { environment } from '../../../../environments/environment';
 import * as d3 from 'd3';
 import { LANDING_PAGE } from '../../../constants/urlConstants';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-program-details',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule,MatIcon],
   templateUrl: './program-details.html',
   styleUrl: './program-details.css'
 })
@@ -72,6 +73,9 @@ export class ProgramDetails {
   }
 
 
+  openReport(report:any) {
+    window.open(report?.report_link,'_blank')
+  }  
 
 
   nextSlide(): void {
