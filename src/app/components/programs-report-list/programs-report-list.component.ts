@@ -34,7 +34,7 @@ export class ProgramsReportListComponent implements OnInit {
   }
 
   openReport(report:any) {
-    if(report.report_link) {
+    if(report.program_type === 'WLC') {
       window.open(report.report_link,'_blank')
     }
     else {

@@ -18,7 +18,7 @@
           [ngStyle]="getBubbleStyle(node, 'problem')" @bubblePop>
           <img src="assets/animations/challenge.svg" class="mb-2">
           <p><strong>{{ node.problem }}</strong></p>
-          <p style="text-align: right; font-style: italic; font-size: 0.8em;">- {{ node.author }}</p>
+          <p style="text-align: right; font-style: italic; font-size: 0.8em;" class="author">- {{ node.author }}</p>
         </div>
 
         <div class="bubble solution bubble-solution" *ngIf="solutionsVisible.has(i)"
