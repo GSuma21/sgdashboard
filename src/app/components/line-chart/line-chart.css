@@ -38,7 +38,6 @@ mat-card {
 
 .chart-container {
   width: 100%;
-  max-width: 650px;
   background: #fff;
   border-radius: 16px;
   padding: 20px;
@@ -85,7 +84,7 @@ mat-card {
   }
 
   .chart-container {
-    width: 90vw;
+    width: 100%;
     padding: 12px;
   }
 
@@ -98,7 +97,7 @@ mat-card {
 @media (max-width: 768px) {
   .chart-container {
     min-height: 300px;
-    width: 80vw;
+    width: 100%;
   }
 
   .chart {
