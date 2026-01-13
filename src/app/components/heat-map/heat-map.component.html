@@ -4,7 +4,7 @@
         <div class="heatmap-grid" *ngIf="themes && themes.length">
             <div *ngFor="let theme of themes" class="heatmap-item" [ngClass]="theme.gridClass"
                 [class.active]="activeThemeId === theme.id" [class]="theme.color"
-                (mouseenter)="setActiveTheme(theme.id)">
+                (mouseenter)="setActiveTheme(theme.id)" (click)="setActiveTheme(theme.id)">
                 <div class="content" matTooltip="{{ theme.label }}" matTooltipPosition="below" matTooltipShowDelay="100"
                     matTooltipClass="heatmap-tooltip">
                     <div class="icon" *ngIf="theme.icon">
