@@ -53,6 +53,7 @@ export class HeatMapComponent implements OnInit {
   heatmapThemes:any
   heatmapThemeConfig: Record<string, any> = {}
   heatmapData: Record<string, any> = {}
+  private tooltipTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
   activeThemeId: string | null = null;
   displayedVoices: VoiceQuote[] = [];
@@ -116,7 +117,18 @@ getThemeData() {
   showTooltipOnClick(index: number) {
     const tooltip = this.tooltips.toArray()[index];
     if (!tooltip) return;
+
+    // Clear any existing timeout
+    if (this.tooltipTimeoutId) {
+      clearTimeout(this.tooltipTimeoutId);
+    }
     tooltip.show(); // Show tooltip
-    setTimeout(() => tooltip.hide(), 2000); // Auto hide after 2 seconds
+    this.tooltipTimeoutId = setTimeout(() => tooltip.hide(), 1000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.tooltipTimeoutId) {
+      clearTimeout(this.tooltipTimeoutId);
+    }
   }
 }
