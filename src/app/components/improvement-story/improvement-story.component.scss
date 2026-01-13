@@ -232,7 +232,7 @@ mat-icon {
 
 @media (max-width: 768px) { 
   .card-actions {
-    margin-top: -33px;
+    margin-top: -30px;
   .action-item,
   .like-item {
     font-size: 0.5625rem;
@@ -244,7 +244,7 @@ mat-icon {
 
   .read-story-btn {
     font-size: 0.5rem;
-    padding: 0.3125rem; 
+    padding: 0.20rem 0.75rem;
   }
 }
 
@@ -294,7 +294,6 @@ mat-icon {
 
 #flow-img {
   width: 100%;
-  height: 50%;
 }
 
 .tall-card {
@@ -306,7 +305,7 @@ mat-icon {
 }
 
 .tall-card .card-actions .read-story-btn{
-  padding: 0.3125rem 0.75rem;
+  padding: 0.20rem 0.75rem;
 }
 
 .story-body {
@@ -356,9 +355,7 @@ mat-icon {
 .card-actions {
   padding-bottom: 20%;
 }
-#flow-img {
-  height: 20%;
-}
+
 .action-item,
 .like-item {
   font-size: 0.5rem;
