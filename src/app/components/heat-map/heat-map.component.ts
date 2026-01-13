@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { environment } from '../../../../environments/environment';
 import { HEATMAP_THEME, THEMES_EMERGED } from '../../../constants/urlConstants';
 import * as d3 from 'd3';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 
 export interface HeatmapTheme {
   id: string;
@@ -48,6 +48,7 @@ export interface VoiceQuote {
   ]
 })
 export class HeatMapComponent implements OnInit {
+  @ViewChildren('tooltip') tooltips!: QueryList<MatTooltip>;
   themes: HeatmapTheme[] = [];
   heatmapThemes:any
   heatmapThemeConfig: Record<string, any> = {}
@@ -110,5 +111,12 @@ getThemeData() {
     this.activeThemeId = themeId;
     const activeTheme = this.themes.find(t => t.id === themeId);
     this.displayedVoices = (activeTheme?.list ?? []).slice(0, 4);
+  }
+
+  showTooltipOnClick(index: number) {
+    const tooltip = this.tooltips.toArray()[index];
+    if (!tooltip) return;
+    tooltip.show(); // Show tooltip
+    setTimeout(() => tooltip.hide(), 2000); // Auto hide after 2 seconds
   }
 }
