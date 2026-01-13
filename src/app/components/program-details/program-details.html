@@ -6,9 +6,18 @@
 
     <div class="program-container">
         <div class="title">
-            <div class="back-icon" (click)="goBack()">&#8592;</div>
-            <h2 class="label" *ngIf="programData.name_of_the_program">{{ programData.name_of_the_program }}</h2>
-        </div>
+            <div class="left-section">
+              <div class="back-icon" (click)="goBack()">&#8592;</div>
+              <h2 class="label" *ngIf="programData.name_of_the_program">
+                {{ programData.name_of_the_program }}
+              </h2>
+            </div>
+          
+            <button class="view-report-btn" (click)="openReport(programData)" *ngIf="programData.report_link">
+              <span>View Report</span>
+              <mat-icon class="eye-icon">visibility_outlined</mat-icon>
+            </button>
+          </div>
 
         <div class="content">
             <div class="program-model-container">

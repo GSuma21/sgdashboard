@@ -20,7 +20,7 @@
         <mat-icon class="action-icon">share</mat-icon>
         <span class="count">{{ currentStory.shareCount ? currentStory.shareCount : 0 }}</span>
       </button>
-      <!-- @if(currentStory?.lang?.length > 1){
+    @if(currentStory?.lang?.length > 1){
       <div class="lang-switch-container">
 
         <span class="lang-label" *ngIf="isLangOn">{{ currentStory.activeLangCode || 'Eng'}}</span>
@@ -45,7 +45,8 @@
       </div>
 
       <span class="hint-wrapper">
-          <mat-icon class="hint-icon">info</mat-icon>
+          <span class="hint-icon" aria-label="Language information"
+          title="Language">i</span>
 
         <span class="hint-text">
           Use toggle to switch the language<br>
@@ -53,7 +54,7 @@
           &nbsp;&nbsp;&nbsp;By default language is English.
         </span>
       </span>
-    } -->
+    }
 
     </div>
 
@@ -68,7 +69,7 @@
     </div>
     <div class="meta-item">
       <mat-icon class="meta-icon">location_on</mat-icon>
-      <h4>{{currentStory.district}}, {{currentStory.state}}</h4>
+      <h4>{{currentStory.district}}, {{currentStory.state | titlecase}}</h4>
     </div>
   </div>
 

@@ -38,7 +38,6 @@ mat-card {
 
 .chart-container {
   width: 100%;
-  max-width: 650px;
   background: #fff;
   border-radius: 16px;
   padding: 20px;
@@ -85,23 +84,53 @@ mat-card {
   }
 
   .chart-container {
-    width: 90vw;
-    padding: 12px;
+    width: 100%;
+    padding: 0;
   }
 
   .chart {
     width: 100%;
     height: 280px;
   }
+
+    mat-card-title {
+      padding-top: 1rem;
+      padding-left: 1rem;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+  
+    .year-buttons {
+      display: flex;
+      justify-content: left;
+      gap: 10px;
+      padding-left: 1rem;
+      margin: 10px 0;
+    }
 }
 
 @media (max-width: 768px) {
   .chart-container {
     min-height: 300px;
-    width: 80vw;
+    width: 100%;
   }
 
-  .chart {
-    height: 300px;
-  }
+    .chart {
+      height: 300px;
+    }
+  
+    mat-card-title {
+      padding-top: 1rem;
+      padding-left: 1rem;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+  
+    .year-buttons {
+      display: flex;
+      justify-content: left;
+      gap: 10px;
+      padding-left: 1rem;
+      margin: 10px 0;
+    }
 }

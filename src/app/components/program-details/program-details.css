@@ -292,8 +292,13 @@ h5 {
 .title {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
     padding: 1rem 0;
+}
+  
+.left-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .label {
@@ -313,6 +318,40 @@ h5 {
 
   .back-icon:hover {
     transform: translateX(-3px);
+  }
+
+.view-report-btn {
+    margin-left: auto;
+    width: 120px;
+    height:2rem ;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; 
+    gap: 0.4rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--primary-color);
+    background: #f5f5f5;
+    color: var(--primary-color);
+    font-size: 0.8rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    span {
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .eye-icon {
+        display: inline-flex;
+        align-items: center;
+        font-size: 1rem;
+        line-height: 1;
+      }
+  }
+  
+  .view-report-btn:hover {
+    background-color: rgba(87, 46, 145, 0.08);
   }
 
 .partners {

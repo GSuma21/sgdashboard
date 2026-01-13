@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { environment } from '../../../../environments/environment';
 import { HEATMAP_THEME, THEMES_EMERGED } from '../../../constants/urlConstants';
 import * as d3 from 'd3';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 
 export interface HeatmapTheme {
   id: string;
@@ -22,6 +22,7 @@ export interface VoiceQuote {
   voice_by: string;
   themeId: string;
   color: string;
+  state: string;
 }
 
 @Component({
@@ -47,10 +48,12 @@ export interface VoiceQuote {
   ]
 })
 export class HeatMapComponent implements OnInit {
+  @ViewChildren('tooltip') tooltips!: QueryList<MatTooltip>;
   themes: HeatmapTheme[] = [];
   heatmapThemes:any
   heatmapThemeConfig: Record<string, any> = {}
   heatmapData: Record<string, any> = {}
+  private tooltipTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
   activeThemeId: string | null = null;
   displayedVoices: VoiceQuote[] = [];
@@ -109,5 +112,23 @@ getThemeData() {
     this.activeThemeId = themeId;
     const activeTheme = this.themes.find(t => t.id === themeId);
     this.displayedVoices = (activeTheme?.list ?? []).slice(0, 4);
+  }
+
+  showTooltipOnClick(index: number) {
+    const tooltip = this.tooltips.toArray()[index];
+    if (!tooltip) return;
+
+    // Clear any existing timeout
+    if (this.tooltipTimeoutId) {
+      clearTimeout(this.tooltipTimeoutId);
+    }
+    tooltip.show(); // Show tooltip
+    this.tooltipTimeoutId = setTimeout(() => tooltip.hide(), 1000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.tooltipTimeoutId) {
+      clearTimeout(this.tooltipTimeoutId);
+    }
   }
 }
