@@ -174,12 +174,14 @@ app-improvement-story {
     }
 
         .box-shadow {
-            box-shadow: 0px 4px 12px 0px #00000040;
-            border-radius: 7%;
+            box-shadow: 0px 0px 0px 0px #00000040;
+            border-radius: 0%;
+            width:90%;
+            height: auto;
         }
 
         .width-spacing{
-            width: 80%;
+            width: 90%;
 
         }
 

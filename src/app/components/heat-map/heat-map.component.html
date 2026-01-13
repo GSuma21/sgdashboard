@@ -2,10 +2,10 @@
     <div class="left-panel">
         <h2 class="section-title">Themes beneath the voices</h2>
         <div class="heatmap-grid" *ngIf="themes && themes.length">
-            <div *ngFor="let theme of themes" class="heatmap-item" [ngClass]="theme.gridClass"
+            <div *ngFor="let theme of themes, let i = index" class="heatmap-item" [ngClass]="theme.gridClass"
                 [class.active]="activeThemeId === theme.id" [class]="theme.color"
-                (mouseenter)="setActiveTheme(theme.id)">
-                <div class="content" matTooltip="{{ theme.label }}" matTooltipPosition="below" matTooltipShowDelay="100"
+                (mouseenter)="setActiveTheme(theme.id)" >
+                <div class="content" #tooltip="matTooltip" matTooltip="{{ theme.label }}" matTooltipPosition="below" matTooltipShowDelay="100"  (click)="showTooltipOnClick(i)"
                     matTooltipClass="heatmap-tooltip">
                     <div class="icon" *ngIf="theme.icon">
                         <img [src]="theme.icon" alt="icon" class="icon-img" />
@@ -28,7 +28,7 @@
                 <img src="/assets/icons/quote.png" alt="Quotation mark icon" class="quote-icon">
                 <div class="quote-container">
                     <p class="quote-text">{{ voice.description }}</p>
-                    <p class="quote-author">– {{ voice.voice_by }}</p>
+                    <p class="quote-author">– {{ voice.voice_by }},{{voice.state | titlecase}}</p>
                 </div>
             </div>
         </div>
