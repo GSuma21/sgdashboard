@@ -44,23 +44,6 @@ mat-card {
     border-radius: 5px;
 }
 
-
-@media (max-width: 768px) {
-    .chart-container {
-        
-        max-width: 360px;
-        min-width: 350px;
-    }
-}
-
-@media (max-width: 540px) {
-  .chart-container {
-      
-    max-width: 320px;
-    min-width: 310px;
-}
-}
-
 .legend {
   display: flex;;
   font-family: Arial, sans-serif;
@@ -105,9 +88,30 @@ mat-card {
   border-radius: 12px;
   padding:2px;
   height: 300px;
-  display: flex;
-  // align-items: center;
-  justify-content: center;
+  position: relative;
   margin-top: 30px;
 }
 
+@media (max-width: 768px) {
+  .header-row {
+    display: grid;
+    grid-template-columns: 55% 55%;
+  }
+
+  .chart {
+    padding: 5px
+  }
+
+  .legend {
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    gap: 5px;
+    align-items: flex-start;
+    justify-content: end;
+  }
+
+  .chart-container {
+    margin: 0 auto;
+  }
+}

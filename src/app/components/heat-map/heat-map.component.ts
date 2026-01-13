@@ -22,6 +22,7 @@ export interface VoiceQuote {
   voice_by: string;
   themeId: string;
   color: string;
+  state: string;
 }
 
 @Component({

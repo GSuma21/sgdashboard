@@ -84,7 +84,9 @@
     </ng-container>
 
     <ng-container *ngIf="section.type === 'line-chart'">
-      <app-line-chart [data]="section.data"></app-line-chart>
+      <div class="line-chart-container">
+          <app-line-chart [data]="section.data"></app-line-chart>
+      </div>
     </ng-container>
 
     <ng-container *ngIf="section.type === 'pie-chart'" class="pie-chart">

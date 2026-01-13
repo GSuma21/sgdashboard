@@ -38,6 +38,53 @@ const rightYAxisUpsideDownPlugin = {
   }
 };
 
+
+const customXAxisLabelPlugin = {
+  id: 'customXAxisLabel',
+  afterDraw(chart: any) {
+    const ctx = chart.ctx;
+    const xScale = chart.scales.x;
+    if (!xScale) return;
+
+    ctx.save();
+
+    const isMobile = window.innerWidth < 768;
+
+    // Mobile adjustments
+    const qFontSize = isMobile ? 10 : 11;    // Q1-Q4 bold
+    const subFontSize = isMobile ? 6 : 10;   // months in ()
+    const gap = isMobile ? 3 : 4;            // gap between Q1 and months
+
+    // More left shift for mobile
+    const offsetX = isMobile ? -24 : -10;      // shift left by 18px on mobile
+
+    chart.data.labels.forEach((label: string, index: number) => {
+      const x = xScale.getPixelForTick(index) + offsetX;
+      const y = xScale.bottom + 14;
+
+      const match = label.match(/(Q\d+)\s*\(([^)]+)\)/);
+      if (!match) return;
+
+      const quarter = match[1]; // Q1
+      const months = `(${match[2]})`; // (Apr - Jun)
+
+      // Draw Q1 → bold black
+      ctx.font = `bold ${qFontSize}px sans-serif`;
+      ctx.fillStyle = '#000';
+      ctx.textAlign = 'left';
+      const quarterWidth = ctx.measureText(quarter).width;
+      ctx.fillText(quarter, x, y);
+
+      // Draw months → grey, same line
+      ctx.font = `${subFontSize}px sans-serif`;
+      ctx.fillStyle = '#888';
+      ctx.fillText(months, x + quarterWidth + gap, y);
+    });
+
+    ctx.restore();
+  }
+};
+
 @Component({
   selector: 'app-multi-axis-chart',
   standalone: true,
@@ -57,6 +104,8 @@ export class MultiAxisChartComponent {
   };
 
   public lineChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    maintainAspectRatio: false, 
     elements: {
       line: {
         tension: 0.5
@@ -66,6 +115,12 @@ export class MultiAxisChartComponent {
       (event.native?.target as HTMLElement).style.cursor = chartElement[0] ? 'pointer' : 'default';
     },
     scales: {
+       x: {
+    type: 'category',
+    ticks: {
+      display: false   // hide default labels
+    }
+  },
   y: {
   position: 'left',
         title: {
@@ -93,8 +148,9 @@ export class MultiAxisChartComponent {
     },
     layout: {
       padding: {
-        right: 50, // space for your custom right Y-axis title
-        top: 20
+        right: window.innerWidth < 768 ? 20 : 50,
+        top: 20,
+        bottom: 25 
       }
     },
     plugins: {
@@ -117,6 +173,7 @@ export class MultiAxisChartComponent {
   constructor() {
     Chart.register(...registerables);
     Chart.register(rightYAxisUpsideDownPlugin);
+     Chart.register(customXAxisLabelPlugin);
   }
 
   ngOnInit(): void {
