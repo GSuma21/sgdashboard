@@ -115,14 +115,19 @@ getThemeData() {
   }
 
   showTooltipOnClick(index: number) {
-    const tooltip = this.tooltips.toArray()[index];
-    if (!tooltip) return;
+    const tooltipsArray = this.tooltips.toArray();
+    if (!tooltipsArray[index]) return;
 
+    // Hide all other tooltips immediately
+    tooltipsArray.forEach((t, i) => {
+      if (i !== index) t.hide();
+    });
     // Clear any existing timeout
     if (this.tooltipTimeoutId) {
       clearTimeout(this.tooltipTimeoutId);
     }
-    tooltip.show(); // Show tooltip
+    const tooltip = tooltipsArray[index];
+    tooltip.show();
     this.tooltipTimeoutId = setTimeout(() => tooltip.hide(), 1000);
   }
 
