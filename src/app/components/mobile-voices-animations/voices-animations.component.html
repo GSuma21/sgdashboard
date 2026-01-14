@@ -1,5 +1,5 @@
 <div class="animation-container">
-  <img src="assets/animations/background.svg" class="bg-img" style="position: absolute; width:100%; object-fit: cover;">
+  <img src="assets/mobile-animations/background.svg" class="bg-img" style="position: absolute; width:100%; object-fit: cover;">
 
   <div class="branch-wrapper">
 
@@ -16,18 +16,16 @@
 
         <div class="bubble problem bubble-problem" *ngIf="problemsVisible.has(i)"
           [ngStyle]="getBubbleStyle(node, 'problem')" @bubblePop>
-          <img src="assets/animations/challenge.svg" class="mb-2">
+          <img src="assets/mobile-animations/challenge.svg" class="mb-2">
           <p><strong>{{ node.problem }}</strong></p>
           <p style="text-align: right; font-style: italic; font-size: 0.8em;" class="author">- {{ node.author }}</p>
         </div>
 
         <div class="bubble solution bubble-solution" *ngIf="solutionsVisible.has(i)"
-          [ngStyle]="getBubbleStyle(node, 'solution')" @solutionPop>
-          <img src="assets/animations/solution.svg" class="mb-2">
+          [ngStyle]="getBubbleStyle(node, 'solution')" @bubblePop>
+          <img src="assets/mobile-animations/solution.svg" class="mb-2">
           <p>
-            {{ node.solution }}
-          </p>
-          <p style="text-align: right; font-style: italic; font-size: 0.8em;" class="author mb-0">- {{ node.author }}
+            <strong>{{ node.solution }}</strong>
           </p>
         </div>
 

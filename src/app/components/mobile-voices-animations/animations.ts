@@ -1,4 +1,4 @@
-import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 export const Animations = [
   trigger('branchState', [
@@ -27,20 +27,6 @@ export const Animations = [
       style({ transform: 'translate(-50%, -50%) scale(0) rotate(-45deg)', opacity: 0 }),
       animate('0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
         style({ transform: 'translate(-50%, -50%) scale(1) rotate(0deg)', opacity: 1 }))
-    ])
-  ]),
-
-  trigger('solutionPop', [
-    transition(':enter', [
-      style({ transform: 'translateX(-50%) scale(0)', opacity: 0 }),
-      animate('1s ease-out', keyframes([
-        style({ transform: 'translateX(-50%) scale(0)', opacity: 0, offset: 0 }),
-        style({ transform: 'translateX(-50%) scale(1.2)', opacity: 1, offset: 0.7 }),
-        style({ transform: 'translateX(-50%) scale(1)', opacity: 1, offset: 1 })
-      ]))
-    ]),
-    transition(':leave', [
-      animate('0.5s ease-out', style({ opacity: 0, transform: 'translateX(-50%) scale(0.9)' }))
     ])
   ])
 ];

@@ -1,0 +1,25 @@
+<svg width="64" height="83" viewBox="0 0 64 83" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M45.2284 44.9898C44.0084 45.2622 42.7885 45.5347 41.5685 45.8071C41.6492 46.4074 41.7168 46.9502 41.7941 47.5426C43.9034 57.8286 40.6947 67.0814 38.7787 77.6218C38.6637 78.1805 38.5471 78.7551 38.429 79.3463C41.742 79.7144 45.0549 80.0825 48.3679 80.4506C48.382 79.8514 48.3947 79.2684 48.4059 78.7007C48.4374 68.5882 49.8786 56.6961 45.7613 46.6677C45.5809 46.0919 45.4111 45.569 45.2284 44.9898Z" fill="url(#paint0_linear_1991_172527)"/>
+<g filter="url(#filter0_g_1991_172527)">
+<circle cx="31.8984" cy="31.8984" r="20.5" fill="url(#paint1_radial_1991_172527)"/>
+</g>
+<defs>
+<filter id="filter0_g_1991_172527" x="-0.00156212" y="-0.00156212" width="63.8" height="63.8" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="1.4285714626312256 1.4285714626312256" numOctaves="3" seed="9920" />
+<feDisplacementMap in="shape" scale="22.799999237060547" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%" />
+<feMerge result="effect1_texture_1991_172527">
+<feMergeNode in="displacedImage"/>
+</feMerge>
+</filter>
+<linearGradient id="paint0_linear_1991_172527" x1="44.8984" y1="45.3984" x2="44.8984" y2="86.3985" gradientUnits="userSpaceOnUse">
+<stop stop-color="#83C44E"/>
+<stop offset="1" stop-color="#424242"/>
+</linearGradient>
+<radialGradient id="paint1_radial_1991_172527" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(31.8984 31.8984) rotate(90) scale(20.5)">
+<stop stop-color="#9277B9"/>
+<stop offset="0.9999" stop-color="white"/>
+</radialGradient>
+</defs>
+</svg>
