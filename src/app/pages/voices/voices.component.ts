@@ -20,6 +20,7 @@ import { ACTIONS } from '../../../constants/actionConstants';
 import { MatDialog } from '@angular/material/dialog';
 import { StoryModel } from '../../components/story-model/story-model';
 import { MobileVoicesAnimationsComponent } from '../../components/mobile-voices-animations/voices-animations.component';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 // import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
@@ -43,12 +44,13 @@ export class VoicesComponent implements OnInit, OnDestroy {
   storyComp!: StoriesCarouselComponent;
   private queryParamsSubscription: Subscription | undefined;
 
-  constructor(private route :ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService,private router:Router) {
+  constructor(private route :ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService,private router:Router, private loaderRunner: LoaderRunnerService) {
   }
 
   async ngOnInit() {
     this.browserId = this.utils.getBrowserId();
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
+    await this.loaderRunner.run(async () => {
+    return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
       const currentWeek:number = this.getWeekNumber(new Date());
       this.story = data.data.length < currentWeek ? data["data"][data.data.length - 2] : data["data"][currentWeek - 1]  || data["data"][0]; // Fallback to 0 if out of bounds
       try {
@@ -146,6 +148,7 @@ export class VoicesComponent implements OnInit, OnDestroy {
      }).catch((error: any) => {
         console.error('Error loading page data:', error);
     });
+  });
   }
 
   clearQueryParams(): void {

@@ -13,6 +13,7 @@ import { MetricsListComponent } from '../metrics-list/metrics-list';
 import { environment } from '../../../../environments/environment';
 import { STATE_DETAILS_PAGE } from '../../../constants/urlConstants';
 import { ProgramsReportListComponent } from '../programs-report-list/programs-report-list.component';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class StateImprovementsComponent implements OnInit {
   stateLedMission = 0
   window: any = window;
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private loaderRunner: LoaderRunnerService) {
     route.data.subscribe((data:any)=>{
       this.pageConfig = data
     })
@@ -55,18 +56,21 @@ export class StateImprovementsComponent implements OnInit {
      this.getProgramsList();
   }
 
-  fetchPageData(): void {
+  async fetchPageData() {
     if (!this.stateName) {
       console.error('State name is missing from the route.');
       return;
     }
+    await this.loaderRunner.run(async () => {
 
-     d3.json(`${this.baseUrl}/${this.pageConfig.jsonPath}`).then((data: any) => {
+     return d3.json(`${this.baseUrl}/${this.pageConfig.jsonPath}`).then((data: any) => {
       this.pageData = data;
       this.prepareLogosForScrolling();
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+  });
+
   }
 
   getProgramsList() {

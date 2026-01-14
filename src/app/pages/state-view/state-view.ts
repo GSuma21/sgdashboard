@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
 import { INDIA } from '../../../constants/urlConstants';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 @Component({
   selector: 'app-state-view',
@@ -42,7 +43,7 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
   };
   private mapRendered = false;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private loaderRunner: LoaderRunnerService) { }
 
   ngOnInit(): void {
     this.dataFetchPath = this.replaceCode ? this.path.replace('{code}', this.replaceCode.toString()) : this.path;
@@ -56,12 +57,14 @@ export class StateView implements OnInit, AfterViewInit, OnChanges {
     this.fetchIndicatorData();
   }
 
-  fetchCommunityData() {
-    d3.json(`${this.baseUrl}${this.communityDataFetchPath}`).then((data: any) => {
+  async fetchCommunityData() {
+    await this.loaderRunner.run(async () => {
+   return d3.json(`${this.baseUrl}${this.communityDataFetchPath}`).then((data: any) => {
       this.communityJson = data;
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+  });
   }
 
   fetchIndicatorData(districtCode?: string, forTooltip: boolean = false): Promise<any> {
