@@ -750,7 +750,7 @@ if (!coords && location.partner_id?.length) {
         .attr('d', pathData)
         .attr('fill', 'none')
         .attr('stroke', item.color || '#000')
-        .attr('stroke-width', item.lineType === 'dashed' ? 1.5 : 2)
+        .attr('stroke-width', item.lineType === 'dashed' ? 1.5 : 1)
         .attr('opacity', 0.4)
         .attr('stroke-linecap', 'round')
         .attr('stroke-linejoin', 'round')

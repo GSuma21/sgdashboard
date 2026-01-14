@@ -22,7 +22,7 @@ const rightYAxisUpsideDownPlugin = {
 
     // Shift farther right (increase from 25 to 60)
     // Also add small vertical nudge (+10) to adjust centering if needed
-    ctx.translate(chartArea.right + 50, (chartArea.top + chartArea.bottom) / 2 );
+    ctx.translate(chartArea.right + 80, (chartArea.top + chartArea.bottom) / 2 );
 
     ctx.rotate(-Math.PI / 2); // bottom-to-top
     ctx.font = '10px sans-serif';
