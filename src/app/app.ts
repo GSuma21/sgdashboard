@@ -4,12 +4,14 @@ import { ThemeService } from './core/services/theme';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './pages/dashboard/dashboard';
 import { FooterComponent } from './components/footer/footer.component';
+import { Loader } from "./components/loader/loader";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, CommonModule, DashboardComponent,FooterComponent],
+  imports: [RouterModule, CommonModule, DashboardComponent, FooterComponent, Loader],
   template: `
+    <app-loader></app-loader>
     <header class="app-header" *ngIf="showHeader">
       <nav class="container">
         <a href="https://shikshagraha.org/" target="_blank" class="logo"><img src='assets/icons/main_logo.svg'></a>
@@ -53,7 +55,6 @@ export class AppComponent implements OnInit {
       document.documentElement.className = `${this.themeService.getTheme()()}-theme`;
     });
 
-     // Hide header on specific routes (e.g., '/login')
     this.router.events.subscribe(() => {
       this.showHeader = this.router.url !== '/world-map';
     });
