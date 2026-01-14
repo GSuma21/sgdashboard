@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
 import { COMMUNITY_DASHBOARD_PAGE, COMMUNITY_MAP_DATA, DISTRICT_VIEW_INDICATORS, INDIA } from '../../../constants/urlConstants';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 @Component({
   selector: 'app-country-view',
@@ -43,7 +44,7 @@ export class CountryView implements OnInit, AfterViewInit {
     }
   };
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private loaderRunner: LoaderRunnerService) { }
 
   ngOnInit(): void {
     this.fetchCommunityData();
@@ -60,12 +61,16 @@ export class CountryView implements OnInit, AfterViewInit {
     }
   }
 
-  fetchCommunityData() {
-    d3.json(`${this.baseUrl}/${COMMUNITY_MAP_DATA}`).then((data: any) => {
+  async fetchCommunityData() {
+  await this.loaderRunner.run(async () => {
+
+    return d3.json(`${this.baseUrl}/${COMMUNITY_MAP_DATA}`).then((data: any) => {
       this.indicatorJson = data;
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+  });
+
   }
 
   fetchIndicatorData(stateCode?: string, forTooltip: boolean = false): Promise<any> {

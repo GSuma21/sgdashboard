@@ -11,6 +11,7 @@ import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
 import { COMMUNITY_LED_IMPROVEMENT } from '../../../constants/urlConstants';
 import { ProgramsReportListComponent } from '../programs-report-list/programs-report-list.component';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 @Component({
   selector: 'app-district-improvements',
@@ -41,7 +42,7 @@ export class DistrictImprovementsComponent implements OnInit {
   isCommunityFlow:boolean = false
   window: any = window;
 
-  constructor(private route:ActivatedRoute) {
+  constructor(private route:ActivatedRoute, private loaderRunner: LoaderRunnerService) {
     this.route.paramMap.subscribe((params:any) => {
       this.district = params.get('district') || "";
       this.districtCode = params.get("dt-code")
@@ -64,7 +65,7 @@ export class DistrictImprovementsComponent implements OnInit {
     this.getImprovementsData();
   }
 
-  getImprovementsData() {
+  async getImprovementsData() {
   let metricsPath = "metrics.json"
   let pieChartPath = "pie-chart.json"
   let lineChartPath = "line-chart.json"
@@ -72,7 +73,9 @@ export class DistrictImprovementsComponent implements OnInit {
     metricsPath = "community-metrics.json"
     pieChartPath = "community-pie-chart.json"
   }
-  d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${metricsPath}`)
+  await this.loaderRunner.run(async () => {
+
+  return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${metricsPath}`)
     .then((data: any) => {
       this.metrics = data.metrics
       d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${pieChartPath}`)
@@ -101,6 +104,8 @@ export class DistrictImprovementsComponent implements OnInit {
       this.metrics = []
       this.getProgramsList()
     });
+  });
+
 }
 
   getProgramsList() {
