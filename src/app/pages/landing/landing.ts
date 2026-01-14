@@ -50,13 +50,17 @@ export class LandingComponent implements OnInit, AfterViewInit {
 
   async fetchPageData() {
     await this.loaderRunner.run(async () => {
-    return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${LANDING_PAGE}`).then((data: any) => {
-      this.pageData = data;
-      this.cdr.detectChanges();
-    }).catch((error: any) => {
-      console.error('Error loading page data:', error);
+      return d3
+        .json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${LANDING_PAGE}`)
+        .then((data: any) => {
+          this.pageData = data;
+          this.cdr.detectChanges();
+        })
+        .catch((error: any) => {
+          console.error('Error loading page data:', error);
+        });
     });
-  });
-}
+  }
+  
 
 }
