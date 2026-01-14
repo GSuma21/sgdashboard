@@ -6,6 +6,7 @@ import * as d3 from 'd3';
 import { LANDING_PAGE } from '../../../constants/urlConstants';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 @Component({
   selector: 'app-program-details',
@@ -20,7 +21,7 @@ export class ProgramDetails {
 
   @ViewChild('galleryTrack') galleryTrack!: ElementRef;
 
-  constructor(private location: Location,private router: Router) {
+  constructor(private location: Location,private router: Router, private loaderRunner: LoaderRunnerService) {
     this.onResize();
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as { report: any };
@@ -58,9 +59,10 @@ export class ProgramDetails {
     this.getPartnerDetails()
   }
 
-  getPartnerDetails() {
+ async getPartnerDetails() {
+    await this.loaderRunner.run(async () => {
 
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${LANDING_PAGE}`).then((data: any) => {
+    return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${LANDING_PAGE}`).then((data: any) => {
       this.partnerDetails = data;
       const partners = data.find((item: { type: string; }) => item.type === "partner-logos")?.partners || [];
       this.partnerDetails = partners.filter((p: { name: string; }) =>
@@ -69,6 +71,8 @@ export class ProgramDetails {
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+  });
+
 
   }
 

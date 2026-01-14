@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MiniIndicatorCardComponent } from '../../components/mini-indicator-card/mini-indicator-card';
 import { DISTRICT_VIEW_INDICATORS } from '../../../constants/urlConstants';
 import { environment } from '../../../../environments/environment';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 @Component({
   selector: 'app-district-view',
@@ -20,7 +21,7 @@ export class DistrictView implements OnInit, AfterViewInit {
 
   indicatorData: { value: number | string; label: string }[] = [];
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute ,private loaderRunner: LoaderRunnerService) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -31,8 +32,9 @@ export class DistrictView implements OnInit, AfterViewInit {
     });
   }
 
-  fetchIndicatorData(): void {
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${DISTRICT_VIEW_INDICATORS}`).then((data: any) => {
+  async fetchIndicatorData() {
+    await this.loaderRunner.run(async () => {
+    return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${DISTRICT_VIEW_INDICATORS}`).then((data: any) => {
       if (this.stateName && data.result[this.stateName]) {
         this.indicatorData = data.result[this.stateName];
       } else {
@@ -41,6 +43,8 @@ export class DistrictView implements OnInit, AfterViewInit {
     }).catch((error: any) => {
       console.error('Error loading indicator data:', error);
     });
+  });
+
   }
 
   ngAfterViewInit(): void {

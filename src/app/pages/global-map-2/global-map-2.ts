@@ -4,6 +4,7 @@ import * as topojson from 'topojson-client';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import { NETWORK_DATA, INDIA } from '../../../constants/urlConstants';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 interface Partner {
   id: string;
@@ -66,13 +67,14 @@ export class GlobalMap2 implements OnInit {
     "collaborators": { hqIcon: "./assets/marker-icons/triangle.svg", icon: "./assets/marker-icons/collaborators.svg", color: "red" }
   };
 
-  constructor() { }
+  constructor(private loaderRunner: LoaderRunnerService) { }
   ngOnInit(): void {
     this.getNetworkData()
   }
 
-  getNetworkData() {
-    d3.json<NetworkData>(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${NETWORK_DATA}`).then((networkData: NetworkData | undefined) => {
+  async getNetworkData() {
+    await this.loaderRunner.run(async () => {
+    return d3.json<NetworkData>(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${NETWORK_DATA}`).then((networkData: NetworkData | undefined) => {
       this.networkData = networkData;
 
       if (this.networkData && this.networkData.partners) {
@@ -113,6 +115,8 @@ export class GlobalMap2 implements OnInit {
     }).finally(() => {
       this.isLoading = false;
     });
+  });
+
   }
 
   @HostListener('window:resize', ['$event'])
