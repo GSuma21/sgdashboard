@@ -66,88 +66,104 @@ export class DistrictImprovementsComponent implements OnInit {
   }
 
   async getImprovementsData() {
-  let metricsPath = "metrics.json"
-  let pieChartPath = "pie-chart.json"
-  let lineChartPath = "line-chart.json"
-  if (this.isCommunityFlow) {
-    metricsPath = "community-metrics.json"
-    pieChartPath = "community-pie-chart.json"
-  }
-  await this.loaderRunner.run(async () => {
-
-  return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${metricsPath}`)
-    .then((data: any) => {
-      this.metrics = data.metrics
-      d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${pieChartPath}`)
-        .then((data: any) => {
-          this.pieChart = data.data
-        })
-        .catch((error: any) => {
-          console.warn('Pie chart data not found, continuing...', error)
-          this.pieChart = []
-        })
-        .finally(() => {
-          d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${lineChartPath}`)
-            .then((data: any) => {
-              this.lineChart = data.data
-              this.getProgramsList()
-            })
-            .catch((error: any) => {
-              console.error('Error loading line chart data:', error)
-              this.lineChart = []
-              this.getProgramsList()
-            })
-        })
-    })
-    .catch((error: any) => {
-      console.error('Error loading metrics data:', error)
-      this.metrics = []
-      this.getProgramsList()
-    });
-  });
-
-}
-
-  getProgramsList() {
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${this.isCommunityFlow ? 'WLC.json':'SLC.json'}`).then((data: any) => {
-      this.programsList = data;
-      this.fetchPageData();
-    }).catch((error: any) => {
-      console.error('Error loading page data:', error);
-      this.fetchPageData()
-    });
-  }
-
-  fetchPageData(): void {
-    d3.json(`/assets/${this.pageConfig.type == "communityDetails" ? 'community-led':'leaders'}-improvement-district-details.json`).then((data: any) => {
-      this.pageData = data;
-      this.pageData.forEach((element:any) => {
-        if(element.type == "data-indicators") {
-          if(this.isCommunityFlow){
-            this.metrics.map((metric:any) => {
-              let icon:any = this.metricsMappingData.find(iconItem => iconItem.identifier === metric.identifier);
-              element.indicators.push(
-                { icon: icon?.icon || "",...metric}
-              )
-            })
-          }else{
-            this.metrics.map((metric:any) => {
-              let data =metric.label.split(" ")
-              let path =data.map((word:any) => word.toLowerCase()).join("_")
-              element.indicators.push(
-                {...{"icon":metric.label === 'Schools driving improvements' ?`assets/icons/${path}.png`:`assets/icons/${path}.svg`},...metric}
-              )
-            })
-          }
+    let metricsPath = "metrics.json"
+    let pieChartPath = "pie-chart.json"
+    let lineChartPath = "line-chart.json"
+  
+    if (this.isCommunityFlow) {
+      metricsPath = "community-metrics.json"
+      pieChartPath = "community-pie-chart.json"
+    }
+  
+    await this.loaderRunner.run(async () => {
+      try {
+        const metricsRes: any = await d3.json(
+          `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${metricsPath}`
+        );
+        this.metrics = metricsRes?.metrics || [];
+  
+        try {
+          const pieRes: any = await d3.json(
+            `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${pieChartPath}`
+          );
+          this.pieChart = pieRes?.data || [];
+        } catch {
+          this.pieChart = [];
         }
-        if(element.type == "pie-chart") {
-          element.data = this.pieChart
+  
+        try {
+          const lineRes: any = await d3.json(
+            `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${lineChartPath}`
+          );
+          this.lineChart = lineRes?.data || [];
+        } catch {
+          this.lineChart = [];
+        }
+  
+        await this.getProgramsList();
+  
+      } catch (error) {
+        console.error('Error loading improvements data:', error);
+        this.metrics = [];
+        this.pieChart = [];
+        this.lineChart = [];
+        await this.getProgramsList();
+      }
+    });
+  }
+  
+
+  async getProgramsList() {
+    try {
+      const data: any = await d3.json(
+        `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${this.isCommunityFlow ? 'WLC.json' : 'SLC.json'}`
+      );
+      this.programsList = data;
+    } catch (error) {
+      console.error('Error loading programs list:', error);
+      this.programsList = [];
+    }
+  
+    await this.fetchPageData();
+  }
+  
+
+  async fetchPageData() {
+    try {
+      const data: any = await d3.json(
+        `/assets/${this.pageConfig.type === 'communityDetails' ? 'community-led' : 'leaders'}-improvement-district-details.json`
+      );
+  
+      this.pageData = data;
+  
+      this.pageData.forEach((element: any) => {
+        if (element.type === 'data-indicators') {
+          this.metrics.forEach((metric: any) => {
+            if (this.isCommunityFlow) {
+              const icon = this.metricsMappingData.find(i => i.identifier === metric.identifier);
+              element.indicators.push({ icon: icon?.icon || '', ...metric });
+            } else {
+              const path = metric.label.toLowerCase().split(' ').join('_');
+              element.indicators.push({
+                icon: metric.label === 'Schools driving improvements'
+                  ? `assets/icons/${path}.png`
+                  : `assets/icons/${path}.svg`,
+                ...metric
+              });
+            }
+          });
+        }
+  
+        if (element.type === 'pie-chart') {
+          element.data = this.pieChart;
         }
       });
-    }).catch((error: any) => {
-      console.error('Error loading page data:', error);
-    });
+  
+    } catch (error) {
+      console.error('Error loading page config:', error);
+    }
   }
+  
 
   getCommunityMetrics(){
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/community-metrics.json`).then((data: any) => {
