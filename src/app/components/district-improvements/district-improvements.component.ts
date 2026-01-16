@@ -43,28 +43,31 @@ export class DistrictImprovementsComponent implements OnInit {
   isCommunityFlow:boolean = false
   window: any = window;
 
-  constructor(private route:ActivatedRoute, private loaderRunner: LoaderRunnerService) {
-    this.route.paramMap.subscribe((params:any) => {
-      this.district = params.get('district') || "";
-      this.districtCode = params.get("dt-code")
-      this.stateName = params.get('state');
-      this.stateCode = params.get('st-code')
-      this.dashboard = params.get('extra');
-    });
-    route.data.subscribe((data:any)=>{
-      this.pageConfig = data
-    })
-  }
+  constructor(private route:ActivatedRoute, private loaderRunner: LoaderRunnerService) {}
 
   ngOnInit(): void {
-    if(this.pageConfig.type == "communityDetails"){
-      this.enableCommunityButton = false
-      this.isCommunityFlow = true
-    }else{
-      this.getCommunityMetrics()
-    }
-    this.getImprovementsData();
+    this.loaderRunner.run(async () => {
+      const params = this.route.snapshot.paramMap;
+      this.district = params.get('district') || "";
+      this.districtCode = params.get("dt-code") || "";
+      this.stateName = params.get('state') || "";
+      this.stateCode = params.get('st-code') || "";
+      this.dashboard = params.get('extra');
+  
+      const data: any = this.route.snapshot.data;
+      this.pageConfig = data;
+  
+      if(this.pageConfig.type == "communityDetails"){
+        this.enableCommunityButton = false
+        this.isCommunityFlow = true
+      }else{
+        await this.getCommunityMetrics()
+      }
+  
+      await this.getImprovementsData();
+    });
   }
+  
 
   async getImprovementsData() {
     let metricsPath = "metrics.json"
