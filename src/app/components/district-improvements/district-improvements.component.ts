@@ -168,12 +168,16 @@ export class DistrictImprovementsComponent implements OnInit {
     }
   }
   
-
-  getCommunityMetrics(){
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/community-metrics.json`).then((data: any) => {
-      this.enableCommunityButton = true
-    }).catch((error: any) => {
+  async getCommunityMetrics() {
+    try {
+      const data: any = await d3.json(
+        `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/community-metrics.json`
+      );
+      this.enableCommunityButton = true;
+      return data;
+    } catch (error) {
       console.error('Error loading community metrics:', error);
-    });
+      this.enableCommunityButton = false;
+    }
   }
 }
