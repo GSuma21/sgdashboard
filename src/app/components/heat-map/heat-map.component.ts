@@ -63,49 +63,57 @@ export class HeatMapComponent implements OnInit {
     this.getThemeData()
   }
 
-getThemeData() {
-  d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${HEATMAP_THEME}`)
-    .then((heatmapData: any) => {
-      this.heatmapData = heatmapData;
-      return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${THEMES_EMERGED}`);
-    })
-    .then((data: any) => {
+  getThemeData() {
+    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${HEATMAP_THEME}`)
+      .then((heatmapData: any) => {
+        this.heatmapData = heatmapData;
+        return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${THEMES_EMERGED}`);
+      })
+      .then((data: any) => {
 
-  const heatmapConfigs = Object.values(this.heatmapData);
+        // 🔹 Visual configs (order-based)
+        const heatmapConfigs = Object.values(this.heatmapData);
 
-  this.themes = data.data.map((item: any, index: number) => {
-    const id = item.id.split(' ')[0];
+        // 🔹 Sort ONLY ONCE by value (descending)
+        const sortedThemes = [...data.data].sort(
+          (a: any, b: any) => Number(b.value) - Number(a.value)
+        );
 
-    // icon strictly by id
-    const icon = this.heatmapData[id]?.icon ?? '';
+        // 🔹 Map AFTER sorting
+        this.themes = sortedThemes.map((item: any, index: number) => {
+          const id = item.id.split(' ')[0];
 
-    // color & layout by sorted position
-    const heatmapByOrder = heatmapConfigs[index] ?? {};
+          // ✅ Icon strictly by id
+          const icon = this.heatmapData[id]?.icon ?? '';
 
-    return {
-      id,
-      label: item.label,
-      value: Number(item.value),
-      list: (item.list ?? []).map((listItem: any) => ({
-        ...listItem,
-        color: heatmapByOrder.color ?? 'gray',
-      })),
-      color: heatmapByOrder.color ?? 'gray',
-      gridClass: heatmapByOrder.gridClass ?? 'span-1-1',
-      icon
-    };
-  });
+          // ✅ Color & grid by sorted order
+          const heatmapByOrder = heatmapConfigs[index] ?? {};
 
-  this.heatmapThemeConfig = this.heatmapData;
+          return {
+            id,
+            label: item.label,
+            value: Number(item.value),
+            list: (item.list ?? []).map((listItem: any) => ({
+              ...listItem,
+              color: heatmapByOrder.color ?? 'gray',
+            })),
+            color: heatmapByOrder.color ?? 'gray',
+            gridClass: heatmapByOrder.gridClass ?? 'span-1-1',
+            icon
+          };
+        });
 
-  if (this.themes.length > 0) {
-    this.setActiveTheme(this.themes[0].id);
+        this.heatmapThemeConfig = this.heatmapData;
+
+        // 🔹 Highest-value theme active
+        if (this.themes.length > 0) {
+          this.setActiveTheme(this.themes[0].id);
+        }
+      })
+      .catch((error: any) => {
+        console.error('Error loading page data:', error);
+      });
   }
-    })
-    .catch((error: any) => {
-      console.error('Error loading page data:', error);
-    });
-}
 
 
   setActiveTheme(themeId: string): void {

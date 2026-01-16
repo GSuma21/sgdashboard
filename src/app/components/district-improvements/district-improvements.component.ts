@@ -35,7 +35,8 @@ export class DistrictImprovementsComponent implements OnInit {
     { icon: "assets/icons/community_leaders.svg", identifier: 1 },
     { icon: "assets/icons/community_improvements.svg", identifier: 2 },
     { icon: "assets/icons/mountain.svg", identifier: 3 },
-    { icon: "assets/icons/idea.svg", identifier: 4 }
+    { icon: "assets/icons/idea.svg", identifier: 4 },
+    { icon: "assets/icons/local_solutions_implemented.svg", identifier: 5 }
   ]
   enableCommunityButton:boolean = false
   isCommunityFlow:boolean = false
