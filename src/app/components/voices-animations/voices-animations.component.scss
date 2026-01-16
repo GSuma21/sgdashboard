@@ -124,6 +124,16 @@
     text-overflow: ellipsis;
   }
 
+  &.expanded {
+    z-index: 1000;
+
+    p {
+      -webkit-line-clamp: unset;
+      line-clamp: unset;
+      overflow: visible;
+    }
+  }
+
   &:hover {
     font-size: 14px !important;
     z-index: 1000; // Ensure it's on top
@@ -137,7 +147,7 @@
 }
 
 .author {
-    text-transform: capitalize;
+  text-transform: capitalize;
 }
 
 
