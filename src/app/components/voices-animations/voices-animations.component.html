@@ -22,7 +22,8 @@
         </div>
 
         <div class="bubble solution bubble-solution" *ngIf="solutionsVisible.has(i)"
-          [ngStyle]="getBubbleStyle(node, 'solution')" @solutionPop>
+          [ngStyle]="getBubbleStyle(node, 'solution')" @solutionPop [class.expanded]="solutionsAnimating.has(i)"
+          (@solutionPop.done)="onSolutionAnimationDone(i)">
           <img src="assets/animations/solution.svg" class="mb-2">
           <p>
             <strong>{{ node.solution }}</strong>
