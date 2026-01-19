@@ -38,7 +38,7 @@
       <textarea
       #linkInput
       readonly
-      [value]="shareLink + '\n\n' + shareText">
+      [value]="shareText + '\n\n' + shareLink">
     </textarea>
     <button
     (click)="copyLink(linkInput)"

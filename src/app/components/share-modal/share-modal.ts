@@ -13,8 +13,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 })
 export class ShareModal {
   shareLink ='';
-  shareText = `Hello everyone, I really appreciated this story and wanted to share it with you.
-Do take a moment to read it and help spread the word.`;
+  shareText = `This story really stayed with me, and I wanted to share it with you. Do take a moment to read it and help amplify these voices from the ground.`;
 
   constructor(
     private dialogRef: MatDialogRef<ShareModal>,
