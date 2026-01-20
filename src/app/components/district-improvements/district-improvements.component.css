@@ -144,7 +144,7 @@
 
   .data-indicators-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1.5rem;
     align-items: stretch; /* Ensure all grid items stretch to the same height */
   }
