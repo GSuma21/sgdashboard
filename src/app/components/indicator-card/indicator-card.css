@@ -23,11 +23,12 @@
 
 .indicator-content {
   display: flex;
-  align-items: stretch;
+  align-items: center; 
 }
 
 .divider {
   width: 2px;
+  height: 5rem;
   background-color: #dddada ;
 }
 
