@@ -180,7 +180,6 @@ mat-icon {
 }
 
 .copy-button {
-  right: 14px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -226,6 +225,5 @@ mat-icon {
 
   .copy-button {
     font-size: 16px;
-    right: 10px;
   }
 }

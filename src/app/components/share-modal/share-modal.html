@@ -38,12 +38,9 @@
         <span class="copy-text">{{ shareText }}</span><br>
         <a class="copy-link" href="{{ shareLink }}" target="_blank">{{ shareLink }}</a>
       </div>
-      <div class="copy-button">
-        <button class="copy-button" aria-label="Copy link" title="Copy link" (click)="copyText()">
-          <mat-icon>content_copy</mat-icon>
-        </button>
-      </div>
-    
+      <button class="copy-button" aria-label="Copy link" title="Copy link" (click)="copyText()">
+        <mat-icon>content_copy</mat-icon>
+      </button>
     </div>
   </div>
 </div>
