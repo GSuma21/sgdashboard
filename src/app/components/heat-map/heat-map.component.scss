@@ -331,7 +331,7 @@
 @media (max-width: 768px) {
   .voice-card {
     margin-bottom: 20px;
-    padding: 10px 0px 0px 10px;
+    padding: 10px;
 
     .quote-icon {
       margin-bottom: -30px;
@@ -340,11 +340,12 @@
 
     .quote-text {
       margin-left: 15px;
-      font-size: 13px;
+      font-size: 12px;
       margin-top: 25px;
     }
     .quote-author{
       margin-left: 15px;
+      font-size: 12px;
     }
   }
   .voices-grid{

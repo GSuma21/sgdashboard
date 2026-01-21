@@ -71,7 +71,7 @@ export class PieChartComponent {
         title: {
           text: this.total.toString(),
           left: 'center',
-          top: 'middle',
+          top:window.innerWidth > 1824 ? '45%' : window.innerWidth > 1280 ? '41%' : window.innerWidth >= 768 ? '40%' : '40%',
           textStyle: { fontSize: 32, fontWeight: 'bold' }
         },
         tooltip: { trigger: 'item', formatter: '{b}<br/>{c} ({d}%)' },

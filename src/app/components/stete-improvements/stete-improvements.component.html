@@ -3,9 +3,9 @@
   <div class="breadcrumb">
     <a [routerLink]="['/dashboard']">Dashboard</a>
     @if(pageConfig.type == "communityDetails"){
-      <a [routerLink]="['/community-led-improvements']"> / Community Led Initiatives &nbsp; </a>
+      <a [routerLink]="['/community-led-improvements']"> / Community Led Initiatives </a>
     }@else if(pageConfig.type == "communityDashboard"){
-      <a [routerLink]="['/state-view',stateName,stateCode]"> / {{ stateName }} &nbsp; </a>
+      <a [routerLink]="['/state-view',stateName,stateCode]"> / {{ stateName }} </a>
     }
      / <ng-container class="breadcrumb" *ngIf="pageConfig.type == 'communityDashboard'">Community led improvements - </ng-container><span> &nbsp;{{ stateName }}</span>
   </div>
