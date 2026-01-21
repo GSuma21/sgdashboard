@@ -8,7 +8,8 @@
     <ng-container *ngFor="let node of storyNodes; let i = index">
       <ng-container *ngIf="i < growthStep">
         <div class="dandelion-flower" *ngIf="dandelionsVisible.has(i)" [style.top]="node.dandelionTop"
-          [style.left]="node.dandelionLeft" @dandelionPop>
+          [style.left]="node.dandelionLeft" @dandelionPop (click)="onDandelionClick(i)"
+          style="cursor: pointer; pointer-events: auto;">
           <img [src]="FLOWER_IMG" class="dandelion-image">
         </div>
       </ng-container>
