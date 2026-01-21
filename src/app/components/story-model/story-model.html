@@ -77,7 +77,7 @@
     <p>{{currentStory.content}}</p>
   </div>
 
-  <div *ngIf="currentStory?.photos?.length"class='photo-contianer'>
+  <div class="photo-container" *ngIf="currentStory?.photos?.length">
     <h4 class="photos-title">Photos:</h4>
     <div class="photo-row">
       @for(image of currentStory.photos || [];track $index){
