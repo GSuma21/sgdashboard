@@ -77,4 +77,26 @@ export class ShareModal {
       verticalPosition: verticalPosition,
     });
   }
+
+  copyText() {
+    const textToCopy = this.shareText + '\n\n' + this.shareLink;
+    const el = document.createElement('textarea');
+    el.value = textToCopy;
+    document.body.appendChild(el);
+    el.select();
+
+    try {
+      const successful = document.execCommand('copy');
+      if (successful) {
+        this.showSnackBar('Link & text copied to clipboard');
+        this.dialogRef.close('ok');
+      } else {
+        this.showSnackBar('Failed to copy link & text. Please copy manually.');
+      }
+    } catch (err) {
+      this.showSnackBar('Failed to copy link & text. Please copy manually.');
+    } finally {
+      document.body.removeChild(el);
+    }
+  }
 }
