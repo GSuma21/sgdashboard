@@ -23,6 +23,7 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
   dandelionsVisible = new Set<number>();
   problemsVisible = new Set<number>();
   solutionsVisible = new Set<number>();
+  solutionsAnimating = new Set<number>();
 
 
   readonly BRANCH_IMG = 'assets/animations/branch_4.svg';
@@ -88,11 +89,16 @@ export class VoicesAnimationsComponent implements OnInit, OnDestroy {
 
       // 4. SHOW SOLUTION
       this.solutionsVisible.add(i);
+      this.solutionsAnimating.add(i); // Start expanded
       await this.delay(3500); // Wait for reading before starting next loop
       if (this.isDestroyed) return;
 
       // Note: We do NOT remove them. They stay on screen.
     }
+  }
+
+  onSolutionAnimationDone(index: number) {
+    this.solutionsAnimating.delete(index); // Revert to truncated
   }
 
   getBubbleStyle(node: any, type: 'problem' | 'solution') {

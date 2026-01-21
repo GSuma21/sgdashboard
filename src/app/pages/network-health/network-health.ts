@@ -20,6 +20,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 
 @Component({
@@ -35,20 +36,24 @@ export class NetworkHealth implements OnInit {
   baseUrl:any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
 
 
-  constructor(private cdr: ChangeDetectorRef,private dialog: MatDialog, private breakpointObserver: BreakpointObserver) {}
+  constructor(private cdr: ChangeDetectorRef,private dialog: MatDialog, private breakpointObserver: BreakpointObserver, 
+    private loaderRunner: LoaderRunnerService
+  ) {}
 
   ngOnInit(): void {
     this.fetchPageData();
   }
 
-  fetchPageData(): void {
-    d3.json(`${this.baseUrl}/${NETWORK_HEALTH_PAGE}`).then((data: any) => {
+  async fetchPageData() {
+    await this.loaderRunner.run(async () => {
+    return d3.json(`${this.baseUrl}/${NETWORK_HEALTH_PAGE}`).then((data: any) => {
       this.pageData = data;
       this.prepareLogosForScrolling();
       this.cdr.detectChanges();
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+  });
   }
 
   prepareLogosForScrolling(): void {

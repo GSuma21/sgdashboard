@@ -12,7 +12,8 @@
         <p class="animation-description mb-4 ml-2">This space highlights voices from the community — identifying issues, finding contextual solutions, and implementing them to solve education barriers. Women leaders are at the forefront of making this change possible.</p>
         <p class="ml-2 ml-md-3 sub-description">From the cracks of struggle emerge the flowers of community-led solutions
         </p>
-        <app-voices-animations></app-voices-animations>
+        <app-voices-animations *ngIf="!isSmallScreen"></app-voices-animations>
+        <app-mobile-voices-animations *ngIf="isSmallScreen"></app-mobile-voices-animations>
       </section>
     </ng-container>
 
@@ -105,7 +106,7 @@
         <h3 [ngClass]="section.styles.title">{{ section.title }}</h3>
       </div>
     </ng-container>
-    
+
 
   </div>
 </div>

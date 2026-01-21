@@ -34,7 +34,8 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     this.adjustChunkSize();
 
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
-      this.slides = data?.data?.slice(0, 6) || [];
+      const currentWeek:number = this.getWeekNumber(new Date());
+      this.slides = data.data.length < currentWeek - 7 ? data?.data?.slice(data.data.length - 8, data.data.length - 2) : data?.data?.slice(currentWeek + 1, currentWeek + 7) || data?.data?.slice(0, 6);
       this.slides = this.utils.assignColorsToStories(this.slides)
       try {
         this.browserId = this.utils.getBrowserId();
@@ -89,13 +90,13 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
 
   adjustChunkSize() {
     const screenWidth = window.innerWidth;
-  
+
     const newChunkSize = screenWidth < 768 ? 1 : 2;
-  
+
     if (newChunkSize !== this.chunkSize) {
       this.chunkSize = newChunkSize;
       this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
-  
+
       if (this.currentChunkIndex >= this.chunkedSlides.length) {
         this.currentChunkIndex = this.chunkedSlides.length - 1;
       }
@@ -115,30 +116,38 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     return results;
   }
 
+  getWeekNumber(d: Date): number {
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    const weekNo = Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+    return weekNo;
+  }
+
   navigateSlide(direction: number, reset = true): void {
     this.currentChunkIndex =
       (this.currentChunkIndex + direction + this.chunkedSlides.length) %
       this.chunkedSlides.length;
-  
+
     const slidesArea = document.querySelector('.slides-area') as HTMLElement;
     const slideWidth = slidesArea.offsetWidth;
-  
+
     this.renderer.setStyle(slidesArea, 'scrollBehavior', 'smooth');
     slidesArea.scrollLeft = slideWidth * this.currentChunkIndex;
-  
+
     if (reset) {
       this.resetAutoSlide();
     }
   }
-  
+
   startAutoSlide(): void {
     this.stopAutoSlide();
-  
+
     this.slideInterval = setInterval(() => {
       this.navigateSlide(1, false);
     }, this.autoSlideDelay);
   }
-  
+
   stopAutoSlide(): void {
     if (this.slideInterval) {
       clearInterval(this.slideInterval);
@@ -157,17 +166,17 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
     }
     this.stopAutoSlide();
   }
-  
+
   onResumeCarousel(fromModal = false) {
     if (fromModal) {
       this.isModalOpen = false;
     }
-  
+
     if (this.isModalOpen) return;
-  
+
     this.startAutoSlide();
   }
-  
+
 
   ngOnDestroy(): void {
     if (this.slideInterval) {

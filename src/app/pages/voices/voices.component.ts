@@ -19,12 +19,14 @@ import { STORY_OF_THE_WEEK  } from '../../../constants/urlConstants';
 import { ACTIONS } from '../../../constants/actionConstants';
 import { MatDialog } from '@angular/material/dialog';
 import { StoryModel } from '../../components/story-model/story-model';
+import { MobileVoicesAnimationsComponent } from '../../components/mobile-voices-animations/voices-animations.component';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 // import { VoicesAnimationsComponent } from '../../components/voices-animations/voices-animations.component';
 
 @Component({
   selector: 'app-voices',
   standalone:true,
-  imports: [CommonModule, RouterModule, IndicatorCardComponent,StoriesCarouselComponent, ImprovementStoryComponent,HeatMapComponent,MultiAxisChartComponent, LineChartComponent, VerticalCarouselComponent, VoicesAnimationsComponent],
+  imports: [CommonModule, RouterModule, IndicatorCardComponent,StoriesCarouselComponent, ImprovementStoryComponent,HeatMapComponent,MultiAxisChartComponent, LineChartComponent, VerticalCarouselComponent, VoicesAnimationsComponent,MobileVoicesAnimationsComponent],
   templateUrl: './voices.component.html',
   styleUrls: ['./voices.component.scss']
 })
@@ -37,16 +39,18 @@ export class VoicesComponent implements OnInit, OnDestroy {
   browserId:string='';
   story:any=[];
   isMobile = window.innerWidth <= 768;
+  isSmallScreen = window.innerWidth <= 1024;
   @ViewChild(StoriesCarouselComponent)
   storyComp!: StoriesCarouselComponent;
   private queryParamsSubscription: Subscription | undefined;
 
-  constructor(private route :ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService,private router:Router) {
+  constructor(private route :ActivatedRoute,private dialog: MatDialog,private utils:UtilsService, private sg:firebaseService,private router:Router, private loaderRunner: LoaderRunnerService) {
   }
 
   async ngOnInit() {
     this.browserId = this.utils.getBrowserId();
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
+    await this.loaderRunner.run(async () => {
+    return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then(async (data: any) => {
       const currentWeek:number = this.getWeekNumber(new Date());
       this.story = data.data.length < currentWeek ? data["data"][data.data.length - 2] : data["data"][currentWeek - 1]  || data["data"][0]; // Fallback to 0 if out of bounds
       try {
@@ -81,14 +85,14 @@ export class VoicesComponent implements OnInit, OnDestroy {
 
       this.queryParamsSubscription = this.route.queryParams.subscribe(async (params: any) => {
         if (!params?.storyId) return;
-      
+
         try {
 
           const values = await this.sg.getStoryCountsBulk(
             [params.storyId],
             this.browserId
           );
-      
+
           if (!Array.isArray(values) || !values[0]) {
             console.warn('Story counts not found for storyId:', params.storyId);
             return;
@@ -97,7 +101,7 @@ export class VoicesComponent implements OnInit, OnDestroy {
           const updateData = data?.data?.find(
             (story: any) => story.id === params.storyId
           );
-      
+
           if (!updateData) {
             console.warn('Story data not found for storyId:', params.storyId);
             return;
@@ -112,7 +116,7 @@ export class VoicesComponent implements OnInit, OnDestroy {
               ...values[0]
             }
           });
-      
+
           dialogRef.afterClosed().subscribe((result: any) => {
             if (!result || !result.id) {
               this.clearQueryParams();
@@ -132,18 +136,19 @@ export class VoicesComponent implements OnInit, OnDestroy {
             } else {
               console.warn('StoriesCarouselComponent not initialized yet');
             }
-      
+
             this.clearQueryParams();
           });
-      
+
         } catch (error) {
           console.error('Failed to open story modal:', error);
         }
       });
-      
+
      }).catch((error: any) => {
         console.error('Error loading page data:', error);
     });
+  });
   }
 
   clearQueryParams(): void {

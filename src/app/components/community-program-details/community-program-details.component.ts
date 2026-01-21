@@ -10,6 +10,7 @@ import { PieChartComponent } from '../../components/pie-chart/pie-chart';
 import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
 import { COMMUNITY_DASHBOARD_PAGE } from '../../../constants/urlConstants';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 @Component({
   selector: 'app-community-program-details',
@@ -21,19 +22,21 @@ import { COMMUNITY_DASHBOARD_PAGE } from '../../../constants/urlConstants';
 export class CommunityProgramDetailsComponent implements OnInit {
   pageData: any = {};
 
-  constructor() { }
+  constructor(private loaderRunner: LoaderRunnerService) { }
 
   ngOnInit(): void {
     this.fetchPageData();
   }
 
-  fetchPageData(): void {
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_DASHBOARD_PAGE}`).then((data: any) => {
+  async fetchPageData() {
+  await this.loaderRunner.run(async () => {
+    return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${COMMUNITY_DASHBOARD_PAGE}`).then((data: any) => {
       this.pageData = data;
       this.prepareLogosForScrolling();
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+  });
   }
 
   prepareLogosForScrolling(): void {

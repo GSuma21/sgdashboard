@@ -14,6 +14,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { GlobalMap2 } from '../global-map-2/global-map-2';
 import { WorldMapComponent } from '../world-map/world-map';
 import { ChangeDetectorRef } from '@angular/core';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 @Component({
   selector: 'app-landing',
@@ -35,7 +36,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
   window: any = window;
   isGlobalMapVisible = true; 
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private cdr: ChangeDetectorRef, private loaderRunner: LoaderRunnerService) { }
 
   ngOnInit(): void {
     this.fetchPageData();
@@ -47,13 +48,19 @@ export class LandingComponent implements OnInit, AfterViewInit {
     }, 1200); 
   }
 
-  fetchPageData(): void {
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${LANDING_PAGE}`).then((data: any) => {
-      this.pageData = data;
-      this.cdr.detectChanges();
-    }).catch((error: any) => {
-      console.error('Error loading page data:', error);
+  async fetchPageData() {
+    await this.loaderRunner.run(async () => {
+      return d3
+        .json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${LANDING_PAGE}`)
+        .then((data: any) => {
+          this.pageData = data;
+          this.cdr.detectChanges();
+        })
+        .catch((error: any) => {
+          console.error('Error loading page data:', error);
+        });
     });
   }
+  
 
 }

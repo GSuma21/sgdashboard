@@ -70,6 +70,7 @@ mat-card {
 
 .dot.purple {
   background-color: #5b2dab;
+  margin-left: 5px;
 }
 
 .text {
@@ -114,4 +115,8 @@ mat-card {
   .chart-container {
     margin: 0 auto;
   }
+
+  .dot.purple {
+  margin-left: 0px;
+}
 }

@@ -22,12 +22,14 @@
         </div>
 
         <div class="bubble solution bubble-solution" *ngIf="solutionsVisible.has(i)"
-          [ngStyle]="getBubbleStyle(node, 'solution')" @bubblePop>
+          [ngStyle]="getBubbleStyle(node, 'solution')" @solutionPop [class.expanded]="solutionsAnimating.has(i)"
+          (@solutionPop.done)="onSolutionAnimationDone(i)">
           <img src="assets/animations/solution.svg" class="mb-2">
           <p>
-            {{ node.solution }}
+            <strong>{{ node.solution }}</strong>
           </p>
-          <p style="text-align: right; font-style: italic; font-size: 0.8em;" class="author mb-0">- {{ node.author }}</p>
+          <p style="text-align: right; font-style: italic; font-size: 0.8em;" class="author mb-0">- {{ node.author }}
+          </p>
         </div>
 
       </ng-container>
