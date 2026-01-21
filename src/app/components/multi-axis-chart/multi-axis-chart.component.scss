@@ -45,9 +45,9 @@ mat-card {
 }
 
 .legend {
-  display: flex;;
+  display: flex;
   font-family: Arial, sans-serif;
-  gap: 2px;
+  gap: 10px;
   align-items: center;
   justify-content: end;
 }
@@ -55,7 +55,7 @@ mat-card {
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 3px;
 }
 
 .dot {
