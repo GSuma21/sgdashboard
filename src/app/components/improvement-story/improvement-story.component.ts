@@ -47,9 +47,10 @@ export class ImprovementStoryComponent {
       if (action === ACTIONS.SHARE) {
         this.openShareModal();
         return;
-      }else{
-        this.updateLikeState(story);
       }
+
+      this.updateLikeState(story);
+      
 
       this.action$.next({ story, action });
   }
