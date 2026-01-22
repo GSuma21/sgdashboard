@@ -63,7 +63,7 @@ export class ImprovementStoryComponent {
   }
 
   updateLikeState(story: any) {
-    story.like = !story.like;
+    story.like = Number(!story.like);
     story.likesCount = Math.max(
       (story.likesCount ?? 0) + (story.like ? 1 : -1),
       0
