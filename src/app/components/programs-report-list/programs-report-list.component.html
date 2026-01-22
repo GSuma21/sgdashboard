@@ -22,14 +22,14 @@
                     </div>
 
                     <div class="carousel">
-                        <button class="nav left" (click)="scrollLeft($event)" *ngIf=" report.logo_urls.length > 0">&#10094;</button>
+                        <button class="nav left" (click)="scrollLeft($event)" *ngIf="report?.logo_urls?.length > 0">&#10094;</button>
                         <div class="carousel-track" *ngIf="report?.logo_urls?.length > 0">
                           <img *ngFor="let img of report.logo_urls" [src]="img" class="program-images" alt="Program image">
                         </div>
                         <div class="carousel-track no-image" *ngIf="report?.logo_urls?.length == 0">
                           <img src="assets/icons/image_not_available.png" class="program-images" alt="Program image">
                         </div>
-                        <button class="nav right" *ngIf=" report.logo_urls.length > 0" (click)="scrollRight($event)">&#10095;</button>
+                        <button class="nav right" *ngIf="report?.logo_urls?.length > 0" (click)="scrollRight($event)">&#10095;</button>
                     </div>
 
                     <mat-card-content class="px-0">
