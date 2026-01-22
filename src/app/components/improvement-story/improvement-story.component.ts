@@ -32,11 +32,11 @@ export class ImprovementStoryComponent {
   constructor(private sg:firebaseService,private dialog: MatDialog) {
     this.actionSub = this.action$
     .pipe(
-      debounceTime(500),
+      debounceTime(1000),
       exhaustMap(({ story, action }) => this.processAction(story, action))
     )
     .subscribe({
-      next: (res) => res?.status && this.storyAction.emit(res),
+      next: (res) => res?.action === ACTIONS.SHARE && this.storyAction.emit(res),
       error: (err) => console.error('Action failed:', err)
     });
   }
@@ -49,16 +49,25 @@ export class ImprovementStoryComponent {
         return;
       }
 
+      this.updateLikeState(story);
+      
+
       this.action$.next({ story, action });
   }
 
   async processAction(story: any, action: ActionType) {
     return this.sg.updateRecord(
-      action === ACTIONS.LIKE
-        ? { ...story, like: story.like ? 0 : 1 }
-        : story,
+      story,
       this.browserId,
       action
+    );
+  }
+
+  updateLikeState(story: any) {
+    story.like = Number(!story.like);
+    story.likesCount = Math.max(
+      (story.likesCount ?? 0) + (story.like ? 1 : -1),
+      0
     );
   }
 
