@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output, Inject } from '@angular/core';
+import { Component, EventEmitter, Output, Inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_DIALOG_DATA, MatDialogRef , MatDialogModule} from '@angular/material/dialog';
 import { ACTIONS,ActionType } from '../../../constants/actionConstants';
@@ -17,9 +17,10 @@ import { debounceTime, exhaustMap, groupBy, mergeMap } from 'rxjs/operators';
 templateUrl: './story-model.html',
   styleUrl: './story-model.css'
 })
-export class StoryModel {
+export class StoryModel implements OnInit {
   ACTIONS = ACTIONS;
   isLangOn = false;
+  storyLiked:any;
   currentStory: any;
   @Output() close = new EventEmitter<void>();
   private action$ = new Subject<{ story: any; action: ActionType }>();
@@ -39,7 +40,7 @@ export class StoryModel {
     groupBy(({ action }) => action),
     mergeMap((group$) =>
       group$.pipe(
-      debounceTime(500),
+      debounceTime(1000),
       exhaustMap(({ story, action }) =>
         this.processAction(story, action)
         )
@@ -48,18 +49,8 @@ export class StoryModel {
     )
     .subscribe({
       next: (res:any) => {
-        if (!res?.action) return;
+        if (!res?.action || res.action === ACTIONS.LIKE ) return;
 
-        if (res.action === ACTIONS.LIKE) {
-          this.currentStory = {
-            ...this.currentStory,
-            likesCount: Math.max(
-              0,
-              (this.currentStory.likesCount ?? 0) + res.diff
-            ),
-            like: !this.currentStory.like
-          };
-        }
 
         if (res.action === ACTIONS.SHARE) {
           this.currentStory = {
@@ -72,18 +63,36 @@ export class StoryModel {
     });
   }
 
+  ngOnInit(): void {
+    this.storyLiked = this.story?.like;
+  }
+
   async handleUserClick(story:any,action: ActionType){
     if (action === ACTIONS.SHARE) {
       this.openShareModal();
       return;
     }
 
+    if (action === ACTIONS.LIKE){
+      this.updateLikeState(story);
+    }
+
     this.action$.next({ story, action });
+  }
+
+  updateLikeState(story: any) {
+    const nextLiked = !this.storyLiked;
+    this.storyLiked = nextLiked;
+    this.currentStory.like = Number(nextLiked);
+    this.currentStory.likesCount = Math.max(
+      (this.currentStory.likesCount ?? 0) + (nextLiked ? 1 : -1),
+      0
+    );
   }
 
   async processAction(story: any, action: ActionType) {
     return this.sg.updateRecord(
-      action === ACTIONS.LIKE ? { ...story, like: story.like ? 0 : 1 }: story,
+      story,
       this.util.getBrowserId(),
       action
     );

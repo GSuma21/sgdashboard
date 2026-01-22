@@ -95,19 +95,17 @@ export class firebaseService {
          * ===================================================== */
         if (action === ACTIONS.LIKE) {
   
+          let data:any = { 
+            likesCount: story.likesCount,
+            shareCount: story.shareCount,
+            downloadCount: story.downloadCount
+           }
+    
           if (story.like === 0) {
             // UNLIKE → delete browserId
             transaction.delete(browserRef);
   
-            transaction.set(
-              storyRef,
-              { 
-              likesCount: Math.max(0, (story.likesCount ?? 0) - 1),
-              shareCount: story.shareCount,
-              downloadCount: story.downloadCount
-              },
-              { merge: true }
-            );
+            transaction.set(storyRef,data,{ merge: true });
   
             return {
               status: 200,
@@ -120,15 +118,7 @@ export class firebaseService {
           // LIKE → add browserId
           transaction.set(browserRef, {});
   
-          transaction.set(
-            storyRef,
-            { 
-              likesCount: story.likesCount+1,
-              shareCount: story.shareCount,
-              downloadCount: story.downloadCount
-             },
-            { merge: true }
-          );
+          transaction.set(storyRef,data,{ merge: true });
   
           return {
             status: 200,
