@@ -454,3 +454,10 @@
 .theme10.active{
    background-color:#e0b004;
 }
+
+@media (hover: none) and (pointer: coarse) {
+  .heatmap-item:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+}
