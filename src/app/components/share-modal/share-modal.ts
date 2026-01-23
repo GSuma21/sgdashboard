@@ -30,23 +30,37 @@ export class ShareModal {
     this.dialogRef.close();
   }
 
-  copyText() {
-    const textToCopy = `${this.shareText}\n\n${this.shareLink}`;
+async copyText() {
+  const textToCopy = `${this.shareText}\n\n${this.shareLink}`;
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(textToCopy);
+      this.showSnackBar('Link & text copied to clipboard');
+      this.dialogRef.close('ok');
+      return;
+    }
+
     const el = document.createElement('textarea');
     el.value = textToCopy;
     document.body.appendChild(el);
     el.select();
 
-    try {
-      document.execCommand('copy');
-      this.showSnackBar('Link & text copied to clipboard');
-      this.dialogRef.close('ok');
-    } catch {
-      this.showSnackBar('Failed to copy link & text. Please copy manually.');
-    } finally {
-      document.body.removeChild(el);
+    const success = document.execCommand('copy');
+    document.body.removeChild(el);
+
+    if (!success) {
+      throw new Error('execCommand failed');
     }
+
+    this.showSnackBar('Link & text copied to clipboard');
+    this.dialogRef.close('ok');
+
+  } catch {
+    this.showSnackBar('Failed to copy link & text. Please copy manually.');
   }
+}
+
 
   share(platform: 'linkedin' | 'whatsapp' | 'facebook' | 'instagram') {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
