@@ -354,7 +354,12 @@
 .container{
   margin: 0px;
   padding: 10px;
+  overflow: visible;
 }
+.left-panel,
+  .right-panel {
+    overflow: visible;
+  }
 .right-panel {
   padding: 10px;
 }
