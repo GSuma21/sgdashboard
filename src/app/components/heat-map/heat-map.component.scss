@@ -354,7 +354,12 @@
 .container{
   margin: 0px;
   padding: 10px;
+  overflow: visible;
 }
+.left-panel,
+  .right-panel {
+    overflow: visible;
+  }
 .right-panel {
   padding: 10px;
 }
@@ -448,4 +453,11 @@
 }
 .theme10.active{
    background-color:#e0b004;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .heatmap-item:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
 }

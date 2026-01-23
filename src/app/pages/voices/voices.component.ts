@@ -162,10 +162,6 @@ export class VoicesComponent implements OnInit, OnDestroy {
   onStoryAction(event: any) {
       this.story = event.status ? {
         ...this.story,
-        ...(event.action === ACTIONS.LIKE && {
-          likesCount: Math.max(0,(this.story.likesCount ?? 0)+ event.diff),
-          like: !this.story.like
-        }),
         ...(event.action === ACTIONS.SHARE && {
           shareCount: (this.story.shareCount ?? 0) + event.diff
         })
