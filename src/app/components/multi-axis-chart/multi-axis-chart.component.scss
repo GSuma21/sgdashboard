@@ -96,7 +96,7 @@ mat-card {
 @media (max-width: 768px) {
   .header-row {
     display: grid;
-    grid-template-columns: 54% 46%;
+    grid-template-columns: 52% 48%;
   }
 
   .chart {
@@ -119,4 +119,11 @@ mat-card {
   .dot.purple {
   margin-left: 0px;
 }
+}
+
+@media (max-width: 330px) {
+  .header-row {
+    display: grid;
+    grid-template-columns: 52% 52%;
+  }
 }
