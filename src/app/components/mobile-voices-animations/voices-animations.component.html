@@ -36,9 +36,9 @@
     <img *ngIf="currentItem.type === 'solution'" src="assets/mobile-animations/solution.svg" class="card-icon mb-2">
 
     <p class="card-content"><strong>{{ currentItem.content }}</strong></p>
-
+    
     <p *ngIf="currentItem.author" class="author" style="text-align: right; font-style: italic;">
-      - {{ currentItem.author }}
+      - {{ currentItem.author | titlecase }}
     </p>
   </div>
 

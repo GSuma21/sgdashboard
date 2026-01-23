@@ -116,7 +116,6 @@
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   width: 70%;
-  /* Occupy most of the width */
   max-width: 400px;
   text-align: center;
   display: flex;
@@ -127,11 +126,13 @@
   transition: all 0.3s ease-in-out;
   position: relative;
   height: 120px;
+  padding-top: 60px; 
 
   .card-icon {
-    position: relative;
-    left: -24%;
-    width: 47%;
+    position: absolute;
+    top: -3px;        
+    left: 16px;   
+    width: 100px;
     height: 40px;
     margin-bottom: 10px;
   }
