@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from '../../../../environments/environment';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+type SharePlatform = 'linkedin' | 'whatsapp' | 'facebook' | 'instagram';
 
 @Component({
   selector: 'app-share-modal',
@@ -61,28 +62,65 @@ async copyText() {
   }
 }
 
+share(platform: SharePlatform) {
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const url = encodeURIComponent(this.shareLink);
+  const text = encodeURIComponent(this.shareText);
 
-  share(platform: 'linkedin' | 'whatsapp' | 'facebook' | 'instagram') {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const platformConfig: Record<SharePlatform, {
+  mobileUrl?: string;
+  desktopUrl?: string;
+  useNativeShare?: boolean;
+}> = {
+  whatsapp: {
+    mobileUrl: environment.whatsappMobile + `text=${text}%0A%0A${url}`,
+      desktopUrl: environment.whatsappWeb + `text=${text}%0A%0A${url}`,
+    useNativeShare: false,
+  },
 
-    if (isMobile && 'share' in navigator) {
-      this.shareNative();
+  linkedin: {
+    mobileUrl: environment.linkedin + url,
+    desktopUrl: environment.linkedin + url,
+    useNativeShare: true,
+  },
+
+  facebook: {
+    mobileUrl: environment.facebook + url,
+    desktopUrl: environment.facebook + url,
+    useNativeShare: true,
+  },
+
+  instagram: {
+    mobileUrl: environment.instagram,
+    desktopUrl: environment.instagram,
+    useNativeShare: true,
+  },
+};
+
+  const config = platformConfig[platform];
+
+  if (!config.useNativeShare) {
+    const targetUrl = isMobile ? config.mobileUrl : config.desktopUrl;
+    if (targetUrl) {
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
+      this.dialogRef.close('ok');
       return;
     }
-
-    const url = encodeURIComponent(this.shareLink);
-    const text = encodeURIComponent(this.shareText);
-
-    const shareUrls: Record<string, string> = {
-      linkedin: environment.linkedin + url,
-      whatsapp: environment.whatsapp + `text=${text}%0A%0A${url}`,
-      facebook: environment.facebook + url,
-      instagram: environment.instagram,
-    };
-
-    window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
-    this.dialogRef.close('ok');
   }
+
+  if (isMobile && config.useNativeShare && 'share' in navigator) {
+    this.shareNative();
+    return;
+  }
+
+  const fallbackUrl = isMobile ? config.mobileUrl : config.desktopUrl;
+  if (fallbackUrl) {
+    window.open(fallbackUrl, '_blank', 'noopener,noreferrer');
+  }
+
+  this.dialogRef.close('ok');
+}
+
 
   private shareNative(): void {
     if (!('share' in navigator)) {
