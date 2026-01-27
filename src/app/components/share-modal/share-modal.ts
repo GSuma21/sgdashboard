@@ -68,35 +68,41 @@ share(platform: SharePlatform) {
   const text = encodeURIComponent(this.shareText);
 
   const platformConfig: Record<SharePlatform, {
-    mobileUrl?: string;
-    desktopUrl?: string;
-    useNativeShare?: boolean;
-  }> = {
-    whatsapp: {
-      mobileUrl: environment.whatsappMobile + `text=${text}%0A%0A${url}`,
+  mobileUrl?: string;
+  desktopUrl?: string;
+  useNativeShare?: boolean;
+}> = {
+  whatsapp: {
+    mobileUrl: environment.whatsappMobile + `text=${text}%0A%0A${url}`,
       desktopUrl: environment.whatsappWeb + `text=${text}%0A%0A${url}`,
-      useNativeShare: false,
-    },
-    linkedin: {
-      desktopUrl: environment.linkedin + url,
-      useNativeShare: true,
-    },
-    facebook: {
-      desktopUrl: environment.facebook + url,
-      useNativeShare: true,
-    },
-    instagram: {
-      desktopUrl: environment.instagram,
-      useNativeShare: true,
-    },
-  };
+    useNativeShare: false,
+  },
+
+  linkedin: {
+    mobileUrl: environment.linkedin + url,
+    desktopUrl: environment.linkedin + url,
+    useNativeShare: true,
+  },
+
+  facebook: {
+    mobileUrl: environment.facebook + url,
+    desktopUrl: environment.facebook + url,
+    useNativeShare: true,
+  },
+
+  instagram: {
+    mobileUrl: environment.instagram,
+    desktopUrl: environment.instagram,
+    useNativeShare: true,
+  },
+};
 
   const config = platformConfig[platform];
 
   if (!config.useNativeShare) {
     const targetUrl = isMobile ? config.mobileUrl : config.desktopUrl;
     if (targetUrl) {
-      window.open(targetUrl);
+      window.open(targetUrl, '_blank', 'noopener,noreferrer');
       this.dialogRef.close('ok');
       return;
     }
