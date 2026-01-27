@@ -122,22 +122,41 @@ export class HeatMapComponent implements OnInit {
     this.displayedVoices = (activeTheme?.list ?? []).slice(0, 4);
   }
 
-  showTooltipOnClick(index: number) {
-    const tooltipsArray = this.tooltips.toArray();
-    if (!tooltipsArray[index]) return;
+  // showTooltipOnClick(index: number) {
+  //   const tooltipsArray = this.tooltips.toArray();
+  //   if (!tooltipsArray[index]) return;
 
-    // Hide all other tooltips immediately
-    tooltipsArray.forEach((t, i) => {
-      if (i !== index) t.hide();
-    });
-    // Clear any existing timeout
-    if (this.tooltipTimeoutId) {
-      clearTimeout(this.tooltipTimeoutId);
-    }
-    const tooltip = tooltipsArray[index];
-    tooltip.show();
-    this.tooltipTimeoutId = setTimeout(() => tooltip.hide(), 1000);
+  //   // Hide all other tooltips immediately
+  //   tooltipsArray.forEach((t, i) => {
+  //     if (i !== index) t.hide();
+  //   });
+  //   // Clear any existing timeout
+  //   if (this.tooltipTimeoutId) {
+  //     clearTimeout(this.tooltipTimeoutId);
+  //   }
+  //   const tooltip = tooltipsArray[index];
+  //   tooltip.show();
+  //   this.tooltipTimeoutId = setTimeout(() => tooltip.hide(), 1000);
+  // }
+
+  showTooltipOnClick(index: number, event: MouseEvent | TouchEvent) {
+  // if user is scrolling, don't show tooltip
+  if (event instanceof TouchEvent && event.touches.length > 0) {
+    return;
   }
+
+  const tooltipsArray = this.tooltips.toArray();
+  if (!tooltipsArray[index]) return;
+
+  tooltipsArray.forEach((t, i) => i !== index && t.hide());
+
+  if (this.tooltipTimeoutId) {
+    clearTimeout(this.tooltipTimeoutId);
+  }
+  const tooltip = tooltipsArray[index];
+  tooltip.show();
+  this.tooltipTimeoutId = setTimeout(() => tooltip.hide(), 1000);
+}
 
   ngOnDestroy(): void {
     if (this.tooltipTimeoutId) {
