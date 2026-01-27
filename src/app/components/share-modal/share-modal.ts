@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from '../../../../environments/environment';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
 @Component({
   selector: 'app-share-modal',
   standalone: true,
@@ -12,7 +13,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   styleUrl: './share-modal.css'
 })
 export class ShareModal {
-  shareLink ='';
+
+  shareLink = '';
   shareText = `This story really stayed with me, and I wanted to share it with you. Do take a moment to read it and help amplify these voices from the ground.`;
 
   constructor(
@@ -20,83 +22,94 @@ export class ShareModal {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackBar
   ) {
-    this.shareLink = window.location.host+'/voices-from-the-ground?'+`storyId=${this.data.storyId}`
+    this.shareLink =
+      `${window.location.origin}/voices-from-the-ground?storyId=${this.data.storyId}`;
   }
 
   closeModal() {
     this.dialogRef.close();
   }
 
-  async copyLink(input: HTMLInputElement | HTMLTextAreaElement) {
-    try {
-      await navigator.clipboard.writeText(input.value);
-  
-      this.showSnackBar('Link & text copied to clipboard'); 
-  
+async copyText() {
+  const textToCopy = `${this.shareText}\n\n${this.shareLink}`;
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(textToCopy);
+      this.showSnackBar('Link & text copied to clipboard');
       this.dialogRef.close('ok');
-    } catch {
-      this.showSnackBar('Failed to copy link & text. Please copy manually.');  // Using generalized method
-
-    }
-  }  
-
-  share(platform: 'linkedin' | 'whatsapp' | 'facebook' | 'instagram') {
-    const url = encodeURIComponent(this.shareLink);
-    const text = encodeURIComponent(this.shareText);
-  
-    const shareUrls: Record<string, string> = {
-      linkedin: environment.linkedin + `${url}`,
-      whatsapp: environment.whatsapp + `text=${text}%0A%0A` + `${url}`,
-      facebook: environment.facebook + `${url}`,
-      instagram: environment.instagram,
-    };
-  
-    this.dialogRef.close('ok');
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
-    if (platform === 'instagram') {
-      if (isMobile) {
-        window.location.href = 'instagram://app';
-
-        setTimeout(() => {
-          window.open(environment.instagram, '_blank', 'noopener,noreferrer');
-        }, 1500);
-      } else {
-        window.open(environment.instagram, '_blank', 'noopener,noreferrer');
-      }
       return;
     }
-  
-    window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
-  }
 
-  showSnackBar(message: string, duration: number = 3000, horizontalPosition: 'left' | 'center' | 'right' = 'right', verticalPosition: 'top' | 'bottom' = 'top') {
-    this.snackBar.open(message, '', {
-      duration: duration,
-      horizontalPosition: horizontalPosition,
-      verticalPosition: verticalPosition,
-    });
-  }
-
-  copyText() {
-    const textToCopy = this.shareText + '\n\n' + this.shareLink;
     const el = document.createElement('textarea');
     el.value = textToCopy;
     document.body.appendChild(el);
     el.select();
 
-    try {
-      const successful = document.execCommand('copy');
-      if (successful) {
-        this.showSnackBar('Link & text copied to clipboard');
-        this.dialogRef.close('ok');
-      } else {
-        this.showSnackBar('Failed to copy link & text. Please copy manually.');
-      }
-    } catch (err) {
-      this.showSnackBar('Failed to copy link & text. Please copy manually.');
-    } finally {
-      document.body.removeChild(el);
+    const success = document.execCommand('copy');
+    document.body.removeChild(el);
+
+    if (!success) {
+      throw new Error('execCommand failed');
     }
+
+    this.showSnackBar('Link & text copied to clipboard');
+    this.dialogRef.close('ok');
+
+  } catch {
+    this.showSnackBar('Failed to copy link & text. Please copy manually.');
+  }
+}
+
+
+  share(platform: 'linkedin' | 'whatsapp' | 'facebook' | 'instagram') {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile && 'share' in navigator) {
+      this.shareNative();
+      return;
+    }
+
+    const url = encodeURIComponent(this.shareLink);
+    const text = encodeURIComponent(this.shareText);
+
+    const shareUrls: Record<string, string> = {
+      linkedin: environment.linkedin + url,
+      whatsapp: environment.whatsapp + `text=${text}%0A%0A${url}`,
+      facebook: environment.facebook + url,
+      instagram: environment.instagram,
+    };
+
+    window.open(shareUrls[platform], '_blank', 'noopener,noreferrer');
+    this.dialogRef.close('ok');
+  }
+
+  private shareNative(): void {
+    if (!('share' in navigator)) {
+      return;
+    }
+
+    navigator.share({
+      title: 'Voices from the Ground',
+      text: this.shareText,
+      url: this.shareLink,
+    }).then(() => {
+      this.dialogRef.close('ok');
+    }).catch(() => {
+      this.showSnackBar('Sharing cancelled');
+    });
+  }
+
+  showSnackBar(
+    message: string,
+    duration: number = 3000,
+    horizontalPosition: 'left' | 'center' | 'right' = 'right',
+    verticalPosition: 'top' | 'bottom' = 'top'
+  ) {
+    this.snackBar.open(message, '', {
+      duration,
+      horizontalPosition,
+      verticalPosition,
+    });
   }
 }
