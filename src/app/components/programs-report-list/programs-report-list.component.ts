@@ -42,49 +42,41 @@ export class ProgramsReportListComponent implements OnInit {
     }
   }  
 
-  scrollRight(event: any) {
-    event.stopPropagation();
-    const parent = (event.target as HTMLElement).parentElement; if (!parent) return;
-    const container = parent.querySelector('.carousel-track');
-    if (!container) return;
+scrollRight(event: MouseEvent) {
+  event.stopPropagation();
 
-    // Get all images inside the carousel
-    const images = Array.from(container.querySelectorAll('.program-images')) as HTMLElement[];
+  const button = event.currentTarget as HTMLElement;
+  const carousel = button.closest('.carousel');
+  if (!carousel) return;
 
-    // Find the first image that is partially or fully visible on the right
-    const containerRect = container.getBoundingClientRect();
-    const nextImage = images.find(img => img.getBoundingClientRect().left > containerRect.left);
+  const container = carousel.querySelector('.carousel-track') as HTMLElement;
+  if (!container) return;
 
-    if (nextImage) {
-      const imageRect = nextImage.getBoundingClientRect();
-      const scrollOffset = imageRect.left - containerRect.left;
+  const scrollAmount = container.clientWidth;
 
-      container.scrollBy({ left: scrollOffset, behavior: 'smooth' });
-    }
-  }
+  container.scrollBy({
+    left: scrollAmount,
+    behavior: 'smooth'
+  });
+}
 
-  scrollLeft(event: any) {
-    event.stopPropagation();
+scrollLeft(event: MouseEvent) {
+  event.stopPropagation();
 
-    const parent = (event.target as HTMLElement).parentElement;
-    if (!parent) return;
-    const container = parent.querySelector('.carousel-track');
-    if (!container) return;
-    
-    const images = Array.from(container.querySelectorAll('.program-images')) as HTMLElement[];
-    const containerRect = container.getBoundingClientRect();
+  const button = event.currentTarget as HTMLElement;
+  const carousel = button.closest('.carousel');
+  if (!carousel) return;
 
-    // Find the last image that is partially or fully visible on the left
-    const prevImages = images.filter(img => img.getBoundingClientRect().right < containerRect.right);
-    const lastVisible = prevImages[prevImages.length - 1];
+  const container = carousel.querySelector('.carousel-track') as HTMLElement;
+  if (!container) return;
 
-    if (lastVisible) {
-      const imageRect = lastVisible.getBoundingClientRect();
-      const scrollOffset = containerRect.right - imageRect.right;
+  const scrollAmount = container.clientWidth;
 
-      container.scrollBy({ left: -scrollOffset, behavior: 'smooth' });
-    }
-  }
+  container.scrollBy({
+    left: -scrollAmount,
+    behavior: 'smooth'
+  });
+}
 
   openCommunityDetails() {
     let pathData = this.paramsData
