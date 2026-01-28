@@ -57,6 +57,7 @@ export class HeatMapComponent implements OnInit {
 
   activeThemeId: string | null = null;
   displayedVoices: VoiceQuote[] = [];
+  isMobile = window.innerWidth <= 768;
 
 
   ngOnInit(): void {
