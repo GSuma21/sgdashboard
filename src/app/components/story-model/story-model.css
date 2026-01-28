@@ -495,8 +495,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 0.25rem;
-    margin-bottom: 0.75rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
   }
   .meta-item {
     display: inline-flex;
