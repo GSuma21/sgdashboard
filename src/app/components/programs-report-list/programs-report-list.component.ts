@@ -53,9 +53,17 @@ scrollRight(event: MouseEvent) {
   if (!container) return;
 
   const scrollAmount = container.clientWidth;
+  const maxScrollLeft = container.scrollWidth - container.clientWidth;
 
-  container.scrollBy({
-    left: scrollAmount,
+  let newScrollLeft = container.scrollLeft + scrollAmount;
+
+  // Clamp new scroll position to maxScrollLeft
+  if (newScrollLeft > maxScrollLeft) {
+    newScrollLeft = maxScrollLeft;
+  }
+
+  container.scrollTo({
+    left: newScrollLeft,
     behavior: 'smooth'
   });
 }
@@ -71,9 +79,15 @@ scrollLeft(event: MouseEvent) {
   if (!container) return;
 
   const scrollAmount = container.clientWidth;
+  let newScrollLeft = container.scrollLeft - scrollAmount;
 
-  container.scrollBy({
-    left: -scrollAmount,
+  // Clamp to 0 (start)
+  if (newScrollLeft < 0) {
+    newScrollLeft = 0;
+  }
+
+  container.scrollTo({
+    left: newScrollLeft,
     behavior: 'smooth'
   });
 }
