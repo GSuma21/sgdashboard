@@ -8,6 +8,7 @@ import { StoryModel } from '../story-model/story-model';
 import { ShareModal } from '../share-modal/share-modal';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, exhaustMap  } from 'rxjs/operators';
+import { ShareService } from '../../services/share.service';
 
 @Component({
   selector: 'app-improvement-story',
@@ -29,7 +30,7 @@ export class ImprovementStoryComponent {
    private actionSub!: Subscription;
 
 
-  constructor(private sg:firebaseService,private dialog: MatDialog) {
+  constructor(private sg:firebaseService,private dialog: MatDialog, private shareService: ShareService) {
     this.actionSub = this.action$
     .pipe(
       debounceTime(1000),
@@ -90,6 +91,15 @@ export class ImprovementStoryComponent {
   }
 
   openShareModal(): void {
+
+      if (this.shareService.canNativeShare()) {
+    this.shareService.nativeShare({
+      storyId: this.story.id
+    }).catch(() => {});
+
+    return;
+  }
+  
     this.pauseCarousel.emit(true);
     const dialogRef = this.dialog.open(ShareModal, {
       width: '520px',

@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ShareModal } from '../share-modal/share-modal';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, exhaustMap, groupBy, mergeMap } from 'rxjs/operators';
+import { ShareService } from '../../services/share.service';
 
 @Component({
   selector: 'app-story-model',
@@ -32,7 +33,7 @@ export class StoryModel implements OnInit {
     @Inject(MAT_DIALOG_DATA) public story: any,
     private sg:firebaseService,
     private util:UtilsService,
-    private dialog: MatDialog
+    private dialog: MatDialog, private shareService: ShareService
   ) {
     this.setStoryByLangIndex(0);
     this.actionSub = this.action$
@@ -135,6 +136,15 @@ export class StoryModel implements OnInit {
   }
 
   openShareModal(): void {
+
+      if (this.shareService.canNativeShare()) {
+    this.shareService.nativeShare({
+      storyId:this.story.id
+    }).catch(() => {});
+
+    return;
+  }
+
     const dialogRef=this.dialog.open(ShareModal, {
       width: '520px',
       panelClass: 'share-dialog',
