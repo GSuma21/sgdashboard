@@ -128,3 +128,46 @@ h1, h2, h3, h4, h5, h6 {
 .cdk-overlay-pane:has(.heatmap-tooltip) {
   margin-top: -50px;
 }
+
+
+.toast-dialog,
+.toast-dialog .mat-mdc-dialog-container,
+.toast-dialog .mdc-dialog__surface {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+
+.mat-snackbar-clone {
+  background-color: #ffffff;
+  color: #2b2b2b;
+
+  /* EXACT border from your image */
+  border: 1px solid #ffffff;
+
+  box-shadow:
+  0px 3px 5px -1px rgba(0, 0, 0, 0.12),
+  0px 6px 10px 0px rgba(0, 0, 0, 0.12),
+  0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+
+  min-height: 38px;
+  padding: 8px 16px;
+
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Roboto, Arial, sans-serif;
+
+  white-space: nowrap;
+}
+
+/* Label text */
+.mat-snackbar-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 35px;
+}
