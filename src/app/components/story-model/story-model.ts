@@ -136,15 +136,20 @@ export class StoryModel implements OnInit {
   }
 
   openShareModal(): void {
-
-      if (this.shareService.canNativeShare()) {
-    this.shareService.nativeShare({
-      storyId:this.story.id
-    }).catch(() => {});
+  if (this.shareService.canNativeShare()) {
+    this.shareService.nativeShare(this.story.id)
+    .then(() => {
+      this.action$.next({
+        story: this.currentStory,
+        action: ACTIONS.SHARE
+      });
+    })
+    .catch((err) => {
+      console.debug('Native share cancelled or failed', err);
+    });
 
     return;
   }
-
     const dialogRef=this.dialog.open(ShareModal, {
       width: '520px',
       panelClass: 'share-dialog',

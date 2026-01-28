@@ -92,15 +92,26 @@ export class ImprovementStoryComponent {
 
   openShareModal(): void {
 
-      if (this.shareService.canNativeShare()) {
-    this.shareService.nativeShare({
-      storyId: this.story.id
-    }).catch(() => {});
+     this.pauseCarousel.emit(true);
+
+ if (this.shareService.canNativeShare()) {
+    this.shareService.nativeShare(this.story.id)
+     .then(() => {
+      this.action$.next({
+        story: this.story,
+        action: ACTIONS.SHARE
+      });
+    })
+    .catch((err) => {
+      console.debug('Native share cancelled or failed', err);
+    })
+    .finally(() => {
+      this.resumeCarousel.emit(true);
+    });
 
     return;
   }
   
-    this.pauseCarousel.emit(true);
     const dialogRef = this.dialog.open(ShareModal, {
       width: '520px',
       panelClass: 'share-dialog',

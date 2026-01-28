@@ -68,7 +68,7 @@ async copyText() {
   
     const shareUrls: Record<string, string> = {
       linkedin: environment.linkedin + `${url}`,
-      whatsapp: environment.whatsappWeb + `text=${text}%0A%0A` + `${url}`,
+      whatsapp: environment.whatsapp + `text=${text}%0A%0A` + `${url}`,
       facebook: environment.facebook + `${url}`,
       instagram: environment.instagram,
     };
