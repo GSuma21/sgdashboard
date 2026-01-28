@@ -216,3 +216,10 @@ mat-icon {
         font-size: 13px;
       }
   }
+
+::ng-deep .toast-dialog .mat-mdc-dialog-container {
+  padding: 0;
+  box-shadow: none;
+  background: transparent;
+}
+

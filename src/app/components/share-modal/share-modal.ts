@@ -1,27 +1,27 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { environment } from '../../../../environments/environment';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 type SharePlatform = 'linkedin' | 'whatsapp' | 'facebook' | 'instagram';
 
 @Component({
   selector: 'app-share-modal',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatSnackBarModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './share-modal.html',
   styleUrl: './share-modal.css'
 })
 export class ShareModal {
-
+  @ViewChild('dialogToast', { static: true })
+  dialogToast!: TemplateRef<any>;
   shareLink = '';
   shareText = environment.shareText
 
   constructor(
     private dialogRef: MatDialogRef<ShareModal>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackBar: MatSnackBar
+    private dialog: MatDialog
   ) {
     this.shareLink =
       `${window.location.origin}/voices-from-the-ground?storyId=${this.data.storyId}`;
@@ -115,10 +115,32 @@ async copyText() {
     horizontalPosition: 'left' | 'center' | 'right' = 'right',
     verticalPosition: 'top' | 'bottom' = 'top'
   ) {
-    this.snackBar.open(message, '', {
-      duration,
-      horizontalPosition,
-      verticalPosition,
+    if (!this.dialogToast) {
+      console.error('dialogToast template not found');
+      return;
+    }
+
+    const position: any = {};
+    position[verticalPosition] = '16px';
+
+    if (horizontalPosition === 'center') {
+      position.left = '50%';
+    } else {
+      position[horizontalPosition] = '16px';
+    }
+
+    // 🔹 Open a dialog on top of the existing dialog
+    const dialogRef = this.dialog.open(this.dialogToast, {
+      data: message,           // pass message directly
+      panelClass: 'toast-dialog',
+      hasBackdrop: false,      // no backdrop
+      disableClose: true,
+      position,
+      width: 'auto',
+      maxWidth: '90vw'
     });
+
+    // 🔹 Close this toast dialog only
+    setTimeout(() => dialogRef.close(), duration);
   }
 }
