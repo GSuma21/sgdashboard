@@ -146,10 +146,20 @@ export class MobileVoicesAnimationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  onDandelionClick(index: number) {
+  activeDandelionIndex: number | null = null;
+
+  onDandelionClick(index: number, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
     // Jump to the Challenge (Problem) associated with this dandelion
     // Each node has 2 items: Problem (even) and Solution (odd)
     this.currentIndex = index * 2;
+    this.activeDandelionIndex = index;
+  }
+
+  resetActiveDandelion() {
+    this.activeDandelionIndex = null;
   }
 
   get currentItem() {

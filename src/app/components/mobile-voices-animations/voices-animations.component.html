@@ -1,4 +1,4 @@
-<div class="animation-container">
+<div class="animation-container" (click)="resetActiveDandelion()">
   <img src="assets/mobile-animations/background.svg" class="bg-img"
     style="position: absolute; width:100%; object-fit: cover;">
 
@@ -8,8 +8,8 @@
     <ng-container *ngFor="let node of storyNodes; let i = index">
       <ng-container *ngIf="i < growthStep">
         <div class="dandelion-flower" *ngIf="dandelionsVisible.has(i)" [style.top]="node.dandelionTop"
-          [style.left]="node.dandelionLeft" @dandelionPop (click)="onDandelionClick(i)"
-          style="cursor: pointer; pointer-events: auto;">
+          [style.left]="node.dandelionLeft" @dandelionPop (click)="onDandelionClick(i, $event)"
+          [class.active-dandelion]="activeDandelionIndex === i" style="cursor: pointer; pointer-events: auto;">
           <img [src]="FLOWER_IMG" class="dandelion-image">
         </div>
       </ng-container>
@@ -36,7 +36,7 @@
     <img *ngIf="currentItem.type === 'solution'" src="assets/mobile-animations/solution.svg" class="card-icon mb-2">
 
     <p class="card-content"><strong>{{ currentItem.content }}</strong></p>
-    
+
     <p *ngIf="currentItem.author" class="author" style="text-align: right; font-style: italic;">
       - {{ currentItem.author | titlecase }}
     </p>
