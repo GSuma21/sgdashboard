@@ -56,14 +56,14 @@
   position: relative;
   overflow: hidden;
 
-  &:hover,
-  &.active {
-    transform: scale(1.02) translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    z-index: 10;
-  border-radius: 10px;
+  // &:hover,
+  // &.active {
+  //   transform: scale(1.02) translateY(-5px);
+  //   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  //   z-index: 10;
+  // border-radius: 10px;
 
-  }
+  // }
 
   &.grey {
     cursor: default;
@@ -445,7 +445,7 @@
 .theme9{
    background-color:#BA776F;
 }
-.theme9.active{ 
+.theme9.active{
    background-color:  #EE4533;
 }
 .theme10{
@@ -455,9 +455,9 @@
    background-color:#e0b004;
 }
 
-@media (hover: none) and (pointer: coarse) {
-  .heatmap-item:hover {
-    transform: none !important;
-    box-shadow: none !important;
-  }
-}
+// @media (hover: none) and (pointer: coarse) {
+//   .heatmap-item:hover {
+//     transform: none !important;
+//     box-shadow: none !important;
+//   }
+// }

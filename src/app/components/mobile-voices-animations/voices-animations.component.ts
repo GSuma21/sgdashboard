@@ -100,56 +100,110 @@ export class MobileVoicesAnimationsComponent implements OnInit, OnDestroy {
     });
   }
 
+  activeDandelionIndex: number | null = null;
+  isManualMode = false;
+
   async playAnimation() {
     this.showDandelionBase = true;
     await this.delay(500);
-    if (this.isDestroyed) return;
+    if (this.isDestroyed || this.isManualMode) return;
 
     this.growthStep = 0.5;
     await this.delay(1000);
-    if (this.isDestroyed) return;
+    if (this.isDestroyed || this.isManualMode) return;
 
     for (let i = 0; i < this.storyNodes.length; i++) {
-      if (this.isDestroyed) return;
+      if (this.isDestroyed || this.isManualMode) return;
 
       // 1. Grow Branch Segment
       this.growthStep = i + 1;
       await this.delay(1500); // Wait for growth
-      if (this.isDestroyed) return;
+      if (this.isDestroyed || this.isManualMode) return;
 
       // 2. SHOW CHALLENGE in Carousel
       this.currentIndex = i * 2; // Even index = Problem
       await this.delay(2000); // Wait for reading
-      if (this.isDestroyed) return;
+      if (this.isDestroyed || this.isManualMode) return;
 
       // 3. SHOW DANDELION (Pops in)
       this.dandelionsVisible.add(i);
       await this.delay(500); // Wait for pop animation
-      if (this.isDestroyed) return;
+      if (this.isDestroyed || this.isManualMode) return;
 
       // 4. SHOW SOLUTION in Carousel
       this.currentIndex = i * 2 + 1; // Odd index = Solution
       await this.delay(3000); // Wait for reading
-      if (this.isDestroyed) return;
+      if (this.isDestroyed || this.isManualMode) return;
+    }
+  }
+
+  stopAutoAnimation() {
+    this.isManualMode = true;
+  }
+
+  updateAnimationState() {
+    // Calculate which step we are at based on currentIndex
+    // currentIndex 0 (Chal 1) -> i=0 -> growth 1
+    // currentIndex 1 (Sol 1) -> i=0 -> growth 1, dandelion 0 visible
+    // currentIndex 2 (Chal 2) -> i=1 -> growth 2, dandelion 0 visible
+    // currentIndex 3 (Sol 2) -> i=1 -> growth 2, dandelion 0,1 visible
+
+    const i = Math.floor(this.currentIndex / 2);
+    const isSolution = this.currentIndex % 2 !== 0;
+
+    // Update growth step
+    // If we are at Chal 1 (0), growth should be 1.
+    // If we are at Chal 2 (2), growth should be 2.
+    this.growthStep = i + 1;
+
+    // Update dandelions
+    // Dandelions up to i-1 are definitely visible.
+    // Dandelion i is visible ONLY if we are at Solution (or past it, but here we are at i)
+    // Wait, in auto animation:
+    // Chal (0) -> Growth 1 -> Wait -> Dandelion 0 -> Sol (1)
+    // So at Chal (0), Dandelion 0 is NOT visible.
+    // At Sol (1), Dandelion 0 IS visible.
+    
+    this.dandelionsVisible.clear();
+    for (let k = 0; k < i; k++) {
+      this.dandelionsVisible.add(k);
+    }
+    // Show dandelion if it's the Solution phase OR if it's the actively selected one
+    if (isSolution || this.activeDandelionIndex === i) {
+      this.dandelionsVisible.add(i);
     }
   }
 
   next() {
+    this.stopAutoAnimation();
     if (this.currentIndex < this.carouselItems.length - 1) {
       this.currentIndex++;
+      this.updateAnimationState();
     }
   }
 
   prev() {
+    this.stopAutoAnimation();
     if (this.currentIndex > 0) {
       this.currentIndex--;
+      this.updateAnimationState();
     }
   }
 
-  onDandelionClick(index: number) {
+  onDandelionClick(index: number, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    this.stopAutoAnimation();
     // Jump to the Challenge (Problem) associated with this dandelion
     // Each node has 2 items: Problem (even) and Solution (odd)
     this.currentIndex = index * 2;
+    this.activeDandelionIndex = index;
+    this.updateAnimationState();
+  }
+
+  resetActiveDandelion() {
+    this.activeDandelionIndex = null;
   }
 
   get currentItem() {
