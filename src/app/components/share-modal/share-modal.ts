@@ -3,13 +3,12 @@ import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { environment } from '../../../../environments/environment';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 type SharePlatform = 'linkedin' | 'whatsapp' | 'facebook' | 'instagram';
 
 @Component({
   selector: 'app-share-modal',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatSnackBarModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './share-modal.html',
   styleUrl: './share-modal.css'
 })
@@ -22,7 +21,6 @@ export class ShareModal {
   constructor(
     private dialogRef: MatDialogRef<ShareModal>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackBar: MatSnackBar,
     private dialog: MatDialog
   ) {
     this.shareLink =
@@ -161,7 +159,7 @@ share(platform: SharePlatform) {
     }
 
     // 🔹 Open a dialog on top of the existing dialog
-    const dialogRef1 = this.dialog.open(this.dialogToast, {
+    const dialogRef = this.dialog.open(this.dialogToast, {
       data: message,           // pass message directly
       panelClass: 'toast-dialog',
       hasBackdrop: false,      // no backdrop
@@ -172,6 +170,6 @@ share(platform: SharePlatform) {
     });
 
     // 🔹 Close this toast dialog only
-    setTimeout(() => dialogRef1.close(), duration);
+    setTimeout(() => dialogRef.close(), duration);
   }
 }
