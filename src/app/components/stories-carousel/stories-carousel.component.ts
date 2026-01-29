@@ -19,12 +19,14 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   slides: any[] = [];
   browserId: any;
   chunkedSlides: any[][] = [];
-  currentChunkIndex: number = 0;
+  extendedSlides: any[][] = []; // Holds chunks + clones
+  currentChunkIndex: number = 1; // Start at 1 because 0 is a clone
   slideInterval: any;
   autoSlideDelay: number = 5000;
   chunkSize: number = 2;
   private resizeHandler: () => void;
   isModalOpen = false;
+  isTransitioning = false; // To prevent rapid clicks messing up transition
 
   constructor(private utils: UtilsService,private sg: firebaseService,private renderer: Renderer2,private ngZone: NgZone  ) {
     this.resizeHandler = this.adjustChunkSize.bind(this);
@@ -44,7 +46,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       this.slides = data.data.length < currentWeek - 7 ? data?.data?.slice(data.data.length - 8, data.data.length - 2) : data?.data?.slice(currentWeek + 1, currentWeek + 7) || data?.data?.slice(0, 6);
       this.slides = this.utils.assignColorsToStories(this.slides)
 
-      this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
+      this.updateChunks();
           this.loadStoryCounts();
       });
       }).catch(err => console.error(err));
@@ -73,7 +75,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
           like: slide.like ?? 0
         }));
       } finally {
-        this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
+        this.updateChunks();
       }
   }
 
@@ -87,21 +89,38 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
         like:updatedStory.like
       } : story
     );
-    this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
+    this.updateChunks();
   }
 
   adjustChunkSize() {
     const newChunkSize = window.innerWidth < 768 ? 1 : 2;
     if (newChunkSize !== this.chunkSize) {
       this.chunkSize = newChunkSize;
-      this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
-
+      this.updateChunks();
     }
   }
 
  async  onStoryAction(event: any) {
     this.slides = event.status ? this.utils.updateStoryCounts(this.slides,event) : this.utils.updateStory(this.slides,event)
+    this.updateChunks();
+  }
+
+  updateChunks() {
     this.chunkedSlides = this.chunkArray(this.slides, this.chunkSize);
+    
+    // Create extended slides with clones for infinite scroll
+    if (this.chunkedSlides.length > 1) {
+      const firstClone = this.chunkedSlides[0];
+      const lastClone = this.chunkedSlides[this.chunkedSlides.length - 1];
+      this.extendedSlides = [lastClone, ...this.chunkedSlides, firstClone];
+      this.currentChunkIndex = 1; // Reset to first real slide
+    } else {
+      this.extendedSlides = [...this.chunkedSlides];
+      this.currentChunkIndex = 0;
+    }
+    
+    // Reset position without animation
+    this.updateSlidePosition(false);
   }
 
   chunkArray(arr: any[], chunkSize: number): any[][] {
@@ -121,19 +140,54 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
   }
 
   navigateSlide(direction: number, reset = true): void {
-    this.currentChunkIndex =
-      (this.currentChunkIndex + direction + this.chunkedSlides.length) %
-      this.chunkedSlides.length;
+    if (this.isTransitioning || this.extendedSlides.length <= 1) return;
 
-    const slidesArea = document.querySelector('.slides-area') as HTMLElement;
-    const slideWidth = slidesArea.offsetWidth;
-
-    this.renderer.setStyle(slidesArea, 'scrollBehavior', 'smooth');
-    slidesArea.scrollLeft = slideWidth * this.currentChunkIndex;
+    this.currentChunkIndex += direction;
+    this.isTransitioning = true;
+    this.updateSlidePosition(true);
 
     if (reset) {
       this.resetAutoSlide();
     }
+
+    // Handle infinite scroll loop
+    const totalSlides = this.extendedSlides.length;
+    
+    if (this.currentChunkIndex === totalSlides - 1) {
+      // Moved to last clone (copy of first), jump back to first real slide
+      setTimeout(() => {
+        this.currentChunkIndex = 1;
+        this.updateSlidePosition(false);
+        this.isTransitioning = false;
+      }, 500); // Match transition duration
+    } else if (this.currentChunkIndex === 0) {
+      // Moved to first clone (copy of last), jump back to last real slide
+      setTimeout(() => {
+        this.currentChunkIndex = totalSlides - 2;
+        this.updateSlidePosition(false);
+        this.isTransitioning = false;
+      }, 500);
+    } else {
+      setTimeout(() => {
+        this.isTransitioning = false;
+      }, 500);
+    }
+  }
+
+  updateSlidePosition(animate: boolean) {
+    const slidesArea = document.querySelector('.slides-area') as HTMLElement;
+    if (!slidesArea) return;
+
+    const slideWidth = slidesArea.offsetWidth;
+    const scrollLeft = slideWidth * this.currentChunkIndex;
+
+    if (animate) {
+      this.renderer.setStyle(slidesArea, 'scrollBehavior', 'smooth');
+    } else {
+      this.renderer.setStyle(slidesArea, 'scrollBehavior', 'auto');
+    }
+    
+    slidesArea.scrollLeft = scrollLeft;
   }
 
   startAutoSlide() {
