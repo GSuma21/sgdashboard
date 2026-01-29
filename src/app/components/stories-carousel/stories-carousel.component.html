@@ -1,28 +1,27 @@
-  <div class="carousel-container">
-      <h2 class="carousel-title">More stories of Micro Improvements</h2>
+<div class="carousel-container">
+  <h2 class="carousel-title">More stories of Micro Improvements</h2>
 
-      <div class="carousel-wrapper">
+  <div class="carousel-wrapper">
 
-        <button class="nav-button prev" (click)="navigateSlide(-1)">
-          <img src="assets/icons/left_arrow.svg" alt="">
-        </button>
+    <button class="nav-button prev" (click)="navigateSlide(-1)">
+      <img src="assets/icons/left_arrow.svg" alt="">
+    </button>
 
-        <div class="slides-area">
-          <div *ngFor="let chunk of chunkedSlides; let i = index"
-              class="slide-group"
-              [ngClass]="{'active': i === currentChunkIndex}">
+    <div class="slides-area">
+      <div *ngFor="let chunk of extendedSlides; let i = index" class="slide-group"
+        [ngClass]="{'active': i === currentChunkIndex}">
 
-            <div class="story-card" *ngFor="let slide of chunk">
-              <app-improvement-story [story]="slide" [browserId]="browserId"  (storyAction)="onStoryAction($event)"
-              (pauseCarousel)="onPauseCarousel($event)"
-              (resumeCarousel)="onResumeCarousel($event)"></app-improvement-story>
-            </div>
-          </div>
+        <div class="story-card" *ngFor="let slide of chunk">
+          <app-improvement-story [story]="slide" [browserId]="browserId" (storyAction)="onStoryAction($event)"
+            (pauseCarousel)="onPauseCarousel($event)"
+            (resumeCarousel)="onResumeCarousel($event)"></app-improvement-story>
         </div>
-
-        <button class="nav-button next" (click)="navigateSlide(1)">
-          <img src="assets/icons/right_arrow.svg" alt="">
-        </button>
-
       </div>
     </div>
+
+    <button class="nav-button next" (click)="navigateSlide(1)">
+      <img src="assets/icons/right_arrow.svg" alt="">
+    </button>
+
+  </div>
+</div>
