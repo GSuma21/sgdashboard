@@ -46,9 +46,15 @@ export class MobileVoicesAnimationsComponent implements OnInit, OnDestroy {
     const width = window.innerWidth;
     this.storyNodes.forEach((node: any) => {
       // Find the best matching breakpoint (largest minWidth that is <= current width)
-      const match = node.responsivePositions
-        .sort((a: any, b: any) => b.minWidth - a.minWidth) // Sort descending
-        .find((bp: any) => width >= bp.minWidth);
+      const sorted = node.responsivePositions
+        .sort((a: any, b: any) => b.minWidth - a.minWidth); // Sort descending
+      
+      let match = sorted.find((bp: any) => width >= bp.minWidth);
+
+      // Fallback for smaller screens: use the smallest defined resolution
+      if (!match && sorted.length > 0) {
+        match = sorted[sorted.length - 1];
+      }
 
       if (match) {
         node.dandelionTop = match.top;
@@ -59,8 +65,10 @@ export class MobileVoicesAnimationsComponent implements OnInit, OnDestroy {
 
   fetchPageData(): void {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICE_ANIMATION}`).then((data: any) => {
+      if (this.isDestroyed) return;
       this.pageData = data.data.slice(0, 4);
       d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICE_ANIMATION_RESOLUTIONS}`).then((response: any) => {
+        if (this.isDestroyed) return;
         this.storyNodes = response.map((element: any, index: number) => {
           element.problem = this.pageData[index].challenge;
           element.author = this.pageData[index].role + ', ' + this.pageData[index].district + ', ' + this.pageData[index].state;
