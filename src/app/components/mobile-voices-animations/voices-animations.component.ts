@@ -46,9 +46,15 @@ export class MobileVoicesAnimationsComponent implements OnInit, OnDestroy {
     const width = window.innerWidth;
     this.storyNodes.forEach((node: any) => {
       // Find the best matching breakpoint (largest minWidth that is <= current width)
-      const match = node.responsivePositions
-        .sort((a: any, b: any) => b.minWidth - a.minWidth) // Sort descending
-        .find((bp: any) => width >= bp.minWidth);
+      const sorted = node.responsivePositions
+        .sort((a: any, b: any) => b.minWidth - a.minWidth); // Sort descending
+      
+      let match = sorted.find((bp: any) => width >= bp.minWidth);
+
+      // Fallback for smaller screens: use the smallest defined resolution
+      if (!match && sorted.length > 0) {
+        match = sorted[sorted.length - 1];
+      }
 
       if (match) {
         node.dandelionTop = match.top;
@@ -59,8 +65,10 @@ export class MobileVoicesAnimationsComponent implements OnInit, OnDestroy {
 
   fetchPageData(): void {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICE_ANIMATION}`).then((data: any) => {
+      if (this.isDestroyed) return;
       this.pageData = data.data.slice(0, 4);
       d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${VOICE_ANIMATION_RESOLUTIONS}`).then((response: any) => {
+        if (this.isDestroyed) return;
         this.storyNodes = response.map((element: any, index: number) => {
           element.problem = this.pageData[index].challenge;
           element.author = this.pageData[index].role + ', ' + this.pageData[index].district + ', ' + this.pageData[index].state;
@@ -115,24 +123,18 @@ export class MobileVoicesAnimationsComponent implements OnInit, OnDestroy {
     for (let i = 0; i < this.storyNodes.length; i++) {
       if (this.isDestroyed || this.isManualMode) return;
 
-      // 1. Grow Branch Segment
+      // 1. Grow Branch Segment AND Show Challenge
       this.growthStep = i + 1;
-      await this.delay(1500); // Wait for growth
-      if (this.isDestroyed || this.isManualMode) return;
-
-      // 2. SHOW CHALLENGE in Carousel
       this.currentIndex = i * 2; // Even index = Problem
-      await this.delay(2000); // Wait for reading
+      
+      await this.delay(2000); // Wait for growth and reading challenge
       if (this.isDestroyed || this.isManualMode) return;
 
-      // 3. SHOW DANDELION (Pops in)
-      this.dandelionsVisible.add(i);
-      await this.delay(500); // Wait for pop animation
-      if (this.isDestroyed || this.isManualMode) return;
-
-      // 4. SHOW SOLUTION in Carousel
+      // 2. SHOW DANDELION AND SOLUTION
+      this.dandelionsVisible.add(i); // Show dandelion
       this.currentIndex = i * 2 + 1; // Odd index = Solution
-      await this.delay(3000); // Wait for reading
+      
+      await this.delay(3000); // Wait for reading solution
       if (this.isDestroyed || this.isManualMode) return;
     }
   }
@@ -168,7 +170,7 @@ export class MobileVoicesAnimationsComponent implements OnInit, OnDestroy {
     for (let k = 0; k < i; k++) {
       this.dandelionsVisible.add(k);
     }
-    // Show dandelion if it's the Solution phase OR if it's the actively selected one
+    // Show dandelion ONLY if it's the Solution phase (or if explicitly active/clicked)
     if (isSolution || this.activeDandelionIndex === i) {
       this.dandelionsVisible.add(i);
     }
