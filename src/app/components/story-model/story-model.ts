@@ -127,8 +127,7 @@ export class StoryModel implements OnInit {
       };
       return;
     }
-    console.log("naveen",this.story)
-    console.log('currentStory',this.currentStory)
+
     this.currentStory = {
       ...this.story,
       ...langObj.data,
