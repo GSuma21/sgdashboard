@@ -123,6 +123,9 @@ export class StoryModel implements OnInit {
       console.warn('Language data not found for index:', index);
       this.currentStory = {
         ...this.story,
+        likesCount: this.currentStory?.likesCount ?? this.story.likesCount,
+        shareCount: this.currentStory?.shareCount ?? this.story.shareCount,
+        like: this.currentStory?.like ?? this.story.like,
         activeLangCode: ''
       };
       return;
@@ -131,6 +134,9 @@ export class StoryModel implements OnInit {
     this.currentStory = {
       ...this.story,
       ...langObj.data,
+      likesCount: this.currentStory?.likesCount ?? this.story.likesCount,
+      shareCount: this.currentStory?.shareCount ?? this.story.shareCount,
+      like: this.currentStory?.like ?? this.story.like,
       activeLangCode: lang?.code?.slice(0, 3) ?? ''
     };
   }
