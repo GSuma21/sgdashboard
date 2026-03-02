@@ -1,1 +1,36 @@
-<p>state-view works!</p>
+<div class="state-view-container">
+    <div class="legend-container">
+      @for(data of displayLegends; track $index){
+        <div class="legend-item">
+          <div class="color-box" [ngStyle]="{'background-color': data.color}" *ngIf="!data.icon"></div>
+          <img class="legend-icon" [src]="data.icon" *ngIf="data.icon">
+          <span class="legend-item-header">{{ data.label.charAt(0).toUpperCase() + data.label.slice(1).toLowerCase() }}</span>
+        </div>
+      }
+
+      @for(note of notes; track $index){
+        <div class="note">*{{ note }}</div>
+      }
+    </div>
+    <div id="state-map-container" #stateMapContainer></div>
+    <div id="map-tooltip" class="map-tooltip"></div>
+    @if(showDetails){
+      <div class="indicator-container">
+        <div>
+        <h4 class="heading">{{country + '> '}} {{selectedState}} {{hoveredDistrict ? ( '> '+hoveredDistrict ) : ""}}</h4>
+        <div class="indicator-card-grid m-0">
+          <app-mini-indicator-card *ngFor="let indicator of indicatorData" [value]="indicator.value" [label]="indicator.label" class="indicator-card-item card-mobile-view"></app-mini-indicator-card>
+          </div>
+        </div>
+      </div>
+    }
+    @if(showVariations){
+      <div class="filter-selection">
+        <mat-form-field>
+          <mat-select [(ngModel)]="selectedIndicator">
+            <mat-option [value]="option.value" *ngFor="let option of selections" >{{option.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    }
+</div>

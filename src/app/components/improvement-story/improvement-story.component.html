@@ -1,0 +1,54 @@
+<section (mouseenter)="pauseCarousel.emit(false)"
+(mouseleave)="resumeCarousel.emit(false)">
+  <div class="card-content" [ngClass]="customClass">
+    <img class="meta-icon crown" src="assets/icons/crown.svg" *ngIf="storyOfWeek">
+    <section class="d-flex justify-content-between story-body">
+      <div class="story-text">
+        <span class="quote-icon px-1" [ngStyle]="{ color: story?.color || '#572E91' }">“</span>
+        <h3 class="card-title">
+          <span class="title-text">
+            {{ story?.lang[0]?.data?.title }}
+          </span>
+        </h3>
+
+        <div class="card-meta px-4">
+          <img class="meta-icon" src="assets/icons/user_dial.svg">
+          <div class="meta-text ml-2">
+            <p class="mb-0 leader-text">{{ story?.lang[0]?.data?.role }}</p>
+            <p class="location mb-0">{{ story?.lang[0]?.data?.district }}, {{ story?.lang[0]?.data?.state | titlecase }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-image-wrapper" *ngIf="story?.photos?.length">
+        <img [src]="story?.photos?.[0]"
+          [alt]="story?.lang[0]?.data?.title || ('Story from ' + story?.lang[0]?.data?.role)"
+          class="card-image"
+        />
+      </div>
+    </section>
+
+    <div class="card-actions d-flex justify-content-between px-3 px-md-4 pb-2">
+      <section class="d-flex">
+        <button type="button" class="like-item" (click)="handleUserClick(story, ACTIONS.LIKE)">
+        <svg class="heart-svg" viewBox="0 -960 960 960" [class.liked]="story.like" aria-hidden="true">
+          <path d="M479.99-148.83q-11.62 0-22.93-3.83-11.3-3.83-20.07-12.84l-54.16-50Q263.5-325.33 175.08-426.17 86.67-527 86.67-639.48q0-89.38 60.06-149.28 60.06-59.91 148.84-59.91 50.6 0 99.01 23.75Q443-801.17 480-750q41-51.17 87.05-74.92 46.06-23.75 97.53-23.75 88.71 0 148.73 59.91 60.02 59.9 60.02 149.28 0 112.48-88.33 213.4-88.33 100.91-207.17 210.25l-54.66 50.5q-9 8.92-20.18 12.71-11.17 3.79-23 3.79Z"/>
+        </svg>
+        <span class="likes-count" [class.liked]="story.like">{{ story.likesCount ? story.likesCount : 0 }}</span>
+      </button>
+
+        <button type="button" class="action-item" (click)="handleUserClick(story, ACTIONS.SHARE)">
+          <mat-icon class="action-icon">share</mat-icon>
+          {{ story.shareCount ? story.shareCount : 0 }}
+        </button>
+
+      </section>
+      <button class="read-story-btn" (click)="openStoryModal()">
+        <u>Read Story</u>
+      </button>
+    </div>
+    <svg width="832" height="151" viewBox="0 0 832 151" fill="none" xmlns="http://www.w3.org/2000/svg" id="flow-img">
+      <path d="M0 37.9779C0 37.9779 90.0129 0.061928 153.078 0C216.144 -0.061928 259.444 52.1275 334.139 55.5996C408.834 59.0716 444.555 21.7531 519.314 19.1408C594.073 16.5286 672.448 59.1383 747.286 55.5996C822.124 52.0609 865.161 21.6137 931.227 14.8873C997.293 8.16092 1102 14.8873 1102 14.8873V151H0V37.9779Z" [attr.fill]="story.color || '#572E91' "/>
+    </svg>
+  </div>
+</section>

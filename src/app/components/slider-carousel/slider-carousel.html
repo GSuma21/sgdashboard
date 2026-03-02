@@ -1,33 +1,48 @@
-<div class="carousel-wrapper">
-    <div class="side-header">
-      Hear from our <br /> partners
-    </div>
+<div *ngIf="testimonials" class="carousel-wrapper">
+  <div class="side-header">
+    Partner Voices
+  </div>
 
-    <div class="carousel-container">
-      <button class="nav left" (click)="prevSlide()">
-        &#10094;
-      </button>
+  <div class="carousel-container" #carousel>
+    <button *ngIf="this.currentIndex > 0"  class="nav left" (click)="prevSlide()">&#10094;</button>
 
-      <div class="carousel">
-        <div class="carousel-track" [style.transform]="getTransform()">
-          <div class="carousel-slide" *ngFor="let slide of slides">
-            <div class="card">
-              <div class="quote">❝</div>
+    <div class="carousel">
+      <div class="carousel-track" #carouselTrack [style.transform]="getTransform()">
+        <div class="carousel-slide" *ngFor="let slide of testimonials; let i = index">
+          <div class="card" [style.--cardColor]="colors[i % colors.length]">
+            <div class="quote" [style.color]="colors[i % colors.length]">❝</div>
+            <div class="message-container">
               <p class="message">{{ slide.message }}</p>
-              <div class="footer">
-                <div class="avatar">👤</div>
-                <div class="details">
-                  <div class="name">{{ slide.name }}</div>
-                  <div class="org">{{ slide.org }}</div>
-                </div>
-              </div>
+            </div>
+
+            <!-- Wave shape -->
+            <!-- <div class="wave"></div> -->
+            <div class="wave">
+              <svg viewBox="0 0 500 150" preserveAspectRatio="none">
+                <path d="M0,50 C150,100 350,0 500,50 L500,150 L0,150 Z" fill="currentColor"></path>
+              </svg>
+            </div>
+
+            <!-- Avatar -->
+            <!-- <div class="avatar"></div> -->
+            <img 
+  class="avatar" 
+  [src]="slide?.image || 'assets/partners/default-avatar.jpeg'" 
+  alt="User Avatar"
+  onerror="this.onerror=null;this.src='assets/default-avatar.jpeg';"
+/>
+
+
+            <!-- Details -->
+            <div class="details">
+              <div class="name">{{ slide.name }}</div>
+              <div class="org">{{ slide.designation }}</div>
+              <div class="org">{{ slide.org }}</div>
             </div>
           </div>
         </div>
       </div>
-
-      <button class="nav right" (click)="nextSlide()">
-        &#10095;
-      </button>
     </div>
+    <button class="nav right" *ngIf="this.currentIndex < this.testimonials.length - this.visibleSlides"  (click)="nextSlide()">&#10095;</button>
   </div>
+</div>

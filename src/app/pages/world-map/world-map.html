@@ -1,0 +1,45 @@
+<div class="map-wrapper">
+  <!-- Show only on mobile screens -->
+   <div class="zoom-controls" *ngIf="isMobile && showDetails">
+  <button (click)="zoomIn()">+</button>
+  <button (click)="zoomOut()">−</button>
+</div>
+
+  <!-- <div #map class="map-container"></div> -->
+   <div class="map-viewport">
+    <div #map class="map-container">
+      <!-- Your map content goes here -->
+    </div>
+  </div>
+  <div class="legend" *ngIf="showDetails">
+    @for (legend of displayLegends; track $index) {
+    <!-- Line legends -->
+    <!-- <div class="legend-item" *ngIf="legend.type === 'line'">
+        <div class="legend-line" [ngClass]="legend.class"></div>
+        <span>{{ legend.label }}</span>
+      </div> -->
+
+    <!-- Icon legends -->
+    <div class="legend-item" *ngIf="legend.type === 'icon'">
+      <div class="legend-circle">
+        <img class="legend-circle" [src]="legend.icon" alt="">
+      </div>
+      <span>{{ legend.label }}</span>
+    </div>
+
+    <!-- Note -->
+    <ng-container *ngIf="legend.type === 'note'">
+       @for(note of legend.label; track $index){
+      <div class="legend-note">
+        {{ note }}
+      </div>
+    }
+    </ng-container>
+    }
+  </div>
+  <div #tooltip class="tooltip"></div>
+
+  <div class="map-note" *ngIf="!showDetails">
+    <p><i>*Click on the map to see our network</i></p>
+  </div>
+</div>

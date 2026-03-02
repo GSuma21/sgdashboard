@@ -33,7 +33,7 @@ html.dark-theme {
 }
 
 body {
-  font-family: 'Roboto', sans-serif; /* Using Roboto as a common Google font */
+  font-family: Manrope !important; /* Using Roboto as a common Google font */
   margin: 0;
   padding: 0;
   background-color: var(--background-color);
@@ -83,4 +83,91 @@ h1, h2, h3, h4, h5, h6 {
 
 .india {
   /* fill: #572e91; Keep India's highlight color */
+}
+
+
+.breadcrumb {
+  /* display: flex;
+  align-items: center; 
+  flex-wrap: wrap;  */
+  font-size: 18px;
+  color: #000000;
+  background: none !important;
+}
+
+.breadcrumb a {
+  text-decoration: none;
+  color:black;
+  margin-right: 0.25rem;
+  /* font-weight: 700; */
+}
+
+.breadcrumb span {
+  color: black;
+  font-weight: 700;
+}
+
+.mat-dialog-container {
+  padding: 0;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+.heatmap-tooltip {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  color: #000000;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  max-width: 200px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.cdk-overlay-pane:has(.heatmap-tooltip) {
+  margin-top: -50px;
+}
+
+
+.toast-dialog,
+.toast-dialog .mat-mdc-dialog-container,
+.toast-dialog .mdc-dialog__surface {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+
+.mat-snackbar-clone {
+  background-color: #ffffff;
+  color: #2b2b2b;
+
+  /* EXACT border from your image */
+  border: 1px solid #ffffff;
+
+  box-shadow:
+  0px 3px 5px -1px rgba(0, 0, 0, 0.12),
+  0px 6px 10px 0px rgba(0, 0, 0, 0.12),
+  0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+
+  min-height: 38px;
+  padding: 8px 16px;
+
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 14px;
+  font-weight: 400;
+  font-family: Roboto, Arial, sans-serif;
+
+  white-space: nowrap;
+}
+
+/* Label text */
+.mat-snackbar-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 35px;
 }

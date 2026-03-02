@@ -1,5 +1,24 @@
+<div class="breadcrumb">
+  @if(dashboard =='dashboard'){
+    <a [routerLink]="['/state-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <a [routerLink]="[
+  '/state-led-district-improvements',
+  stateName,
+  stateCode,
+  district,
+  districtCode
+]" class="mx-1">{{district}}</a> / Community led improvements - <span class="ml-1">{{ district }}</span>
+  }@else if(dashboard =='state'){
+ <a [routerLink]="['/state-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <a [routerLink]="['/community-view',stateName,stateCode,'dashboard']" class="mx-1">Community led improvements - {{stateName}}</a> / <span class="ml-1">{{ district }}</span>
+  }
+  @else if(!isCommunityFlow){
+    <a [routerLink]="['/dashboard']" class="mr-1">Dashboard</a> / <a [routerLink]="['/state-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <span class="ml-1">{{ district }}</span>
+  }@else{
+    <a [routerLink]="['/community-led-improvements']" class="mr-1">Community led initiatives</a> /
+    <a [routerLink]="['/community-view',stateName,stateCode]" class="mx-1">{{stateName}}</a> / <span class="ml-1">{{ district }}</span>
+  }
+</div>
 <div class="landing-container">
-  <div *ngFor="let section of pageData.sections" [style.width]="section.width" [ngClass]="'section-position-' + section.position">
+  <div *ngFor="let section of pageData" [style.width]="(window.innerWidth <= 1024 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
     <!-- dashboard main -->
     <ng-container *ngIf="section.type === 'dashboard-main'">
       <section [ngClass]="section.styles.section">
@@ -27,27 +46,17 @@
       </section>
     </ng-container>
 
-    <!-- CTA Section -->
-    <ng-container *ngIf="section.type === 'cta'">
-      <section [ngClass]="section.styles.section">
-        <div *ngFor="let card of section.cards" [ngClass]="section.styles.card">
-          <h3>{{ card.title }}</h3>
-          <p>{{ card.text }}</p>
-          <a [routerLink]="card.button.link" [ngClass]="section.styles.button">{{ card.button.text }}</a>
-        </div>
-      </section>
-    </ng-container>
-
     <!-- country view -->
-    <ng-container *ngIf="section.type === 'country-view'">
-      <app-country-view [showVariations]="section.showVariations" [showDetails]="section.showDetails" [legends]="section.legends" [selections]="section.selections"></app-country-view>
+    <ng-container *ngIf="section.type === 'programs-list'" class="program-list">
+      <app-programs-report-list [headerText]="pageConfig.type === 'communityDetails' ? 'Community led initiatives' : 'District led programs'" [CommunityButton]="enableCommunityButton" [programs]="programsList" [pageConfig]="pageConfig"></app-programs-report-list>
     </ng-container>
-
     <!-- Data Indicators Section -->
     <ng-container *ngIf="section.type === 'data-indicators'">
       <section [ngClass]="section.styles.section">
         <div class="container">
-          <h2 [ngClass]="section.styles.title">{{ section.title }}</h2>
+          @if(section.title){
+            <h2 [ngClass]="section.styles.title">{{ section.title }}</h2>
+          }
           <div [ngClass]="section.styles.grid">
             <app-indicator-card
               *ngFor="let indicator of section.indicators; let i = index"
@@ -61,22 +70,14 @@
       </section>
     </ng-container>
 
-    <!-- Partner Logos Section -->
-    <ng-container *ngIf="section.type === 'partner-logos'">
-      <app-partner-logos [partners]="section.partners" [styles]="section.styles" [title]="section.title"></app-partner-logos>
-    </ng-container>
-
-    <!-- Carousel Section -->
-    <ng-container *ngIf="section.type === 'carousel'">
-      <app-carousel [slides]="section.slides" [styles]="section.styles" [title]="section.title"></app-carousel>
-    </ng-container>
-
     <ng-container *ngIf="section.type === 'line-chart'">
-      <app-line-chart [allData]="section.data"></app-line-chart>
+      <app-line-chart [data]="lineChart"></app-line-chart>
     </ng-container>
 
-    <ng-container *ngIf="section.type === 'pie-chart'">
+    @if(pieChart.length){
+      <ng-container *ngIf="section.type === 'pie-chart'">
       <app-pie-chart [pieData]="section.data"></app-pie-chart>
     </ng-container>
+    }
   </div>
 </div>

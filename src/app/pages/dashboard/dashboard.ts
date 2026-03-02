@@ -11,6 +11,7 @@ import { PieChartComponent } from '../../components/pie-chart/pie-chart';
 import { CountryView } from '../country-view/country-view';
 import { DASHBOARD_PAGE } from '../../../constants/urlConstants';
 import { environment } from '../../../../environments/environment';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,21 +23,28 @@ import { environment } from '../../../../environments/environment';
 export class DashboardComponent implements OnInit {
 
   pageData: any = {};
+  window: any = window;
   selectedState: string | null = null;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private loaderRunner: LoaderRunnerService) { }
 
   ngOnInit(): void {
     this.fetchPageData();
   }
 
-  fetchPageData(): void {
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${DASHBOARD_PAGE}`).then((data: any) => {
+  async fetchPageData() {
+    await this.loaderRunner.run(async () => {
+    return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${DASHBOARD_PAGE}`).then((data: any) => {
       this.pageData = data;
       this.prepareLogosForScrolling();
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+  });
+  }
+
+  openCommunityDetails() {
+    this.router.navigate(['/community-led-improvements']);
   }
 
   prepareLogosForScrolling(): void {

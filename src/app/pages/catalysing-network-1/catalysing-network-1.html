@@ -1,8 +1,37 @@
 
-<div class="catalysing-networks-container" (click)="goToNetworkPage()">
-  <div id="network-map-container" #networkMapContainer></div>
+<div class="catalysing-networks-container pt-5" (click)="goToNetworkPage()">
+  <div class="legend" *ngIf="showDetails">
+       @for (legend of displayLegends; track $index) {
+  <!-- Line legends -->
+  <div class="legend-item" *ngIf="legend.type === 'line' && showDetails">
+    <div class="legend-line" [ngClass]="legend.class"></div>
+    <span>{{ legend.label }}</span>
+  </div>
+
+  <!-- Icon legends -->
+  <div class="legend-item" *ngIf="legend.type === 'icon' && showDetails">
+    <div class="legend-circle">
+      <img class="legend-circle" [src]="legend.icon" alt="">
+    </div>
+    <span>{{ legend.label }}</span>
+  </div>
+
+  <!-- Note -->
+  <div class="legend-note" *ngIf="legend.type === 'note' && showDetails">
+    {{ legend.label }}
+  </div>
+}
+  </div>
+  <div id="network-map-container" #networkMapContainer class="catalysing-networks-svg"></div>
   <div id="tooltip"
-    style="position: absolute; background-color: white; padding: 5px; border: 1px solid black; display: none;"></div>
+    style="position: absolute; display: none;"></div>
+
+
+     <div class="map-note" *ngIf="!showDetails">
+     <p><i>*Click on the map to see our network</i></p>
+    </div>
+
+
 </div>
 
 

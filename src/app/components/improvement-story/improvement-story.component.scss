@@ -1,0 +1,394 @@
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+}
+
+.quote-icon {
+  font-size: 6rem;
+  font-weight: 900;
+  line-height: 0.5;
+  color: #7a1fa2;
+  padding-top: 0rem;
+  position: absolute;
+}
+
+.crown {
+  position: absolute;
+  top: -30px;    
+  left: -30px;       
+  z-index: 999;      
+  width: 48px;       
+  height: auto;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  border-bottom: 1px solid;
+  max-width: 80%;
+  margin-top: 1.2rem;
+  margin-left: 45px;
+}
+
+.title-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+  max-height: calc(1.3em * 3);
+}
+
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 50px;
+  margin-left: 25px;
+  margin-top: 1rem;
+  .meta-icon {
+      font-size: 20px;
+      color: #7a1fa2;
+      width: 30px;
+  }
+  .location {
+      font-size: 12px;
+      color: #000000;
+  }
+
+  .leader-text{
+    font-weight: 700;
+    font-size: 13px;
+    color: #000000;
+
+  }
+}
+
+#flow-img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  border-radius: 2%;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
+  z-index: 2;
+
+  .action-item {
+      display: flex;
+      align-items: center;
+      color: white;
+      font-size: 0.875rem;
+      padding: 0.5rem 0.75rem;
+      margin-right: 0.9375rem;
+      border: 1px solid white;
+      border-radius: 5px;
+      background: white;
+      color: purple;
+      font-weight: 700;
+
+  }
+
+  .read-story-btn {
+      margin-left: auto;
+      padding: 0.5625rem 1.5625rem;  
+      background-color: transparent;
+      color: #ffffff;
+      border: 1px solid black;
+      border-radius: 0.25rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background-color 0.2s;
+  }
+}
+
+.card-image-wrapper {
+  flex: 0 0 40%;
+  max-width: 40%;
+  border-radius: 6px;
+  overflow: hidden;
+  max-height: 200px;
+  border-radius: 0px;
+  padding-right:1rem;
+  margin-top: 25px;
+  margin-bottom: 30px;
+
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+      object-fit: cover;
+      display: block;
+      border-radius: 8px;
+  }
+}
+
+.slide-item.active > .story-card {
+  &:first-child {
+      margin-right: 20px;
+  }
+}
+
+mat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  line-height: 1;
+  vertical-align: middle;
+  color: var(--primary-color);
+  margin-right: 5px;
+}
+
+.story-body {
+  display: flex;
+  gap: 1rem;
+}
+
+.story-text {
+  flex: 1;
+  min-width: 0;
+  margin-top: 60px;
+  min-height: 12.1875rem;
+}
+
+.tall-card .card-actions{
+  margin-top: 1rem;
+}
+
+.tall-card .card-title{
+  margin-top: 1rem;
+}
+
+
+.like-item {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 0.875rem;
+  padding: 0rem 0.625rem;
+  margin-right: 0.9375rem;
+  border: 1px solid white;
+  border-radius: 5px;
+  background: white;
+  font-weight: 700;
+  gap: 0.375rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.heart-svg {
+  width: 1.5rem;
+  fill: transparent;
+  stroke: var(--primary-color);
+  stroke-width: 60;
+  transition: fill 0.2s ease, stroke 0.2s ease, transform 0.2s ease;
+}
+
+
+.heart-svg.liked {
+  fill: #e53935; 
+  stroke: #e53935; 
+  transform: scale(1.05);
+}
+
+.likes-count {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.likes-count.liked {
+  color: #000;
+}
+
+.tall-card .card-image-wrapper{
+  margin-bottom: 50px;
+}
+
+@media (min-width: 768px) {
+  .crown {
+    width: 70px;
+  }
+  .read-story-btn {
+    font-size: 13px !important;
+  }
+}
+
+@media (max-width: 768px) { 
+  .card-actions {
+    margin-top: -30px;
+  .action-item,
+  .like-item {
+    font-size: 0.5625rem;
+    padding: 0rem 0.25rem; 
+  }
+  .likes-count{
+    font-size: 0.5625rem;
+  }
+
+  .read-story-btn {
+    font-size: 0.5rem;
+    padding: 0.20rem 0.75rem;
+  }
+}
+
+.action-icon {
+  font-size: 15px;
+}
+.card-content {
+  height: 195px;
+  min-height: 215px;
+}
+
+.quote-icon{
+  font-size: 3rem;
+}
+
+.card-title {
+  font-size: 10px;
+  font-weight: 800;
+  padding-bottom: 0.5rem;
+  width: 90px;
+  margin-left: 25px;
+}
+
+.card-meta {
+  margin-left: 0px;
+  .meta-icon {
+    width: 20px;
+  }
+  .leader-text{
+    font-size: 8px;
+  }
+  .location{
+    font-size: 8px;
+  }
+}
+
+
+.card-actions {
+  padding-bottom: 20%;
+}
+
+#flow-img {
+  width: 100%;
+}
+
+.tall-card {
+  height: 198px;
+}
+
+.tall-card .card-actions{
+  margin-top: -0.625rem;
+}
+
+.tall-card .card-actions .read-story-btn{
+  padding: 0.20rem 0.75rem;
+}
+
+.story-body {
+  flex-direction: row;
+}
+
+.card-title {
+  font-size: 10px;
+  margin-left: 25px;
+  width: 100%;
+
+  line-height: 1.4;
+    max-height: calc(1.4em * 3);
+}
+
+.card-image-wrapper {
+  flex: 0 0 45%;
+  max-width: 45%;
+  max-height: 140px;
+  padding-right: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.card-image-wrapper .card-image {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.story-text{
+  margin-top: 25px;
+}
+
+.heart-svg {
+  width: 1rem;
+}
+}
+
+@media (max-width: 480px) {
+  .tall-card .card-actions{
+    margin-top: -35px;
+  }
+
+  .card-image-wrapper {
+    flex: 0 0 50%;
+    max-width: 50%;
+    max-height: 120px;
+    padding-right: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-image-wrapper .card-image {
+    border-radius: 5px;
+}
+.card-title{
+  margin-top: 1rem;
+}
+
+.card-actions {
+  padding-bottom: 20%;
+}
+
+.action-item,
+.like-item {
+  font-size: 0.5rem;
+  padding: 0rem 0.1875rem;
+}
+
+.likes-count {
+  font-size: 0.5rem;
+}
+
+.read-story-btn {
+  font-size: 0.4375rem;
+  padding: 0.25rem;
+}
+}
+
+@media screen and (min-width: 1920px) {
+  #flow-img {
+    bottom: -35px;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  #flow-img {
+    bottom: -75px;
+  }
+}

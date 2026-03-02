@@ -1,0 +1,216 @@
+.footer-container {
+    background-color: #7e3288;
+    color: white;
+    padding: 40px 20px;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    overflow: hidden;
+    background-image: url('https://shikshagraha.org/wp-content/themes/twentytwentythree-child/images/Screenshot-2024-11-26-at-7.39.21-PM.png');
+    background-position: 30% 0;
+    background-repeat: no-repeat;
+    background-size: 110px;
+    justify-content: center;
+    align-items: center;
+    padding-top: 55px;
+    display: flex;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.footer-floater {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+}
+
+.left-section {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2.5rem;
+    padding-right: 40px;
+
+    .logo-area {
+        margin-bottom: 40px;
+
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            img {
+                height: 40px;
+            }
+        }
+    }
+
+    .links-area {
+        display: flex;
+        gap: 60px;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+
+        .link-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+
+            a {
+                color: white;
+                text-decoration: none;
+                font-size: 1rem;
+                opacity: 0.9;
+                transition: opacity 0.3s;
+
+                &:hover {
+                    opacity: 1;
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+.social-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 25rem;
+
+    .social-label {
+        font-size: 1.1rem;
+        margin-bottom: 27px;
+        display: block;
+    }
+
+    .social-icons {
+        display: flex;
+        gap: 15px;
+
+        a {
+            color: white;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+
+            i {
+                font-size: 1.2rem;
+            }
+        }
+    }
+}
+
+.right-section {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .join-card {
+        background-color: #E67E22;
+        padding: 30px;
+        border-radius: 20px;
+        color: white;
+        width: 100%;
+        max-width: 350px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+
+        p {
+            font-size: 1.5rem;
+            font-weight: 300;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .join-btn {
+            display: inline-block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.5);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 10px 0;
+            width: 100%;
+            transition: all 0.3s;
+
+            &:hover {
+                padding-left: 10px;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+    }
+
+    .left-section {
+        padding-right: 0;
+        margin-bottom: 0px;
+
+        .links-area {
+            flex-direction: column;
+            gap: 30px;
+
+            .link-column a{
+                font-size: 1.2rem;
+            }
+        }
+        .logo-text img {
+            height: 68px !important;
+        }
+    }
+
+    .right-section {
+        justify-content: center;
+    }
+
+    .social-area {
+        width: 100%;
+        align-items: start;
+
+        .social-label{
+            font-size: 1.2rem;
+        }
+    }
+
+    .social-area .social-icons a {
+        width: 100%;
+        margin-bottom: 50px;
+
+        img{
+            width: 50px;
+        }
+}
+
+.right-section .join-card p {
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1;
+}
+
+.right-section .join-card {
+    max-width: 370px;
+    margin-bottom: 100px;
+}
+}

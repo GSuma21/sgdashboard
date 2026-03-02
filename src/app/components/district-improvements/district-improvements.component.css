@@ -1,9 +1,8 @@
 .landing-container {
-    font-family: 'Roboto', sans-serif;
     color: var(--text-color);
     display: flex;
     flex-wrap: wrap;
-    margin: auto;
+    overflow-x: hidden;
   }
 
   .landing-container > div {
@@ -132,7 +131,6 @@
 
   /* Data Indicators Section */
   .data-indicators-section {
-    padding: 5rem 0;
     text-align: center;
     background-color: var(--background-color);
   }
@@ -146,7 +144,7 @@
 
   .data-indicators-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1.5rem;
     align-items: stretch; /* Ensure all grid items stretch to the same height */
   }
@@ -279,9 +277,6 @@
       font-size: 2.2rem;
     }
 
-    .data-indicators-grid {
-      grid-template-columns: 1fr;
-    }
 
     .app-header nav {
       flex-direction: column;

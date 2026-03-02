@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="left-panel">
+        <h2 class="section-title">Themes beneath the voices</h2>
+        <div class="heatmap-grid" *ngIf="themes && themes.length">
+            <div *ngFor="let theme of themes, let i = index" class="heatmap-item" [ngClass]="theme.gridClass"
+                [class.active]="activeThemeId === theme.id" [class]="theme.color"
+                (mouseenter)="setActiveTheme(theme.id)" >
+                <div class="content" #tooltip="matTooltip" matTooltip="{{ theme.label }}" matTooltipPosition="below" [matTooltipTouchGestures]="isMobile ? 'off' : 'auto'" matTooltipShowDelay="100"  (click)="showTooltipOnClick(i)"
+                    matTooltipClass="heatmap-tooltip">
+                    <div class="icon" *ngIf="theme.icon">
+                        <img [src]="theme.icon" alt="icon" class="icon-img" />
+                    </div>
+                    <div class="text-spacing">
+                        <h3 class="theme-title">{{ theme.label }}</h3>
+                        <p class="voice-count ml-1" *ngIf="theme.value > 0">
+                            {{ theme.value }} Voices raised
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="right-panel">
+        <h2 class="section-title">What we are hearing</h2>
+        <div class="voices-grid" [@voicesAnimation]="displayedVoices.length">
+            <div *ngFor="let voice of displayedVoices" class="voice-card active" [ngClass]="voice.color">
+                <img src="/assets/icons/quote.png" alt="Quotation mark icon" class="quote-icon">
+                <div class="quote-container">
+                    <p class="quote-text">{{ voice.description }}</p>
+                    <p class="quote-author">– {{ voice.voice_by }},{{voice.state | titlecase}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

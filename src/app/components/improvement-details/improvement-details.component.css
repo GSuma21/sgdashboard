@@ -1,5 +1,4 @@
 .landing-container {
-    font-family: 'Roboto', sans-serif;
     color: var(--text-color);
     display: flex;
     flex-wrap: wrap;
@@ -26,7 +25,7 @@
   /* Main Section */
   .dashboard-main-section {
     background-color: var(--hero-background-color);
-    padding: 5rem 0;
+    padding: 1rem 8rem;
     color: var(--text-color);
     animation: fadeIn 1s ease-in-out;
   }
@@ -202,7 +201,6 @@
     font-size: 1.5rem;
     margin-top: 0;
     margin-bottom: 0.5rem;
-    color: var(--primary-color);
   }
 
   .container h4 {
@@ -257,6 +255,10 @@
 
   /* Responsive Adjustments */
   @media (max-width: 768px) {
+    .dashboard-main-section{
+    padding: 2rem;
+    }
+
     .dashboard-main-title {
       font-size: 2.8rem;
     }
@@ -320,4 +322,9 @@
     justify-content: center;
     align-items: center;
     height: 100%;
+  }
+
+  .sub-header{
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
   }

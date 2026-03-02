@@ -1,16 +1,23 @@
-<mat-card class="chart-card">
-  <mat-card-title>Categories of Micro Improvements</mat-card-title>
-  <mat-card-content>
-    <ngx-charts-pie-chart
-      [view]="view"
-      [results]="pieData"
-      [legend]="showLegend"
-      [labels]="showLabels"
-      [doughnut]="false"
-      [explodeSlices]="false"
-      [gradient]="true"
-      [animations]="true"
-    >
-    </ngx-charts-pie-chart>
-  </mat-card-content>
-</mat-card>
+<section class="outer-container">
+  <mat-card class="chart-card">
+    <mat-card-title>Categories of micro improvements initiated</mat-card-title>
+    <mat-card-content>
+      <!-- <ngx-charts-pie-chart
+        [results]="pieData"
+        [legend]="showLegend"
+        [labels]="showLabels"
+        [doughnut]="true"
+        [arcWidth]="0.4"
+        [explodeSlices]="false"
+        [animations]="true"
+        [labelFormatting]="labelFormatting"
+        [scheme]="colorScheme"
+        [gradient]="false"
+        [tooltipText]="tooltipText"
+      >
+      </ngx-charts-pie-chart> -->
+      <div echarts [options]="chartOptions" [theme]="theme" class="donut-chart"></div>
+    </mat-card-content>
+  </mat-card>
+</section>
+

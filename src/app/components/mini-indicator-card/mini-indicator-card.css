@@ -1,16 +1,18 @@
 .mini-indicator-card {
   background: white;
-  border: 1px solid;
+  border: 1px solid #aeb6ba;
   border-radius: 12px; /* Slightly more rounded corners */
-  padding: 1rem;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* More prominent shadow */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-width: 130px;
+  min-width: 160px;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  margin: 5px;
+  max-width: 160px;
+  min-height: 70px;
 }
 
 .mini-indicator-card:hover {
@@ -19,16 +21,17 @@
 }
 
 .mini-indicator-value {
-  font-size: 1.3rem; /* Larger font size */
+  font-size: 16px; /* Larger font size */
   font-weight: bold;
-  margin-top: 0.5rem;
   color: var(--secondary-color-light); /* Subtle text shadow */
 }
 
 .mini-indicator-label {
-  font-size: .9rem;
+  font-size: 12px;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.8); /* Slightly transparent white for label */
-  margin-top: 0.4rem;
+  margin-top: 0.1rem;
   line-height: 1.2;
   color: black;
+  padding: 0 5px;
 }

@@ -1,5 +1,4 @@
 .landing-container {
-  font-family: 'Roboto', sans-serif;
   color: var(--text-color);
   display: flex;
   flex-wrap: wrap;
@@ -138,9 +137,12 @@
 
 /* Data Indicators Section */
 .data-indicators-section {
-  padding: 5rem 0;
   text-align: center;
   background-color: var(--background-color);
+}
+
+.indicators-section{
+  padding: 0rem 8rem;
 }
 
 .section-title {
@@ -155,6 +157,7 @@
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
   align-items: stretch; /* Ensure all grid items stretch to the same height */
+  padding-bottom: 30px;
 }
 
 /* Indicator Card styles are now in indicator-card.css */
@@ -214,19 +217,31 @@
 .map-container {
   position: relative;
   width: 100%;
-  height: 500px; /* Adjust as needed */
+  height: 350px; /* Adjust as needed */
 }
 
 .map-wrapper {
   position: absolute;
+  inset: 0; /* shorthand top:0; right:0; bottom:0; left:0 */
+  display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.map-wrapper > app-global-map-2,
+.map-wrapper > app-world-map {
   width: 100%;
-  height: 100%;
+  display: block; /* ensures they are treated as block-level */
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
+  .indicators-section{
+  padding: 0rem 2rem;
+  }
+  .landing-container {
+    overflow-x: hidden;
+  }
   .hero-title {
     font-size: 2.8rem;
   }
@@ -247,10 +262,6 @@
 
   .section-title {
     font-size: 2.2rem;
-  }
-
-  .data-indicators-grid {
-    grid-template-columns: 1fr;
   }
 
   .app-header nav {
@@ -301,4 +312,18 @@
   padding: 20px;
   font-size: 24px;
   text-align: center;
+}
+
+@media (min-width: 768px) {
+  .map-wrapper {
+  position: absolute;
+  inset: 0; /* shorthand top:0; right:0; bottom:0; left:0 */
+  padding-top: 1rem;
+  width: 90%;
+}
+
+.map-container{
+   width: 90%;
+}
+
 }

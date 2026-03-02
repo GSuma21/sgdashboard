@@ -1,88 +1,37 @@
 .country-view-container {
-  padding: 4rem 2rem;
-  background: #e6f6fe!important;
-}
-
-.main-container {
+  padding: 3rem 8rem;
+  background: #EEEEEE!important;
   display: flex;
-  flex-direction: column-reverse;
-  gap: 2rem;
-  width: 90%;
-  margin: auto;
-}
-
-#india-map-container {
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-  left: -10%;
-  position: relative;
-}
-
-#india-map-container svg {
-  /* border: 1px solid #ccc; */
-  background-color: #f9f9f9;
-}
-
-.indicator-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-/* Mobile layout: 1 card per row */
-.indicator-container > app-mini-indicator-card {
-  flex-basis: 100%;
-}
-
-/* Medium screens (tablets): 1 card per row, side-by-side with map */
-@media (min-width: 768px) {
-
-  #india-map-container {
-    flex: 3;
-  }
-
-  .indicator-container {
-    flex: 1;
-    /* flex-direction: column is already set above */
-  }
-
-  .indicator-container > app-mini-indicator-card {
-    flex-basis: 100%; /* 1 card per row */
-  }
-
-  .filter-selection {
-    position: absolute;
-  }
-}
-
-::ng-deep .mat-mdc-text-field-wrapper {
-  background: white !important;
-  border: 1px solid !important;
-  border-radius: 5px !important;
-}
-
-::ng-deep .mat-mdc-select-panel {
-  background: white !important;
-  border: 1px solid !important;
-  border-radius: 5px !important;
-}
-/* Large screens (desktops): 1 card per row */
-@media (min-width: 1200px) {
-  .indicator-container > app-mini-indicator-card {
-    flex-basis: 100%; /* 1 card per row */
-  }
+  flex-direction: row;
+  min-height: 600px;
 }
 
 .legend-container {
-  background-color: #e8f5ff; /* Light blue background */
+  background-color: #EEEEEE; /* Light gray background */
   padding: 16px;
-  width: fit-content;
   border-radius: 8px;
-  font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 200px;
+}
+
+.legend-dashboard{
+  background-color: #EEEEEE; /* Light gray background */
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 200px;
+}
+
+.legend-icon {
+  width: 20px;
+  margin-right: 8px;
+  height: 20px;
 }
 
 .legend-item {
@@ -96,6 +45,7 @@
   height: 20px;
   margin-right: 8px;
   border: 1px solid #999;
+  min-width: 20px;
 }
 
 .both {
@@ -121,6 +71,22 @@
   margin-top: 10px;
 }
 
+#india-map-container {
+  width: 100%;
+  position: relative;
+  flex: 3;
+}
+
+#india-map-container svg {
+  background-color: #f9f9f9;
+}
+
+::ng-deep .district-outline {
+  fill: none !important;
+  stroke: #acaaaa !important;
+  stroke-width: 0.1px !important;
+}
+
 .map-tooltip {
   position: absolute;
   text-align: center;
@@ -135,27 +101,226 @@
   opacity: 0;
 }
 
-::ng-deep .district-outline {
-  fill: none !important;
-  stroke: #acaaaa !important;
-  stroke-width: 0.1px !important;
+.indicator-container{
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.indicator-container .heading{
+  margin-left: 8px;
+  font-size: 16px;
+}
+
+.indicator-container .indicators{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* always 2 columns */
+  gap: 10px;
+}
+
+.indicator-container .heading{
+  margin-left: 8px;
+  font-size: 18px;
 }
 
 .filter-selection{
   display: flex;
   justify-content: flex-end;
   height: fit-content;
-  right: 10%;
+  flex: 1;
+  margin-top: 4rem;
 }
 
 mat-form-field{
   min-width: 300px;
   max-width: 350px;
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-@media (min-width: 1020px) {
-  .main-container {
+::ng-deep .mat-mdc-text-field-wrapper {
+  background: white !important;
+  border: 1px solid !important;
+  border-radius: 8px !important;
+}
+
+::ng-deep .mat-mdc-select-panel {
+  background: white !important;
+  border: 1px solid !important;
+  border-radius: 5px !important;
+}
+
+@media (max-width: 1250px){
+   .indicator-container .indicators {
+    display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .country-view-container {
+    flex-direction: column-reverse;
+  }
+
+  #india-map-container {
+    margin-top: 20px;
+  }
+}
+
+.legend-item-header{
+  font-size: 12px;
+  font-weight: 600;
+}
+
+::ng-deep .mat-mdc-form-field-infix{
+  padding-bottom: 10px !important;
+}
+
+@media (max-width: 768px){
+  .country-view-container {
+    padding: 0.5rem; /* tighter padding for small devices */
+  }
+  .indicator-container .indicators {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  .card-mobile-view {
+    display: flex;
+    justify-content: center;
+  }
+
+
+  .legend-container {
+  background-color: #EEEEEE; /* Light gray background */
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 170px;
+  position: absolute;
+  left:48%
+}
+
+.legend-dashboard{
+  background-color: #EEEEEE; /* Light gray background */
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 170px;
+  position: absolute;
+  left:56%
+}
+
+.legend-icon {
+  width: 10px;
+  margin-right: 8px;
+  height: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3px;
+}
+.legend-item-header{
+  font-size: 8px;
+  font-weight: 600;
+  max-width: 95px;
+}
+
+.note {
+  font-size: 8px;
+  color: #555;
+  margin-top: 3px;
+}
+.color-box {
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border: 1px solid #999;
+  min-width: 10px;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  height: unset !important;
+  flex: unset !important;
+}
+
+.filter-selection{
+  display: flex;
+  justify-content: flex-end;
+  height: fit-content;
+  flex: 1;
+  margin-top: 1rem;
+}
+
+}
+
+#map-tooltip {
+  position: absolute;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  padding: 8px 12px;
+  pointer-events: none;
+  opacity: 0;
+  max-width: 250px;
+  word-wrap: break-word;
+  font-family: 'Arial', sans-serif;
+}
+::ng-deep .mat-mdc-form-field-hint-spacer:empty {
+  display: none;
+}
+::ng-deep .mat-mdc-form-field-bottom-align::before {
+  display: none !important;
+ }
+
+.indicator-card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  /* Use 'center' alignment to ensure the last row is centered */
+  justify-content: center; 
+  gap: 10px 10px; /* Vertical gap 10px, Horizontal gap 10px */
+  padding: 0;
+  width: 100%;
+}
+
+/* Default (Mobile/Small/Large Screens): 2 items per row */
+.indicator-card-item {
+  /* This width forces 2 items per line (50% - 5px) */
+  width: calc(50% - 5px); 
+  box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------------- */
+
+/* Medium Screens (typically >= 768px): 3 items per row */
+@media (min-width: 768px) {
+  .indicator-card-item {
+    /* This width forces 3 items per line (33.333% - 6.666px) */
+    width: calc(33.333% - 6.666px);
+  }
+}
+
+/* Large Screens (>= 992px): Back to 2 items per row */
+@media (min-width: 992px) {
+  .indicator-card-item {
+    /* Reset to 2 items per row */
+    width: calc(50% - 5px); 
+  }
+}
+
+/* Optional: Constrain and center the overall block on large screens if desired */
+@media (min-width: 992px) {
+  .indicator-card-grid {
+    max-width: 400px;
+    margin: 0 auto;
   }
 }

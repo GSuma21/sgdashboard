@@ -31,10 +31,10 @@
     <!-- Data Indicators Section -->
     <ng-container *ngIf="section.type === 'data-indicators'">
       <section [ngClass]="section.styles.section">
-        <div class="container">
-          <h2 [ngClass]="section.styles.title">{{ section.title }}</h2>
-          <div [ngClass]="section.styles.grid">
-            <app-indicator-card
+        <div class="indicators-section">
+          <!-- <h2 [ngClass]="section.styles.title">{{ section.title }}</h2> -->
+          <div class="row justify-content-center">
+            <app-indicator-card class="col-12 col-md-6 col-lg-3"
               *ngFor="let indicator of section.indicators; let i = index"
               [value]="indicator.value"
               [label]="indicator.label"
@@ -48,7 +48,7 @@
 
     <!-- Partner Logos Section -->
     <ng-container *ngIf="section.type === 'country-view'">
-      <app-country-view [showVariations]="section.showVariations" [legends]="section.legends" [selections]="section.selections"></app-country-view>
+      <app-country-view [showVariations]="section.showVariations" [notes]="section.notes" [legends]="section.legends" [selections]="section.selections"></app-country-view>
     </ng-container>
 
     <ng-container *ngIf="section.type === 'global-view'">
@@ -57,7 +57,8 @@
           <app-global-map-2></app-global-map-2>
         </div>
         <div class="map-wrapper" [@fade]="!isGlobalMapVisible ? 'visible' : 'hidden'">
-          <app-catalysing-network-1 [showDetails]="section.showDetails" [isPartnerShowable]="section.isPartnerShowable"></app-catalysing-network-1>
+           <app-world-map [showDetails]="section.showDetails" ></app-world-map>
+          <!-- <app-catalysing-network-1  [showDetails]="section.showDetails" [isPartnerShowable]="section.isPartnerShowable" [iconSize]="section.iconSize ?? 18"></app-catalysing-network-1> -->
         </div>
       </div>
     </ng-container>

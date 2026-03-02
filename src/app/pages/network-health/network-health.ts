@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { IndicatorCardComponent } from '../../components/indicator-card/indicator-card';
@@ -13,31 +13,47 @@ import { SliderCarouselComponent } from '../../components/slider-carousel/slider
 import { CatalysingNetwork1 } from '../catalysing-network-1/catalysing-network-1';
 import { NETWORK_HEALTH_PAGE } from '../../../constants/urlConstants';
 import { environment } from '../../../../environments/environment';
+import { WorldMapComponent } from '../world-map/world-map';
+import { ChangeDetectorRef } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
+
 
 @Component({
   selector: 'app-network-health',
   standalone:true,
-  imports:[CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, LineChartComponent, PieChartComponent,CountryView, SliderCarouselComponent, CatalysingNetwork1],
+  imports:[CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, LineChartComponent, PieChartComponent,CountryView, SliderCarouselComponent, CatalysingNetwork1, WorldMapComponent, MatIconModule, MatDialogModule, MatButtonModule ],
   templateUrl: './network-health.html',
   styleUrls: ['./network-health.css']
 })
 export class NetworkHealth implements OnInit {
-
+  @ViewChild('glossaryTemplate') glossaryTemplate!: TemplateRef<any>;
   pageData: any = {};
+  baseUrl:any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
 
-  constructor() { }
+
+  constructor(private cdr: ChangeDetectorRef,private dialog: MatDialog, private breakpointObserver: BreakpointObserver, 
+    private loaderRunner: LoaderRunnerService
+  ) {}
 
   ngOnInit(): void {
     this.fetchPageData();
   }
 
-  fetchPageData(): void {
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${NETWORK_HEALTH_PAGE}`).then((data: any) => {
+  async fetchPageData() {
+    await this.loaderRunner.run(async () => {
+    return d3.json(`${this.baseUrl}/${NETWORK_HEALTH_PAGE}`).then((data: any) => {
       this.pageData = data;
       this.prepareLogosForScrolling();
+      this.cdr.detectChanges();
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+  });
   }
 
   prepareLogosForScrolling(): void {
@@ -45,6 +61,27 @@ export class NetworkHealth implements OnInit {
     if (partnerLogosSection && partnerLogosSection.partners) {
       this.pageData.allLogos = partnerLogosSection.partners.flatMap((p:any) => p.logos);
     }
+  }
+
+  openGlossary() {
+    if (!this.glossaryTemplate) {
+      console.error('Glossary template not found');
+      return; // stop execution to avoid runtime error
+    }
+    const isMobile = this.breakpointObserver.isMatched(Breakpoints.Handset);
+    const isTablet = this.breakpointObserver.isMatched(Breakpoints.Tablet);
+    this.dialog.open(this.glossaryTemplate, {
+      width: isMobile ? '100%' : '600px',
+      maxWidth: '1000px',
+      position: isMobile
+        ? { top: '38%', right: '0%' }
+        : isTablet
+          ? { top: '18%', right: '8%' }
+          : { top: '12%', right: '10%' },
+
+      panelClass:'glossary-side-dialog',
+      backdropClass: 'glossary-backdrop'
+    });
   }
 
 }

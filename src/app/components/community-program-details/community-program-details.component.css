@@ -1,5 +1,4 @@
 .landing-container {
-    font-family: 'Roboto', sans-serif;
     color: var(--text-color);
     display: flex;
     flex-wrap: wrap;

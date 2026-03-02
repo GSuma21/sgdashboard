@@ -1,24 +1,26 @@
 <div class="landing-container">
-  <div *ngFor="let section of pageData.sections" [style.width]="section.width" [ngClass]="'section-position-' + section.position">
+  <div *ngFor="let section of pageData" [style.width]="(window.innerWidth <= 1024 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
     <!-- Main Section -->
     <ng-container *ngIf="section.type === 'dashboard-main'">
       <section [ngClass]="section.styles.section">
-        <div class="container">
+        <div class="container section-container paragraph section-position-container">
           <h3 class="">{{ section.header }}</h3>
           <h4 class="">{{ section.subHeader }}</h4>
           <p class="">{{ section.description }}</p>
+          <button class="community-button" (click)="openCommunityDetails()">{{section.linkForCommunityInitiatves}}<img src="assets/icons/arrow.svg" class="arrow" alt="" aria-hidden="true">
+          </button>
         </div>
       </section>
     </ng-container>
 
     <!-- Main Section -->
     <ng-container *ngIf="section.type === 'dashboard-metrics'">
-      <section [ngClass]="section.styles.section" class="metrics-container">
+      <section [ngClass]="section.styles.section" class="metrics-container section-position-container">
         <div class="dashboard-container">
-          <h3 class="">{{ section.header }}</h3>
-          <h4 class="">{{ section.subHeader }}</h4>
-          <div class="dashboard-indicator">
-            <div *ngFor="let item of section.indicators">
+          <h3 class=""><img src="assets/icons/flag.svg" class="flag" alt="" aria-hidden="true">{{ section.header }}</h3>
+          <h4 class="p-3 p-md-0">{{ section.subHeader }}</h4>
+          <div class="dashboard-indicator mt-3 mt-md-4">
+            <div *ngFor="let item of section.indicators" class="goal-values">
               <h4>{{item.value}}</h4>
               <p>{{item.label}}</p>
             </div>
@@ -43,11 +45,12 @@
       <a [routerLink]="['/dashboard']">Dashboard</a> / {{ selectedState }}
     </div>
     <ng-container *ngIf="section.type === 'country-view'">
-      <app-country-view 
-        [showVariations]="section.showVariations" 
-        [showDetails]="section.showDetails" 
-        [legends]="section.legends" 
-        [selections]="section.selections" 
+      <app-country-view
+        [showVariations]="section.showVariations"
+        [showDetails]="section.showDetails"
+        [legends]="section.legends"
+        [selections]="section.selections"
+        [notes]="section.notes"
         (stateSelected)="onStateSelected($event)">
       </app-country-view>
     </ng-container>
@@ -81,10 +84,12 @@
     </ng-container>
 
     <ng-container *ngIf="section.type === 'line-chart'">
-      <app-line-chart [allData]="section.data"></app-line-chart>
+      <div class="line-chart-container">
+          <app-line-chart [data]="section.data"></app-line-chart>
+      </div>
     </ng-container>
 
-    <ng-container *ngIf="section.type === 'pie-chart'">
+    <ng-container *ngIf="section.type === 'pie-chart'" class="pie-chart">
       <app-pie-chart [pieData]="section.data"></app-pie-chart>
     </ng-container>
   </div>

@@ -1,6 +1,7 @@
 .chart-card {
-  width: 600px;
-  margin: 20px auto;
+  min-width: 300px;
+  margin: 0 auto;
+  margin-top: 2rem;
 }
 
 mat-card-title {
@@ -9,6 +10,7 @@ mat-card-title {
  font-weight: 700;
  font-size: 1.4rem;
  margin-bottom: 1rem;
+ text-align: center;
 }
 
 mat-card {
@@ -22,6 +24,75 @@ mat-card {
   margin: 10px 0;
 }
 
-.legend-labels {
-  width: auto !important;
+::ng-deep .chart-legend {
+  width: max-content !important;
+  background: none !important;
+}
+::ng-deep .legend-labels {
+  width: max-content !important;
+  background: none !important;
+}
+
+
+.chart-card mat-card-content {
+  /* Padding around the chart */
+  padding: 20px !important;
+}
+
+.outer-container {
+  width: 90%;
+}
+
+/* Style for chart labels to improve readability */
+::ng-deep .pie-label {
+  font-size: 12px !important;
+  fill: #000000 !important;
+  font-weight: bold;
+}
+
+/* Style for tooltips with increased padding */
+::ng-deep .ngx-charts-tooltip {
+  padding: 12px !important; /* Increased padding for tooltips */
+  font-size: 14px !important;
+  background: #333 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+}
+
+/* Alternative selector for tooltip in case ::ng-deep fails */
+:host ::ng-deep .ngx-charts-tooltip-content {
+  padding: 12px !important;
+  font-size: 14px !important;
+  background: #333 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+}
+
+.donut-chart {
+  width: 100%;
+  height: 400px;
+}
+
+
+@media (max-width: 768px) {
+  .chart-card {
+    overflow-x: scroll;
+  }
+  .outer-container {
+  width: 100%;
+}
+
+mat-card-title {
+ padding-top: 0rem;
+ padding-left: 2rem;
+ font-weight: 700;
+ font-size: 1.4rem;
+ margin-bottom: 0rem;
+ text-align: left;
+}
+
+.chart-card mat-card-content {
+  /* Padding around the chart */
+  padding: 0 0  20px 0 !important;
+}
 }

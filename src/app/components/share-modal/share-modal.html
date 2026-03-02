@@ -1,0 +1,54 @@
+<div class="share-modal">
+  <button class="close-btn" (click)="closeModal()">✕</button>
+
+  <h3 class="title">Help us amplify this story</h3>
+
+  <div class="section">
+    <p class="label">Share on:</p>
+
+    <div class="share-icons">
+      <button class="share-item linkedin" (click)="share('linkedin')">
+        <span>LinkedIn</span>
+        <img src="/assets/icons/linkedin.png" alt="linkedin icon">
+      </button>
+
+      <button class="share-item whatsapp" (click)="share('whatsapp')">
+        <span>WhatsApp</span>
+        <img src="/assets/icons/whatsapp.png" alt="whatsapp icon">
+      </button>
+
+      <button class="share-item facebook" (click)="share('facebook')">
+        <span>Facebook</span>
+        <img src="/assets/icons/facebook.png" alt="facebook icon">
+      </button>
+
+      <button class="share-item instagram" (click)="share('instagram')">
+        <span>Instagram</span>
+        <img src="/assets/icons/instagram.png" alt="instagram icon">
+      </button>
+    </div>
+
+
+  </div>
+
+  <div class="section">
+    <p class="label">Copy Text:</p>
+    <div class="copy-wrapper">
+      <div class="copy-box" tabindex="0" role="textbox" aria-label="Copy text">
+        <span class="copy-text">{{ shareText }}</span><br>
+        <a class="copy-link" href="{{ shareLink }}" target="_blank">{{ shareLink }}</a>
+      </div>
+      <button class="copy-button" aria-label="Copy link" title="Copy link" (click)="copyText()">
+        <mat-icon>content_copy</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #dialogToast let-message>
+  <div class="mat-snackbar-clone">
+    <div class="mat-snackbar-label">
+      {{ message }}
+    </div>
+  </div>
+</ng-template>

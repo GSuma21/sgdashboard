@@ -1,0 +1,71 @@
+import { Injectable } from '@angular/core';
+import { v4 as uuidv4 } from 'uuid';
+import { ACTIONS, BrowserId, SVG_COLORS } from '../../constants/actionConstants';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UtilsService {
+
+    constructor() {}
+
+    getBrowserId():BrowserId {
+        let id = localStorage.getItem("browserId");
+    
+        if (!id) {
+          // Generates or retrieves a UUID used as a unique browser identifier for tracking purposes.
+          id = uuidv4();
+          localStorage.setItem("browserId", id);
+        }
+    
+        return id;
+    }
+
+    updateStoryCounts(list: any[],data:any): any[] {
+      return list.map((slide: any) => {
+
+        if (slide.storyId !== data.storyId) {
+          return slide;
+        }
+    
+        switch (data.action) {
+          case ACTIONS.LIKE:
+            return {
+              ...slide,
+              likesCount: Math.max(0, (slide.likesCount ?? 0) +  data.diff),
+              like:!slide.like
+            };
+    
+          case ACTIONS.SHARE:
+            return {
+              ...slide,
+              shareCount: slide.shareCount + 1
+            };
+    
+          case ACTIONS.DOWNLOAD:
+            return {
+              ...slide,
+              downloadCount: slide.downloadCount + 1
+            };
+    
+          default:
+            return slide;
+        }
+      });
+    }
+
+    updateStory(list: any[], updatedData: any): any[] {
+      return list.map(item =>
+        item.id === updatedData.id ? { ...item, ...updatedData } : item
+      );
+    }
+
+    assignColorsToStories(stories: any[]): any[] {
+      return stories.map((story, index) => ({
+        ...story,
+        color: SVG_COLORS[index % SVG_COLORS.length]
+      }));
+    }
+    
+ 
+}

@@ -1,0 +1,234 @@
+.animation-container {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  left: 1%;
+}
+
+.bg-img {
+  height: 780px;
+}
+
+.branch-wrapper {
+  position: absolute;
+  top: 0%;
+  left: 3%;
+  width: 90vw;
+  height: 700px;
+  transform-origin: bottom left;
+  pointer-events: none;
+
+  .branch-img {
+    width: 110%;
+    object-fit: contain;
+    object-position: bottom left;
+    display: block;
+    transform: translateX(-40px);
+  }
+}
+
+.dandelion-flower {
+  position: absolute;
+  z-index: 30;
+  transform: translate(-50%, -50%);
+  transform-origin: bottom center;
+  pointer-events: none;
+
+  &.scaled {
+    animation: growUp 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+
+  &.active-dandelion {
+    transform: translate(-50%, -50%) scale(1.2);
+    z-index: 100;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0px 2px 4px rgba(0, 0, 0, 0.2));
+  }
+}
+
+@keyframes growUp {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  60% {
+    transform: translate(-50%, -50%) scale(1.45);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.4);
+  }
+}
+
+.dandelion-image {
+  height: 130px;
+  width: 60px;
+}
+
+.carousel-container {
+  position: relative;
+  margin-top: -16%;
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  box-sizing: border-box;
+  z-index: 100;
+}
+
+.nav-btn {
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-size: 20px;
+  color: #333;
+  transition: opacity 0.3s, transform 0.2s;
+  z-index: 101;
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0;
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.carousel-card {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  width: 70%;
+  max-width: 400px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  height: 120px;
+  padding-top: 60px;
+
+  .card-icon {
+    position: absolute;
+    top: -3px;
+    left: 16px;
+    width: 100px;
+    height: 40px;
+    margin-bottom: 10px;
+  }
+
+  .card-content {
+    font-size: 8px;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
+  .author {
+    width: 100%;
+    text-align: right;
+    font-style: italic;
+    font-size: 9px;
+    color: #666;
+    margin-top: auto;
+  }
+
+  &.problem-card {
+    background: #33210e;
+    color: white;
+
+    .card-content {
+      color: white;
+    }
+
+    .author {
+      color: #ddd;
+    }
+  }
+
+  &.solution-card {
+    border: 3px solid #562E91;
+    box-shadow: 0px 4px 20px 0px #562E918C;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .carousel-card {
+    width: 75%;
+    padding: 8px;
+    min-height: 175px;
+
+    .card-content {
+      font-size: 9px;
+      margin-top: 40px;
+    }
+  }
+
+  .nav-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+}
+
+
+@media screen and (min-width: 1024px) {
+  .branch-wrapper {
+    top: 15%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .branch-wrapper {
+    top: 10%;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .branch-wrapper {
+    top: 4%;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .branch-wrapper {
+    top: -2%;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  .branch-wrapper {
+    top: -16%;
+  }
+}
+
+@media screen and (min-width: 2500px) {
+  .branch-wrapper {
+    top: -36%;
+  }
+}

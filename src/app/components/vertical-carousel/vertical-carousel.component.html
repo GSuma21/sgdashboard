@@ -1,0 +1,17 @@
+<div class="community-feed-container">
+  <div class="feed-scroller">
+    <div class="scroll-track" #scrollTrack>
+
+      <div *ngFor="let item of extendedFeed; let i = index" class="feed-card" [class.active]="i === currentIndex"
+        #feedCard (mouseenter)="onCardHover(true)"
+        (mouseleave)="onCardHover(false)">
+        <div class="feed-content">
+          <p class="main-text"> {{ item.action_step }} </p>
+          <p class="highlighted-text"> {{ item.impact }} </p>
+          <p class="source-info"> - {{ item.role }}, {{ item.district }},  {{ item.state | titlecase }} </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

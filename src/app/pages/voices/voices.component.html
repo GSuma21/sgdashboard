@@ -1,0 +1,112 @@
+<div class="landing-container">
+  <div
+    *ngFor="let section of pageData"
+    [ngClass]="'section-position-' + section.position"
+    [ngSwitch]="section.type"
+    [style.width]="(isMobile ? '100%' : section.width)"
+  >
+
+    <ng-container *ngSwitchCase="'branch-animation'">
+      <section [ngClass]="section.styles.section" class="main-section">
+         <h2 class="ml-2 black">Voices from the ground</h2>
+        <p class="animation-description mb-4 ml-2">This space highlights voices from the community — identifying issues, finding contextual solutions, and implementing them to solve education barriers. Women leaders are at the forefront of making this change possible.</p>
+        <p class="ml-2 ml-md-3 sub-description">From the cracks of struggle emerge the flowers of community-led solutions
+        </p>
+        <app-voices-animations *ngIf="!isSmallScreen"></app-voices-animations>
+        <app-mobile-voices-animations *ngIf="isSmallScreen"></app-mobile-voices-animations>
+      </section>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'data-indicators'">
+      <section [ngClass]="section.styles.section" class="indicator-section">
+        <div class="indicators-section">
+          <h2 [ngClass]="section.styles.title">{{ section.title }}</h2>
+
+          <div class="row indicators">
+            <app-indicator-card
+              class="col-12 col-md-6 col-lg-4"
+              *ngFor="let indicator of section.indicators; let i = index"
+              [value]="indicator.value"
+              [label]="indicator.label"
+              [icon]="indicator.icon"
+              [style.--animation-delay.s]="i * 0.1"
+            >
+            </app-indicator-card>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'heat-map'">
+      <section [ngClass]="section.styles.section">
+        <div class="row heat-map">
+          <app-heat-map>
+          </app-heat-map>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'leaders-engaged'">
+      <section [ngClass]="section.styles.section">
+        <div class="indicators-section">
+          <div class="row justify-content-center">
+            <div class="box-shadow">
+              <app-multi-axis-chart   [chartData]="section"></app-multi-axis-chart>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'community-feed'">
+      <section [ngClass]="section.styles.section" class="community-section">
+        <div class="indicators-section">
+          <h5 [ngClass]="section.styles.title" class="section-title">{{ section.title }}</h5>
+
+          <div class="row justify-content-center">
+              <app-vertical-carousel></app-vertical-carousel>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'micro-improvements-so-far'">
+      <section [ngClass]="section.styles.section">
+        <div class="indicators-section line-chart-section">
+          <div class="row justify-content-center">
+            <div class="box-shadow width-spacing">
+              <app-line-chart [data]="section.data"></app-line-chart>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+    <ng-container *ngIf="section.type === 'story-of-the-week'">
+      <section class="margin-spacing" [ngClass]="section.styles.section">
+        <h5 [ngClass]="section.styles.title" class="section-title">{{ section.title }}</h5>
+        <div class="row justify-content-center">
+          <div class="story-card">
+            <app-improvement-story [story]="story" [storyOfWeek]="true" [browserId]="browserId"
+              (storyAction)="onStoryAction($event)" [customClass]="'tall-card'"></app-improvement-story>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'more-stories'">
+      <section [style.width]="isMobile ? '100%' : section.width">
+        <div class="row">
+          <app-stories-carousel></app-stories-carousel>
+        </div>
+      </section>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'section-heading'">
+      <div class="section-heading">
+        <h3 [ngClass]="section.styles.title">{{ section.title }}</h3>
+      </div>
+    </ng-container>
+
+
+  </div>
+</div>

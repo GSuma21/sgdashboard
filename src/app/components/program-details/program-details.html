@@ -1,0 +1,94 @@
+<div class="landing-container">
+    <div class="breadcrumb">
+        <a [routerLink]="['/dashboard']">Dashboard</a>/&nbsp;<a (click)="goBack()"  routerLinkActive="active-link"> {{
+            programData.state_name }}</a><span *ngIf="programData.district_name">/&nbsp;{{ programData.district_name }}</span>
+    </div>
+
+    <div class="program-container">
+        <div class="title">
+            <div class="left-section">
+              <div class="back-icon" (click)="goBack()">&#8592;</div>&nbsp;
+              <h2 class="label" *ngIf="programData.name_of_the_program">
+                {{ programData.name_of_the_program }}
+              </h2>
+            </div>
+          
+            <button class="view-report-btn" (click)="openReport(programData)" *ngIf="programData.report_link">
+              <span>View Report</span>
+              <mat-icon class="eye-icon">visibility_outlined</mat-icon>
+            </button>
+          </div>
+
+        <div class="content">
+            <div class="program-model-container">
+                <div>
+                    <div class="program-section" *ngIf="programData.about_the_program_objective">
+                        <h3>Program overview</h3>
+                        <p>{{ programData.about_the_program_objective }}</p>
+                    </div>
+
+                    <div class="info-section">
+                        <div  class="impact">
+                            <h3 *ngIf="impactText">Intended impact</h3>
+                            <p [innerText]="impactText"
+                                [ngStyle]="{'white-space': 'normal', 'word-wrap': 'break-word'}"></p>
+
+                            <h3 *ngIf="programData.stakeholders_doing_the_program">Key stakeholders</h3>
+                            <p>{{ programData.stakeholders_doing_the_program }}</p>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div  *ngIf="programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted" class="indiactor-container">
+                    <div class="indicator-card">
+                        <div class="indicator-image">
+                            <img src='./assets/icons/micro_improvements_initiated.svg'>
+                        </div>
+                        <div class="indicator-container">
+                            <h5 class="indicator-value text-left">Micro improvements initiated</h5>
+                            <p class="indicator-label">{{
+                                programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted
+                                }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3 *ngIf="displayImages.length" class="heading">Gallery</h3>
+            <section class="gallery-section" *ngIf="displayImages.length">
+                <button class="arrow left" *ngIf="currentSlide > 0"  (click)="prevSlide()">&#10094;</button>
+                <div class="gallery-container">
+                    <div class="gallery-track" #galleryTrack>
+                        <div class="gallery-slide"
+     *ngFor="let img of displayImages"
+     [ngStyle]="{'flex': '0 0 ' + (100 / visibleSlides) + '%'}">
+  <img [src]="img" alt="Gallery Image" />
+</div>
+
+                    </div>
+                </div>
+                <button *ngIf="currentSlide < displayImages.length - this.visibleSlides"  class="arrow right" (click)="nextSlide()">&#10095;</button>
+            </section>
+            <h3 *ngIf="partnerDetails.length" class="heading">Partners</h3>
+            <div *ngIf="partnerDetails" class="partners">
+                <div class="partners-grid">
+                    <div class="partner-card" *ngFor="let partner of partnerDetails">
+
+                        <!-- Partner Logo -->
+                        <img [src]="partner.src" [alt]="partner.alt" class="partner-logo" />
+
+                        <!-- Partner Name -->
+                        <h5 class="partner-name">{{ partner.name }}</h5>
+
+                        <!-- Know More Link -->
+                        <a [href]="partner.website" target="_blank" rel="noopener noreferrer" class="know-more-btn">
+                            Know more →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

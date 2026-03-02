@@ -1,0 +1,51 @@
+<div class="animation-container" (click)="resetActiveDandelion()">
+  <img src="assets/mobile-animations/background.svg" class="bg-img"
+    style="position: absolute; width:100%; object-fit: cover;">
+
+  <div class="branch-wrapper">
+    <img [src]="BRANCH_IMG" class="branch-img" [@branchState]="growthStep" *ngIf="storyNodes.length > 0">
+
+    <ng-container *ngFor="let node of storyNodes; let i = index">
+      <ng-container *ngIf="i < growthStep">
+        <div class="dandelion-flower" *ngIf="dandelionsVisible.has(i)" [style.top]="node.dandelionTop"
+          [style.left]="node.dandelionLeft" @dandelionPop (click)="onDandelionClick(i, $event)"
+          [class.active-dandelion]="activeDandelionIndex === i" style="cursor: pointer; pointer-events: auto;">
+          <img [src]="FLOWER_IMG" class="dandelion-image">
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+
+</div>
+<div class="carousel-container" *ngIf="carouselItems.length > 0">
+
+  <!-- Previous Button -->
+  <button class="nav-btn prev" (click)="prev()" [disabled]="currentIndex === 0"
+    [style.opacity]="currentIndex === 0 ? 0 : 1">
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg> -->
+    <!-- Assuming an arrow asset exists, otherwise I'll use text or a unicode arrow for now and ask user later if needed.
+         Actually, let's use a simple div or unicode for now if asset is missing, but I'll assume standard assets or just style a div.
+         Let's use a simple styled button for now. -->
+    &#10094;
+  </button>
+
+  <!-- Card Display -->
+  <div class="carousel-card"
+    [ngClass]="{'problem-card': currentItem.type === 'problem', 'solution-card': currentItem.type === 'solution'}">
+    <img *ngIf="currentItem.type === 'problem'" src="assets/mobile-animations/challenge.svg" class="card-icon mb-2">
+    <img *ngIf="currentItem.type === 'solution'" src="assets/mobile-animations/solution.svg" class="card-icon mb-2">
+
+    <p class="card-content"><strong>{{ currentItem.content }}</strong></p>
+
+    <p *ngIf="currentItem.author" class="author" style="text-align: right; font-style: italic;">
+      - {{ currentItem.author | titlecase }}
+    </p>
+  </div>
+
+  <!-- Next Button -->
+  <button class="nav-btn next" (click)="next()" [disabled]="currentIndex === carouselItems.length - 1"
+    [style.opacity]="currentIndex === carouselItems.length - 1 ? 0 : 1">
+    &#10095;
+  </button>
+
+</div>

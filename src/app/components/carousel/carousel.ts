@@ -17,20 +17,54 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
 
   currentSlide = 0;
   private intervalId: any;
+  public displaySlides: any[] = [];
+  private transitionEndListener: any;
+  private visibilityChangeHandler: () => void;
+
+  constructor() {
+    this.visibilityChangeHandler = () => {
+      if (document.hidden) {
+        this.stopAutoPlay();
+      } else {
+        this.startAutoPlay();
+      }
+    };
+  }
+
+  ngOnInit(): void {
+     this.currentSlide = 0;
+  }
 
   ngAfterViewInit(): void {
+    if (this.slides && this.slides.length > 1) {
+      this.displaySlides = [...this.slides, this.slides[0]];
+    } else {
+      this.displaySlides = this.slides;
+    }
     this.startAutoPlay();
+    this.transitionEndListener = () => this.onTransitionEnd();
+    this.carouselTrack.nativeElement.addEventListener('transitionend', this.transitionEndListener);
+
+    document.addEventListener('visibilitychange', this.visibilityChangeHandler);
   }
 
-  ngOnDestroy(): void {
-    this.stopAutoPlay();
+ ngOnDestroy(): void {
+  this.stopAutoPlay();
+  if (this.carouselTrack?.nativeElement && this.transitionEndListener) {
+    this.carouselTrack.nativeElement.removeEventListener('transitionend', this.transitionEndListener);
   }
+
+  document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
+}
 
   startAutoPlay(): void {
     this.stopAutoPlay(); // Ensure no multiple intervals are running
+    if (!this.slides || this.slides.length < 2) {
+      return;
+    }
     this.intervalId = setInterval(() => {
       this.nextSlide();
-    }, 5000); // Change slide every 5 seconds
+    }, 3000); // Change slide every 3 seconds
   }
 
   stopAutoPlay(): void {
@@ -40,7 +74,7 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
   }
 
   nextSlide(): void {
-    this.currentSlide = (this.currentSlide + 1) % this.slides.length;
+    this.currentSlide++;
     this.updateSlidePosition();
   }
 
@@ -55,8 +89,19 @@ export class CarouselComponent implements AfterViewInit, OnDestroy {
     this.startAutoPlay(); // Restart autoplay when manually navigating
   }
 
-  updateSlidePosition(): void {
+  updateSlidePosition(animate = true): void {
     const track = this.carouselTrack.nativeElement;
+    if (this.currentSlide > this.displaySlides.length) {
+      this.currentSlide = 0;
+    }
+    track.style.transition = animate ? 'transform 0.5s ease-in-out' : 'none';
     track.style.transform = `translateX(-${this.currentSlide * 100}%)`;
+  }
+
+  onTransitionEnd(): void {
+    if (this.currentSlide === this.slides.length) {
+      this.currentSlide = 0;
+      this.updateSlidePosition(false);
+    }
   }
 }

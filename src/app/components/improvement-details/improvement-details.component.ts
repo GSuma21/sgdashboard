@@ -8,6 +8,9 @@ import { PartnerLogosComponent } from '../partner-logos/partner-logos';
 import { LineChartComponent } from '../../components/line-chart/line-chart';
 import { PieChartComponent } from '../../components/pie-chart/pie-chart';
 import * as d3 from 'd3';
+import { environment } from '../../../../environments/environment';
+import { COMMUNITY_DASHBOARD_PAGE } from '../../../constants/urlConstants';
+import { LoaderRunnerService } from '../../services/loader-runner.service';
 
 @Component({
   selector: 'app-improvement-details',
@@ -19,20 +22,24 @@ import * as d3 from 'd3';
 export class ImprovementDetailsComponent implements OnInit {
 
   pageData: any = {};
+  baseUrl: any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
 
-  constructor() { }
+  constructor(private loaderRunner: LoaderRunnerService) { }
 
   ngOnInit(): void {
     this.fetchPageData();
   }
 
-  fetchPageData(): void {
-    d3.json('/assets/community-led-improvements.json').then((data: any) => {
+  async fetchPageData() {
+  await this.loaderRunner.run(async () => {
+    return d3.json(`${this.baseUrl}/${COMMUNITY_DASHBOARD_PAGE}`).then((data: any) => {
       this.pageData = data;
       this.prepareLogosForScrolling();
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
     });
+  });
+
   }
 
   prepareLogosForScrolling(): void {
