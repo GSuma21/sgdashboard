@@ -5,7 +5,6 @@ import { fakeAsync, tick } from '@angular/core/testing';
 import { environment } from '../../../../environments/environment';
 
 import { ShareModal } from './share-modal';
-import { environment } from '../../../../environments/environment';
 
 // make sure environment has sensible defaults (tests may run in isolation)
 environment.shareText ||= 'share text';

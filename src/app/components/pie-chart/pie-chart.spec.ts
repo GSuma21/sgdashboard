@@ -29,12 +29,8 @@ describe('PieChartComponent', () => {
     component = fixture.componentInstance;
   });
 
-<<<<<<< HEAD
-  it('should create with default values', () => {
-=======
   it('should create', () => {
     fixture.detectChanges();
->>>>>>> naveen/release-testcase-2.0.0
     expect(component).toBeTruthy();
     expect(component.showLegend).toBeTrue();
     expect(component.showLabels).toBeTrue();
