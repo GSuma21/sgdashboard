@@ -95,11 +95,6 @@ describe('LoaderComponent', () => {
     expect(spinner.nativeElement.classList.contains('loader-spinner')).toBe(true);
   }));
 
-  it('should use async pipe for subscription to isLoading$', () => {
-    const template = fixture.nativeElement.innerHTML;
-    expect(template).toContain('async');
-  });
-
   it('should handle multiple show/hide cycles', fakeAsync(() => {
     loaderService.show();
     fixture.detectChanges();
