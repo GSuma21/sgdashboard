@@ -31,8 +31,11 @@ jobs:
           npx ng test --watch=false --code-coverage --browsers=ChromeHeadless || true
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v6
+        uses: SonarSource/sonarqube-scan-action@<FULL_40_CHAR_SHA>
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+        args: >
+           "-Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
           # optionally pass extra sonar-scanner properties:
           # SONAR_SCANNER_OPTS: -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
