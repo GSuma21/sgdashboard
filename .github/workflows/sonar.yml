@@ -26,11 +26,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests with coverage
-        run: npm run test -- --code-coverage --watch=false --browsers=ChromeHeadless
-        continue-on-error: true
+      - name: Run tests & produce coverage
+        run: |
+          npx ng test --watch=false --code-coverage --browsers=ChromeHeadless || true
 
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          # optionally pass extra sonar-scanner properties:
+          # SONAR_SCANNER_OPTS: -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
