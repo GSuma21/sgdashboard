@@ -2,11 +2,29 @@ import { Chart } from 'chart.js';
 import { MultiAxisChartComponent } from './multi-axis-chart.component';
 
 describe('MultiAxisChartComponent', () => {
+  const originalInnerWidthDescriptor = Object.getOwnPropertyDescriptor(window, 'innerWidth');
+
+  const setInnerWidth = (innerWidth: number) => {
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      get: () => innerWidth
+    });
+  };
+
+  afterEach(() => {
+    if (originalInnerWidthDescriptor) {
+      Object.defineProperty(window, 'innerWidth', originalInnerWidthDescriptor);
+      return;
+    }
+
+    delete (window as any).innerWidth;
+  });
+
   const createComponent = (innerWidth: number) => {
-    const innerWidthSpy = spyOnProperty(window, 'innerWidth', 'get').and.returnValue(innerWidth);
+    setInnerWidth(innerWidth);
     const registerSpy = spyOn(Chart, 'register').and.stub();
     const component = new MultiAxisChartComponent();
-    return { component, registerSpy, innerWidthSpy };
+    return { component, registerSpy };
   };
 
   it('should create and register chart plugins', () => {
@@ -21,6 +39,18 @@ describe('MultiAxisChartComponent', () => {
     expect(component.lineChartType).toBe('line');
     expect(pluginIds).toContain('rightYAxisUpsideDown');
     expect(pluginIds).toContain('customXAxisLabel');
+  });
+
+  it('should initialize default year and chart labels', () => {
+    const { component } = createComponent(1200);
+    expect(component.year).toBe('2025');
+    expect(component.lineChartData.labels).toEqual([
+      'Q1 (Apr - Jun)',
+      'Q2 (Jul - Sept)',
+      'Q3 (Oct - Dec)',
+      'Q4 (Jan - Mar)'
+    ]);
+    expect(component.lineChartData.datasets).toEqual([]);
   });
 
   it('should use desktop layout padding for large screens', () => {
@@ -60,6 +90,7 @@ describe('MultiAxisChartComponent', () => {
     const options = component.lineChartOptions as any;
     const labelCb = options.plugins?.tooltip?.callbacks?.label as any;
 
+    expect(options.plugins?.tooltip?.usePointStyle).toBeTrue();
     expect(labelCb({ raw: 42, dataset: { label: 'Series A' } })).toBe('Series A: 42');
   });
 
@@ -82,6 +113,20 @@ describe('MultiAxisChartComponent', () => {
     ]);
     expect(component.lineChartData.datasets[0].data).toEqual([7, 8]);
     expect(component.lineChartData.datasets[1].data).toEqual([100, 200, 300, 400]);
+  });
+
+  it('should keep middle zero values until the last non-zero point', () => {
+    const { component } = createComponent(1200);
+    component.chartData = {
+      data: {
+        'Participating in dialogues': [20, 30, 40, 50],
+        'Leading Micro Improvements': [5, 0, 3, 0]
+      }
+    };
+
+    component.ngOnInit();
+
+    expect(component.lineChartData.datasets[0].data).toEqual([5, 0, 3]);
   });
 
   it('should use empty line data when all micro improvements are zero', () => {
@@ -109,8 +154,33 @@ describe('MultiAxisChartComponent', () => {
     expect(component.lineChartData.datasets[1].data).toEqual([]);
   });
 
+  it('should create expected dataset styles after ngOnInit', () => {
+    const { component } = createComponent(1200);
+    component.chartData = {
+      data: {
+        'Participating in dialogues': [1, 2, 3, 4],
+        'Leading Micro Improvements': [1, 2, 3, 4]
+      }
+    };
+
+    component.ngOnInit();
+
+    const lineDataset = component.lineChartData.datasets[0] as any;
+    const barDataset = component.lineChartData.datasets[1] as any;
+
+    expect(lineDataset.type).toBe('line');
+    expect(lineDataset.yAxisID).toBe('y');
+    expect(lineDataset.borderWidth).toBe(4);
+    expect(lineDataset.pointHoverRadius).toBe(6);
+
+    expect(barDataset.type).toBe('bar');
+    expect(barDataset.yAxisID).toBe('y1');
+    expect(barDataset.barPercentage).toBe(0.7);
+    expect(barDataset.borderSkipped).toBeFalse();
+  });
+
   it('should execute right axis plugin draw logic for desktop and mobile', () => {
-    const { registerSpy, innerWidthSpy } = createComponent(1200);
+    const { registerSpy } = createComponent(1200);
     const rightAxisPlugin = registerSpy.calls
       .allArgs()
       .map((args) => args[0] as any)
@@ -132,15 +202,16 @@ describe('MultiAxisChartComponent', () => {
 
     rightAxisPlugin.afterDraw(chart);
     expect(ctx.translate).toHaveBeenCalledWith(180, 110);
+    expect(ctx.rotate).toHaveBeenCalledWith(-Math.PI / 2);
     expect(ctx.fillText).toHaveBeenCalled();
 
-    innerWidthSpy.and.returnValue(700);
+    setInnerWidth(700);
     rightAxisPlugin.afterDraw(chart);
     expect(ctx.translate).toHaveBeenCalledWith(170, 110);
   });
 
   it('should execute custom x-axis plugin draw logic and skip invalid labels', () => {
-    const { registerSpy, innerWidthSpy } = createComponent(700);
+    const { registerSpy } = createComponent(700);
     const xAxisPlugin = registerSpy.calls
       .allArgs()
       .map((args) => args[0] as any)
@@ -177,7 +248,7 @@ describe('MultiAxisChartComponent', () => {
     expect(ctx.fillText).toHaveBeenCalledWith('Q1', 76, 214);
     expect(ctx.fillText).toHaveBeenCalledWith('(Apr - Jun)', 99, 214);
 
-    innerWidthSpy.and.returnValue(1200);
+    setInnerWidth(1200);
     xAxisPlugin.afterDraw(chart);
     expect(ctx.fillText).toHaveBeenCalledWith('Q1', 90, 214);
     expect(ctx.fillText).toHaveBeenCalledWith('(Apr - Jun)', 114, 214);
