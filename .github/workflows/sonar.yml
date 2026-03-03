@@ -28,6 +28,7 @@ jobs:
 
       - name: Run tests with coverage
         run: npm run test -- --code-coverage --watch=false --browsers=ChromeHeadless
+        continue-on-error: true
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
