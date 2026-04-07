@@ -107,6 +107,15 @@
       </div>
     </ng-container>
 
+    <ng-container *ngSwitchCase="'mitra-text'">
+      <div class="mitra-text" [style.width]="section.width">
+        *To explore voices from ongoing programs, visit&nbsp;
+        <ng-container *ngFor="let link of section.dashboardLinks; let i = index">
+          <a [href]="link.url" target="_blank"><strong>{{ link.text }}</strong></a>
+          <span *ngIf="i === 0">. For deeper insights and detailed analysis, refer to&nbsp;</span>
+        </ng-container>.
+      </div>
+    </ng-container>
 
   </div>
 </div>
