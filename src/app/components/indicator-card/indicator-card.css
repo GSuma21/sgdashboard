@@ -23,12 +23,12 @@
 
 .indicator-content {
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .divider {
   width: 2px;
-  height: 5rem;
+  height: 7rem;
   background-color: #dddada ;
 }
 
@@ -50,7 +50,7 @@
 
 .indicator-label {
   width: 100%;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--background-color-dark);
   opacity: 0.8;

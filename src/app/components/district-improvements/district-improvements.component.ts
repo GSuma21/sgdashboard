@@ -37,7 +37,11 @@ export class DistrictImprovementsComponent implements OnInit {
     { icon: "assets/icons/community_improvements.svg", identifier: 2 },
     { icon: "assets/icons/mountain.svg", identifier: 3 },
     { icon: "assets/icons/idea.svg", identifier: 4 },
-    { icon: "assets/icons/local_solutions_implemented.svg", identifier: 5 }
+    { icon: "assets/icons/local_solutions_implemented.svg", identifier: 5 },
+    { icon: "assets/icons/community_improvements.svg", identifier: 6 },
+    { icon: "assets/icons/mountain.svg", identifier: 7 },
+    { icon: "assets/icons/idea.svg", identifier: 8 },
+    { icon: "assets/icons/local_solutions_implemented.svg", identifier: 9 }
   ]
   enableCommunityButton:boolean = false
   isCommunityFlow:boolean = false
@@ -53,39 +57,39 @@ export class DistrictImprovementsComponent implements OnInit {
       this.stateName = params.get('state') || "";
       this.stateCode = params.get('st-code') || "";
       this.dashboard = params.get('extra');
-  
+
       const data: any = this.route.snapshot.data;
       this.pageConfig = data;
-  
+
       if(this.pageConfig.type == "communityDetails"){
         this.enableCommunityButton = false
         this.isCommunityFlow = true
       }else{
         await this.getCommunityMetrics()
       }
-  
+
       await this.getImprovementsData();
     });
   }
-  
+
 
   async getImprovementsData() {
     let metricsPath = "metrics.json"
     let pieChartPath = "pie-chart.json"
     let lineChartPath = "line-chart.json"
-  
+
     if (this.isCommunityFlow) {
       metricsPath = "community-metrics.json"
       pieChartPath = "community-pie-chart.json"
     }
-  
+
     await this.loaderRunner.run(async () => {
       try {
         const metricsRes: any = await d3.json(
           `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${metricsPath}`
         );
         this.metrics = metricsRes?.metrics || [];
-  
+
         try {
           const pieRes: any = await d3.json(
             `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${pieChartPath}`
@@ -94,7 +98,7 @@ export class DistrictImprovementsComponent implements OnInit {
         } catch {
           this.pieChart = [];
         }
-  
+
         try {
           const lineRes: any = await d3.json(
             `${environment.storageURL}/${environment.bucketName}/${environment.folderName}/districts/${this.districtCode}/${lineChartPath}`
@@ -103,9 +107,9 @@ export class DistrictImprovementsComponent implements OnInit {
         } catch {
           this.lineChart = [];
         }
-  
+
         await this.getProgramsList();
-  
+
       } catch (error) {
         console.error('Error loading improvements data:', error);
         this.metrics = [];
@@ -115,7 +119,7 @@ export class DistrictImprovementsComponent implements OnInit {
       }
     });
   }
-  
+
 
   async getProgramsList() {
     try {
@@ -127,19 +131,19 @@ export class DistrictImprovementsComponent implements OnInit {
       console.error('Error loading programs list:', error);
       this.programsList = [];
     }
-  
+
     await this.fetchPageData();
   }
-  
+
 
   async fetchPageData() {
     try {
       const data: any = await d3.json(
         `/assets/${this.pageConfig.type === 'communityDetails' ? 'community-led' : 'leaders'}-improvement-district-details.json`
       );
-  
+
       this.pageData = data;
-  
+
       this.pageData.forEach((element: any) => {
         if (element.type === 'data-indicators') {
           this.metrics.forEach((metric: any) => {
@@ -157,17 +161,17 @@ export class DistrictImprovementsComponent implements OnInit {
             }
           });
         }
-  
+
         if (element.type === 'pie-chart') {
           element.data = this.pieChart;
         }
       });
-  
+
     } catch (error) {
       console.error('Error loading page config:', error);
     }
   }
-  
+
   async getCommunityMetrics() {
     try {
       const data: any = await d3.json(
