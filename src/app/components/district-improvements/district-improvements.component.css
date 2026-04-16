@@ -146,7 +146,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1.5rem;
-    align-items: stretch; /* Ensure all grid items stretch to the same height */
+    align-items: stretch;
   }
 
   /* Indicator Card styles are now in indicator-card.css */
