@@ -3,6 +3,7 @@
     background: #EEEEEE!important;
     display: flex;
     flex-direction: row;
+    min-height: 600px;
   }
 
   .legend-container {
@@ -123,6 +124,7 @@
   }
     .state-view-container {
       flex-direction: column-reverse;
+      min-height: 600px;
     }
 
     #state-map-container {
@@ -137,6 +139,7 @@
 
 @media (max-width: 768px){
   .state-view-container {
+    min-height: 600px;
     padding: 1rem; /* tighter padding for small devices */
   }
   .indicator-container .indicators {
@@ -157,7 +160,7 @@
   display: flex;
   flex-wrap: wrap;
   /* Use 'center' alignment to ensure the last row is centered */
-  justify-content: center; 
+  justify-content: center;
   gap: 10px 10px; /* Vertical gap 10px, Horizontal gap 10px */
   padding: 0;
   width: 100%;
@@ -166,7 +169,7 @@
 /* Default (Mobile/Small/Large Screens): 2 items per row */
 .indicator-card-item {
   /* This width forces 2 items per line (50% - 5px) */
-  width: calc(50% - 5px); 
+  width: calc(50% - 5px);
   box-sizing: border-box;
 }
 
@@ -184,7 +187,7 @@
 @media (min-width: 992px) {
   .indicator-card-item {
     /* Reset to 2 items per row */
-    width: calc(50% - 5px); 
+    width: calc(50% - 5px);
   }
 }
 
