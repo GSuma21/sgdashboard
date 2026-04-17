@@ -38,10 +38,10 @@ export class DistrictImprovementsComponent implements OnInit {
     { icon: "assets/icons/mountain.svg", identifier: 3 },
     { icon: "assets/icons/idea.svg", identifier: 4 },
     { icon: "assets/icons/local_solutions_implemented.svg", identifier: 5 },
-    { icon: "assets/icons/community_improvements.svg", identifier: 6 },
-    { icon: "assets/icons/mountain.svg", identifier: 7 },
-    { icon: "assets/icons/idea.svg", identifier: 8 },
-    { icon: "assets/icons/local_solutions_implemented.svg", identifier: 9 }
+    { icon: "assets/icons/enrollment_form.svg", identifier: 6 },
+    { icon: "assets/icons/drop_out.svg", identifier: 7 },
+    { icon: "assets/icons/adhaar_card.svg", identifier: 8 },
+    { icon: "assets/icons/birth_certificate.svg", identifier: 9 }
   ]
   enableCommunityButton:boolean = false
   isCommunityFlow:boolean = false
