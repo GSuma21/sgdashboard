@@ -42,13 +42,14 @@ import { Loader } from "./components/loader/loader";
     <main class="app-content" [class.no-header]="!showHeader">
       <router-outlet></router-outlet>
     </main>
-    <app-footer></app-footer>
+    <app-footer  *ngIf="showFooter"></app-footer>
   `,
   styleUrl: './app.css'
 })
 export class AppComponent implements OnInit {
   isMenuOpen = false;
   showHeader = true;
+  showFooter = true;
 
   constructor(private themeService: ThemeService, private router: Router) {
     effect(() => {
@@ -57,6 +58,7 @@ export class AppComponent implements OnInit {
 
     this.router.events.subscribe(() => {
       this.showHeader = this.router.url !== '/world-map';
+      this.showFooter = this.router.url !== '/world-map';
     });
   }
 
