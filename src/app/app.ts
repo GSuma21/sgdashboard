@@ -1,10 +1,11 @@
 import { Component, OnInit, effect } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { ThemeService } from './core/services/theme';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './pages/dashboard/dashboard';
 import { FooterComponent } from './components/footer/footer.component';
 import { Loader } from "./components/loader/loader";
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -51,18 +52,35 @@ export class AppComponent implements OnInit {
   showHeader = true;
   showFooter = true;
 
-  constructor(private themeService: ThemeService, private router: Router) {
+  constructor(
+    private themeService: ThemeService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
     effect(() => {
       document.documentElement.className = `${this.themeService.getTheme()()}-theme`;
     });
 
-    this.router.events.subscribe(() => {
-      this.showHeader = this.router.url !== '/world-map';
-      this.showFooter = this.router.url !== '/world-map';
-    });
+    this.updateLayoutVisibility();
+
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => this.updateLayoutVisibility());
   }
 
   ngOnInit(): void {}
+
+  private updateLayoutVisibility() {
+    let currentRoute = this.activatedRoute;
+
+    while (currentRoute.firstChild) {
+      currentRoute = currentRoute.firstChild;
+    }
+
+    const hideLayout = currentRoute.snapshot.data['hideLayout'] === true;
+    this.showHeader = !hideLayout;
+    this.showFooter = !hideLayout;
+  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
