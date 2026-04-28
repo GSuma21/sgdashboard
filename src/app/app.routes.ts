@@ -65,6 +65,6 @@ export const routes: Routes = [
     component: StateImprovementsComponent,   // or another component
     data: pageDataConfig.communityDashboard
   },
-    { path: 'world-map', component: WorldMapComponent },
+    { path: 'world-map', component: WorldMapComponent, data: { hideLayout: true } },
 
 ];
