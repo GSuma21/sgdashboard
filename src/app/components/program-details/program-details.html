@@ -29,12 +29,13 @@
 
                     <div class="info-section">
                         <div  class="impact">
+                            <h3 *ngIf="programData.stakeholders_doing_the_program">Key stakeholders</h3>
+                            <p>{{ programData.stakeholders_doing_the_program }}</p>
+
                             <h3 *ngIf="impactText">Intended impact</h3>
                             <p [innerText]="impactText"
                                 [ngStyle]="{'white-space': 'normal', 'word-wrap': 'break-word'}"></p>
 
-                            <h3 *ngIf="programData.stakeholders_doing_the_program">Key stakeholders</h3>
-                            <p>{{ programData.stakeholders_doing_the_program }}</p>
                         </div>
 
 
@@ -52,6 +53,28 @@
                             <p class="indicator-label">{{
                                 programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted
                                 }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div class="impact-header">
+                        <h3 class="impact-title">
+                            Learn how Micro Improvements are contributing to mega impact.
+                        </h3>
+            
+                        <button class="download-btn" (click)="openReport(programData)">
+                            <span>Download to read more</span>
+                            <mat-icon>download</mat-icon>
+                        </button>
+                    </div>
+                    <div class="impact-cards" *ngIf="impactCardList.length">
+                        <div class="impact-card" *ngFor="let item of impactCardList; let i = index">
+                            <div class="icon" [style.background-color]="colors[i % colors.length]"></div>
+                            <div>
+                                <p class="card-text">{{ item }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>

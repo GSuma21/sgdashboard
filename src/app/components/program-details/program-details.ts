@@ -17,6 +17,11 @@ import { LoaderRunnerService } from '../../services/loader-runner.service';
 export class ProgramDetails {
   programData :any
   baseUrl: any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
+  colors = [
+  'var(--secondary-color-light)',
+  'var(--primary-color-light)',
+  'var(--tertiary-color-light)'
+];
 
 
   @ViewChild('galleryTrack') galleryTrack!: ElementRef;
@@ -119,5 +124,15 @@ export class ProgramDetails {
     // Replace "1." "2." etc. with "•"
     return this.programData.impact_of_the_program.replace(/\d+\./g, '•');
   }
+
+  get impactCardList(): string[] {
+  const text = this.programData?.impact_of_the_program;
+  if (!text) return [];
+
+   return text
+    .split('\n')                    // split by new line
+    .map((item: string) => item.replace(/^[•-\s]+/, '').trim()) // remove leading bullet/dash
+    .filter((item: string) => item.length > 0);
+}
 
 }
