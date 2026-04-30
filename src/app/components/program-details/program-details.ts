@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, TemplateRef, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import * as d3 from 'd3';
@@ -7,6 +7,7 @@ import { LANDING_PAGE } from '../../../constants/urlConstants';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { LoaderRunnerService } from '../../services/loader-runner.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-program-details',
@@ -17,11 +18,17 @@ import { LoaderRunnerService } from '../../services/loader-runner.service';
 export class ProgramDetails {
   programData :any
   baseUrl: any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
+  colors = [
+  'var(--secondary-color-light)',
+  'var(--primary-color-light)',
+  'var(--tertiary-color-light)'
+];
 
 
   @ViewChild('galleryTrack') galleryTrack!: ElementRef;
+  @ViewChild('downloadDialog') downloadDialog!: TemplateRef<any>;
 
-  constructor(private location: Location,private router: Router, private loaderRunner: LoaderRunnerService) {
+  constructor(private location: Location,private router: Router, private loaderRunner: LoaderRunnerService, public dialog: MatDialog) {
     this.onResize();
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as { report: any };
@@ -118,6 +125,55 @@ export class ProgramDetails {
     if (!this.programData?.impact_of_the_program) return '';
     // Replace "1." "2." etc. with "•"
     return this.programData.impact_of_the_program.replace(/\d+\./g, '•');
+  }
+
+  get impactCardList(): string[] {
+    const text = this.programData?.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved;
+    if (!text) return [];
+
+    return text
+      .split('\n')
+      .map((item: string) =>
+        item.replace(/^[\s•\-–—]*\d*[\.\)]?\s*/, '').trim()
+      )
+      .filter((item: string) => item.length > 0);
+  }
+
+  openLink(link: string) {
+    window.open(link, '_blank');
+  }
+
+  OnClickMultipleReports(programData: any) {
+    const links = this.getClickReportLinks(programData.download_to_read_more);
+
+    this.dialog.open(this.downloadDialog, {
+      width: '500px',
+      data: {
+        programName: programData.name_of_the_program,
+        links: links
+      }
+    });
+  }
+
+  getClickReportLinks(value: any): string[] {
+    if (!value) return [];
+
+    // If already array → clean and return
+    if (Array.isArray(value)) {
+      return value.map(v => String(v).trim()).filter(v => v);
+    }
+
+    // Convert to string
+    const text = String(value);
+
+    return text
+      .split(/\n|,/) // split by newline OR comma
+      .map(item =>
+        item
+          .replace(/^[\s•\-–—]*\d*[\.\)]?\s*/, '') // remove bullets, numbers
+          .trim()
+      )
+      .filter(item => item.length > 0);
   }
 
 }

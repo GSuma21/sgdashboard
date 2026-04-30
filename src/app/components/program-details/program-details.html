@@ -4,8 +4,7 @@
             programData.state_name }}</a><span *ngIf="programData.district_name">/&nbsp;{{ programData.district_name }}</span>
     </div>
 
-    <div class="program-container">
-        <div class="title">
+     <div class="title">
             <div class="left-section">
               <div class="back-icon" (click)="goBack()">&#8592;</div>&nbsp;
               <h2 class="label" *ngIf="programData.name_of_the_program">
@@ -19,22 +18,29 @@
             </button>
           </div>
 
+    <div class="program-container">
         <div class="content">
             <div class="program-model-container">
                 <div>
-                    <div class="program-section" *ngIf="programData.about_the_program_objective">
+                    @if(programData.about_the_program_objective) {
+                    <div class="program-section">
                         <h3>Program overview</h3>
                         <p>{{ programData.about_the_program_objective }}</p>
                     </div>
-
+                    }
                     <div class="info-section">
-                        <div  class="impact">
-                            <h3 *ngIf="impactText">Intended impact</h3>
-                            <p [innerText]="impactText"
-                                [ngStyle]="{'white-space': 'normal', 'word-wrap': 'break-word'}"></p>
-
-                            <h3 *ngIf="programData.stakeholders_doing_the_program">Key stakeholders</h3>
+                        <div class="impact">
+                            @if(programData.stakeholders_doing_the_program) {
+                            <h3>Key stakeholders</h3>
                             <p>{{ programData.stakeholders_doing_the_program }}</p>
+                            }
+                            @if(impactText){
+                            <h3 *ngIf="impactText">Intended impact</h3>
+                            <p [innerText]="impactText" [ngStyle]="{'white-space': 'normal', 'word-wrap': 'break-word'}"></p>
+            
+                            }
+            
+            
                         </div>
 
 
@@ -56,6 +62,30 @@
                     </div>
                 </div>
             </div>
+            @if (programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved) {
+                <div *ngIf="programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved">
+                <div>
+                    <div class="impact-header">
+                        <h3 class="impact-title">
+                            Learn how Micro Improvements are contributing to mega impact.
+                        </h3>
+            
+                        <button class="download-btn" (click)="OnClickMultipleReports(programData)">
+                            <span>Click here to read more</span>
+                            <mat-icon>arrow_drop_down</mat-icon>
+                        </button>
+                    </div>
+                    <div class="impact-cards" *ngIf="impactCardList.length">
+                        <div class="impact-card" *ngFor="let item of impactCardList; let i = index">
+                            <div class="icon" [style.background-color]="colors[i % colors.length]"></div>
+                            <div>
+                                <p class="card-text">{{ item }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
             <h3 *ngIf="displayImages.length" class="heading">Gallery</h3>
             <section class="gallery-section" *ngIf="displayImages.length">
                 <button class="arrow left" *ngIf="currentSlide > 0"  (click)="prevSlide()">&#10094;</button>
@@ -92,3 +122,42 @@
         </div>
     </div>
 </div>
+
+<ng-template #downloadDialog let-data>
+    <div class="custom-dialog">
+
+        <!-- Header -->
+        <div class="dialog-header">
+            <span class="program-title">
+                {{ data.programName }}
+            </span>
+
+            <span class="close-btn" (click)="dialog.closeAll()">✕</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Subtitle -->
+        <div class="report-count">
+            No. of reports available to download: {{ data.links.length }}
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- List -->
+        <div class="report-list">
+            @for (link of data.links; track link; let i = $index) {
+            <div class="report-row" (click)="openLink(link)">
+
+                <span>
+                    Click Report {{ i + 1 }} to read more
+                </span>
+
+                <mat-icon class="view-icon">visibility</mat-icon>
+
+            </div>
+            }
+        </div>
+
+    </div>
+</ng-template>

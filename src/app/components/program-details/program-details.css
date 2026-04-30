@@ -2,7 +2,7 @@
     padding: 20px;
     padding-bottom: 0;
     font-size: 18px;
-    color: #000000;
+    color: var(--text-color);
     margin-left: 20px;
 }
 
@@ -14,7 +14,6 @@
 .program-container {
     padding: 0 7.5%;
     background-color: #eaf7ff;
-    margin-top: 10px;
 }
 
 .program-model-container {
@@ -79,7 +78,7 @@
 
 .mi-card h2 {
     margin: 0;
-    color: #d81b60;
+    color: var(--secondary-color-light);
 }
 
 .gallery {
@@ -293,6 +292,11 @@ h5 {
     display: flex;
     align-items: center;
     padding: 1rem 0;
+    position: sticky;
+    top: 80px;
+    z-index: 20;
+    background-color: #eaf7ff;
+    padding: 0.5rem 7.5%;
 }
   
 .left-section {
@@ -312,7 +316,7 @@ h5 {
     font-weight: bold;
     cursor: pointer;
     color: #000;
-    margin-bottom: 1%;
+    margin-bottom: 2%;
     transition: transform 0.2s ease-in-out;
   }
 
@@ -467,4 +471,195 @@ p {
 .breadcrumb span {
   color: var(--text-color);
   font-weight: 700;
+}
+
+.impact-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.impact-card {
+  width: 290px;
+  height: 200px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f5f7fa;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+}
+
+.icon {
+  width: 190px;
+  height: 38px;
+
+  /* use your SVG */
+  -webkit-mask: url('../../../../public/assets/icons/game-icons_dandelion-flower.svg') no-repeat center;
+  mask: url('../../../../public/assets/icons/game-icons_dandelion-flower.svg') no-repeat center;
+
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/* .icon.pink {
+  background-color: #ff2d7a;
+}
+
+.icon.purple {
+  background-color: #6a1b9a;
+} */
+
+.card-text {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.impact-header {
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  border-radius: 6px;
+  /* width: 80%; */
+  gap: 15%;
+}
+
+.impact-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--program-text-strong);
+  margin: 0;
+  max-width: 70%;
+}
+
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background:var(--primary-color);
+  color: var(--hero-background-color);
+  border: none;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.download-btn mat-icon {
+  font-size: 16px;
+}
+
+.download-btn:hover {
+  background: var(--primary-hover-color);
+}
+mat-icon {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+/* 👉 mobile fix */
+@media (max-width: 576px) {
+    .impact-cards {
+        justify-content: center;
+        /* centers the single card */
+    }
+
+    .impact-header {
+        width: 100%;
+         gap: 2px;
+    }
+}
+
+
+::ng-deep .mat-mdc-dialog-container {
+  padding: 0 !important;
+  border-radius: 12px !important;
+  overflow: hidden; /* prevent x-scroll from container */
+}
+
+/* Main wrapper */
+.custom-dialog {
+  width: 100%;
+  max-width: 520px; /* instead of fixed width */
+  box-sizing: border-box; /* FIX overflow issue */
+  padding: 20px 24px;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px; /* prevent text + close overlap */
+}
+
+.program-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #444;
+  word-break: break-word; /* long names won’t overflow */
+}
+
+/* Close button */
+.close-btn {
+  font-size: 22px;
+  cursor: pointer;
+  color: red;
+  flex-shrink: 0; /* prevents shrinking */
+  margin-bottom: 15px;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: var(--program-border-soft);
+  margin: 12px 0;
+}
+
+/* Subtitle */
+.report-count {
+  font-size: 15px;
+  color: #777;
+}
+
+/* List */
+.report-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Row */
+.report-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.report-row:hover {
+  color: #6a1b9a;
+}
+
+/* Text inside row */
+.report-row span {
+  flex: 1;
+  word-break: break-word; /* prevents overflow */
+}
+
+/* Icon */
+.view-icon {
+  font-size: 20px;
+  color: var(--text-color);
+  flex-shrink: 0;
 }
