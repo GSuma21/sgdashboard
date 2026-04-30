@@ -22,20 +22,25 @@
         <div class="content">
             <div class="program-model-container">
                 <div>
-                    <div class="program-section" *ngIf="programData.about_the_program_objective">
+                    @if(programData.about_the_program_objective) {
+                    <div class="program-section">
                         <h3>Program overview</h3>
                         <p>{{ programData.about_the_program_objective }}</p>
                     </div>
-
+                    }
                     <div class="info-section">
-                        <div  class="impact">
-                            <h3 *ngIf="programData.stakeholders_doing_the_program">Key stakeholders</h3>
+                        <div class="impact">
+                            @if(programData.stakeholders_doing_the_program) {
+                            <h3>Key stakeholders</h3>
                             <p>{{ programData.stakeholders_doing_the_program }}</p>
-
+                            }
+                            @if(impactText){
                             <h3 *ngIf="impactText">Intended impact</h3>
-                            <p [innerText]="impactText"
-                                [ngStyle]="{'white-space': 'normal', 'word-wrap': 'break-word'}"></p>
-
+                            <p [innerText]="impactText" [ngStyle]="{'white-space': 'normal', 'word-wrap': 'break-word'}"></p>
+            
+                            }
+            
+            
                         </div>
 
 
@@ -57,7 +62,8 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved">
+            @if (programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved) {
+                <div *ngIf="programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved">
                 <div>
                     <div class="impact-header">
                         <h3 class="impact-title">
@@ -79,6 +85,7 @@
                     </div>
                 </div>
             </div>
+            }
             <h3 *ngIf="displayImages.length" class="heading">Gallery</h3>
             <section class="gallery-section" *ngIf="displayImages.length">
                 <button class="arrow left" *ngIf="currentSlide > 0"  (click)="prevSlide()">&#10094;</button>
