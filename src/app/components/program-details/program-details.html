@@ -4,8 +4,7 @@
             programData.state_name }}</a><span *ngIf="programData.district_name">/&nbsp;{{ programData.district_name }}</span>
     </div>
 
-    <div class="program-container">
-        <div class="title">
+     <div class="title">
             <div class="left-section">
               <div class="back-icon" (click)="goBack()">&#8592;</div>&nbsp;
               <h2 class="label" *ngIf="programData.name_of_the_program">
@@ -19,6 +18,7 @@
             </button>
           </div>
 
+    <div class="program-container">
         <div class="content">
             <div class="program-model-container">
                 <div>
@@ -57,16 +57,16 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div *ngIf="programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved">
                 <div>
                     <div class="impact-header">
                         <h3 class="impact-title">
                             Learn how Micro Improvements are contributing to mega impact.
                         </h3>
             
-                        <button class="download-btn" (click)="openReport(programData)">
-                            <span>Download to read more</span>
-                            <mat-icon>download</mat-icon>
+                        <button class="download-btn" (click)="OnClickMultipleReports(programData)">
+                            <span>Click here to read more</span>
+                            <mat-icon>arrow_drop_down</mat-icon>
                         </button>
                     </div>
                     <div class="impact-cards" *ngIf="impactCardList.length">
@@ -115,3 +115,41 @@
         </div>
     </div>
 </div>
+
+<ng-template #downloadDialog let-data>
+  <div class="custom-dialog">
+
+    <!-- Header -->
+    <div class="dialog-header">
+      <span class="program-title">
+        {{ data.programName }}
+      </span>
+
+      <span class="close-btn" (click)="dialog.closeAll()">✕</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Subtitle -->
+    <div class="report-count">
+      No. of reports available to download: {{ data.links.length }}
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- List -->
+    <div class="report-list">
+      <div class="report-row"
+           *ngFor="let link of data.links; let i = index"
+           (click)="openLink(link)">
+
+        <span>
+          Click Report {{ i + 1 }} to read more
+        </span>
+
+        <mat-icon class="view-icon">visibility</mat-icon>
+      </div>
+    </div>
+
+  </div>
+</ng-template>

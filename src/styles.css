@@ -15,6 +15,7 @@ html {
   --primary-hover-color-dark: #42236b;
   --hero-background-color-dark: #1a1a2e;
   --tertiary-color-light:#D21E45;
+  --program-border-soft: #cfcfcf;
 }
 
 html.light-theme {

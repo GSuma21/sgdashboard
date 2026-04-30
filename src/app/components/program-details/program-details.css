@@ -2,7 +2,7 @@
     padding: 20px;
     padding-bottom: 0;
     font-size: 18px;
-    color: #000000;
+    color: var(--text-color);
     margin-left: 20px;
 }
 
@@ -13,8 +13,7 @@
 
 .program-container {
     padding: 0 7.5%;
-    background-color: #eaf7ff;
-    margin-top: 10px;
+    background-color: var(--program-page-bg);
 }
 
 .program-model-container {
@@ -47,7 +46,7 @@
 .partners p {
     font-size: 14px;
     line-height: 1.5;
-    color: #333;
+    color: var(--program-text-muted);
 }
 
 .info-section {
@@ -65,10 +64,10 @@
 .mi-card {
     display: flex;
     align-items: center;
-    background: #fff;
+    background: var(--program-surface);
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--program-shadow-soft);
     min-width: 200px;
 }
 
@@ -79,7 +78,7 @@
 
 .mi-card h2 {
     margin: 0;
-    color: #d81b60;
+    color: var(--secondary-color-light);
 }
 
 .gallery {
@@ -193,7 +192,7 @@ h5 {
     align-items: center;
     justify-content: center;
     position: relative;
-    background: #eaf6ff;
+    background: var(--program-page-bg-soft);
     border-radius: 8px;
 }
 
@@ -221,7 +220,7 @@ h5 {
 }
 
 .arrow {
-    border: 2px solid #000;
+    border: 2px solid var(--text-color);
     /* black border */
     border-radius: 50%;
     /* make it circular */
@@ -234,7 +233,7 @@ h5 {
     font-size: 20px;
     background-color: transparent;
     /* size of the arrow symbol */
-    color: #000;
+    color: var(--text-color);
     /* arrow color */
     transition: background 0.3s, transform 0.2s;
 }
@@ -273,8 +272,8 @@ h5 {
     justify-content: center;
     overflow: hidden;
     border-radius: 8px;
-    background: #f5f5f5;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: var(--program-surface-muted);
+    box-shadow: var(--program-shadow-soft);
 }
 
 .gallery-item img {
@@ -293,6 +292,11 @@ h5 {
     display: flex;
     align-items: center;
     padding: 1rem 0;
+    position: sticky;
+    top: 80px;
+    z-index: 20;
+    background-color: var(--program-page-bg);
+    padding: 0.5rem 7.5%;
 }
   
 .left-section {
@@ -311,8 +315,8 @@ h5 {
     font-size: 2rem;
     font-weight: bold;
     cursor: pointer;
-    color: #000;
-    margin-bottom: 1%;
+    color: var(--text-color);
+    margin-bottom: 2%;
     transition: transform 0.2s ease-in-out;
   }
 
@@ -330,7 +334,7 @@ h5 {
     gap: 0.4rem;
     border-radius: 0.375rem;
     border: 1px solid var(--primary-color);
-    background: #f5f5f5;
+    background: var(--program-surface-muted);
     color: var(--primary-color);
     font-size: 0.8rem;
     font-weight: 400;
@@ -351,18 +355,18 @@ h5 {
   }
   
   .view-report-btn:hover {
-    background-color: rgba(87, 46, 145, 0.08);
+    background-color: var(--program-primary-soft);
   }
 
 .partners {
     text-align: left;
     padding: 2rem 0;
-    background-color: #eaf7ff;
+    background-color: var(--program-page-bg);
 }
 
 .partners h3 {
     font-size: 1.5rem;
-    color: #222;
+    color: var(--program-text-strong);
 }
 
 .partners-grid {
@@ -380,12 +384,12 @@ h5 {
     justify-content: space-between;
     gap: 0.75rem;
 
-    background: #fff;
+    background: var(--program-surface);
     border-radius: 12px;
     padding: 1.5rem 1rem;
     width: 180px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--program-shadow-medium);
     transition: transform 0.2s ease-in-out;
 }
 
@@ -406,19 +410,19 @@ h5 {
     font-size: 1.1rem;
     font-weight: bold;
     margin: 0;
-    color: #000;
+    color: var(--text-color);
 }
 
 .know-more-btn {
     font-size: 0.85rem;
-    color: #000;
+    color: var(--text-color);
     text-decoration: none;
     border-bottom: 1px solid transparent;
     transition: all 0.2s ease-in-out;
 }
 
 .know-more-btn:hover {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--text-color);
 }
 
 p {
@@ -481,8 +485,8 @@ p {
   height: 200px;
   padding: 16px;
   border-radius: 12px;
-  background: #f5f7fa;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  background: var(--program-surface-muted);
+  box-shadow: var(--program-shadow-card);
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -520,13 +524,13 @@ p {
   align-items: center;
   border-radius: 6px;
   /* width: 80%; */
-  gap: 30px;
+  gap: 15%;
 }
 
 .impact-title {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2d3d;
+  color: var(--program-text-strong);
   margin: 0;
   max-width: 70%;
 }
@@ -535,12 +539,12 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: #5b3cc4; /* purple */
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--hero-background-color);
   border: none;
   padding: 6px 12px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
 }
@@ -550,7 +554,7 @@ p {
 }
 
 .download-btn:hover {
-  background: #4a2fa3;
+  background: var(--primary-hover-color);
 }
 mat-icon {
     display: inline-flex;
@@ -570,4 +574,92 @@ mat-icon {
         width: 100%;
          gap: 2px;
     }
+}
+
+
+::ng-deep .mat-mdc-dialog-container {
+  padding: 0 !important;
+  border-radius: 12px !important;
+  overflow: hidden; /* prevent x-scroll from container */
+}
+
+/* Main wrapper */
+.custom-dialog {
+  width: 100%;
+  max-width: 520px; /* instead of fixed width */
+  box-sizing: border-box; /* FIX overflow issue */
+  padding: 20px 24px;
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px; /* prevent text + close overlap */
+}
+
+.program-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--program-text-muted);
+  word-break: break-word; /* long names won’t overflow */
+}
+
+/* Close button */
+.close-btn {
+  font-size: 22px;
+  cursor: pointer;
+  color: red;
+  flex-shrink: 0; /* prevents shrinking */
+  margin-bottom: 15px;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: var(--program-border-soft);
+  margin: 12px 0;
+}
+
+/* Subtitle */
+.report-count {
+  font-size: 15px;
+  color: var(--program-text-soft);
+}
+
+/* List */
+.report-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Row */
+.report-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.report-row:hover {
+  color: var(--primary-color);
+}
+
+/* Text inside row */
+.report-row span {
+  flex: 1;
+  word-break: break-word; /* prevents overflow */
+}
+
+/* Icon */
+.view-icon {
+  font-size: 20px;
+  color: var(--text-color);
+  flex-shrink: 0;
 }
