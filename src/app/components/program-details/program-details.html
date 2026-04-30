@@ -117,39 +117,40 @@
 </div>
 
 <ng-template #downloadDialog let-data>
-  <div class="custom-dialog">
+    <div class="custom-dialog">
 
-    <!-- Header -->
-    <div class="dialog-header">
-      <span class="program-title">
-        {{ data.programName }}
-      </span>
+        <!-- Header -->
+        <div class="dialog-header">
+            <span class="program-title">
+                {{ data.programName }}
+            </span>
 
-      <span class="close-btn" (click)="dialog.closeAll()">✕</span>
+            <span class="close-btn" (click)="dialog.closeAll()">✕</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Subtitle -->
+        <div class="report-count">
+            No. of reports available to download: {{ data.links.length }}
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- List -->
+        <div class="report-list">
+            @for (link of data.links; track link; let i = $index) {
+            <div class="report-row" (click)="openLink(link)">
+
+                <span>
+                    Click Report {{ i + 1 }} to read more
+                </span>
+
+                <mat-icon class="view-icon">visibility</mat-icon>
+
+            </div>
+            }
+        </div>
+
     </div>
-
-    <div class="divider"></div>
-
-    <!-- Subtitle -->
-    <div class="report-count">
-      No. of reports available to download: {{ data.links.length }}
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- List -->
-    <div class="report-list">
-      <div class="report-row"
-           *ngFor="let link of data.links; let i = index"
-           (click)="openLink(link)">
-
-        <span>
-          Click Report {{ i + 1 }} to read more
-        </span>
-
-        <mat-icon class="view-icon">visibility</mat-icon>
-      </div>
-    </div>
-
-  </div>
 </ng-template>
