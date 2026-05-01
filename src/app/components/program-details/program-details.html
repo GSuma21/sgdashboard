@@ -63,8 +63,8 @@
                 </div>
             </div>
             @if (programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved) {
-                <div *ngIf="programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved">
-                <div>
+                <div *ngIf="programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved" class="details-section impact-section">
+                <div class="impact-content">
                     <div class="impact-header">
                         <h3 class="impact-title">
                             Learn how Micro Improvements are contributing to mega impact.
@@ -86,8 +86,9 @@
                 </div>
             </div>
             }
-            <h3 *ngIf="displayImages.length" class="heading">Gallery</h3>
-            <section class="gallery-section" *ngIf="displayImages.length">
+            <div *ngIf="displayImages.length" class="details-section gallery-block">
+            <h3 class="heading">Gallery</h3>
+            <section class="gallery-section">
                 <button class="arrow left" *ngIf="currentSlide > 0"  (click)="prevSlide()">&#10094;</button>
                 <div class="gallery-container">
                     <div class="gallery-track" #galleryTrack>
@@ -101,8 +102,10 @@
                 </div>
                 <button *ngIf="currentSlide < displayImages.length - this.visibleSlides"  class="arrow right" (click)="nextSlide()">&#10095;</button>
             </section>
-            <h3 *ngIf="partnerDetails.length" class="heading">Partners</h3>
-            <div *ngIf="partnerDetails" class="partners">
+            </div>
+            <div *ngIf="partnerDetails.length" class="details-section partners-section">
+            <h3 class="heading">Partners</h3>
+            <div class="partners">
                 <div class="partners-grid">
                     <div class="partner-card" *ngFor="let partner of partnerDetails">
 
@@ -118,6 +121,7 @@
                         </a>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </div>

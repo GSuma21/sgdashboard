@@ -37,7 +37,7 @@
     font-weight: 600;
 }
 .heading {
-    margin-top: 10px;
+    margin: 0 0 14px;
     font-size: 24px;
     font-weight: 600;
 }
@@ -111,7 +111,7 @@
 }
 
 .partners {
-    margin-top: 25px;
+    margin-top: 0;
     font-size: 14px;
 }
 
@@ -194,6 +194,7 @@ h5 {
     position: relative;
     background: #eaf6ff;
     border-radius: 8px;
+    padding: 6px 0;
 }
 
 .gallery-container {
@@ -256,7 +257,7 @@ h5 {
 .gallery-container {
     width: 100%;
     overflow: hidden;
-    padding: 10px;
+    padding: 8px 10px;
 }
 
 .gallery {
@@ -360,7 +361,7 @@ h5 {
 
 .partners {
     text-align: left;
-    padding: 2rem 0;
+    padding: 0;
     background-color: #eaf7ff;
 }
 
@@ -372,9 +373,10 @@ h5 {
 .partners-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjust 200px to card width */
-  gap: 0.5rem;
-  row-gap: 2rem;
+  gap: 1rem;
+  row-gap: 1.5rem;
   justify-content: start; /* makes last row items stick left */
+  padding-bottom: 2rem;
 }
 
 .partner-card {
@@ -473,11 +475,20 @@ p {
   font-weight: 700;
 }
 
+.details-section {
+  margin-top: 28px;
+}
+
 .impact-cards {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
   margin-top: 16px;
+}
+
+.impact-content {
+  display: inline-block;
+  max-width: 100%;
 }
 
 .impact-card {
@@ -520,19 +531,24 @@ p {
 
 .impact-header {
   display: flex;
-  /* justify-content: space-between; */
+  justify-content: space-between;
   align-items: center;
   border-radius: 6px;
-  /* width: 80%; */
-  gap: 15%;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 16px;
+  font-size: 18px;
+  flex-wrap: nowrap;
 }
 
 .impact-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--program-text-strong);
   margin: 0;
-  max-width: 70%;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
 }
 
 .download-btn {
@@ -542,7 +558,7 @@ p {
   background:var(--primary-color);
   color: var(--hero-background-color);
   border: none;
-  padding: 6px 12px;
+  padding: 6px 0px 6px 12px;
   font-size: 13px;
   font-weight: 600;
   border-radius: 6px;
@@ -565,14 +581,43 @@ mat-icon {
 
 /* 👉 mobile fix */
 @media (max-width: 576px) {
+    .details-section {
+        margin-top: 22px;
+    }
+
     .impact-cards {
         justify-content: center;
         /* centers the single card */
     }
 
+    .impact-content {
+        display: block;
+        width: 100%;
+    }
+
     .impact-header {
         width: 100%;
-         gap: 2px;
+        gap: 8px;
+        margin-bottom: 12px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .impact-title {
+        white-space: normal;
+        flex: 1 1 100%;
+    }
+
+    .download-btn {
+        margin-left: auto;
+    }
+
+    .heading {
+        margin-bottom: 10px;
+    }
+
+    .gallery-section {
+        padding: 4px 0;
     }
 }
 
