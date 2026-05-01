@@ -29,7 +29,6 @@
 
 .program-section h3,
 .info-section h3,
-.gallery h3,
 .partners h3 {
     margin-top: 15px;
     margin-bottom: 8px;
@@ -59,55 +58,6 @@
 .impact {
     flex: 1;
     min-width: 250px;
-}
-
-.mi-card {
-    display: flex;
-    align-items: center;
-    background: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    min-width: 200px;
-}
-
-.mi-icon {
-    font-size: 28px;
-    margin-right: 10px;
-}
-
-.mi-card h2 {
-    margin: 0;
-    color: var(--secondary-color-light);
-}
-
-.gallery {
-    margin-top: 25px;
-}
-
-.gallery-images {
-    display: flex;
-    align-items: center;
-}
-
-.gallery-btn {
-    font-size: 24px;
-    cursor: pointer;
-    padding: 10px;
-}
-
-.gallery-wrapper {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-}
-
-.gallery-wrapper img {
-    height: 120px;
-    width: auto;
-    border-radius: 8px;
-    object-fit: cover;
 }
 
 .partners {
@@ -260,30 +210,6 @@ h5 {
     padding: 8px 10px;
 }
 
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 12px;
-    justify-content: center;
-}
-
-.gallery-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 8px;
-    background: #f5f5f5;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.gallery-item img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
-}
-
-
 .content {
     margin: 0;
     width: 100%;
@@ -363,11 +289,6 @@ h5 {
     text-align: left;
     padding: 0;
     background-color: #eaf7ff;
-}
-
-.partners h3 {
-    font-size: 1.5rem;
-    color: #222;
 }
 
 .partners-grid {
