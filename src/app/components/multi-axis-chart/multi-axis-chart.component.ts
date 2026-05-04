@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartType, Chart, registerables } from 'chart.js';
@@ -92,8 +92,9 @@ const customXAxisLabelPlugin = {
   templateUrl: './multi-axis-chart.component.html',
   styleUrls: ['./multi-axis-chart.component.scss']
 })
-export class MultiAxisChartComponent {
-  year = '2025';
+export class MultiAxisChartComponent implements OnInit, OnChanges {
+  year = '';
+  yearWiseData: any[] = [];
   @Input() chartData: any;
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
@@ -177,56 +178,144 @@ export class MultiAxisChartComponent {
   }
 
   ngOnInit(): void {
-    const labels = ['Q1 (Apr - Jun)', 'Q2 (Jul - Sept)', 'Q3 (Oct - Dec)', 'Q4 (Jan - Mar)'];
-      const dialoguesData = this.chartData?.data?.["Participating in dialogues"] || [];
-      let microImprovementsData = this.chartData?.data?.["Leading Micro Improvements"] || [];
+    this.initializeChart();
+  }
 
-      // Hide trailing zeros for line
-      const lastNonZeroIndex = microImprovementsData
-        .map((v: number, i: number) => ({ v, i }))
-        .filter((item: any) => item.v && item.v > 0)
-        .map((item: any) => item.i)
-        .pop();
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['chartData']) {
+      this.initializeChart();
+    }
+  }
 
-      if (lastNonZeroIndex !== undefined) {
-        microImprovementsData = microImprovementsData.slice(0, lastNonZeroIndex + 1);
-      } else {
-        microImprovementsData = [];
+  private initializeChart(): void {
+    const microImprovementsSeries = this.chartData?.data?.['Leading Micro Improvements'] || [];
+    const dialoguesSeries = this.chartData?.data?.['Participating in dialogues'] || [];
+
+    if (this.isYearWiseSeries(microImprovementsSeries) || this.isYearWiseSeries(dialoguesSeries)) {
+      this.yearWiseData = this.buildYearWiseData(microImprovementsSeries, dialoguesSeries);
+
+      if (this.yearWiseData.length > 0) {
+        const latestYearData = this.yearWiseData[this.yearWiseData.length - 1];
+        this.showYearData(latestYearData);
       }
 
-      this.lineChartData = {
-        labels,
-        datasets: [
-          {
-            type: 'line',
-            data: microImprovementsData,
-            label: 'Leading Micro Improvements',
-            borderColor: '#fe9a11',
-            pointBackgroundColor: '#fe9a11',
-            yAxisID: 'y',
-            tension: 0.4,
-            fill: false,
-            borderWidth: 4,      // line thickness
-            pointRadius: 4,      // dot size
-            pointHoverRadius: 6, // dot size on hover
+      return;
+    }
+
+    this.yearWiseData = [];
+
+    const fallbackYearData = {
+      year: this.chartData?.year || this.year || '2025',
+      data: microImprovementsSeries
+    };
+
+    this.showYearData(fallbackYearData);
+  }
+
+  showYearData(yearData: any): void {
+    const selectedYear = String(yearData?.year ?? '');
+    const microImprovementsSeries = this.chartData?.data?.['Leading Micro Improvements'] || [];
+    const dialoguesSeries = this.chartData?.data?.['Participating in dialogues'] || [];
+
+    const microImprovementsData = this.trimTrailingZeros(
+      this.getSeriesDataForYear(microImprovementsSeries, selectedYear, yearData?.data || [])
+    );
+    const dialoguesData = this.getSeriesDataForYear(dialoguesSeries, selectedYear, []);
+
+    this.year = selectedYear;
+    this.setChartData(microImprovementsData, dialoguesData);
+  }
+
+  private getSeriesDataForYear(series: any[], selectedYear: string, fallbackData: number[]): number[] {
+    if (!Array.isArray(series) || series.length === 0) {
+      return fallbackData;
+    }
+
+    if (typeof series[0] === 'number') {
+      return series;
+    }
+
+    const selectedYearData = series.find((item: any) => String(item?.year) === selectedYear);
+    return selectedYearData?.data || [];
+  }
+
+  private isYearWiseSeries(series: any[]): boolean {
+    return Array.isArray(series) && series.length > 0 && typeof series[0] === 'object' && series[0] !== null && 'year' in series[0];
+  }
+
+  private buildYearWiseData(microImprovementsSeries: any[], dialoguesSeries: any[]): any[] {
+    const yearMap = new Map<string, any>();
+
+    [microImprovementsSeries, dialoguesSeries].forEach((series) => {
+      if (!this.isYearWiseSeries(series)) {
+        return;
+      }
+
+      series.forEach((item: any) => {
+        const year = String(item?.year ?? '');
+        if (!year) {
+          return;
+        }
+
+        if (!yearMap.has(year)) {
+          yearMap.set(year, { year, data: item?.data || [] });
+        }
+      });
+    });
+
+    return Array.from(yearMap.values()).sort((a, b) => Number(a.year) - Number(b.year));
+  }
+
+  private trimTrailingZeros(data: number[]): number[] {
+    const lastNonZeroIndex = data
+      .map((value: number, index: number) => ({ value, index }))
+      .filter((item: any) => item.value && item.value > 0)
+      .map((item: any) => item.index)
+      .pop();
+
+    if (lastNonZeroIndex === undefined) {
+      return [];
+    }
+
+    return data.slice(0, lastNonZeroIndex + 1);
+  }
+
+  private setChartData(microImprovementsData: number[], dialoguesData: number[]): void {
+    const labels = ['Q1 (Apr - Jun)', 'Q2 (Jul - Sept)', 'Q3 (Oct - Dec)', 'Q4 (Jan - Mar)'];
+
+    this.lineChartData = {
+      labels,
+      datasets: [
+        {
+          type: 'line',
+          data: microImprovementsData,
+          label: 'Leading Micro Improvements',
+          borderColor: '#fe9a11',
+          pointBackgroundColor: '#fe9a11',
+          yAxisID: 'y',
+          tension: 0.4,
+          fill: false,
+          borderWidth: 4,      // line thickness
+          pointRadius: 4,      // dot size
+          pointHoverRadius: 6, // dot size on hover
+        },
+        {
+          type: 'bar',
+          data: dialoguesData,
+          label: 'Participating in dialogues',
+          backgroundColor: '#592e91',
+          yAxisID: 'y1',
+          barPercentage: 0.7,      // actual bar width
+          borderRadius: {
+            topLeft: 8,
+            topRight: 8,
+            bottomLeft: 0,
+            bottomRight: 0
           },
-          {
-            type: 'bar',
-            data: dialoguesData,
-            label: 'Participating in dialogues',
-            backgroundColor: '#592e91',
-            yAxisID: 'y1',
-            barPercentage: 0.7,      // actual bar width
-            borderRadius: {
-              topLeft: 8,
-              topRight: 8,
-              bottomLeft: 0,
-              bottomRight: 0
-            },
-            borderSkipped: false      // 👈 rounds all corners
-          }
-        ]
-      };
- }
+          borderSkipped: false      // 👈 rounds all corners
+        }
+      ]
+    };
+  }
  
 }

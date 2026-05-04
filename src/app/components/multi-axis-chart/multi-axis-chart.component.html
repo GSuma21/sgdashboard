@@ -14,12 +14,10 @@
 
 
     <div class="year-buttons">
-      <!-- <button mat-button *ngFor="let item of data" class="year-button"
+      <button mat-button *ngFor="let item of yearWiseData" class="year-button"
               [ngClass]="{'enabled':item.year === year }"
               (click)="showYearData(item)">
         {{ item.year }}
-      </button> -->
-      <button mat-button class="year-button">{{year}}
       </button>
     </div>
 <div class="chart">
