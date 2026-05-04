@@ -69,11 +69,12 @@
                         <h3 class="impact-title">
                             Learn how Micro Improvements are contributing to mega impact.
                         </h3>
-            
+                        @if(programData.download_to_read_more) {
                         <button class="download-btn" (click)="OnClickMultipleReports(programData)">
                             <span>Click here to read more</span>
                             <mat-icon>arrow_drop_down</mat-icon>
                         </button>
+                        }
                     </div>
                     <div class="impact-cards" *ngIf="impactCardList.length">
                         <div class="impact-card" *ngFor="let item of impactCardList; let i = index">
