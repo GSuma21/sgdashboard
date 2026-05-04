@@ -122,10 +122,11 @@ export class ProgramDetails {
   }
 
   get impactText(): string {
-    if (!this.programData?.impact_of_the_program) return '';
-    // Replace "1." "2." etc. with "•"
-    return this.programData.impact_of_the_program.replace(/\d+\./g, '•');
-  }
+  if (!this.programData?.impact_of_the_program) return '';
+
+  return this.programData.impact_of_the_program
+    .replace(/^\d+\.\s*/gm, '• '); 
+}
 
   get impactCardList(): string[] {
     const text = this.programData?.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved;
