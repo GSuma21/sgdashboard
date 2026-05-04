@@ -116,14 +116,17 @@ export class MultiAxisChartComponent implements OnInit, OnChanges {
       (event.native?.target as HTMLElement).style.cursor = chartElement[0] ? 'pointer' : 'default';
     },
     scales: {
-       x: {
-    type: 'category',
-    ticks: {
-      display: false   // hide default labels
-    }
-  },
-  y: {
-  position: 'left',
+      x: {
+        type: 'category',
+        ticks: {
+          display: false
+        },
+        grid: {
+          display: true
+        }
+      },
+      y: {
+        position: 'left',
         title: {
           display: true,
           text: [
@@ -137,13 +140,21 @@ export class MultiAxisChartComponent implements OnInit, OnChanges {
             family: 'sans-serif'
           } as any  // 👈 TypeScript workaround
         },
-        grid: { color: 'rgba(79, 79, 79, 0.1)' },
+        grid: {
+          color: 'rgba(79, 79, 79, 0.1)'
+        },
         ticks: { color: 'black' }
       },
       y1: {
         position: 'right',
+        border: {
+          display: true,
+          color: 'rgba(79, 79, 79, 0.35)'
+        },
         title: { display: false }, // plugin will draw upside-down title
-        grid: { color: 'rgba(79, 79, 79, 0.1)' },
+        grid: {
+          drawOnChartArea: false
+        },
         ticks: { color: 'black' }
       }
     },

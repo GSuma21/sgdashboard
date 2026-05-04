@@ -14,11 +14,13 @@
 
 
     <div class="year-buttons">
-      <button mat-button *ngFor="let item of yearWiseData" class="year-button"
+      @for(item of yearWiseData; track $index){
+        <button mat-button class="year-button"
               [ngClass]="{'enabled':item.year === year }"
               (click)="showYearData(item)">
         {{ item.year }}
       </button>
+      }
     </div>
 <div class="chart">
   <canvas baseChart width="800" height="400" [data]="lineChartData" [options]="lineChartOptions" [type]="lineChartType">
