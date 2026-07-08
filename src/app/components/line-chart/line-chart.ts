@@ -48,6 +48,8 @@ export class LineChartComponent implements OnInit {
   @Input() replaceCode?: any;
   @Input() path?: any;
 
+  title = 'Micro Improvements so far';
+  note = '*This chart represents the cumulative number of micro-improvements recorded over time.';
   currentYear: string = '2025';
   year = '2025';
   dataFetchPath: any;
