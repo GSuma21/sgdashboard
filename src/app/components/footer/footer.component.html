@@ -85,6 +85,7 @@
 
             <a
               [href]="item.href"
+              (click)="handleConnectLinkClick($event, item)"
               class="sg-footer__nav-link">
 
               {{item.label}}

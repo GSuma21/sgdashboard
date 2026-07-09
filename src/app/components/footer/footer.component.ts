@@ -40,7 +40,7 @@ export class FooterComponent {
 
   connectLinks = [
     { label: 'Our Partners', href: `${this.BASE_URL}/#partners` },
-    { label: 'FAQs', href: '#' },
+    { label: 'FAQs' },
     {
       label: 'hello@shikshagraha.org',
       href: 'mailto:hello@shikshagraha.org'
@@ -74,5 +74,15 @@ export class FooterComponent {
       img: 'https://shikshagraha.org/wp-content/uploads/2024/09/youtube-2.png'
     }
   ];
+
+  handleConnectLinkClick(
+    event: MouseEvent,
+    item: { label: string; href?: string }
+  ): void {
+    if (!item.href) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  }
 
 }
