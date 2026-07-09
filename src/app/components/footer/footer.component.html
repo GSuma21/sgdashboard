@@ -2,42 +2,42 @@
 
   <!-- Background Images -->
 
-  <img src="assets/icons/dandelion-footer.svg" class="sg-footer__bg1" alt="">
+  <img src="assets/icons/dandelion-footer.svg" class="sg-footer-background-wave" alt="">
 
-  <img src="assets/icons/dandelion-footer-2.svg" class="sg-footer__bg3" alt="">
+  <img src="assets/icons/dandelion-footer-2.svg" class="sg-footer-background-side-icon" alt="">
 
-  <img src="assets/icons/dandelion-footer-3.svg" class="sg-footer__bg2" alt="">
+  <img src="assets/icons/dandelion-footer-3.svg" class="sg-footer-background-center-icon" alt="">
 
 
-  <div class="sg-footer__main">
+  <div class="sg-footer-content">
 
     <!-- LEFT -->
 
-    <div class="sg-footer__logo-col">
+    <div class="sg-footer-brand-column">
 
-      <div class="sg-footer__logo-row">
+      <div class="sg-footer-logo-wrapper">
         <img
-          src="https://shikshagraha.org/wp-content/themes/twentytwentythree-child/images/Group-232-1.svg"
-          class="sg-footer__logo-icon"
+          [src]="footerLogoUrl"
+          class="sg-footer-logo-image"
           alt="Shikshagraha logo">
       </div>
 
-      <p class="sg-footer__tagline">
+      <p class="sg-footer-tagline">
         {{footerText.tagline}}
       </p>
 
-      <div class="sg-footer__socials">
+      <div class="sg-footer-social-links">
 
         <a
           *ngFor="let social of socialLinks"
-          class="sg-footer__social-link"
+          class="sg-footer-social-link"
           [href]="social.href"
           target="_blank"
           rel="noopener noreferrer">
 
           <img
             [src]="social.img"
-            class="sg-footer__social-icon"
+            class="sg-footer-social-icon"
             [alt]="social.label">
         </a>
 
@@ -47,21 +47,21 @@
 
     <!-- RIGHT -->
 
-    <div class="sg-footer__right">
+    <div class="sg-footer-navigation">
 
       <!-- Movement -->
 
       <div>
 
-        <p class="sg-footer__nav-heading">{{footerText.movementHeading}}</p>
+        <p class="sg-footer-navigation-heading">{{footerText.movementHeading}}</p>
 
-        <ul class="sg-footer__nav-list">
+        <ul class="sg-footer-navigation-list">
 
           <li *ngFor="let item of movementLinks">
 
             <a
               [href]="item.href"
-              class="sg-footer__nav-link">
+              class="sg-footer-navigation-link">
 
               {{item.label}}
 
@@ -77,16 +77,16 @@
 
       <div>
 
-        <p class="sg-footer__nav-heading">{{footerText.connectHeading}}</p>
+        <p class="sg-footer-navigation-heading">{{footerText.connectHeading}}</p>
 
-        <ul class="sg-footer__nav-list">
+        <ul class="sg-footer-navigation-list">
 
           <li *ngFor="let item of connectLinks">
 
             <a
               [href]="item.href"
               (click)="handleConnectLinkClick($event, item)"
-              class="sg-footer__nav-link">
+              class="sg-footer-navigation-link">
 
               {{item.label}}
 
@@ -99,7 +99,7 @@
             <a
               [href]="JOIN_MOVEMENT_FORM_LINK"
               target="_blank"
-              class="sg-footer__join-btn">
+              class="sg-footer-join-button">
 
               {{footerText.joinMovement}}
 
@@ -115,7 +115,7 @@
 
   </div>
 
-  <div class="sg-footer__bottom">
+  <div class="sg-footer-bottom">
 
     <p>{{footerText.copyright}}</p>
 
