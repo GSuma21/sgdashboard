@@ -49,22 +49,27 @@ export class FooterComponent {
 
   socialLinks = [
     {
+      label: 'Instagram',
       href: 'https://www.instagram.com/shikshagraha/',
       img: 'assets/icons/instagram.svg'
     },
     {
+      label: 'LinkedIn',
       href: 'https://www.linkedin.com/company/shikshagraha/',
       img: 'assets/icons/linked_in.svg'
     },
     {
+      label: 'Facebook',
       href: 'https://www.facebook.com/shikshagraha',
       img: 'assets/icons/facebook.svg'
     },
     {
+      label: 'X',
       href: 'https://x.com/Shikshagraha',
       img: 'assets/icons/twitter.svg'
     },
     {
+      label: 'YouTube',
       href: 'https://www.youtube.com/@shikshagraha',
       img: 'https://shikshagraha.org/wp-content/uploads/2024/09/youtube-2.png'
     }

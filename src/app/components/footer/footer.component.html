@@ -19,7 +19,7 @@
         <img
           src="https://shikshagraha.org/wp-content/themes/twentytwentythree-child/images/Group-232-1.svg"
           class="sg-footer__logo-icon"
-          alt="">
+          alt="Shikshagraha logo">
       </div>
 
       <p class="sg-footer__tagline">
@@ -32,12 +32,13 @@
           *ngFor="let social of socialLinks"
           class="sg-footer__social-link"
           [href]="social.href"
-          target="_blank">
+          target="_blank"
+          rel="noopener noreferrer">
 
           <img
             [src]="social.img"
             class="sg-footer__social-icon"
-            alt="">
+            [alt]="social.label">
         </a>
 
       </div>
