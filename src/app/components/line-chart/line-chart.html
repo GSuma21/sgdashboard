@@ -1,6 +1,6 @@
 <mat-card class="chart-card">
-  <mat-card-title>Micro Improvements so far</mat-card-title>
-
+  <mat-card-title>{{ title }}</mat-card-title>
+  
   <div class="year-buttons">
     <button mat-button *ngFor="let item of data" class="year-button"
             [ngClass]="{'enabled':item.year === year }"
@@ -12,7 +12,12 @@
   <mat-card-content>
     <div class="chart-container">
       <div echarts [options]="chartOption" class="chart"></div>
+       <div class="line-chart-description">
+    {{ note }}
+   </div>
     </div>
+   
 
   </mat-card-content>
+   
 </mat-card>

@@ -1,50 +1,128 @@
-<div class="footer-container">
-    <div class="footer-content">
+<footer class="sg-footer">
 
-        <!-- Left Section -->
-        <div class="left-section">
-            <div class="logo-area mb-5 pt-5">
-                <div class="logo-text">
-                    <img src="assets/icons/shikshagraha_footer_logo.svg" alt="Shikshagraha Logo" style="height: 60px;">
-                </div>
-            </div>
+  <!-- Background Images -->
 
-            <div class="links-area">
-                <div class="link-column">
-                    <a href="https://shikshagraha.org/systemic-leadership-collective" target="_blank" rel="noopener noreferrer">Systemic Leadership Collective</a>
-                    <a href="https://shikshagraha.org/youth-leadership" target="_blank" rel="noopener noreferrer">Youth Leadership Collective</a>
-                    <a href="https://shikshagraha.org/women" target="_blank" rel="noopener noreferrer">Women Leadership Collective</a>
-                </div>
+  <img src="assets/icons/dandelion-footer.svg" class="sg-footer-background-wave" alt="">
 
-                <div class="link-column mt-4 mt-md-0">
-                    <a href="https://shikshagraha.org/about-us" target="_blank" rel="noopener noreferrer">About Us</a>
-                    <a href="https://shikshagraha.org/awards" target="_blank" rel="noopener noreferrer">Shikshagraha Awards</a>
-                    <a href="https://mohini.shikshalokam.org/mohini/home" target="_blank" rel="noopener noreferrer">Record Your Story</a>
-                    <a href="https://shikshagraha.org/coe" target="_blank" rel="noopener noreferrer">Center Of Excellence</a>
-                </div>
-            </div>
-        </div>
-        <div class="social-area pt-5">
-            <span class="social-label">Join The Movement</span>
-            <div class="social-icons mt-4">
-                <a href="https://www.instagram.com/shikshagraha/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                    <img src="assets/icons/instagram.svg" alt="instagram">
-                </a>
-                <a href="https://www.linkedin.com/company/shikshagraha/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><img src="assets/icons/linked_in.svg" alt="instagram"></a>
-                <a href="https://www.facebook.com/shikshagraha" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img src="assets/icons/facebook.svg" alt="instagram"></a>
-                <a href="https://x.com/Shikshagraha" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)"><img src="assets/icons/twitter.svg" alt="twitter"></a>
-                <a href="https://www.youtube.com/@shikshagraha" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img src="assets/icons/youtube.svg" alt="instagram"></a>
-            </div>
-        </div>
+  <img src="assets/icons/dandelion-footer-2.svg" class="sg-footer-background-side-icon" alt="">
 
-        <!-- Right Section -->
-        <div class="right-section">
-            <div class="join-card">
-                <p>Join Shikshagraha for every step towards education</p>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfSX2bzdJzPBOlstfGg7vWqPFaS5weLnPpwIieR1DBdRgepPg/viewform" target="_blank" rel="noopener noreferrer" class="join-btn">Join us</a>
-            </div>
-        </div>
+  <img src="assets/icons/dandelion-footer-3.svg" class="sg-footer-background-center-icon" alt="">
+
+
+  <div class="sg-footer-content">
+
+    <!-- LEFT -->
+
+    <div class="sg-footer-brand-column">
+
+      <div class="sg-footer-logo-wrapper">
+        <img
+          [src]="footerLogoUrl"
+          class="sg-footer-logo-image"
+          alt="Shikshagraha logo">
+      </div>
+
+      <p class="sg-footer-tagline">
+        {{footerText.tagline}}
+      </p>
+
+      <div class="sg-footer-social-links">
+
+        <a
+          *ngFor="let social of socialLinks"
+          class="sg-footer-social-link"
+          [href]="social.href"
+          target="_blank"
+          rel="noopener noreferrer">
+
+          <img
+            [src]="social.img"
+            class="sg-footer-social-icon"
+            [alt]="social.label">
+        </a>
+
+      </div>
 
     </div>
-    <img src="assets/icons/dandilion.png" alt="Shikshagraha Logo" class="footer-floater">
-</div>
+
+    <!-- RIGHT -->
+
+    <div class="sg-footer-navigation">
+
+      <!-- Movement -->
+
+      <div>
+
+        <p class="sg-footer-navigation-heading">{{footerText.movementHeading}}</p>
+
+        <ul class="sg-footer-navigation-list">
+
+          <li *ngFor="let item of movementLinks">
+
+            <a
+              [href]="item.href"
+              class="sg-footer-navigation-link">
+
+              {{item.label}}
+
+            </a>
+
+          </li>
+
+        </ul>
+
+      </div>
+
+      <!-- Connect -->
+
+      <div>
+
+        <p class="sg-footer-navigation-heading">{{footerText.connectHeading}}</p>
+
+        <ul class="sg-footer-navigation-list">
+
+          <li *ngFor="let item of connectLinks">
+
+            <a
+              [href]="item.href"
+              (click)="handleConnectLinkClick($event, item)"
+              class="sg-footer-navigation-link">
+
+              {{item.label}}
+
+            </a>
+
+          </li>
+
+          <li>
+
+            <a
+              [href]="JOIN_MOVEMENT_FORM_LINK"
+              target="_blank"
+              class="sg-footer-join-button">
+
+              {{footerText.joinMovement}}
+
+            </a>
+
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sg-footer-bottom">
+
+    <p>{{footerText.copyright}}</p>
+
+    <p>
+      {{footerText.address}}
+    </p>
+
+  </div>
+
+</footer>

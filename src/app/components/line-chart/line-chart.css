@@ -9,6 +9,12 @@ mat-card-title {
  font-weight: 700;
  font-size: 1rem;
 }
+mat-card-subtitle{
+  padding-top: 1rem;
+  padding-left: 2rem;
+  font-weight: 500;
+  font-size: 1rem;
+}
 
 mat-card {
   border-radius: 2rem;
@@ -77,6 +83,11 @@ mat-card {
   border-radius: 12px;
 }
 
+.line-chart-description{
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
 @media (max-width: 1024px) {
   .chart-card {
     width: 100%;
@@ -99,6 +110,12 @@ mat-card {
       font-weight: 700;
       font-size: 1rem;
     }
+    mat-card-subtitle{
+      padding-top: 0.5rem;
+      padding-left: 1rem;
+      font-weight: 500;
+      font-size: 1rem;
+    }
   
     .year-buttons {
       display: flex;
@@ -118,11 +135,17 @@ mat-card {
     .chart {
       height: 300px;
     }
-  
     mat-card-title {
       padding-top: 1rem;
       padding-left: 1rem;
       font-weight: 700;
+      font-size: 1rem;
+    }
+  
+    mat-card-subtitle {
+      padding-top: 0.5rem;
+      padding-left: 1rem;
+      font-weight: 500;
       font-size: 1rem;
     }
   

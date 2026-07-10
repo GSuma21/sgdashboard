@@ -7,6 +7,12 @@ html {
   --primary-hover-color-light: #42236b;
   --hero-background-color-light: #ffffff;
   --secondary-color-light: #ed2489;
+  --footer-background-color-light: #562f91;
+  --footer-text-color-light: #ffffff;
+  --footer-muted-text-color-light: rgba(255, 255, 255, 0.8);
+  --footer-divider-color-light: rgba(255, 255, 255, 0.2);
+  --footer-cta-color-light: #8f3f98;
+  --footer-accent-color-light: #ff8a3d;
 
   --background-color-dark: #121212;
   --text-color-dark: #ffffff;
@@ -14,8 +20,20 @@ html {
   --primary-color-rgb-dark: 87, 46, 145;
   --primary-hover-color-dark: #42236b;
   --hero-background-color-dark: #1a1a2e;
+  --footer-background-color-dark: #562f91;
+  --footer-text-color-dark: #ffffff;
+  --footer-muted-text-color-dark: rgba(255, 255, 255, 0.8);
+  --footer-divider-color-dark: rgba(255, 255, 255, 0.2);
+  --footer-cta-color-dark: #8f3f98;
+  --footer-accent-color-dark: #ff8a3d;
   --tertiary-color-light:#D21E45;
   --program-border-soft: #cfcfcf;
+  --sg-footer-background: var(--footer-background-color-light);
+  --sg-footer-text: var(--footer-text-color-light);
+  --sg-footer-muted-text: var(--footer-muted-text-color-light);
+  --sg-footer-divider: var(--footer-divider-color-light);
+  --sg-footer-cta: var(--footer-cta-color-light);
+  --sg-footer-accent: var(--footer-accent-color-light);
 }
 
 html.light-theme {
@@ -24,6 +42,12 @@ html.light-theme {
   --primary-color: var(--primary-color-light);
   --primary-hover-color: var(--primary-hover-color-light);
   --hero-background-color: var(--hero-background-color-light);
+  --sg-footer-background: var(--footer-background-color-light);
+  --sg-footer-text: var(--footer-text-color-light);
+  --sg-footer-muted-text: var(--footer-muted-text-color-light);
+  --sg-footer-divider: var(--footer-divider-color-light);
+  --sg-footer-cta: var(--footer-cta-color-light);
+  --sg-footer-accent: var(--footer-accent-color-light);
 }
 
 html.dark-theme {
@@ -32,6 +56,12 @@ html.dark-theme {
   --primary-color: var(--primary-color-dark);
   --primary-hover-color: var(--primary-hover-color-dark);
   --hero-background-color: var(--hero-background-color-dark);
+  --sg-footer-background: var(--footer-background-color-dark);
+  --sg-footer-text: var(--footer-text-color-dark);
+  --sg-footer-muted-text: var(--footer-muted-text-color-dark);
+  --sg-footer-divider: var(--footer-divider-color-dark);
+  --sg-footer-cta: var(--footer-cta-color-dark);
+  --sg-footer-accent: var(--footer-accent-color-dark);
 }
 
 body {
