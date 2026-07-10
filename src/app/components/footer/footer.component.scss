@@ -4,8 +4,8 @@
   background: var(--sg-footer-background);
   color: var(--sg-footer-text);
   font-family: Manrope, sans-serif;
-  padding-top: 3rem;
-  padding-bottom: 18rem;
+  padding-top: 3.75rem;
+  padding-bottom: 20.5rem;
 }
 
 /* -----------------------------
@@ -17,18 +17,19 @@
   bottom: 0;
   left: 0;
   width: 100%;
+  min-width: 90rem;
 }
 
 .sg-footer-background-center-icon {
   position: absolute;
-  top: 3rem;
-  left: 35%;
+  top: 3.25rem;
+  left: 34%;
   width: 3.1rem;
 }
 
 .sg-footer-background-side-icon {
   position: absolute;
-  top: 17rem;
+  top: 19.2rem;
   right: 8%;
   width: 3.4rem;
 }
@@ -47,7 +48,7 @@
   justify-content: space-between;
   width: min(80rem, calc(100% - 5rem));
   margin: 0 auto;
-  gap: clamp(4.4rem, 6vw, 7.5rem);
+  gap: clamp(4.8rem, 7vw, 8.6rem);
   position: relative;
   z-index: 2;
 }
@@ -103,8 +104,9 @@
   justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: nowrap;
-  gap: clamp(4.4rem, 8vw, 10.3rem);
+  gap: clamp(8.5rem, 16vw, 15.3rem);
   margin-left: 0;
+  margin-top: 0;
 }
 
 .sg-footer-navigation > div {
@@ -178,7 +180,7 @@
   border-radius: 62.4rem;
   text-decoration: none;
   color: var(--sg-footer-text);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 1.3rem;
   line-height: 1;
   white-space: nowrap;
@@ -200,7 +202,7 @@
   font-size: 1rem;
   font-weight: 400;
   width: min(80rem, calc(100% - 5rem));
-  margin: 2.8rem auto 0;
+  margin: 4.25rem auto 0;
   padding: 1.1rem 0 0;
   position: relative;
   z-index: 2;
@@ -274,4 +276,20 @@
   .sg-footer {
     padding-bottom: 6.3rem;
   }
+}
+
+@media (min-width: 1280px) {
+  .sg-footer-background-center-icon {
+  position: absolute;
+  top: 3.25rem;
+  left: 36%;
+  width: 3.1rem;
+}
+
+.sg-footer-background-side-icon {
+  position: absolute;
+  top: 21rem;
+  right: 16%;
+  width: 3.4rem;
+}
 }
