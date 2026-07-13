@@ -14,8 +14,7 @@ export interface FooterSocialLink {
 export const JOIN_MOVEMENT_FORM_LINK =
   'https://docs.google.com/forms/d/e/1FAIpQLSfSX2bzdJzPBOlstfGg7vWqPFaS5weLnPpwIieR1DBdRgepPg/viewform';
 
-export const FOOTER_LOGO_URL =
-  `${SHIKSHAGRAHA_BASE_URL}/wp-content/themes/twentytwentythree-child/images/Group-232-1.svg`;
+export const FOOTER_LOGO_URL = 'assets/icons/shikshagraha_footer_logo.svg';
 
 export const FOOTER_TEXT = {
   tagline:
@@ -25,7 +24,7 @@ export const FOOTER_TEXT = {
   joinMovement: 'Join the Movement',
   copyright: '© 2026 Shikshagraha. All rights reserved.',
   address:
-    '4th Floor, Sumo Sapphire, Outer Ring Road, KR Layout, J.P. Nagar, Bengaluru - 560078.'
+    '4th Floor, Sumo Sapphire, Outer Ring Road, KR Layout, J.P. Nagar, Bengaluru - 560 078.'
 };
 
 export const FOOTER_MOVEMENT_LINKS: FooterLink[] = [
