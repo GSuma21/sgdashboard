@@ -55,12 +55,6 @@
      <app-outcomes-model></app-outcomes-model>
     </ng-container>
 
-      <ng-container *ngIf="section.type === 'country-view'">
-     <app-outcomes-model
-  [showProgramPanel]="!!programData"
-  [programOutcomeData]="programData">
-</app-outcomes-model>
-    </ng-container>
 
     <ng-container *ngIf="section.type === 'global-view'">
       <div class="map-container">
