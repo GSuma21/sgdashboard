@@ -16,6 +16,7 @@ import { WorldMapComponent } from '../world-map/world-map';
 import { ChangeDetectorRef } from '@angular/core';
 import { LoaderRunnerService } from '../../services/loader-runner.service';
 import { OutcomesModelComponent } from '../../components/outcomes-model/outcomes-model.component';
+import { SAMPLE_PROGRAM_OUTCOME_DATA } from '../../components/outcomes-model/outcomes-model.config';
 
 @Component({
   selector: 'app-landing',
@@ -37,43 +38,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
   window: any = window;
   isGlobalMapVisible = true; 
 
-  programData: any = {
-  title: 'Learner Outcomes:',
-  subtitle:
-    "Measuring improvements in children's enrollment, retention, learning, aspirations, and well-being.",
-  infoLabel: 'Learner outcome program details',
-  cards: [
-    {
-      label: 'Enrollment',
-      description:
-        '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
-    },
-    {
-      label: 'Retention',
-      description:
-        '60% of schools will effectively implement PBL as pedagogy in their Maths, Science Classes.',
-    },
-    {
-      label: 'Learning',
-      description:
-        '10% of improvement will be shown from baseline to endline in academic achievement and 21st century skills.',
-    },
-  ],
-  evidences: [
-    {
-      title: 'Enrollment.pdf',
-      type: 'PDF',
-      size: '3.6MB',
-      tag: 'Enrollment',
-    },
-    {
-      title: 'Evaluation.pdf',
-      type: 'PDF',
-      size: '3.6MB',
-      tag: 'Retention',
-    },
-  ],
-};
+  programData: any = SAMPLE_PROGRAM_OUTCOME_DATA;
 
   constructor(private cdr: ChangeDetectorRef, private loaderRunner: LoaderRunnerService) { }
 

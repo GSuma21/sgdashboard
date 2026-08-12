@@ -6,8 +6,9 @@ import {
   OutcomesLayerConfig,
   OutcomesLayerKey,
   OutcomesModelConfig,
+  ProgramEvidenceResource,
+  ProgramOutcomeCard,
   ProgramOutcomeData,
-  SAMPLE_PROGRAM_OUTCOME_DATA,
 } from './outcomes-model.config';
 
 @Component({
@@ -26,11 +27,17 @@ export class OutcomesModelComponent implements OnChanges {
   selectedLayerKey: OutcomesLayerKey = this.config.defaultLayer;
   selectedPanel: 'programs' | 'layer' = 'layer';
   isInfoModalOpen = false;
+  cardPageIndex = 0;
+  readonly programCardsPerPage = 3;
   private readonly diagramCenter = 300;
 
   ngOnChanges(): void {
-    this.selectedLayerKey = this.activeLayer || this.selectedLayerKey || this.config.defaultLayer;
-    this.selectedPanel = this.showProgramPanel ? 'programs' : this.selectedPanel;
+    this.selectedLayerKey = this.activeLayer || this.programOutcomeData?.layerKey || this.selectedLayerKey || this.config.defaultLayer;
+    if (this.hasProgramOutcomeData && !this.isProgramLayerAvailable(this.selectedLayerKey)) {
+      this.selectedLayerKey = this.firstAvailableProgramLayerKey;
+    }
+    this.selectedPanel = this.showProgramPanel && this.hasProgramOutcomeData ? 'programs' : this.selectedPanel;
+    this.cardPageIndex = 0;
   }
 
   get layers(): OutcomesLayerConfig[] {
@@ -41,12 +48,22 @@ export class OutcomesModelComponent implements OnChanges {
     return this.layers.find((layer) => layer.key === this.selectedLayerKey) || this.layers[0];
   }
 
-  get displayProgramData(): ProgramOutcomeData {
-    return this.programOutcomeData || SAMPLE_PROGRAM_OUTCOME_DATA;
+  get displayProgramData(): ProgramOutcomeData | undefined {
+    return this.programOutcomeData;
+  }
+
+  get selectedProgramData(): ProgramOutcomeData | undefined {
+    const data = this.programOutcomeData;
+    if (!data) return undefined;
+
+    const layerData = this.getProgramLayerData(this.selectedLayerKey);
+    if (layerData) return layerData;
+
+    return this.selectedLayerKey === this.programBaseLayerKey ? data : undefined;
   }
 
   get shouldShowProgramPanel(): boolean {
-    return this.selectedPanel === 'programs' || this.selectedLayer.panelType === 'programs';
+    return this.hasProgramOutcomeData && this.selectedPanel === 'programs';
   }
 
   get activePanelColor(): string {
@@ -57,17 +74,37 @@ export class OutcomesModelComponent implements OnChanges {
     return !!this.programOutcomeData;
   }
 
+  get programBaseLayerKey(): OutcomesLayerKey {
+    return this.programOutcomeData?.layerKey || this.config.defaultLayer;
+  }
+
+  get firstAvailableProgramLayerKey(): OutcomesLayerKey {
+    return this.layers.find((layer) => this.isProgramLayerAvailable(layer.key))?.key || this.config.defaultLayer;
+  }
+
   get studentInfoLayer(): OutcomesLayerConfig {
     return this.layers.find((layer) => layer.key === 'students') || this.layers[0];
   }
 
-  get narrativeBody(): string {
-    if (this.selectedLayer.body) {
-      return this.selectedLayer.body;
-    }
+  get infoModalLayer(): OutcomesLayerConfig {
+    return this.hasProgramOutcomeData ? this.selectedLayer : this.studentInfoLayer;
+  }
 
+  get infoModalTitle(): string {
+    return this.infoModalLayer.heading || this.infoModalLayer.eyebrow || this.infoModalLayer.chipLabel;
+  }
+
+  get infoModalDescription(): string {
+    return this.hasProgramOutcomeData ? this.narrativeBody : this.studentInfoLayer.subheading || this.narrativeBody;
+  }
+
+  get narrativeBody(): string {
     if (this.selectedLayer.subheading) {
       return this.selectedLayer.subheading;
+    }
+
+    if (this.selectedLayer.body) {
+      return this.selectedLayer.body;
     }
 
     if (this.selectedLayer.listItems?.length) {
@@ -79,6 +116,55 @@ export class OutcomesModelComponent implements OnChanges {
 
   get frameworkLead(): string {
     return 'The Shikshagraha movement measures impact across these interconnected layers, each a level through which micro-improvements contribute to systemic transformation.';
+  }
+
+  get programPanelTitle(): string {
+    return this.selectedLayer.heading || this.selectedLayer.eyebrow || `${this.selectedLayer.chipLabel}:`;
+  }
+
+  get programPanelDescription(): string {
+    return this.narrativeBody;
+  }
+
+  get programCards(): ProgramOutcomeCard[] {
+    return (
+      this.selectedProgramData?.cards ||
+      this.programOutcomeData?.cardsByLayer?.[this.selectedLayerKey] ||
+      []
+    );
+  }
+
+  get visibleProgramCards(): ProgramOutcomeCard[] {
+    const startIndex = this.cardPageIndex * this.programCardsPerPage;
+    return this.programCards.slice(startIndex, startIndex + this.programCardsPerPage);
+  }
+
+  get programEvidenceResources(): ProgramEvidenceResource[] {
+    return (
+      this.selectedProgramData?.evidences ||
+      this.programOutcomeData?.evidencesByLayer?.[this.selectedLayerKey] ||
+      []
+    );
+  }
+
+  get programCardPageCount(): number {
+    return Math.max(1, Math.ceil(this.programCards.length / this.programCardsPerPage));
+  }
+
+  get canShowProgramCardControls(): boolean {
+    return this.programCards.length > this.programCardsPerPage;
+  }
+
+  get canGoToPreviousProgramCards(): boolean {
+    return this.cardPageIndex > 0;
+  }
+
+  get canGoToNextProgramCards(): boolean {
+    return this.cardPageIndex < this.programCardPageCount - 1;
+  }
+
+  get programCardVariant(): 'outcome' | 'partner' {
+    return this.selectedProgramData?.cardVariant || 'outcome';
   }
 
   get dividerSegments(): Array<{ x1: number; x2: number }> {
@@ -121,16 +207,57 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   selectLayer(layerKey: OutcomesLayerKey): void {
+    if (this.hasProgramOutcomeData && !this.isProgramLayerAvailable(layerKey)) return;
     this.selectedLayerKey = layerKey;
     this.selectedPanel = 'layer';
+    this.cardPageIndex = 0;
   }
 
   selectProgramPanel(): void {
+    if (!this.hasProgramOutcomeData) return;
     this.selectedPanel = 'programs';
+    this.cardPageIndex = 0;
+  }
+
+  showPreviousProgramCards(): void {
+    this.cardPageIndex = Math.max(0, this.cardPageIndex - 1);
+  }
+
+  showNextProgramCards(): void {
+    this.cardPageIndex = Math.min(this.programCardPageCount - 1, this.cardPageIndex + 1);
+  }
+
+  getProgramCardLabel(card: ProgramOutcomeCard, index: number): string {
+    return card.label || card.title || card.name || card.heading || card.partner || `Card ${this.cardPageIndex * this.programCardsPerPage + index + 1}`;
+  }
+
+  getProgramCardDescription(card: ProgramOutcomeCard): string {
+    return card.description || card.body || card.text || card.value || card.about_the_program_objective || '';
+  }
+
+  getProgramCardImage(card: ProgramOutcomeCard): string {
+    return card.src || card.logo || card.image || 'assets/partners/default-partner.svg';
+  }
+
+  getProgramCardLink(card: ProgramOutcomeCard): string | undefined {
+    return card.website || card.url;
+  }
+
+  isProgramLayerAvailable(layerKey: OutcomesLayerKey): boolean {
+    if (!this.programOutcomeData) return true;
+
+    const layerData = this.getProgramLayerData(layerKey);
+    const hasLayerData = this.hasProgramContent(layerData);
+    const hasGroupedData = !!(
+      this.programOutcomeData.cardsByLayer?.[layerKey]?.length ||
+      this.programOutcomeData.evidencesByLayer?.[layerKey]?.length
+    );
+    const hasBaseData = layerKey === this.programBaseLayerKey && this.hasProgramContent(this.programOutcomeData);
+
+    return hasLayerData || hasGroupedData || hasBaseData;
   }
 
   openInfoModal(): void {
-    if (!this.hasProgramOutcomeData) return;
     this.isInfoModalOpen = true;
   }
 
@@ -144,6 +271,21 @@ export class OutcomesModelComponent implements OnChanges {
 
   trackByIndex(index: number): number {
     return index;
+  }
+
+  private getProgramLayerData(layerKey: OutcomesLayerKey): ProgramOutcomeData | undefined {
+    const layers = this.programOutcomeData?.layers;
+    if (!layers) return undefined;
+
+    if (Array.isArray(layers)) {
+      return layers.find((layer) => layer.layerKey === layerKey);
+    }
+
+    return layers[layerKey];
+  }
+
+  private hasProgramContent(data?: ProgramOutcomeData): boolean {
+    return !!(data?.title || data?.subtitle || data?.cards?.length || data?.evidences?.length);
   }
 
   getLayerPath(layer: OutcomesLayerConfig): string {

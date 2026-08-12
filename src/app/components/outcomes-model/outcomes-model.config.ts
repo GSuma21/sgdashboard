@@ -65,8 +65,23 @@ export interface OutcomesLayerConfig {
 }
 
 export interface ProgramOutcomeCard {
-  label: string;
-  description: string;
+  label?: string;
+  title?: string;
+  name?: string;
+  heading?: string;
+  partner?: string;
+  src?: string;
+  logo?: string;
+  image?: string;
+  alt?: string;
+  website?: string;
+  url?: string;
+  ctaLabel?: string;
+  description?: string;
+  body?: string;
+  text?: string;
+  value?: string;
+  about_the_program_objective?: string;
 }
 
 export interface ProgramEvidenceResource {
@@ -78,11 +93,16 @@ export interface ProgramEvidenceResource {
 }
 
 export interface ProgramOutcomeData {
-  title: string;
-  subtitle: string;
+  layerKey?: OutcomesLayerKey;
+  title?: string;
+  subtitle?: string;
   infoLabel?: string;
-  cards: ProgramOutcomeCard[];
-  evidences: ProgramEvidenceResource[];
+  cardVariant?: 'outcome' | 'partner';
+  cards?: ProgramOutcomeCard[];
+  evidences?: ProgramEvidenceResource[];
+  layers?: Partial<Record<OutcomesLayerKey, ProgramOutcomeData>> | ProgramOutcomeData[];
+  cardsByLayer?: Partial<Record<OutcomesLayerKey, ProgramOutcomeCard[]>>;
+  evidencesByLayer?: Partial<Record<OutcomesLayerKey, ProgramEvidenceResource[]>>;
 }
 
 export interface OutcomesModelConfig {
@@ -249,7 +269,9 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
       },
       panelType: 'story',
       eyebrow: 'Community',
-      subheading: 'Definition Place holder',
+      heading: 'Community',
+      subheading:
+        'Measures whether communities are actively supporting education through leadership, participation, and positive perceptions of public schools.',
       body: 'Families and local networks that support and demand good education for their children. (placeholder definition)',
       listItems: [
         {
@@ -393,6 +415,8 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
       },
       panelType: 'story',
       eyebrow: 'Network',
+      heading: 'Network',
+      subheading: 'Network Placeholder',
       body: 'The wider web of actors and movements connecting everything. (placeholder definition)',
       frameworkNote: 'Framework being defined.',
       cta: {
@@ -408,9 +432,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
 };
 
 export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
-  title: 'Student Outcomes:',
-  subtitle:
-    "Measuring improvements in children's enrollment, retention, learning, aspirations, and well-being.",
+  layerKey: 'students',
   infoLabel: 'Learner outcome program details',
   cards: [
     {
@@ -443,4 +465,68 @@ export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
       tag: 'Retention',
     },
   ],
+  layers: {
+    schools: {
+      infoLabel: 'Schools and Anganwadi program details',
+      cards: [
+        {
+          label: 'Leadership',
+          description:
+            '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
+        },
+      ],
+      evidences: [],
+    },
+    community: {
+      infoLabel: 'Community program details',
+      cards: [
+        {
+          label: 'Parents and community participation and perception',
+          description:
+            '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
+        },
+        {
+          label: 'Leadership',
+          description:
+            '60% of schools will effectively implement PBL as pedagogy in their Maths, Science Classes.',
+        },
+      ],
+      evidences: [],
+    },
+    network: {
+      infoLabel: 'Network program details',
+      cardVariant: 'partner',
+      cards: [
+        {
+          name: 'NEAID',
+          src: 'https://res.cloudinary.com/dfncm107l/image/upload/v1754371500/partners/neaid.png',
+          alt: 'NEAID',
+          website: 'https://neaid.org/',
+        },
+        {
+          name: 'Mantra',
+          src: 'https://drive.google.com/uc?export=view&id=1v1l17-Vx5eKFXnyWzIfrC_lm_Jf_bHkL',
+          alt: 'Mantra4Change',
+          website: 'https://www.mantra4change.org/',
+        },
+        {
+          name: 'INVOLVE',
+          src: 'https://res.cloudinary.com/dfncm107l/image/upload/v1754371479/partners/involve.jpg',
+          alt: 'Involve',
+          website: 'https://involveedu.com/',
+        },
+        {
+          name: 'EduWeave',
+          src: 'https://res.cloudinary.com/dfncm107l/image/upload/v1754371471/partners/eduweave.jpg',
+          alt: 'EduWeave',
+        },
+        {
+          name: 'Karunodaya',
+          src: 'https://res.cloudinary.com/dfncm107l/image/upload/v1754371487/partners/karunodaya.png',
+          alt: 'Karunodaya',
+        },
+      ],
+      evidences: [],
+    },
+  },
 };

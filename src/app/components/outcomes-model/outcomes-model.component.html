@@ -268,6 +268,128 @@
       </div>
     </div>
 
+    <ng-container *ngIf="hasProgramOutcomeData; else normalOutcomeSections">
+      <section class="program-mode-panel" [style.--active-color]="selectedLayer.color">
+        <div class="program-mode-heading">
+          <span class="material-icons program-mode-icon" aria-hidden="true">{{ selectedLayer.icon }}</span>
+          <div>
+            <h3>{{ programPanelTitle }}</h3>
+            <p>{{ programPanelDescription }}</p>
+          </div>
+          <button
+            type="button"
+            class="info-icon-button"
+            [attr.aria-label]="'Show ' + programPanelTitle + ' explanation'"
+            (click)="openInfoModal()"
+          >
+            <span class="material-icons" aria-hidden="true">info</span>
+          </button>
+        </div>
+
+        <div class="program-card-carousel" *ngIf="programCards.length">
+          <button
+            type="button"
+            class="info-icon-button program-card-nav"
+            aria-label="Show previous cards"
+            [disabled]="!canGoToPreviousProgramCards"
+            *ngIf="canShowProgramCardControls"
+            (click)="showPreviousProgramCards()"
+          >
+            <span class="material-icons" aria-hidden="true">chevron_left</span>
+          </button>
+
+          <div
+            class="program-mode-cards"
+            [style.grid-template-columns]="programCardVariant === 'partner' ? 'repeat(3, 154px)' : null"
+            [style.gap]="programCardVariant === 'partner' ? '36px' : null"
+          >
+            <article
+              class="program-mode-card"
+              *ngFor="let card of visibleProgramCards; let cardIndex = index; trackBy: trackByIndex"
+              [style.background]="programCardVariant === 'partner' ? '#fff' : null"
+              [style.border]="programCardVariant === 'partner' ? '0' : null"
+              [style.border-radius]="programCardVariant === 'partner' ? '8px' : null"
+              [style.box-shadow]="programCardVariant === 'partner' ? '0 2px 12px rgba(0,0,0,.16)' : null"
+              [style.min-height]="programCardVariant === 'partner' ? '202px' : null"
+              [style.padding]="programCardVariant === 'partner' ? '18px 14px 14px' : null"
+            >
+              <ng-container *ngIf="programCardVariant === 'partner'; else outcomeProgramCard">
+                <img
+                  [src]="getProgramCardImage(card)"
+                  [alt]="card.alt || getProgramCardLabel(card, cardIndex)"
+                  style="display:block;height:82px;margin:0 auto 22px;object-fit:contain;width:112px"
+                >
+                <h4 style="color:#151b27;font-size:27px;margin:0 0 10px;text-align:center">
+                  {{ getProgramCardLabel(card, cardIndex) }}
+                </h4>
+                <a
+                  *ngIf="getProgramCardLink(card)"
+                  [href]="getProgramCardLink(card)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color:#151b27;display:block;font-size:12px;font-weight:800;text-align:center"
+                >
+                  {{ card.ctaLabel || 'Know more' }} →
+                </a>
+              </ng-container>
+              <ng-template #outcomeProgramCard>
+                <span class="program-mode-tag">{{ getProgramCardLabel(card, cardIndex) }}</span>
+                <p>{{ getProgramCardDescription(card) }}</p>
+              </ng-template>
+            </article>
+          </div>
+
+          <button
+            type="button"
+            class="info-icon-button program-card-nav"
+            aria-label="Show next cards"
+            [disabled]="!canGoToNextProgramCards"
+            *ngIf="canShowProgramCardControls"
+            (click)="showNextProgramCards()"
+          >
+            <span class="material-icons" aria-hidden="true">chevron_right</span>
+          </button>
+        </div>
+
+        <section class="program-mode-evidence" *ngIf="programEvidenceResources.length">
+          <h4>Evidences and Resources ({{ programEvidenceResources.length }})</h4>
+          <div class="evidence-grid">
+            <a
+              class="evidence-card"
+              *ngFor="let evidence of programEvidenceResources; trackBy: trackByIndex"
+              [href]="evidence.url || null"
+              [attr.target]="evidence.url ? '_blank' : null"
+              [attr.rel]="evidence.url ? 'noopener noreferrer' : null"
+            >
+              <span class="material-icons pdf-icon" aria-hidden="true">picture_as_pdf</span>
+              <span class="evidence-name">{{ evidence.title }}</span>
+              <span class="evidence-meta">{{ evidence.type }} · {{ evidence.size }}</span>
+              <span class="evidence-tag">{{ evidence.tag }}</span>
+            </a>
+          </div>
+        </section>
+
+        <div class="program-layer-tiles" aria-label="Outcome layer tiles">
+          <button
+            *ngFor="let layer of layers; trackBy: trackByLayerKey"
+            type="button"
+            class="program-layer-tile"
+            [class.active]="selectedLayerKey === layer.key"
+            [disabled]="!isProgramLayerAvailable(layer.key)"
+            [style.--tile-color]="layer.color"
+            [style.border-style]="isProgramLayerAvailable(layer.key) ? 'solid' : 'dashed'"
+            [style.color]="isProgramLayerAvailable(layer.key) ? layer.color : '#aaa'"
+            (click)="selectLayer(layer.key)"
+          >
+            {{ layer.chipLabel }}
+          </button>
+        </div>
+
+        <p class="chip-note">* Click on any of the above tile to read more about it.</p>
+      </section>
+    </ng-container>
+
+    <ng-template #normalOutcomeSections>
     <div class="rail-sections" [style.--active-color]="activePanelColor">
       <section class="rail rail-narrative" [style.--active-color]="selectedLayer.color">
         <p class="eyebrow">Impact Narrative</p>
@@ -325,7 +447,7 @@
             <button
               type="button"
               class="pill"
-              *ngIf="showProgramPanel"
+              *ngIf="hasProgramOutcomeData"
               [class.active]="selectedPanel === 'programs'"
               [style.--pill-color]="config.programColor"
               (click)="selectProgramPanel()"
@@ -351,33 +473,35 @@
               <span class="material-icons heading-icon" aria-hidden="true">school</span>
               <div>
                 <span class="framework-eyebrow">{{ config.programChipLabel }}</span>
-                <h3>{{ displayProgramData.title }}</h3>
+                <h3>{{ displayProgramData?.title }}</h3>
               </div>
               <button
                 type="button"
                 class="info-icon-button"
                 *ngIf="hasProgramOutcomeData"
-                [attr.aria-label]="displayProgramData.infoLabel || 'Show outcome information'"
+                [attr.aria-label]="selectedProgramData?.infoLabel || 'Show outcome information'"
                 (click)="openInfoModal()"
               >
                 <span class="material-icons" aria-hidden="true">info</span>
               </button>
             </div>
 
-            <ul class="framework-list" *ngIf="displayProgramData.cards.length">
-              <li *ngFor="let card of displayProgramData.cards; trackBy: trackByIndex">
-                <span class="framework-key">{{ card.label.slice(0, 1) }}</span>
-                <span class="framework-term">{{ card.label }}</span>
-                <span class="framework-question">{{ card.description }}</span>
+            <p class="fwsub" *ngIf="selectedProgramData?.subtitle">{{ selectedProgramData?.subtitle }}</p>
+
+            <ul class="framework-list" *ngIf="programCards.length">
+              <li *ngFor="let card of programCards; let cardIndex = index; trackBy: trackByIndex">
+                <span class="framework-key">{{ getProgramCardLabel(card, cardIndex).slice(0, 1) }}</span>
+                <span class="framework-term">{{ getProgramCardLabel(card, cardIndex) }}</span>
+                <span class="framework-question">{{ getProgramCardDescription(card) }}</span>
               </li>
             </ul>
 
-            <section class="evidence-section" *ngIf="displayProgramData.evidences.length">
-              <h4>Evidences and Resources ({{ displayProgramData.evidences.length }})</h4>
+            <section class="evidence-section" *ngIf="programEvidenceResources.length">
+              <h4>Evidences and Resources ({{ programEvidenceResources.length }})</h4>
               <div class="evidence-grid">
                 <a
                   class="evidence-card"
-                  *ngFor="let evidence of displayProgramData.evidences; trackBy: trackByIndex"
+                  *ngFor="let evidence of programEvidenceResources; trackBy: trackByIndex"
                   [href]="evidence.url || null"
                   [attr.target]="evidence.url ? '_blank' : null"
                   [attr.rel]="evidence.url ? 'noopener noreferrer' : null"
@@ -432,6 +556,7 @@
         <p class="chip-note">* {{ config.chipFootnote }}</p>
       </section>
     </div>
+    </ng-template>
   </div>
 
   <div
@@ -456,22 +581,25 @@
         <span class="material-icons" aria-hidden="true">close</span>
       </button>
 
-      <div class="info-modal-heading">
-        <span class="material-icons info-modal-heading-icon" aria-hidden="true">{{ studentInfoLayer.icon }}</span>
+      <div class="info-modal-heading" [style.color]="infoModalLayer.color">
+        <span class="material-icons info-modal-heading-icon" aria-hidden="true">
+          {{ infoModalLayer.icon }}
+        </span>
         <div>
-          <h3 id="outcomes-info-title">{{ studentInfoLayer.heading }}</h3>
-          <p>{{ studentInfoLayer.subheading }}</p>
+          <h3 id="outcomes-info-title" [style.color]="infoModalLayer.color">{{ infoModalTitle }}</h3>
+          <p>{{ infoModalDescription }}</p>
         </div>
       </div>
 
-      <div class="info-modal-content">
+      <div class="info-modal-content" *ngIf="infoModalLayer.listItems?.length" [style.border-left-color]="infoModalLayer.color">
         <article
           class="info-modal-row"
-          *ngFor="let item of studentInfoLayer.listItems || []; trackBy: trackByIndex"
+          *ngFor="let item of infoModalLayer.listItems || []; trackBy: trackByIndex"
+          [style.border-color]="infoModalLayer.color"
         >
-          <span class="info-modal-letter">{{ item.letter }}</span>
-          <h4>{{ item.title }}</h4>
-          <p>{{ item.description }}</p>
+          <span class="info-modal-letter" [style.background]="infoModalLayer.color">{{ item.letter }}</span>
+          <h4 [style.color]="infoModalLayer.color">{{ item.title }}</h4>
+          <p [style.border-left-color]="infoModalLayer.color">{{ item.description }}</p>
         </article>
       </div>
     </section>
