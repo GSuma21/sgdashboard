@@ -1,0 +1,607 @@
+<section class="outcomes-model">
+  <div class="outcomes-grid">
+    <div class="sticky-stage">
+      <div class="stage">
+        <svg class="layer-diagram" viewBox="-56 -56 712 712" role="img" aria-label="Outcome layers">
+          <defs>
+            <radialGradient id="netRest" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#A6A6A6" stop-opacity="0.42" />
+              <stop offset="50%" stop-color="#A6A6A6" stop-opacity="0.28" />
+              <stop offset="80%" stop-color="#A6A6A6" stop-opacity="0.13" />
+              <stop offset="100%" stop-color="#A6A6A6" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="netActive" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#961C00" stop-opacity="0.34" />
+              <stop offset="52%" stop-color="#961C00" stop-opacity="0.24" />
+              <stop offset="80%" stop-color="#961C00" stop-opacity="0.12" />
+              <stop offset="100%" stop-color="#961C00" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="netMaskGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#000" />
+              <stop offset="55%" stop-color="#000" />
+              <stop offset="61%" stop-color="#FFFFFF" />
+              <stop offset="70%" stop-color="#CFCFCF" />
+              <stop offset="78%" stop-color="#949494" />
+              <stop offset="86%" stop-color="#525252" />
+              <stop offset="94%" stop-color="#000000" />
+              <stop offset="100%" stop-color="#000000" />
+            </radialGradient>
+            <mask id="netMask">
+              <circle cx="300" cy="300" r="348" fill="url(#netMaskGrad)" />
+            </mask>
+            <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="8" />
+            </filter>
+          </defs>
+
+          <circle
+            id="netGlow"
+            cx="300"
+            cy="300"
+            r="304"
+            [attr.fill]="isLayerActive('network') ? 'url(#netActive)' : 'url(#netRest)'"
+            filter="url(#soft)"
+          ></circle>
+
+          <g id="netWeb" mask="url(#netMask)" pointer-events="none">
+            <g id="webBack" [attr.stroke]="isLayerActive('network') ? '#FFFFFF' : '#DEDEDE'" [attr.fill]="isLayerActive('network') ? '#FFFFFF' : '#DEDEDE'" stroke-width="0.45">
+              <line x1="192.6" y1="109.8" x2="150.1" y2="131.5"></line>
+              <line x1="79.7" y1="289.7" x2="45.1" y2="289.3"></line>
+              <line x1="444.9" y1="501.7" x2="437.4" y2="550"></line>
+              <line x1="37.8" y1="374" x2="89.7" y2="351.6"></line>
+              <line x1="477.6" y1="547.5" x2="437.4" y2="550"></line>
+              <line x1="550.4" y1="422.6" x2="593.1" y2="388.3"></line>
+              <line x1="79.7" y1="289.7" x2="89.7" y2="351.6"></line>
+              <line x1="444.9" y1="501.7" x2="477.6" y2="547.5"></line>
+              <line x1="550.4" y1="422.6" x2="486.8" y2="419.7"></line>
+              <line x1="593.1" y1="388.3" x2="565.3" y2="345.5"></line>
+              <line x1="325.2" y1="80.8" x2="378.2" y2="63.4"></line>
+              <line x1="525.9" y1="507" x2="477.6" y2="547.5"></line>
+              <line x1="419.9" y1="71.4" x2="378.2" y2="63.4"></line>
+              <line x1="158.4" y1="525.9" x2="201.8" y2="513.9"></line>
+              <line x1="378.2" y1="63.4" x2="365.2" y2="95.7"></line>
+              <line x1="227" y1="587.4" x2="219.8" y2="548.2"></line>
+              <line x1="325.2" y1="80.8" x2="365.2" y2="95.7"></line>
+              <line x1="419.9" y1="71.4" x2="365.2" y2="95.7"></line>
+              <line x1="489.3" y1="111" x2="452.7" y2="146"></line>
+              <line x1="219.8" y1="548.2" x2="201.8" y2="513.9"></line>
+              <line x1="121.6" y1="500.6" x2="158.4" y2="525.9"></line>
+              <line x1="121.6" y1="500.6" x2="83.1" y2="464.6"></line>
+              <circle cx="444.9" cy="501.7" r="2.0" stroke="none"></circle>
+              <circle cx="550.4" cy="422.6" r="2.0" stroke="none"></circle>
+              <circle cx="121.6" cy="500.6" r="2.0" stroke="none"></circle>
+              <circle cx="79.7" cy="289.7" r="2.0" stroke="none"></circle>
+              <circle cx="486.8" cy="419.7" r="2.0" stroke="none"></circle>
+              <circle cx="419.9" cy="71.4" r="2.0" stroke="none"></circle>
+              <circle cx="83.1" cy="464.6" r="2.0" stroke="none"></circle>
+              <circle cx="593.1" cy="388.3" r="2.0" stroke="none"></circle>
+              <circle cx="227" cy="587.4" r="2.0" stroke="none"></circle>
+              <circle cx="219.8" cy="548.2" r="2.0" stroke="none"></circle>
+              <circle cx="208.3" cy="23.7" r="2.0" stroke="none"></circle>
+              <circle cx="489.3" cy="111" r="2.0" stroke="none"></circle>
+              <circle cx="525.9" cy="507" r="2.0" stroke="none"></circle>
+              <circle cx="192.6" cy="109.8" r="2.0" stroke="none"></circle>
+              <circle cx="37.8" cy="374" r="2.0" stroke="none"></circle>
+              <circle cx="89.7" cy="351.6" r="2.0" stroke="none"></circle>
+              <circle cx="325.2" cy="80.8" r="2.0" stroke="none"></circle>
+              <circle cx="477.6" cy="547.5" r="2.0" stroke="none"></circle>
+              <circle cx="150.1" cy="131.5" r="2.0" stroke="none"></circle>
+              <circle cx="452.7" cy="146" r="2.0" stroke="none"></circle>
+              <circle cx="565.3" cy="345.5" r="2.0" stroke="none"></circle>
+              <circle cx="378.2" cy="63.4" r="2.0" stroke="none"></circle>
+              <circle cx="437.4" cy="550" r="2.0" stroke="none"></circle>
+              <circle cx="131.4" cy="44.1" r="2.0" stroke="none"></circle>
+              <circle cx="60.7" cy="224.5" r="2.0" stroke="none"></circle>
+              <circle cx="365.2" cy="95.7" r="2.0" stroke="none"></circle>
+              <circle cx="158.4" cy="525.9" r="2.0" stroke="none"></circle>
+              <circle cx="201.8" cy="513.9" r="2.0" stroke="none"></circle>
+              <circle cx="319.4" cy="567" r="2.0" stroke="none"></circle>
+              <circle cx="45.1" cy="289.3" r="2.0" stroke="none"></circle>
+            </g>
+            <g id="webFront" [attr.stroke]="isLayerActive('network') ? '#FFFFFF' : '#C4C4C4'" [attr.fill]="isLayerActive('network') ? '#FFFFFF' : '#C4C4C4'" stroke-width="0.55">
+            <line x1="84" y1="300" x2="148" y2="300"></line>
+            <line x1="452" y1="300" x2="516" y2="300"></line>
+            <line x1="150" y1="132" x2="234" y2="89"></line>
+            <line x1="366" y1="68" x2="452" y2="146"></line>
+            <line x1="452" y1="146" x2="516" y2="300"></line>
+            <line x1="516" y1="300" x2="461" y2="424"></line>
+            <line x1="461" y1="424" x2="366" y2="532"></line>
+            <line x1="366" y1="532" x2="234" y2="511"></line>
+            <line x1="234" y1="511" x2="139" y2="424"></line>
+            <line x1="139" y1="424" x2="84" y2="300"></line>
+            <line x1="150" y1="132" x2="84" y2="300"></line>
+            <circle cx="150" cy="132" r="3"></circle>
+            <circle cx="234" cy="89" r="2.4"></circle>
+            <circle cx="366" cy="68" r="2.4"></circle>
+            <circle cx="452" cy="146" r="3"></circle>
+            <circle cx="516" cy="300" r="3"></circle>
+            <circle cx="461" cy="424" r="2.4"></circle>
+            <circle cx="366" cy="532" r="2.4"></circle>
+            <circle cx="234" cy="511" r="2.4"></circle>
+            <circle cx="139" cy="424" r="2.4"></circle>
+            <circle cx="84" cy="300" r="3"></circle>
+            </g>
+          </g>
+
+          <circle
+            class="seg reference-seg"
+            data-layer="network"
+            cx="300"
+            cy="300"
+            r="344"
+            fill="transparent"
+            stroke="none"
+            role="button"
+            tabindex="0"
+            aria-label="Network"
+            (click)="selectReferenceLayer('network')"
+            (keydown.enter)="selectReferenceLayer('network')"
+            (keydown.space)="selectReferenceLayer('network')"
+          ></circle>
+          <path
+            class="seg reference-seg"
+            data-layer="society"
+            d="M84.00,300.00 A216,216 0 0 1 516.00,300.00 L452.00,300.00 A152,152 0 0 0 148.00,300.00 Z"
+            [attr.fill]="getReferenceLayerFill('society')"
+            [attr.stroke]="getReferenceLayerStroke('society')"
+            role="button"
+            tabindex="0"
+            aria-label="Society"
+            (click)="selectReferenceLayer('society')"
+            (keydown.enter)="selectReferenceLayer('society')"
+            (keydown.space)="selectReferenceLayer('society')"
+          ></path>
+          <path
+            class="seg reference-seg"
+            data-layer="system"
+            d="M516.00,300.00 A216,216 0 0 1 84.00,300.00 L148.00,300.00 A152,152 0 0 0 452.00,300.00 Z"
+            [attr.fill]="getReferenceLayerFill('system')"
+            [attr.stroke]="getReferenceLayerStroke('system')"
+            role="button"
+            tabindex="0"
+            aria-label="System Institutions"
+            (click)="selectReferenceLayer('system')"
+            (keydown.enter)="selectReferenceLayer('system')"
+            (keydown.space)="selectReferenceLayer('system')"
+          ></path>
+          <path
+            class="seg reference-seg"
+            data-layer="community"
+            d="M148.00,300.00 A152,152 0 0 1 452.00,300.00 L358.00,300.00 A58,58 0 0 0 242.00,300.00 Z"
+            [attr.fill]="getReferenceLayerFill('community')"
+            [attr.stroke]="getReferenceLayerStroke('community')"
+            role="button"
+            tabindex="0"
+            aria-label="Community"
+            (click)="selectReferenceLayer('community')"
+            (keydown.enter)="selectReferenceLayer('community')"
+            (keydown.space)="selectReferenceLayer('community')"
+          ></path>
+          <path
+            class="seg reference-seg"
+            data-layer="school"
+            d="M452.00,300.00 A152,152 0 0 1 148.00,300.00 L242.00,300.00 A58,58 0 0 0 358.00,300.00 Z"
+            [attr.fill]="getReferenceLayerFill('school')"
+            [attr.stroke]="getReferenceLayerStroke('school')"
+            role="button"
+            tabindex="0"
+            aria-label="School and Anganwadi"
+            (click)="selectReferenceLayer('school')"
+            (keydown.enter)="selectReferenceLayer('school')"
+            (keydown.space)="selectReferenceLayer('school')"
+          ></path>
+          <circle
+            class="seg reference-seg"
+            data-layer="learner"
+            cx="300"
+            cy="300"
+            r="58"
+            [attr.fill]="getReferenceLayerFill('learner')"
+            [attr.stroke]="getReferenceLayerStroke('learner')"
+            role="button"
+            tabindex="0"
+            aria-label="Learner"
+            (click)="selectReferenceLayer('learner')"
+            (keydown.enter)="selectReferenceLayer('learner')"
+            (keydown.space)="selectReferenceLayer('learner')"
+          ></circle>
+
+          <g class="iconwrap" [class.on]="isReferenceLayerActive('community')" data-icon="community">
+            <g transform="translate(277.0,188.0) scale(0.2300)" pointer-events="none">
+              <path d="M84 84 L116 84 L116 108 L84 108 Z" fill="#FCE1EC" stroke="#8A2B4E" stroke-width="3"></path>
+              <path d="M80 84 L100 64 L120 84 Z" fill="#EC4899" stroke="#8A2B4E" stroke-width="3" stroke-linejoin="round"></path>
+              <path d="M95 96 h10 v12 h-10 z" fill="#F472B6" stroke="#8A2B4E" stroke-width="2.4"></path>
+              <path d="M44 120 L76 120 L76 150 L44 150 Z" fill="#FCE1EC" stroke="#8A2B4E" stroke-width="3"></path>
+              <path d="M40 120 L60 100 L80 120 Z" fill="#F472B6" stroke="#8A2B4E" stroke-width="3" stroke-linejoin="round"></path>
+              <path d="M55 134 h10 v16 h-10 z" fill="#DB2777" stroke="#8A2B4E" stroke-width="2.4"></path>
+              <path d="M124 120 L156 120 L156 150 L124 150 Z" fill="#FCE1EC" stroke="#8A2B4E" stroke-width="3"></path>
+              <path d="M120 120 L140 100 L160 120 Z" fill="#F472B6" stroke="#8A2B4E" stroke-width="3" stroke-linejoin="round"></path>
+              <path d="M135 134 h10 v16 h-10 z" fill="#DB2777" stroke="#8A2B4E" stroke-width="2.4"></path>
+              <path d="M36 168 H164" stroke="#8A2B4E" stroke-width="3" stroke-linecap="round"></path>
+            </g>
+          </g>
+          <g class="iconwrap" [class.on]="isReferenceLayerActive('school')" data-icon="school">
+            <g transform="translate(277.0,366.0) scale(0.2300)" pointer-events="none">
+              <path d="M48 86 h104 v72 H48 Z" fill="#EFF0FC" stroke="#2E3A8C" stroke-width="6"></path>
+              <path d="M36 86 L100 44 L164 86 Z" fill="#5B6EE0" stroke="#2E3A8C" stroke-width="6" stroke-linejoin="round"></path>
+              <path d="M84 116 h32 v42 H84 Z" fill="#DCE2FF" stroke="#2E3A8C" stroke-width="5"></path>
+              <path d="M64 102 H80 M120 102 H136 M64 128 H80 M120 128 H136" stroke="#5B6EE0" stroke-width="5" stroke-linecap="round"></path>
+              <path d="M30 170 H170" stroke="#2E3A8C" stroke-width="5" stroke-linecap="round"></path>
+            </g>
+          </g>
+          <g class="iconwrap" [class.on]="isReferenceLayerActive('learner')" data-icon="learner">
+            <g transform="translate(267.0,267.0) scale(0.3300)" pointer-events="none">
+              <circle cx="100" cy="62" r="28" fill="#FFFBEF" stroke="#8A6400" stroke-width="5"></circle>
+              <path d="M54 152 C54 110 69 94 100 94 C131 94 146 110 146 152 C133 160 67 160 54 152 Z" fill="#FFC61A" stroke="#8A6400" stroke-width="5"></path>
+              <path d="M72 60 C75 37 88 27 106 30 C123 33 132 44 132 64 C119 52 91 48 72 60 Z" fill="#3A2E12"></path>
+              <circle cx="90" cy="65" r="3.6" fill="#5A4A1A"></circle>
+              <circle cx="110" cy="65" r="3.6" fill="#5A4A1A"></circle>
+              <path d="M92 78 C98 82 104 82 110 78" stroke="#8A6400" stroke-width="3" stroke-linecap="round"></path>
+              <path d="M55 120 L99 136 L99 178 L55 162 Z" fill="#FFFBEF" stroke="#8A6400" stroke-width="5"></path>
+              <path d="M145 120 L99 136 L99 178 L145 162 Z" fill="#FFFBEF" stroke="#8A6400" stroke-width="5"></path>
+            </g>
+          </g>
+
+          <path id="aNet" fill="none" d="M233.57,68.34 A241,241 0 0 1 366.43,68.34"></path>
+          <text class="rlabel" data-lab-for="network" [attr.fill]="getReferenceLabelColor('network')">
+            <textPath href="#aNet" startOffset="50%" text-anchor="middle">network</textPath>
+          </text>
+          <path id="aSoc" fill="none" d="M233.70,127.29 A185,185 0 0 1 366.30,127.29"></path>
+          <text class="rlabel" data-lab-for="society" [attr.fill]="getReferenceLabelColor('society')">
+            <textPath href="#aSoc" startOffset="50%" text-anchor="middle">society</textPath>
+          </text>
+          <path id="aSys" fill="none" d="M138.95,423.58 A203,203 0 0 0 461.05,423.58"></path>
+          <text class="rlabel" data-lab-for="system institutions" [attr.fill]="getReferenceLabelColor('system')">
+            <textPath href="#aSys" startOffset="50%" text-anchor="middle">system institutions</textPath>
+          </text>
+          <path id="aCom" fill="none" d="M219.82,209.38 A121,121 0 0 1 380.18,209.38"></path>
+          <text class="rlabel" data-lab-for="community" [attr.fill]="getReferenceLabelColor('community')">
+            <textPath href="#aCom" startOffset="50%" text-anchor="middle">community</textPath>
+          </text>
+          <path id="aSch" fill="none" d="M167.43,341.80 A139,139 0 0 0 432.57,341.80"></path>
+          <text class="rlabel" data-lab-for="school &amp; anganwadi" [attr.fill]="getReferenceLabelColor('school')">
+            <textPath href="#aSch" startOffset="50%" text-anchor="middle">school &amp; anganwadi</textPath>
+          </text>
+        </svg>
+
+        <p class="diagram-note">* {{ config.layerFootnote }}</p>
+      </div>
+    </div>
+
+    <ng-container *ngIf="hasProgramOutcomeData; else normalOutcomeSections">
+      <section class="program-mode-panel" [style.--active-color]="selectedLayer.color">
+        <div class="program-mode-heading">
+          <span class="material-icons program-mode-icon" aria-hidden="true">{{ selectedLayer.icon }}</span>
+          <div>
+            <h3>{{ programPanelTitle }}</h3>
+            <p>{{ programPanelDescription }}</p>
+          </div>
+          <button
+            type="button"
+            class="info-icon-button"
+            [attr.aria-label]="'Show ' + programPanelTitle + ' explanation'"
+            (click)="openInfoModal()"
+          >
+            <span class="material-icons" aria-hidden="true">info</span>
+          </button>
+        </div>
+
+        <div class="program-card-carousel" *ngIf="programCards.length">
+          <button
+            type="button"
+            class="info-icon-button program-card-nav"
+            aria-label="Show previous cards"
+            [disabled]="!canGoToPreviousProgramCards"
+            *ngIf="canShowProgramCardControls"
+            (click)="showPreviousProgramCards()"
+          >
+            <span class="material-icons" aria-hidden="true">chevron_left</span>
+          </button>
+
+          <div
+            class="program-mode-cards"
+            [style.grid-template-columns]="programCardVariant === 'partner' ? 'repeat(3, 154px)' : null"
+            [style.gap]="programCardVariant === 'partner' ? '36px' : null"
+          >
+            <article
+              class="program-mode-card"
+              *ngFor="let card of visibleProgramCards; let cardIndex = index; trackBy: trackByIndex"
+              [style.background]="programCardVariant === 'partner' ? '#fff' : null"
+              [style.border]="programCardVariant === 'partner' ? '0' : null"
+              [style.border-radius]="programCardVariant === 'partner' ? '8px' : null"
+              [style.box-shadow]="programCardVariant === 'partner' ? '0 2px 12px rgba(0,0,0,.16)' : null"
+              [style.min-height]="programCardVariant === 'partner' ? '202px' : null"
+              [style.padding]="programCardVariant === 'partner' ? '18px 14px 14px' : null"
+            >
+              <ng-container *ngIf="programCardVariant === 'partner'; else outcomeProgramCard">
+                <img
+                  [src]="getProgramCardImage(card)"
+                  [alt]="card.alt || getProgramCardLabel(card, cardIndex)"
+                  style="display:block;height:82px;margin:0 auto 22px;object-fit:contain;width:112px"
+                >
+                <h4 style="color:#151b27;font-size:27px;margin:0 0 10px;text-align:center">
+                  {{ getProgramCardLabel(card, cardIndex) }}
+                </h4>
+                <a
+                  *ngIf="getProgramCardLink(card)"
+                  [href]="getProgramCardLink(card)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="color:#151b27;display:block;font-size:12px;font-weight:800;text-align:center"
+                >
+                  {{ card.ctaLabel || 'Know more' }} →
+                </a>
+              </ng-container>
+              <ng-template #outcomeProgramCard>
+                <span class="program-mode-tag">{{ getProgramCardLabel(card, cardIndex) }}</span>
+                <p>{{ getProgramCardDescription(card) }}</p>
+              </ng-template>
+            </article>
+          </div>
+
+          <button
+            type="button"
+            class="info-icon-button program-card-nav"
+            aria-label="Show next cards"
+            [disabled]="!canGoToNextProgramCards"
+            *ngIf="canShowProgramCardControls"
+            (click)="showNextProgramCards()"
+          >
+            <span class="material-icons" aria-hidden="true">chevron_right</span>
+          </button>
+        </div>
+
+        <section class="program-mode-evidence" *ngIf="programEvidenceResources.length">
+          <h4>Evidences and Resources ({{ programEvidenceResources.length }})</h4>
+          <div class="evidence-grid">
+            <a
+              class="evidence-card"
+              *ngFor="let evidence of programEvidenceResources; trackBy: trackByIndex"
+              [href]="evidence.url || null"
+              [attr.target]="evidence.url ? '_blank' : null"
+              [attr.rel]="evidence.url ? 'noopener noreferrer' : null"
+            >
+              <span class="material-icons pdf-icon" aria-hidden="true">picture_as_pdf</span>
+              <span class="evidence-name">{{ evidence.title }}</span>
+              <span class="evidence-meta">{{ evidence.type }} · {{ evidence.size }}</span>
+              <span class="evidence-tag">{{ evidence.tag }}</span>
+            </a>
+          </div>
+        </section>
+
+        <div class="program-layer-tiles" aria-label="Outcome layer tiles">
+          <button
+            *ngFor="let layer of layers; trackBy: trackByLayerKey"
+            type="button"
+            class="program-layer-tile"
+            [class.active]="selectedLayerKey === layer.key"
+            [disabled]="!isProgramLayerAvailable(layer.key)"
+            [style.--tile-color]="layer.color"
+            [style.border-style]="isProgramLayerAvailable(layer.key) ? 'solid' : 'dashed'"
+            [style.color]="isProgramLayerAvailable(layer.key) ? layer.color : '#aaa'"
+            (click)="selectLayer(layer.key)"
+          >
+            {{ layer.chipLabel }}
+          </button>
+        </div>
+
+        <p class="chip-note">* Click on any of the above tile to read more about it.</p>
+      </section>
+    </ng-container>
+
+    <ng-template #normalOutcomeSections>
+    <div class="rail-sections" [style.--active-color]="activePanelColor">
+      <section class="rail rail-narrative" [style.--active-color]="selectedLayer.color">
+        <p class="eyebrow">Impact Narrative</p>
+        <h2>{{ config.title }}</h2>
+        <p class="lead">A learner's education is shaped across multiple layers:</p>
+
+        <div class="pillwrap" aria-label="Outcome narrative layer filters">
+          <div class="pillrow">
+            <button
+              *ngFor="let layer of layers.slice(0, 3); trackBy: trackByLayerKey"
+              type="button"
+              class="pill"
+              [class.active]="selectedLayerKey === layer.key"
+              [style.--pill-color]="layer.color"
+              (click)="selectLayer(layer.key)"
+            >
+              {{ layer.chipLabel }}
+            </button>
+          </div>
+          <div class="pillrow">
+            <button
+              *ngFor="let layer of layers.slice(3); trackBy: trackByLayerKey"
+              type="button"
+              class="pill"
+              [class.active]="selectedLayerKey === layer.key"
+              [style.--pill-color]="layer.color"
+              (click)="selectLayer(layer.key)"
+            >
+              {{ layer.chipLabel }}
+            </button>
+          </div>
+        </div>
+
+        <article class="definition-card narrative-card">
+          <span class="framework-eyebrow">{{ selectedLayer.eyebrow || selectedLayer.chipLabel }}</span>
+          <p>{{ narrativeBody }}</p>
+          <a
+            class="story-cta"
+            *ngIf="selectedLayer.cta"
+            [routerLink]="selectedLayer.cta.link"
+          >
+            {{ selectedLayer.cta.label }}
+            <span class="material-icons" aria-hidden="true">north_east</span>
+          </a>
+        </article>
+      </section>
+
+      <section class="rail rail-framework" [style.--active-color]="activePanelColor">
+        <p class="eyebrow">Impact Framework</p>
+        <h2>Measuring Impact Across Layers</h2>
+        <p class="framework-lead">{{ frameworkLead }}</p>
+
+        <div class="pillwrap" aria-label="Outcome framework layer filters">
+          <div class="pillrow">
+            <button
+              type="button"
+              class="pill"
+              *ngIf="hasProgramOutcomeData"
+              [class.active]="selectedPanel === 'programs'"
+              [style.--pill-color]="config.programColor"
+              (click)="selectProgramPanel()"
+            >
+              {{ config.programChipLabel }}
+            </button>
+            <button
+              *ngFor="let layer of layers; trackBy: trackByLayerKey"
+              type="button"
+              class="pill"
+              [class.active]="selectedPanel === 'layer' && selectedLayerKey === layer.key"
+              [style.--pill-color]="layer.color"
+              (click)="selectLayer(layer.key)"
+            >
+              {{ layer.chipLabel }}
+            </button>
+          </div>
+        </div>
+
+        <ng-container *ngIf="shouldShowProgramPanel; else configuredPanel">
+          <article class="framework-card program-framework">
+            <div class="framework-heading">
+              <span class="material-icons heading-icon" aria-hidden="true">school</span>
+              <div>
+                <span class="framework-eyebrow">{{ config.programChipLabel }}</span>
+                <h3>{{ displayProgramData?.title }}</h3>
+              </div>
+              <button
+                type="button"
+                class="info-icon-button"
+                *ngIf="hasProgramOutcomeData"
+                [attr.aria-label]="selectedProgramData?.infoLabel || 'Show outcome information'"
+                (click)="openInfoModal()"
+              >
+                <span class="material-icons" aria-hidden="true">info</span>
+              </button>
+            </div>
+
+            <p class="fwsub" *ngIf="selectedProgramData?.subtitle">{{ selectedProgramData?.subtitle }}</p>
+
+            <ul class="framework-list" *ngIf="programCards.length">
+              <li *ngFor="let card of programCards; let cardIndex = index; trackBy: trackByIndex">
+                <span class="framework-key">{{ getProgramCardLabel(card, cardIndex).slice(0, 1) }}</span>
+                <span class="framework-term">{{ getProgramCardLabel(card, cardIndex) }}</span>
+                <span class="framework-question">{{ getProgramCardDescription(card) }}</span>
+              </li>
+            </ul>
+
+            <section class="evidence-section" *ngIf="programEvidenceResources.length">
+              <h4>Evidences and Resources ({{ programEvidenceResources.length }})</h4>
+              <div class="evidence-grid">
+                <a
+                  class="evidence-card"
+                  *ngFor="let evidence of programEvidenceResources; trackBy: trackByIndex"
+                  [href]="evidence.url || null"
+                  [attr.target]="evidence.url ? '_blank' : null"
+                  [attr.rel]="evidence.url ? 'noopener noreferrer' : null"
+                >
+                  <span class="material-icons pdf-icon" aria-hidden="true">picture_as_pdf</span>
+                  <span class="evidence-name">{{ evidence.title }}</span>
+                  <span class="evidence-meta">{{ evidence.type }} · {{ evidence.size }}</span>
+                  <span class="evidence-tag">{{ evidence.tag }}</span>
+                </a>
+              </div>
+            </section>
+          </article>
+        </ng-container>
+
+        <ng-template #configuredPanel>
+          <article class="framework-card" *ngIf="selectedLayer.listItems?.length; else frameworkDefinitionPanel">
+            <div class="framework-heading">
+              <span class="material-icons heading-icon" aria-hidden="true">{{ selectedLayer.icon }}</span>
+              <div>
+                <span class="framework-eyebrow">{{ selectedLayer.eyebrow || selectedLayer.chipLabel }}</span>
+                <h3>{{ selectedLayer.heading }}</h3>
+              </div>
+            </div>
+
+            <p class="fwsub" *ngIf="selectedLayer.subheading">{{ selectedLayer.subheading }}</p>
+
+            <ul class="framework-list">
+              <li *ngFor="let item of selectedLayer.listItems || []; trackBy: trackByIndex">
+                <span class="framework-key">{{ item.letter }}</span>
+                <span class="framework-term">{{ item.title }}</span>
+                <span class="framework-question">{{ item.description }}</span>
+              </li>
+            </ul>
+          </article>
+
+          <ng-template #frameworkDefinitionPanel>
+            <article class="definition-card">
+              <span class="framework-eyebrow">{{ selectedLayer.eyebrow || selectedLayer.chipLabel }}</span>
+              <p class="fwnote">{{ selectedLayer.frameworkNote || selectedLayer.body }}</p>
+              <a
+                class="story-cta"
+                *ngIf="selectedLayer.frameworkCta || selectedLayer.cta"
+                [routerLink]="(selectedLayer.frameworkCta || selectedLayer.cta)?.link"
+              >
+                {{ (selectedLayer.frameworkCta || selectedLayer.cta)?.label }}
+                <span class="material-icons" aria-hidden="true">north_east</span>
+              </a>
+            </article>
+          </ng-template>
+        </ng-template>
+
+        <p class="chip-note">* {{ config.chipFootnote }}</p>
+      </section>
+    </div>
+    </ng-template>
+  </div>
+
+  <div
+    class="info-modal-backdrop"
+    *ngIf="isInfoModalOpen"
+    role="presentation"
+    (click)="closeInfoModal()"
+  >
+    <section
+      class="info-modal"
+      role="dialog"
+      aria-modal="true"
+      [attr.aria-labelledby]="'outcomes-info-title'"
+      (click)="$event.stopPropagation()"
+    >
+      <button
+        type="button"
+        class="info-modal-close"
+        aria-label="Close"
+        (click)="closeInfoModal()"
+      >
+        <span class="material-icons" aria-hidden="true">close</span>
+      </button>
+
+      <div class="info-modal-heading" [style.color]="infoModalLayer.color">
+        <span class="material-icons info-modal-heading-icon" aria-hidden="true">
+          {{ infoModalLayer.icon }}
+        </span>
+        <div>
+          <h3 id="outcomes-info-title" [style.color]="infoModalLayer.color">{{ infoModalTitle }}</h3>
+          <p>{{ infoModalDescription }}</p>
+        </div>
+      </div>
+
+      <div class="info-modal-content" *ngIf="infoModalLayer.listItems?.length" [style.border-left-color]="infoModalLayer.color">
+        <article
+          class="info-modal-row"
+          *ngFor="let item of infoModalLayer.listItems || []; trackBy: trackByIndex"
+          [style.border-color]="infoModalLayer.color"
+        >
+          <span class="info-modal-letter" [style.background]="infoModalLayer.color">{{ item.letter }}</span>
+          <h4 [style.color]="infoModalLayer.color">{{ item.title }}</h4>
+          <p [style.border-left-color]="infoModalLayer.color">{{ item.description }}</p>
+        </article>
+      </div>
+    </section>
+  </div>
+</section>

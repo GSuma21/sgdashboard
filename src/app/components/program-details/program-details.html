@@ -66,7 +66,7 @@
                 <div *ngIf="programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved" class="details-section impact-section">
                 <div class="impact-content">
                     <div class="impact-header">
-                        <h3 class="impact-title">
+                        <!-- <h3 class="impact-title">
                             Learn how Micro Improvements are contributing to mega impact.
                         </h3>
                         @if(programData.download_to_read_more) {
@@ -74,7 +74,14 @@
                             <span>Click here to read more</span>
                             <mat-icon>arrow_drop_down</mat-icon>
                         </button>
-                        }
+
+                        } -->
+                         <ng-container>
+     <app-outcomes-model
+  [showProgramPanel]="!!programData1"
+  [programOutcomeData]="programData1">
+</app-outcomes-model>
+    </ng-container>
                     </div>
                     <div class="impact-cards" *ngIf="impactCardList.length">
                         <div class="impact-card" *ngFor="let item of impactCardList; let i = index">

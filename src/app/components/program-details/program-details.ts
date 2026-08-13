@@ -8,10 +8,12 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { LoaderRunnerService } from '../../services/loader-runner.service';
 import { MatDialog } from '@angular/material/dialog';
+import { OutcomesModelComponent } from '../outcomes-model/outcomes-model.component';
+import { SAMPLE_PROGRAM_OUTCOME_DATA } from '../outcomes-model/outcomes-model.config';
 
 @Component({
   selector: 'app-program-details',
-  imports: [CommonModule, RouterModule,MatIcon],
+  imports: [CommonModule, RouterModule,MatIcon, OutcomesModelComponent],
   templateUrl: './program-details.html',
   styleUrl: './program-details.css'
 })
@@ -23,6 +25,8 @@ export class ProgramDetails {
   'var(--primary-color-light)',
   'var(--tertiary-color-light)'
 ];
+
+  programData1: any = SAMPLE_PROGRAM_OUTCOME_DATA;
 
 
   @ViewChild('galleryTrack') galleryTrack!: ElementRef;
