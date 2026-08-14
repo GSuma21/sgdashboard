@@ -3,25 +3,40 @@
 }
 
 .outcomes-model {
-  --side: clamp(20px, 4vw, 64px);
+  --side: 64px;
   --stage-top: 28px;
-  --rail-lift: 86px;
+  --rail-lift: 90px;
+  --brand: #4b1d8f;
+  --brand2: #5b2a9e;
+  --violet: #7e22ce;
+  --pink: #e0338a;
   --ink: #1a1622;
-  --muted: #615971;
+  --muted: #6b6580;
   --line: #ece8f2;
   background: #fff;
   color: var(--ink);
-  font-family: 'Source Sans 3', Manrope, sans-serif;
-  padding: 54px var(--side) 64px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+  padding: 0 var(--side);
+  border-top: 1px solid var(--line);
+  margin-top: 30px;
 }
+
+@media (max-width: 1100px) {
+  .outcomes-model { --side: 34px; }
+}
+@media (max-width: 640px) {
+  .outcomes-model { --side: 20px; }
+}
+
+/* ---------- grid / stage ---------- */
 
 .outcomes-grid {
   align-items: start;
   display: grid;
-  gap: clamp(42px, 5vw, 72px);
-  grid-template-columns: minmax(520px, 1.02fr) minmax(420px, 1fr);
-  margin: 0 auto;
-  max-width: 1480px;
+  gap: 52px;
+  grid-template-columns: 1.02fr 1fr;
 }
 
 .sticky-stage {
@@ -35,7 +50,7 @@
 
 .stage {
   margin: 0 auto;
-  width: min(96%, 720px);
+  width: 96%;
 }
 
 .layer-diagram {
@@ -43,6 +58,16 @@
   display: block;
   width: 100%;
 }
+
+.diagram-note {
+  color: #9a93ac;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 18px 0 0;
+}
+
+/* ---------- svg segments / labels / icons (unchanged behaviour, matches raw) ---------- */
 
 .seg {
   cursor: pointer;
@@ -56,7 +81,7 @@
 }
 
 .rlabel {
-  font-family: 'Source Sans 3', Manrope, sans-serif;
+  font-family: 'Source Sans 3', sans-serif;
   font-size: 18px;
   font-weight: 600;
   pointer-events: none;
@@ -73,7 +98,7 @@
 }
 
 #netGlow {
-  transition: opacity 0.4s ease, fill 0.35s ease;
+  transition: opacity 0.4s ease;
 }
 
 #webBack,
@@ -81,153 +106,10 @@
   transition: stroke 0.35s ease, fill 0.35s ease;
 }
 
-.diagram-note,
-.chip-note {
-  color: #8e879f;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 1.35;
-  margin: 18px 0 0;
-}
+/* ---------- rail (== raw .sec + .rail combined) ---------- */
 
 .rail-sections {
   min-width: 0;
-}
-
-.program-mode-panel {
-  --active-color: #e0338a;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: calc(100vh - var(--stage-top));
-  padding: 38px 0 70px;
-}
-
-.program-mode-heading {
-  align-items: flex-start;
-  display: grid;
-  gap: 16px;
-  grid-template-columns: 48px minmax(0, 1fr) 34px;
-  margin-bottom: 46px;
-  max-width: 780px;
-}
-
-.program-mode-icon {
-  color: var(--active-color);
-  font-size: 44px;
-  line-height: 1;
-}
-
-.program-mode-heading h3 {
-  color: var(--active-color);
-  font-family: 'Source Sans 3', Manrope, sans-serif;
-  font-size: 21px;
-  font-weight: 800;
-  line-height: 1.15;
-  margin: 0 0 4px;
-}
-
-.program-mode-heading p {
-  color: #111;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.45;
-  margin: 0;
-}
-
-.program-card-carousel {
-  align-items: center;
-  display: grid;
-  gap: 14px;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  margin: 0 0 34px;
-}
-
-.program-card-carousel .program-mode-cards {
-  margin: 0;
-}
-
-.program-mode-cards {
-  display: grid;
-  gap: 18px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin: 0 0 34px;
-}
-
-.program-mode-card {
-  background: color-mix(in srgb, var(--active-color) 11%, #fff);
-  border: 2px solid var(--active-color);
-  color: #111;
-  min-height: 266px;
-  padding: 18px 20px;
-}
-
-.program-card-nav {
-  padding: 0;
-  margin: 0;
-}
-
-.program-card-nav:disabled {
-  cursor: default;
-  opacity: 0.32;
-}
-
-.program-mode-tag {
-  background: var(--active-color);
-  border-radius: 999px;
-  color: #fff;
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 12px;
-  max-width: 174px;
-  padding: 8px 13px;
-}
-
-.program-mode-card p {
-  color: #111;
-  font-size: 16px;
-  font-weight: 800;
-  line-height: 1.22;
-  margin: 0;
-}
-
-.program-mode-evidence {
-  margin-bottom: 20px;
-}
-
-.program-mode-evidence h4 {
-  color: #111;
-  font-size: 16px;
-  font-weight: 800;
-  margin: 0 0 18px;
-}
-
-.program-layer-tiles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 13px;
-  max-width: 650px;
-}
-
-.program-layer-tile {
-  --tile-color: #572e91;
-  appearance: none;
-  background: #fff;
-  border: 2px solid var(--tile-color);
-  border-radius: 999px;
-  color: var(--tile-color);
-  cursor: pointer;
-  font-family: 'Source Sans 3', Manrope, sans-serif;
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1;
-  padding: 9px 13px;
-}
-
-.program-layer-tile.active {
-  background: color-mix(in srgb, var(--tile-color) 7%, #fff);
 }
 
 .rail {
@@ -237,18 +119,29 @@
   justify-content: center;
   min-height: calc(100vh - var(--stage-top));
   padding-bottom: calc(60px + var(--rail-lift));
-  padding-top: 18px;
-}
-
-.rail-framework {
   padding-top: 60px;
+  margin-top: 80px;
 }
 
-.eyebrow,
+/* ---------- eyebrows ----------
+   Raw draws a hard line here: the section-level eyebrow ("Impact Narrative" /
+   "Impact Framework") is always violet, regardless of the selected layer.
+   Only the small in-card eyebrow (per-layer name) tracks the active color. */
+
+.eyebrow {
+  color: var(--violet);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  margin: 0;
+  text-transform: uppercase;
+}
+
 .framework-eyebrow {
   color: var(--active-color);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.14em;
   line-height: 1.2;
   margin: 0;
@@ -257,35 +150,43 @@
 
 .rail h2 {
   color: var(--ink);
-  font-family: Comfortaa, Urbanist, sans-serif;
-  font-size: clamp(27px, 2.55vw, 34px);
+  font-family: Comfortaa, cursive;
+  font-size: 33px;
   line-height: 1.16;
-  margin: 10px 0 16px;
+  margin: 10px 0 20px;
+  font-weight: bold;
 }
 
 .lead {
   color: var(--ink);
-  font-size: clamp(18px, 1.55vw, 21px);
-  font-weight: 700;
-  line-height: 1.42;
-  margin: 0 0 20px;
-  max-width: 620px;
+  font-size: 17.5px;
+  font-weight: 600;
+  margin: 0 0 18px;
 }
 
 .framework-lead {
   color: var(--muted);
   font-size: 18px;
-  font-weight: 600;
-  line-height: 1.5;
+  font-weight: 400;
+  line-height: 1.6;
   margin: 0 0 22px;
-  max-width: 560px;
+  max-width: 520px;
 }
+
+/* ---------- pills ---------- */
 
 .pillwrap {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin: 0 0 20px;
+}
+
+.rail-narrative .pillwrap {
+  margin: 0;
+}
+
+.rail-framework .pillwrap {
+  margin: 4px 0 18px;
 }
 
 .pillrow {
@@ -302,51 +203,121 @@
   border-radius: 24px;
   color: var(--pill-color);
   cursor: pointer;
-  font-family: 'Source Sans 3', Manrope, sans-serif;
-  font-size: 16px;
-  font-weight: 800;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
   line-height: 1;
-  padding: 9px 18px;
-  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  padding: 9px 19px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
+/* Raw's active state: bg = layer color, text = white, and (except for
+   learner/network, which hard-code their own values) a white "ring" border
+   drawn on top of the fill — not border = bg, which is what made active
+   pills look flat/borderless before. Learner and network are special-cased;
+   if your layer config later exposes --pill-active-color/--pill-active-border
+   per layer, these fall back to it automatically. */
 .pill.active {
   background: var(--pill-color);
-  border-color: var(--pill-color);
+  border-color: var(--pill-active-border, rgba(255, 255, 255, 0.92));
+  color: var(--pill-active-color, #fff);
+}
+
+.pill[data-key='students'].active,
+.pill[data-key='learner'].active {
+  background: #ff9911;
+  border-color: #e08400;
+  color: #4a2b00;
+}
+
+.pill[data-key='network'].active {
+  background: #961c00;
+  border-color: #961c00;
   color: #fff;
 }
 
-.framework-card,
+/* ---------- narrative card (== raw .defbox) ---------- */
+
 .definition-card {
   border-left: 4px solid var(--active-color);
-  min-height: 280px;
   padding: 2px 0 2px 20px;
 }
 
 .narrative-card {
-  margin-top: 2px;
-  min-height: 150px;
+  border-left-width: 3px;
+  margin: 22px 0 0;
+  padding: 0 0 0 14px;
 }
 
-.framework-heading {
+.definition-card p {
+  color: #463f5c;
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 520px;
+}
+
+.rail-framework .definition-card p {
+  font-size: 17px;
+  margin: 0 0 10px;
+  max-width: none;
+}
+
+.fwnote {
+  color: #9a93ac;
+  font-style: italic;
+}
+
+.story-cta {
   align-items: center;
+  border-bottom: 2px solid currentColor;
   color: var(--active-color);
-  display: flex;
-  gap: 13px;
-  margin-bottom: 14px;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 700;
+  gap: 8px;
+  padding-bottom: 2px;
+}
+
+.narrative-card .story-cta {
+  margin-top: 14px;
+}
+
+.rail-framework .definition-card .story-cta {
+  margin-top: 10px;
+}
+
+.story-cta:hover {
+  opacity: 0.75;
+}
+
+/* ---------- framework card (== raw .fwcard) ---------- */
+
+.framework-heading {
+  align-items: baseline;
+  color: var(--active-color);
+  display: block;
+  margin-bottom: 0;
+}
+
+.heading-icon {
+  display: none; /* raw's fwcard has no leading icon */
 }
 
 .framework-heading h3 {
   color: var(--ink);
-  font-family: Comfortaa, Urbanist, sans-serif;
-  font-size: clamp(20px, 2vw, 24px);
-  line-height: 1.24;
-  margin: 6px 0 0;
+  font-family: Comfortaa, cursive;
+  font-size: 24px;
+  line-height: 1.2;
+  margin: 8px 0 10px;
 }
 
-.heading-icon {
-  color: var(--active-color);
-  font-size: 36px;
+.fwsub {
+  color: #463f5c;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.45;
+  margin: 0 0 14px;
 }
 
 .framework-list {
@@ -358,19 +329,11 @@
   padding: 0;
 }
 
-.fwsub {
-  color: #463f5c;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.45;
-  margin: 0 0 14px;
-}
-
 .framework-list li {
   align-items: start;
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 10px;
   display: grid;
   gap: 13px;
   grid-template-columns: 26px minmax(140px, 0.85fr) 1.3fr;
@@ -382,8 +345,8 @@
   background: var(--active-color);
   border-radius: 50%;
   color: #fff;
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 13.5px;
+  font-weight: 700;
   height: 26px;
   line-height: 26px;
   text-align: center;
@@ -393,7 +356,7 @@
 .framework-term {
   color: var(--active-color);
   font-size: 14.5px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.35;
   padding-top: 3px;
 }
@@ -402,52 +365,23 @@
   border-left: 1px solid var(--line);
   color: #463f5c;
   font-size: 14px;
-  font-weight: 600;
-  line-height: 1.48;
+  font-weight: 400;
+  line-height: 1.5;
   padding: 3px 0 0 13px;
 }
 
-.definition-card p {
-  border-left: 0;
-  color: #463f5c;
-  font-size: clamp(18px, 1.5vw, 20px);
+.chip-note {
+  color: #9a93ac;
+  font-size: 14px;
   font-weight: 600;
-  line-height: 1.62;
-  margin: 12px 0 0;
-  max-width: 620px;
+  margin: 18px 0 0;
 }
 
-.story-cta {
-  align-items: center;
-  border-bottom: 2px solid currentColor;
-  color: var(--active-color);
-  display: inline-flex;
-  font-size: 16px;
-  font-weight: 800;
-  gap: 8px;
-  margin-top: 16px;
-  padding-bottom: 2px;
-}
-
-.info-icon-button {
-  align-items: center;
-  appearance: none;
-  background: var(--active-color);
-  border: 0;
-  border-radius: 50%;
-  color: #fff;
-  cursor: pointer;
-  display: inline-flex;
-  height: 30px;
-  justify-content: center;
-  margin-left: auto;
-  padding: 0;
-  width: 30px;
-}
-
-.info-icon-button span {
-  font-size: 18px;
-}
+/* ---------- evidence / info modal / program mode ----------
+   No raw equivalent exists for these (program mode, evidence grid, info
+   modal are Angular-only additions) — kept close to your original, just
+   pulled onto the same color/spacing tokens as the rest so they read as
+   part of one system rather than a separate style. */
 
 .evidence-section {
   margin-top: 18px;
@@ -473,10 +407,8 @@
   color: var(--ink);
   display: grid;
   gap: 2px 10px;
+  grid-template-areas: 'icon name tag' 'icon meta tag';
   grid-template-columns: 34px 1fr auto;
-  grid-template-areas:
-    'icon name tag'
-    'icon meta tag';
   min-height: 66px;
   padding: 9px 11px;
 }
@@ -512,6 +444,26 @@
   grid-area: tag;
   justify-self: end;
   padding: 5px 9px;
+}
+
+.info-icon-button {
+  align-items: center;
+  appearance: none;
+  background: var(--active-color);
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  height: 30px;
+  justify-content: center;
+  margin-left: auto;
+  padding: 0;
+  width: 30px;
+}
+
+.info-icon-button span {
+  font-size: 18px;
 }
 
 .info-modal-backdrop {
@@ -563,7 +515,7 @@
 }
 
 .info-modal-heading h3 {
-  font-family: Comfortaa, Urbanist, sans-serif;
+  font-family: Comfortaa, cursive;
   font-size: 18px;
   font-weight: 800;
   margin: 0;
@@ -624,21 +576,148 @@
   padding-left: 10px;
 }
 
+.program-mode-panel {
+  --active-color: #e0338a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - var(--stage-top));
+  padding: 60px 0 calc(60px + var(--rail-lift));
+}
+
+.program-mode-heading {
+  align-items: flex-start;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 48px minmax(0, 1fr) 34px;
+  margin-bottom: 46px;
+  max-width: 780px;
+}
+
+.program-mode-icon {
+  color: var(--active-color);
+  font-size: 44px;
+  line-height: 1;
+}
+
+.program-mode-heading h3 {
+  color: var(--active-color);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 4px;
+}
+
+.program-mode-heading p {
+  color: #111;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.program-card-carousel {
+  align-items: center;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  margin: 0 0 34px;
+}
+
+.program-card-carousel .program-mode-cards {
+  margin: 0;
+}
+
+.program-mode-cards {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 34px;
+}
+
+.program-mode-card {
+  background: color-mix(in srgb, var(--active-color) 11%, #fff);
+  border: 2px solid var(--active-color);
+  color: #111;
+  min-height: 266px;
+  padding: 18px 20px;
+}
+
+.program-card-nav {
+  margin: 0;
+  padding: 0;
+}
+
+.program-card-nav:disabled {
+  cursor: default;
+  opacity: 0.32;
+}
+
+.program-mode-tag {
+  background: var(--active-color);
+  border-radius: 999px;
+  color: #fff;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  max-width: 174px;
+  padding: 8px 13px;
+}
+
+.program-mode-card p {
+  color: #111;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.22;
+  margin: 0;
+}
+
+.program-mode-evidence {
+  margin-bottom: 20px;
+}
+
+.program-mode-evidence h4 {
+  color: #111;
+  font-size: 16px;
+  font-weight: 800;
+  margin: 0 0 18px;
+}
+
+.program-layer-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 13px;
+  max-width: 650px;
+}
+
+.program-layer-tile {
+  --tile-color: #572e91;
+  appearance: none;
+  background: #fff;
+  border: 2px solid var(--tile-color);
+  border-radius: 999px;
+  color: var(--tile-color);
+  cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+  padding: 9px 13px;
+}
+
+.program-layer-tile.active {
+  background: color-mix(in srgb, var(--tile-color) 7%, #fff);
+}
+
+/* ---------- responsive (matches raw's actual breakpoints) ---------- */
+
 @media (min-width: 941px) and (pointer: fine) {
   .rail {
     scroll-snap-align: center;
     scroll-snap-stop: always;
-  }
-}
-
-@media (max-width: 1180px) {
-  .outcomes-model {
-    --rail-lift: 24px;
-  }
-
-  .outcomes-grid {
-    gap: 34px;
-    grid-template-columns: minmax(420px, 0.95fr) 1fr;
   }
 }
 
@@ -655,7 +734,7 @@
   }
 
   .stage {
-    width: min(74%, 520px);
+    width: 74%;
   }
 
   .rail {
@@ -667,22 +746,9 @@
     min-height: 0;
     padding: 30px 0 44px;
   }
-
-  .rail-framework {
-    padding-top: 42px;
-  }
 }
 
 @media (max-width: 760px) {
-  .outcomes-model {
-    padding-bottom: 38px;
-    padding-top: 38px;
-  }
-
-  .stage {
-    width: min(100%, 430px);
-  }
-
   .framework-list li {
     grid-template-columns: 26px 1fr;
   }
@@ -713,7 +779,6 @@
     padding: 8px 13px;
   }
 
-  .framework-card,
   .definition-card {
     padding-left: 14px;
   }
