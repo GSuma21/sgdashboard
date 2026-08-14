@@ -10,14 +10,14 @@ body {
 }
 
 h2 {
-    font-family: Manrope;
+    font-family: var(--sg-font-heading);
     font-weight: 700;
     font-style: Bold;
     font-size: 36px;
 }
 
 .animation-description {
-    font-family: Manrope;
+    font-family: var(--sg-font-body);
     font-weight: 400;
     font-style: Regular;
     font-size: 20px;
@@ -45,7 +45,7 @@ h2 {
 }
 
 .section-sub-title {
-    font-family: Manrope;
+    font-family: var(--sg-font-body);
     font-weight: 700;
     font-style: Bold;
     font-size: 20px;
@@ -80,7 +80,7 @@ h2 {
     height: 380px;
     padding: 20px 10px;
     border-radius: 15px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--sg-font-body);
     background-color: #d0d0d0;
   }
 

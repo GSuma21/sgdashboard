@@ -510,7 +510,7 @@ export class WorldMapComponent implements OnInit {
       max-width: ${tooltipMaxWidth}px;
       min-width: fit-content;
       border: 1px solid #000;
-      font-family: Arial, sans-serif;
+      font-family: var(--sg-font-body, "Source Sans 3", sans-serif);
       max-height: 70vh;
       overflow-y: auto;
       overflow-x: hidden;

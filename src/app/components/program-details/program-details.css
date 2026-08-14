@@ -7,7 +7,7 @@
 }
 
 .landing-container {
-    font-family: Arial, sans-serif;
+    font-family: var(--sg-font-body);
 }
 
 
@@ -634,7 +634,7 @@ mat-icon {
   max-width: 520px; /* instead of fixed width */
   box-sizing: border-box; /* FIX overflow issue */
   padding: 20px 24px;
-  font-family: Arial, sans-serif;
+  font-family: var(--sg-font-body);
 }
 
 /* Header */
