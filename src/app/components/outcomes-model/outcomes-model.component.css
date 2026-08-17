@@ -639,17 +639,30 @@
 
 .program-mode-cards {
   display: grid;
-  gap: 18px;
+  gap: 80px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin: 0 0 34px;
+  /* margin: 0 0 34px; */
 }
 
 .program-mode-card {
-  background: color-mix(in srgb, var(--active-color) 11%, #fff);
-  border: 2px solid var(--active-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: flex-start;
+
+  padding: 18px 22px;
+  gap: 4px;
+
+  width: 180px;
+  /* height: 313.02px; */
+
+  background: color-mix(in srgb, var(--active-color) 15%, #fff);
+  border: 2.09px solid var(--active-color);
+  box-shadow: 4.17px 4.17px 20.87px rgba(157, 107, 153, 0.24);
+  border-radius: 20.87px;
+
   color: #111;
-  min-height: 266px;
-  padding: 18px 20px;
+  box-sizing: border-box;
 }
 
 .program-card-nav {
@@ -665,20 +678,20 @@
 .program-mode-tag {
   background: var(--active-color);
   border-radius: 999px;
-  color: #fff;
+  color: #000000;
   display: inline-block;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1.1;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   max-width: 174px;
-  padding: 8px 13px;
+  padding: 4px 7px;
 }
 
 .program-mode-card p {
   color: #111;
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 600;
   line-height: 1.22;
   margin: 0;
 }
@@ -697,7 +710,7 @@
 .program-layer-tiles {
   display: flex;
   flex-wrap: wrap;
-  gap: 13px;
+  gap: 11px;
   max-width: 650px;
 }
 
@@ -706,18 +719,51 @@
   appearance: none;
   background: #fff;
   border: 2px solid var(--tile-color);
-  border-radius: 999px;
+  border-radius: 24px;
   color: var(--tile-color);
   cursor: pointer;
   font-family: 'Source Sans 3', sans-serif;
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 700;
   line-height: 1;
-  padding: 9px 13px;
+  padding: 9px 19px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
+/* Active tile - same style as .pill.active */
 .program-layer-tile.active {
-  background: color-mix(in srgb, var(--tile-color) 7%, #fff);
+  background: var(--tile-color);
+  border-color: var(--tile-color);
+  color: #fff;
+}
+
+.program-layer-tile:focus,
+.program-layer-tile:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Hover */
+.program-layer-tile:not(:disabled):hover {
+  background: var(--tile-color);
+  border-color: var(--tile-color);
+  color: #fff;
+}
+
+/* Disabled tiles - Society / System Institutions */
+.program-layer-tile:disabled {
+  background: #fff;
+  border: 2px dotted #aaa;
+  color: #aaa !important;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+/* No hover effect for disabled tiles */
+.program-layer-tile:disabled:hover {
+  background: #fff;
+  border-color: #aaa;
+  color: #aaa !important;
 }
 
 /* ---------- responsive (matches raw's actual breakpoints) ---------- */

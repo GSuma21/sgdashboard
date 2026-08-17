@@ -708,3 +708,8 @@ mat-icon {
   color: var(--text-color);
   flex-shrink: 0;
 }
+
+.outcomes-full-width {
+  width: calc(100% + 15%);
+  margin-left: -7.5%;
+}

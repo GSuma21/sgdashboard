@@ -76,24 +76,28 @@
                         </button>
 
                         } -->
-                         <ng-container>
-     <app-outcomes-model
-  [showProgramPanel]="!!programData1"
-  [programOutcomeData]="programData1">
-</app-outcomes-model>
-    </ng-container>
+                         
                     </div>
-                    <div class="impact-cards" *ngIf="impactCardList.length">
+                    
+                    <!-- <div class="impact-cards" *ngIf="impactCardList.length">
                         <div class="impact-card" *ngFor="let item of impactCardList; let i = index">
                             <div class="icon" [style.background-color]="colors[i % colors.length]"></div>
                             <div>
                                 <p class="card-text">{{ item }}</p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
+                
             </div>
             }
+            <div class="outcomes-full-width">
+  <app-outcomes-model
+    [showProgramPanel]="!!programData1"
+    [programOutcomeData]="programData1">
+  </app-outcomes-model>
+</div>
+
             <div *ngIf="displayImages.length" class="details-section gallery-block">
             <h3 class="heading">Gallery</h3>
             <section class="gallery-section">

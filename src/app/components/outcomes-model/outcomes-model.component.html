@@ -299,7 +299,7 @@
             [class.active]="selectedLayerKey === layer.key" [disabled]="!isProgramLayerAvailable(layer.key)"
             [style.--tile-color]="layer.color"
             [style.border-style]="isProgramLayerAvailable(layer.key) ? 'solid' : 'dashed'"
-            [style.color]="isProgramLayerAvailable(layer.key) ? layer.color : '#aaa'" (click)="selectLayer(layer.key)">
+            (click)="selectLayer(layer.key)">
             {{ layer.chipLabel }}
           </button>
         </div>
