@@ -32,6 +32,8 @@ export class OutcomesModelComponent implements OnChanges {
   readonly programCardsPerPage = 3;
   private readonly diagramCenter = 300;
 
+
+
   ngOnChanges(): void {
     this.selectedLayerKey = this.activeLayer || this.programOutcomeData?.layerKey || this.selectedLayerKey || this.config.defaultLayer;
     if (this.hasProgramOutcomeData && !this.isProgramLayerAvailable(this.selectedLayerKey)) {
@@ -493,4 +495,19 @@ export class OutcomesModelComponent implements OnChanges {
   isLayerHovered(layerKey: OutcomesLayerKey): boolean {
     return this.hoveredLayerKey === layerKey;
   }
+
+get programCardPages(): number[] {
+  return Array.from(
+    { length: this.programCardPageCount },
+    (_, index) => index
+  );
+}
+
+goToProgramCardPage(pageIndex: number): void {
+  if (pageIndex < 0 || pageIndex >= this.programCardPageCount) {
+    return;
+  }
+
+  this.cardPageIndex = pageIndex;
+}
 }

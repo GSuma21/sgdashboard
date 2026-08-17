@@ -34,14 +34,15 @@
             </filter>
           </defs>
 
-          <circle id="netGlow" cx="300" cy="300" r="304"
-            [attr.fill]="isReferenceLayerActive('network') || isLayerHovered('network')
+          <circle id="netGlow" cx="300" cy="300" r="304" [attr.fill]="isReferenceLayerActive('network') || isLayerHovered('network')
   ? 'url(#netActive)'
   : 'url(#netRest)'" filter="url(#soft)"></circle>
 
           <g id="netWeb" mask="url(#netMask)" pointer-events="none">
-            <g id="webBack" [attr.stroke]="isReferenceLayerActive('network') || isLayerHovered('network') ? '#FFFFFF' : '#DEDEDE'"
-              [attr.fill]="isReferenceLayerActive('network') || isLayerHovered('network') ? '#FFFFFF' : '#DEDEDE'" stroke-width="0.45">
+            <g id="webBack"
+              [attr.stroke]="isReferenceLayerActive('network') || isLayerHovered('network') ? '#FFFFFF' : '#DEDEDE'"
+              [attr.fill]="isReferenceLayerActive('network') || isLayerHovered('network') ? '#FFFFFF' : '#DEDEDE'"
+              stroke-width="0.45">
               <line x1="192.6" y1="109.8" x2="150.1" y2="131.5"></line>
               <line x1="79.7" y1="289.7" x2="45.1" y2="289.3"></line>
               <line x1="444.9" y1="501.7" x2="437.4" y2="550"></line>
@@ -95,8 +96,10 @@
               <circle cx="319.4" cy="567" r="2.0" stroke="none"></circle>
               <circle cx="45.1" cy="289.3" r="2.0" stroke="none"></circle>
             </g>
-            <g id="webFront" [attr.stroke]="isReferenceLayerActive('network') || isLayerHovered('network') ? '#FFFFFF' : '#C4C4C4'"
-              [attr.fill]="isReferenceLayerActive('network') || isLayerHovered('network') ? '#FFFFFF' : '#C4C4C4'" stroke-width="0.55">
+            <g id="webFront"
+              [attr.stroke]="isReferenceLayerActive('network') || isLayerHovered('network') ? '#FFFFFF' : '#C4C4C4'"
+              [attr.fill]="isReferenceLayerActive('network') || isLayerHovered('network') ? '#FFFFFF' : '#C4C4C4'"
+              stroke-width="0.55">
               <line x1="84" y1="300" x2="148" y2="300"></line>
               <line x1="452" y1="300" x2="516" y2="300"></line>
               <line x1="150" y1="132" x2="234" y2="89"></line>
@@ -231,53 +234,113 @@
             <h3>{{ programPanelTitle }}</h3>
             <p>{{ programPanelDescription }}</p>
           </div>
-          <button type="button" class="info-icon-button"
-            [attr.aria-label]="'Show ' + programPanelTitle + ' explanation'" (click)="openInfoModal()">
-            <span class="material-icons" aria-hidden="true">info</span>
+          <button type="button" class="info-button" [attr.aria-label]="'Show ' + programPanelTitle + ' explanation'"
+            (click)="openInfoModal()">
+
+            <img src="assets/icons/info.svg" alt="" aria-hidden="true">
+
           </button>
         </div>
 
         <div class="program-card-carousel" *ngIf="programCards.length">
-          <button type="button" class="info-icon-button program-card-nav" aria-label="Show previous cards"
-            [disabled]="!canGoToPreviousProgramCards" *ngIf="canShowProgramCardControls"
-            (click)="showPreviousProgramCards()">
-            <span class="material-icons" aria-hidden="true">chevron_left</span>
+
+          <!-- Left Arrow -->
+          <button type="button" class="program-card-nav program-card-nav-prev" aria-label="Show previous cards"
+            *ngIf="canShowProgramCardControls && canGoToPreviousProgramCards" (click)="showPreviousProgramCards()">
+
+            <img src="assets/icons/arrow-left.svg" alt="" aria-hidden="true">
           </button>
 
-          <div class="program-mode-cards"
-            [style.grid-template-columns]="programCardVariant === 'partner' ? 'repeat(3, 154px)' : null"
-            [style.gap]="programCardVariant === 'partner' ? '36px' : null">
-            <article class="program-mode-card"
-              *ngFor="let card of visibleProgramCards; let cardIndex = index; trackBy: trackByIndex"
-              [style.background]="programCardVariant === 'partner' ? '#fff' : null"
-              [style.border]="programCardVariant === 'partner' ? '0' : null"
-              [style.border-radius]="programCardVariant === 'partner' ? '8px' : null"
-              [style.box-shadow]="programCardVariant === 'partner' ? '0 2px 12px rgba(0,0,0,.16)' : null"
-              [style.min-height]="programCardVariant === 'partner' ? '202px' : null"
-              [style.padding]="programCardVariant === 'partner' ? '18px 14px 14px' : null">
-              <ng-container *ngIf="programCardVariant === 'partner'; else outcomeProgramCard">
-                <img [src]="getProgramCardImage(card)" [alt]="card.alt || getProgramCardLabel(card, cardIndex)"
-                  style="display:block;height:82px;margin:0 auto 22px;object-fit:contain;width:112px">
-                <h4 style="color:#151b27;font-size:27px;margin:0 0 10px;text-align:center">
-                  {{ getProgramCardLabel(card, cardIndex) }}
-                </h4>
-                <a *ngIf="getProgramCardLink(card)" [href]="getProgramCardLink(card)" target="_blank"
-                  rel="noopener noreferrer"
-                  style="color:#151b27;display:block;font-size:12px;font-weight:800;text-align:center">
-                  {{ card.ctaLabel || 'Know more' }} →
-                </a>
-              </ng-container>
-              <ng-template #outcomeProgramCard>
-                <span class="program-mode-tag">{{ getProgramCardLabel(card, cardIndex) }}</span>
-                <p>{{ getProgramCardDescription(card) }}</p>
-              </ng-template>
-            </article>
+
+          <!-- Cards -->
+          <div class="program-card-content">
+
+            <div class="program-mode-cards" [style.grid-template-columns]="programCardVariant === 'partner'
+  ? 'repeat(3, 154px)'
+  : null" [style.gap]="programCardVariant === 'partner' ? '36px' : null">
+
+              <article class="program-mode-card" *ngFor="
+          let card of visibleProgramCards;
+          let cardIndex = index;
+          trackBy: trackByIndex
+        " [style.background]="programCardVariant === 'partner' ? '#fff' : null"
+                [style.border]="programCardVariant === 'partner' ? '0' : null"
+                [style.border-radius]="programCardVariant === 'partner' ? '8px' : null" [style.box-shadow]="programCardVariant === 'partner'
+          ? '0 2px 12px rgba(0,0,0,.16)'
+          : null" [style.min-height]="programCardVariant === 'partner' ? '202px' : null" [style.padding]="programCardVariant === 'partner'
+          ? '18px 14px 14px'
+          : null">
+
+                <ng-container *ngIf="programCardVariant === 'partner'; else outcomeProgramCard">
+
+                  <img [src]="getProgramCardImage(card)" [alt]="card.alt || getProgramCardLabel(card, cardIndex)" style="
+              display:block;
+              height:82px;
+              margin:0 auto 22px;
+              object-fit:contain;
+              width:112px;
+            ">
+
+                  <h4 style="
+              color:#151b27;
+              font-size:27px;
+              margin:0 0 10px;
+              text-align:center;
+            ">
+                    {{ getProgramCardLabel(card, cardIndex) }}
+                  </h4>
+
+                  <a *ngIf="getProgramCardLink(card)" [href]="getProgramCardLink(card)" target="_blank"
+                    rel="noopener noreferrer" style="
+              color:#151b27;
+              display:block;
+              font-size:12px;
+              font-weight:800;
+              text-align:center;
+            ">
+                    {{ card.ctaLabel || 'Know more' }} →
+                  </a>
+
+                </ng-container>
+
+                <ng-template #outcomeProgramCard>
+                  <span class="program-mode-tag">
+                    {{ getProgramCardLabel(card, cardIndex) }}
+                  </span>
+
+                  <p>
+                    {{ getProgramCardDescription(card) }}
+                  </p>
+                </ng-template>
+
+              </article>
+            </div>
+
+
+            <!-- Page indicators -->
+            <div class="program-card-indicators" *ngIf="canShowProgramCardControls" aria-label="Card pages">
+
+              <button
+  *ngFor="let page of programCardPages; let pageIndex = index"
+  type="button"
+  class="program-card-indicator"
+  [class.active]="pageIndex === cardPageIndex"
+  [attr.aria-label]="'Go to page ' + (pageIndex + 1)"
+  (click)="goToProgramCardPage(pageIndex)">
+</button>
+
+            </div>
+
           </div>
 
-          <button type="button" class="info-icon-button program-card-nav" aria-label="Show next cards"
-            [disabled]="!canGoToNextProgramCards" *ngIf="canShowProgramCardControls" (click)="showNextProgramCards()">
-            <span class="material-icons" aria-hidden="true">chevron_right</span>
+
+          <!-- Right Arrow -->
+          <button type="button" class="program-card-nav program-card-nav-next" aria-label="Show next cards"
+            *ngIf="canShowProgramCardControls && canGoToNextProgramCards" (click)="showNextProgramCards()">
+
+            <img src="assets/icons/arrow-right.svg" alt="" aria-hidden="true">
           </button>
+
         </div>
 
         <section class="program-mode-evidence" *ngIf="programEvidenceResources.length">
@@ -404,7 +467,8 @@
           </ng-container>
 
           <ng-template #configuredPanel>
-            <article class="framework-card definition-card2" *ngIf="selectedLayer.listItems?.length; else frameworkDefinitionPanel">
+            <article class="framework-card definition-card2"
+              *ngIf="selectedLayer.listItems?.length; else frameworkDefinitionPanel">
               <div class="framework-heading">
                 <span class="material-icons heading-icon" aria-hidden="true">{{ selectedLayer.icon }}</span>
                 <div>

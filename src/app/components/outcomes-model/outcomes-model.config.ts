@@ -120,7 +120,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
   layerFootnote: 'Click on any of the above Layer to read more about it.',
   chipFootnote: 'Click on any of the above quick chip to read more about it.',
   defaultLayer: 'students',
-  programChipLabel: 'Learners Outcomes',
+  programChipLabel: 'Learner Outcomes:',
   programColor: '#ff9911',
   layers: [
     {
@@ -149,7 +149,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
       panelType: 'list',
       heading: 'Learners Outcomes',
       subheading:
-        "Measuring improvements in children's enrollment, retention, learning, aspirations, and well-being.",
+        "Measures whether children are experiencing improved learning outcomes through better access, learning, well-being, aspirations, and future readiness.",
       body:
         'The learner at the centre — their learning, well-being and aspirations are what every layer works toward.',
       listItems: [
@@ -439,6 +439,38 @@ export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
       label: 'Enrollment',
       description:
         '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
+    },
+    {
+      label: 'Retention',
+      description:
+        '60% of schools will effectively implement PBL as pedagogy in their Maths, Science Classes.',
+    },
+    {
+      label: 'Learning',
+      description:
+        '10% of improvement will be shown from baseline to endline in academic achievement and 21st century skills.',
+    },
+
+
+     {
+      label: 'Enrollment',
+      description:
+        '2:75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
+    },
+    {
+      label: 'Retention',
+      description:
+        '60% of schools will effectively implement PBL as pedagogy in their Maths, Science Classes.',
+    },
+    {
+      label: 'Learning',
+      description:
+        '10% of improvement will be shown from baseline to endline in academic achievement and 21st century skills.',
+    },
+     {
+      label: 'Enrollment',
+      description:
+        '3:75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
     },
     {
       label: 'Retention',

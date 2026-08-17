@@ -470,6 +470,12 @@
   width: 30px;
 }
 
+.info-icon-button img {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
 .info-icon-button span {
   font-size: 18px;
 }
@@ -594,7 +600,7 @@
 }
 
 .program-mode-heading {
-  align-items: flex-start;
+  align-items: center;
   display: grid;
   gap: 16px;
   grid-template-columns: 48px minmax(0, 1fr) 34px;
@@ -611,7 +617,7 @@
 .program-mode-heading h3 {
   color: var(--active-color);
   font-family: 'Source Sans 3', sans-serif;
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 800;
   line-height: 1.15;
   margin: 0 0 4px;
@@ -619,19 +625,18 @@
 
 .program-mode-heading p {
   color: #111;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.45;
   margin: 0;
 }
 
-.program-card-carousel {
-  align-items: center;
-  display: grid;
-  gap: 14px;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  margin: 0 0 34px;
+.info-button{
+  background: transparent;
+  border: none;
 }
+
+
 
 .program-card-carousel .program-mode-cards {
   margin: 0;
@@ -704,7 +709,7 @@
   color: #111;
   font-size: 16px;
   font-weight: 800;
-  margin: 0 0 18px;
+  margin: 0 0 13px;
 }
 
 .program-layer-tiles {
@@ -847,4 +852,120 @@
     grid-column: 2;
     padding-left: 0;
   }
+}
+/* ---------- program card carousel ---------- */
+.program-card-carousel {
+  position: relative;
+  width: 100%;
+  margin: 0 0 34px;
+  box-sizing: border-box;
+}
+
+/* Only the cards occupy this area */
+.program-card-content {
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Cards */
+.program-mode-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 180px);
+  gap: 36px;
+  width: max-content;
+  box-sizing: border-box;
+}
+
+/* Arrows are positioned OUTSIDE the card area */
+.program-card-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  padding: 0;
+
+  width: 40px;
+  z-index: 10;
+}
+
+.program-card-nav img {
+  display: block;
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.program-card-nav:hover img {
+  transform: scale(1.08);
+}
+
+.program-card-nav:focus,
+.program-card-nav:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.program-card-nav:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+/* Left arrow */
+.program-card-nav-prev {
+  left: -50px;
+}
+
+/* Right arrow */
+.program-card-nav-next {
+  right: -50px;
+}
+/* ---------- page indicators ---------- */
+
+.program-card-indicators {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.program-card-indicator {
+  appearance: none;
+  background: #000;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 7px;
+  padding: 0;
+  width: 7px;
+}
+
+.program-card-indicator.active {
+  height: 10px;
+  width: 10px;
+}
+
+.program-card-indicator:hover {
+  transform: scale(1.15);
+}
+
+.program-card-indicator:focus,
+.program-card-indicator:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.program-mode-card {
+  min-width: 0;
+  box-sizing: border-box;
 }
