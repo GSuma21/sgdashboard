@@ -20,7 +20,7 @@
   line-height: 1.6;
   padding: 0 var(--side);
   border-top: 1px solid var(--line);
-  margin-top: 30px;
+  margin-top: 65px;
 }
 
 @media (max-width: 1100px) {
@@ -110,6 +110,7 @@
 
 .rail-sections {
   min-width: 0;
+  margin-top: 20px;
 }
 
 .rail {
@@ -119,8 +120,8 @@
   justify-content: center;
   min-height: calc(100vh - var(--stage-top));
   padding-bottom: calc(60px + var(--rail-lift));
-  padding-top: 60px;
-  margin-top: 80px;
+  /* padding-top: 60px; */
+  /* margin-top: 80px; */
 }
 
 /* ---------- eyebrows ----------
@@ -223,6 +224,12 @@
   color: var(--pill-active-color, #fff);
 }
 
+.pill:focus,
+.pill:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 .pill[data-key='students'].active,
 .pill[data-key='learner'].active {
   background: #ff9911;
@@ -238,7 +245,8 @@
 
 /* ---------- narrative card (== raw .defbox) ---------- */
 
-.definition-card {
+.definition-card,
+.definition-card2{
   border-left: 4px solid var(--active-color);
   padding: 2px 0 2px 20px;
 }
@@ -307,17 +315,17 @@
 .framework-heading h3 {
   color: var(--ink);
   font-family: Comfortaa, cursive;
-  font-size: 24px;
+  font-size: 19px;
   line-height: 1.2;
   margin: 8px 0 10px;
 }
 
 .fwsub {
   color: #463f5c;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   line-height: 1.45;
-  margin: 0 0 14px;
+  margin: 0 0 10px;
 }
 
 .framework-list {
