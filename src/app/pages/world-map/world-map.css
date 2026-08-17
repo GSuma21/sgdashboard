@@ -213,10 +213,10 @@
 /* Tablet */
 @media (max-width: 1024px) {
   .legend {
-    right: 16px;
-    min-width: 170px;
-    max-width: 220px;
-  }
+      right: 1rem;
+      min-width: 10.625rem;
+      max-width: 13.75rem;
+    }
 
 }
 
