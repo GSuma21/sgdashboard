@@ -48,19 +48,55 @@
 
                 </div>
 
-                <div  *ngIf="programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted" class="indiactor-container">
+                @if (
+                programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted
+                ||
+                programData.leaders_driving_improvements
+                ) {
+                <div class="indiactor-container">
+                
+                    @if (
+                    programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted
+                    ) {
                     <div class="indicator-card">
                         <div class="indicator-image">
-                            <img src='./assets/icons/micro_improvements_initiated.svg'>
+                            <img src="./assets/icons/micro_improvements_initiated.svg">
                         </div>
+                
                         <div class="indicator-container">
-                            <h5 class="indicator-value text-left">Micro improvements initiated</h5>
-                            <p class="indicator-label">{{
+                            <h5 class="indicator-value text-left">
+                                {{ programDetailsConfig.indicators.microImprovementsInitiated.label }}
+                            </h5>
+                
+                            <p class="indicator-label">
+                                {{
                                 programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted
-                                }}</p>
+                                }}
+                            </p>
                         </div>
                     </div>
+                    }
+                
+                    @if (programData.leaders_driving_improvements) {
+                    <div class="indicator-card">
+                        <div class="indicator-image">
+                            <img src="./assets/icons/leaders_driving__improvements.svg">
+                        </div>
+                
+                        <div class="indicator-container">
+                            <h5 class="indicator-value text-left">
+                                {{ programDetailsConfig.indicators.leadersDrivingImprovements.label }}
+                            </h5>
+                
+                            <p class="indicator-label">
+                                {{ programData.leaders_driving_improvements }}
+                            </p>
+                        </div>
+                    </div>
+                    }
+                
                 </div>
+                }
             </div>
             @if (programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved) {
                 <div *ngIf="programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved" class="details-section impact-section">

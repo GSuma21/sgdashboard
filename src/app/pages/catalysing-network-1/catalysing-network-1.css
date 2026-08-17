@@ -62,7 +62,7 @@
     width: fit-content;
     min-width: 200px;
     border-radius: 8px;
-    font-family: Arial, sans-serif;
+    font-family: var(--sg-font-body);
     display: flex;
     flex-direction: column;
     justify-content: end;
@@ -188,4 +188,3 @@
   height: 16px;
   margin-right: 6px;
 }
-

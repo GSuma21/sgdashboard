@@ -273,7 +273,7 @@ mat-form-field{
   opacity: 0;
   max-width: 250px;
   word-wrap: break-word;
-  font-family: 'Arial', sans-serif;
+  font-family: var(--sg-font-body);
 }
 ::ng-deep .mat-mdc-form-field-hint-spacer:empty {
   display: none;

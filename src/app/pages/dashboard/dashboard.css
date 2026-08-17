@@ -214,14 +214,14 @@
   color: #0B1623;
   font-size: 1.5rem;
   margin-top: 0;
-  font-family: Urbanist !important;
+  font-family: var(--sg-font-heading) !important;
   margin-bottom: 1.5rem;
 }
 
 .container h4 {
   color: #0B1623;
   font-size: 1.1rem;
-  font-family: Urbanist !important;
+  font-family: var(--sg-font-heading) !important;
   margin-bottom: 1.5rem;
 }
 
@@ -380,4 +380,3 @@
 .flag {
   margin-right: 1.5rem;
 }
-

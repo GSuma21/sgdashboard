@@ -8,6 +8,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { LoaderRunnerService } from '../../services/loader-runner.service';
 import { MatDialog } from '@angular/material/dialog';
+import { programDetailsConfig } from '../../../config/programDetailsConfig';
 
 @Component({
   selector: 'app-program-details',
@@ -17,6 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ProgramDetails {
   programData :any
+  programDetailsConfig = programDetailsConfig;
   baseUrl: any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
   colors = [
   'var(--secondary-color-light)',

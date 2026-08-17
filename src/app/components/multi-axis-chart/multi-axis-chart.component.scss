@@ -50,7 +50,7 @@ mat-card {
 
 .legend {
   display: flex;
-  font-family: Arial, sans-serif;
+  font-family: var(--sg-font-body);
   gap: 10px;
   align-items: center;
   justify-content: end;
@@ -110,7 +110,7 @@ mat-card {
   .legend {
     display: flex;
     flex-direction: column;
-    font-family: Arial, sans-serif;
+    font-family: var(--sg-font-body);
     gap: 5px;
     align-items: flex-start;
     justify-content: end;

@@ -39,7 +39,7 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: var(--sg-font-body);
 }
 
 @media (max-width: 768px) {
@@ -66,4 +66,3 @@
   background-color: #ffffff;
 }
 }
-
