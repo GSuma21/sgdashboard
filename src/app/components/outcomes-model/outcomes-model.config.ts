@@ -489,6 +489,7 @@ export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
       type: 'PDF',
       size: '3.6MB',
       tag: 'Enrollment',
+      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
     },
     {
       title: 'Evaluation.pdf',

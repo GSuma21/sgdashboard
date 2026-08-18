@@ -825,12 +825,12 @@
 
         <div class="program-mode-heading">
 
-          <span
-            class="material-icons program-mode-icon"
-            aria-hidden="true"
-          >
-            {{ selectedLayer.icon }}
-          </span>
+          <img
+  src="assets/icons/student.svg"
+  alt=""
+  aria-hidden="true"
+  class="program-mode-icon"
+/>
 
           <div>
             <h3>{{ programPanelTitle }}</h3>
@@ -1128,9 +1128,10 @@
 
   <img
     src="assets/icons/mdi_eye.svg"
-    alt=""
     aria-hidden="true"
-    class="evidence-view-icon"
+    alt="View evidence"
+  class="evidence-view-icon"
+  (click)="openEvidence($event, evidence)"
   />
 </span>
 

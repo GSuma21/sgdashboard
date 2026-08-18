@@ -13,7 +13,7 @@
   --ink: #1a1622;
   --muted: #6b6580;
   --line: #ece8f2;
-  background: #fff;
+  background: #ffffff00;
   color: var(--ink);
   font-family: 'Source Sans 3', sans-serif;
   font-size: 18px;
@@ -622,9 +622,10 @@
 }
 
 .program-mode-icon {
-  color: var(--active-color);
-  font-size: 44px;
-  line-height: 1;
+  display: block;
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
 }
 
 .program-mode-heading h3 {
@@ -673,10 +674,10 @@
   justify-content: start;
   align-items: flex-start;
 
-  padding: 18px 22px;
+  padding: 18px 15px;
   gap: 4px;
 
-  width: 195px;
+  width: 190px;
   /* height: 313.02px; */
 
   background: color-mix(in srgb, var(--active-color) 15%, #fff);
@@ -884,6 +885,7 @@
   width: 100%;
   overflow: hidden;
   box-sizing: border-box;
+  margin-right: 15px;
 }
 
 /* Cards */
@@ -1029,6 +1031,7 @@
   grid-template-columns: 34px 1fr auto;
   min-height: 66px;
   padding: 9px 11px;
+  background-color: #fff;
 }
 
 .evidence-meta-row {

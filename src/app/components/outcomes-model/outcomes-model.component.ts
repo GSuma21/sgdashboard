@@ -704,4 +704,13 @@ truncateLabel(text: string, limit = 21): string {
 isLabelTruncated(text: string, limit = 21): boolean {
   return !!text && text.length > limit;
 }
+
+openEvidence(event: MouseEvent, evidence: ProgramEvidenceResource): void {
+  event.preventDefault();
+  event.stopPropagation();
+
+  if (evidence?.url) {
+    window.open(evidence.url, '_blank', 'noopener,noreferrer');
+  }
+}
 }
