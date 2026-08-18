@@ -1097,10 +1097,6 @@
     gap: 12px;
   }
 
-  /*
-   * Keep the arrows at the same visual distance
-   * as the program-card arrows.
-   */
   .evidence-nav {
     width: 40px;
     height: 42px;
@@ -1123,4 +1119,18 @@
     height: 4px;
     margin-top: 12px;
   }
+}
+
+.reference-seg.disabled {
+  cursor: not-allowed;
+}
+
+.reference-seg.disabled:hover {
+  fill: #e5e5e5 !important;
+  stroke: #bdbdbd !important;
+}
+
+.iconwrap.disabled {
+  filter: grayscale(1) opacity(0.35);
+  pointer-events: none;
 }

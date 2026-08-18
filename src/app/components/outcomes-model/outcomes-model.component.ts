@@ -381,66 +381,86 @@ onWindowResize(): void {
     return this.selectedLayerKey === this.referenceLayerToKey(referenceLayer);
   }
 
-  selectReferenceLayer(referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'): void {
-    this.selectLayer(this.referenceLayerToKey(referenceLayer));
+  selectReferenceLayer(
+  referenceLayer:
+    | 'learner'
+    | 'school'
+    | 'community'
+    | 'society'
+    | 'system'
+    | 'network'
+): void {
+  const layerKey = this.referenceLayerToKey(referenceLayer);
+
+  if (this.isDiagramLayerDisabled(layerKey)) {
+    return;
   }
+
+  this.selectLayer(layerKey);
+}
 
   getReferenceLayerFill(
-    referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
-  ): string {
-    const layer = this.layers.find(
-      (item) => item.key === this.referenceLayerToKey(referenceLayer)
-    );
+  referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+): string {
+  const layerKey = this.referenceLayerToKey(referenceLayer);
+  const layer = this.layers.find(item => item.key === layerKey);
 
-    const layerKey = this.referenceLayerToKey(referenceLayer);
-
-    if (
-      this.isReferenceLayerActive(referenceLayer) ||
-      this.isLayerHovered(layerKey)
-    ) {
-      return layer?.fill || '#FAFAFA';
-    }
-
-    return '#FAFAFA';
+  // Disabled layer = always grey
+  if (this.isDiagramLayerDisabled(layerKey)) {
+    return '#E5E5E5';
   }
+
+  if (
+    this.isReferenceLayerActive(referenceLayer) ||
+    this.isLayerHovered(layerKey)
+  ) {
+    return layer?.fill || '#FAFAFA';
+  }
+
+  return '#FAFAFA';
+}
 
   getReferenceLayerStroke(
-    referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
-  ): string {
-    const layer = this.layers.find(
-      (item) => item.key === this.referenceLayerToKey(referenceLayer)
-    );
+  referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+): string {
+  const layerKey = this.referenceLayerToKey(referenceLayer);
+  const layer = this.layers.find(item => item.key === layerKey);
 
-    const layerKey = this.referenceLayerToKey(referenceLayer);
-
-    if (
-      this.isReferenceLayerActive(referenceLayer) ||
-      this.isLayerHovered(layerKey)
-    ) {
-      return layer?.color || '#E4E4E4';
-    }
-
-    return '#E4E4E4';
+  // Disabled layer = always grey
+  if (this.isDiagramLayerDisabled(layerKey)) {
+    return '#BDBDBD';
   }
+
+  if (
+    this.isReferenceLayerActive(referenceLayer) ||
+    this.isLayerHovered(layerKey)
+  ) {
+    return layer?.color || '#E4E4E4';
+  }
+
+  return '#E4E4E4';
+}
 
   getReferenceLabelColor(
-    referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
-  ): string {
-    const layer = this.layers.find(
-      (item) => item.key === this.referenceLayerToKey(referenceLayer)
-    );
+  referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+): string {
+  const layerKey = this.referenceLayerToKey(referenceLayer);
+  const layer = this.layers.find(item => item.key === layerKey);
 
-    const layerKey = this.referenceLayerToKey(referenceLayer);
-
-    if (
-      this.isReferenceLayerActive(referenceLayer) ||
-      this.isLayerHovered(layerKey)
-    ) {
-      return layer?.color || '#9A9A9A';
-    }
-
-    return '#9A9A9A';
+  // Disabled layer = always grey
+  if (this.isDiagramLayerDisabled(layerKey)) {
+    return '#AAAAAA';
   }
+
+  if (
+    this.isReferenceLayerActive(referenceLayer) ||
+    this.isLayerHovered(layerKey)
+  ) {
+    return layer?.color || '#9A9A9A';
+  }
+
+  return '#9A9A9A';
+}
 
   getLayerColor(layerKey: OutcomesLayerKey): string {
     return this.layers.find((layer) => layer.key === layerKey)?.color || '#9a9a9a';
@@ -610,5 +630,10 @@ get evidenceProgress(): number {
 
 get evidenceCardsPerPage(): number {
   return window.innerWidth <= 768 ? 1 : 2;
+}
+
+isDiagramLayerDisabled(layerKey: OutcomesLayerKey): boolean {
+  return this.hasProgramOutcomeData &&
+    !this.isProgramLayerAvailable(layerKey);
 }
 }
