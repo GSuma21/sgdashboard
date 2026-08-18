@@ -971,20 +971,20 @@
 }
 
 /* ---------- evidence carousel ---------- */
+/* ---------- evidence carousel ---------- */
 
 .evidence-carousel {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  position: relative;
   width: 100%;
-  min-width: 0;
+  margin: 0 0 34px;
   box-sizing: border-box;
 }
 
+/* Only cards + scrollbar occupy this area */
 .evidence-content {
-  flex: 1 1 auto;
-  min-width: 0;
-  width: 0;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* Evidence cards */
@@ -999,30 +999,67 @@
 }
 
 .evidence-card {
-  align-items: center;
-
   min-width: 0;
   width: 100%;
   max-width: 100%;
-
   box-sizing: border-box;
+}
 
-  border: 1px solid var(--line);
-  border-radius: 8px;
+/* ---------- Evidence navigation ---------- */
 
-  color: var(--ink);
+.evidence-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 
-  display: grid;
-  gap: 2px 10px;
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
 
-  grid-template-areas:
-    'icon name tag'
-    'icon meta tag';
+  display: inline-flex;
 
-  grid-template-columns: 34px minmax(0, 1fr) auto;
+  height: 42px;
+  width: 40px;
 
-  min-height: 66px;
-  padding: 9px 11px;
+  justify-content: center;
+  padding: 0;
+
+  z-index: 10;
+}
+
+.evidence-nav img {
+  display: block;
+
+  width: 32px;
+  height: 32px;
+
+  object-fit: contain;
+}
+
+.evidence-nav:hover img {
+  transform: scale(1.08);
+}
+
+.evidence-nav:focus,
+.evidence-nav:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.evidence-nav:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+/* Same position as program card arrows */
+.evidence-nav-prev {
+  left: -50px;
+}
+
+.evidence-nav-next {
+  right: -50px;
 }
 
 /* ---------- black scroll/progress line ---------- */
@@ -1050,53 +1087,36 @@
   transition: width 0.3s ease;
 }
 
-/* ---------- navigation ---------- */
-
-.evidence-nav {
-  width: 36px;
-  height: 36px;
-
-  flex: 0 0 36px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 0;
-  background: transparent;
-
-  cursor: pointer;
-  padding: 0;
-}
-
-.evidence-nav img {
-  width: 20px;
-  height: 20px;
-  display: block;
-}
-
-.evidence-nav:focus,
-.evidence-nav:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
 
 /* ---------- mobile ---------- */
 
 @media (max-width: 768px) {
-
-  .evidence-carousel {
-    gap: 8px;
-  }
 
   .evidence-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
 
+  /*
+   * Keep the arrows at the same visual distance
+   * as the program-card arrows.
+   */
   .evidence-nav {
+    width: 40px;
+    height: 42px;
+  }
+
+  .evidence-nav img {
     width: 32px;
-    flex: 0 0 32px;
+    height: 32px;
+  }
+
+  .evidence-nav-prev {
+    left: -42px;
+  }
+
+  .evidence-nav-next {
+    right: -42px;
   }
 
   .evidence-scrollbar {
