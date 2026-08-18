@@ -343,19 +343,97 @@
 
         </div>
 
-        <section class="program-mode-evidence" *ngIf="programEvidenceResources.length">
-          <h4>Evidences and Resources ({{ programEvidenceResources.length }})</h4>
-          <div class="evidence-grid">
-            <a class="evidence-card" *ngFor="let evidence of programEvidenceResources; trackBy: trackByIndex"
-              [href]="evidence.url || null" [attr.target]="evidence.url ? '_blank' : null"
-              [attr.rel]="evidence.url ? 'noopener noreferrer' : null">
-              <span class="material-icons pdf-icon" aria-hidden="true">picture_as_pdf</span>
-              <span class="evidence-name">{{ evidence.title }}</span>
-              <span class="evidence-meta">{{ evidence.type }} · {{ evidence.size }}</span>
-              <span class="evidence-tag">{{ evidence.tag }}</span>
-            </a>
-          </div>
-        </section>
+        <section
+  class="program-mode-evidence"
+  *ngIf="programEvidenceResources.length"
+>
+  <h4>
+    Evidences and Resources ({{ programEvidenceResources.length }})
+  </h4>
+
+<div class="evidence-carousel">
+
+  <!-- Previous -->
+  <button
+    type="button"
+    class="evidence-nav evidence-nav-prev"
+    aria-label="Show previous evidences"
+    *ngIf="canShowEvidenceControls && canGoToPreviousEvidence"
+    (click)="showPreviousEvidence()"
+  >
+    <img
+      src="assets/icons/arrow-left.svg"
+      alt=""
+      aria-hidden="true"
+    />
+  </button>
+
+  <!-- Evidence cards -->
+  <div class="evidence-content">
+
+    <div class="evidence-grid">
+      <a
+        class="evidence-card"
+        *ngFor="
+          let evidence of visibleEvidenceResources;
+          trackBy: trackByIndex
+        "
+        [href]="evidence.url || null"
+        [attr.target]="evidence.url ? '_blank' : null"
+        [attr.rel]="evidence.url ? 'noopener noreferrer' : null"
+      >
+        <span
+          class="material-icons pdf-icon"
+          aria-hidden="true"
+        >
+          picture_as_pdf
+        </span>
+
+        <span class="evidence-name">
+          {{ evidence.title }}
+        </span>
+
+        <span class="evidence-meta">
+          {{ evidence.type }} · {{ evidence.size }}
+        </span>
+
+        <span class="evidence-tag">
+          {{ evidence.tag }}
+        </span>
+      </a>
+    </div>
+
+    <!-- Black scroll/progress line -->
+    <div
+      class="evidence-scrollbar"
+      *ngIf="canShowEvidenceControls"
+      aria-hidden="true"
+    >
+      <div
+        class="evidence-scrollbar-progress"
+        [style.width.%]="evidenceProgress"
+      ></div>
+    </div>
+
+  </div>
+
+  <!-- Next -->
+  <button
+    type="button"
+    class="evidence-nav evidence-nav-next"
+    aria-label="Show next evidences"
+    *ngIf="canShowEvidenceControls && canGoToNextEvidence"
+    (click)="showNextEvidence()"
+  >
+    <img
+      src="assets/icons/arrow-right.svg"
+      alt=""
+      aria-hidden="true"
+    />
+  </button>
+
+</div>
+</section>
 
         <div class="program-layer-tiles" aria-label="Outcome layer tiles">
           <button *ngFor="let layer of layers; trackBy: trackByLayerKey" type="button" class="program-layer-tile"

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, HostListener, Input, OnChanges } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   OUTCOMES_MODEL_CONFIG,
@@ -31,17 +31,47 @@ export class OutcomesModelComponent implements OnChanges {
   cardPageIndex = 0;
   readonly programCardsPerPage = 3;
   private readonly diagramCenter = 300;
+  evidencesPerPage = 2;
+evidencePageIndex = 0;
 
 
 
   ngOnChanges(): void {
-    this.selectedLayerKey = this.activeLayer || this.programOutcomeData?.layerKey || this.selectedLayerKey || this.config.defaultLayer;
-    if (this.hasProgramOutcomeData && !this.isProgramLayerAvailable(this.selectedLayerKey)) {
-      this.selectedLayerKey = this.firstAvailableProgramLayerKey;
-    }
-    this.selectedPanel = this.showProgramPanel && this.hasProgramOutcomeData ? 'programs' : this.selectedPanel;
-    this.cardPageIndex = 0;
+  this.selectedLayerKey =
+    this.activeLayer ||
+    this.programOutcomeData?.layerKey ||
+    this.selectedLayerKey ||
+    this.config.defaultLayer;
+
+  if (
+    this.hasProgramOutcomeData &&
+    !this.isProgramLayerAvailable(this.selectedLayerKey)
+  ) {
+    this.selectedLayerKey = this.firstAvailableProgramLayerKey;
   }
+
+  this.selectedPanel =
+    this.showProgramPanel && this.hasProgramOutcomeData
+      ? 'programs'
+      : this.selectedPanel;
+
+  this.cardPageIndex = 0;
+  this.evidencePageIndex = 0;
+}
+
+@HostListener('window:resize')
+onWindowResize(): void {
+  const newPerPage = window.innerWidth <= 768 ? 1 : 2;
+
+  if (this.evidencesPerPage !== newPerPage) {
+    this.evidencesPerPage = newPerPage;
+
+    // Prevent current page from becoming invalid
+    if (this.evidencePageIndex >= this.evidencePageCount) {
+      this.evidencePageIndex = Math.max(0, this.evidencePageCount - 1);
+    }
+  }
+}
 
   get layers(): OutcomesLayerConfig[] {
     return this.config.layers;
@@ -209,18 +239,25 @@ export class OutcomesModelComponent implements OnChanges {
     });
   }
 
-  selectLayer(layerKey: OutcomesLayerKey): void {
-    if (this.hasProgramOutcomeData && !this.isProgramLayerAvailable(layerKey)) return;
-    this.selectedLayerKey = layerKey;
-    this.selectedPanel = 'layer';
-    this.cardPageIndex = 0;
+ selectLayer(layerKey: OutcomesLayerKey): void {
+  if (this.hasProgramOutcomeData && !this.isProgramLayerAvailable(layerKey)) {
+    return;
   }
 
-  selectProgramPanel(): void {
-    if (!this.hasProgramOutcomeData) return;
-    this.selectedPanel = 'programs';
-    this.cardPageIndex = 0;
-  }
+  this.selectedLayerKey = layerKey;
+  this.selectedPanel = 'layer';
+
+  this.cardPageIndex = 0;
+  this.evidencePageIndex = 0;
+}
+
+ selectProgramPanel(): void {
+  if (!this.hasProgramOutcomeData) return;
+
+  this.selectedPanel = 'programs';
+  this.cardPageIndex = 0;
+  this.evidencePageIndex = 0;
+}
 
   showPreviousProgramCards(): void {
     this.cardPageIndex = Math.max(0, this.cardPageIndex - 1);
@@ -509,5 +546,69 @@ goToProgramCardPage(pageIndex: number): void {
   }
 
   this.cardPageIndex = pageIndex;
+}
+
+get visibleEvidenceResources(): ProgramEvidenceResource[] {
+  const startIndex = this.evidencePageIndex * this.evidenceCardsPerPage;
+
+  return this.programEvidenceResources.slice(
+    startIndex,
+    startIndex + this.evidenceCardsPerPage
+  );
+}
+
+get evidencePageCount(): number {
+  return Math.max(
+    1,
+    Math.ceil(
+      this.programEvidenceResources.length / this.evidencesPerPage
+    )
+  );
+}
+
+get canShowEvidenceControls(): boolean {
+  return this.programEvidenceResources.length > this.evidencesPerPage;
+}
+
+get canGoToPreviousEvidence(): boolean {
+  return this.evidencePageIndex > 0;
+}
+
+get canGoToNextEvidence(): boolean {
+  return this.evidencePageIndex < this.evidencePageCount - 1;
+}
+
+showPreviousEvidence(): void {
+  this.evidencePageIndex = Math.max(
+    0,
+    this.evidencePageIndex - 1
+  );
+}
+
+showNextEvidence(): void {
+  this.evidencePageIndex = Math.min(
+    this.evidencePageCount - 1,
+    this.evidencePageIndex + 1
+  );
+}
+
+get evidenceProgress(): number {
+  if (!this.programEvidenceResources.length) {
+    return 0;
+  }
+
+  const totalPages = Math.ceil(
+    this.programEvidenceResources.length / this.evidenceCardsPerPage
+  );
+
+  if (totalPages <= 1) {
+    return 100;
+  }
+
+  return ((this.evidencePageIndex + 1) / totalPages) * 100;
+}
+
+get evidenceCardsPerPage(): number {
+  return window.innerWidth <= 768 ? 1 : 2;
 }
 }

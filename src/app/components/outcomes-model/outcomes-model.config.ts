@@ -496,6 +496,31 @@ export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
       size: '3.6MB',
       tag: 'Retention',
     },
+
+    {
+      title: '2:Enrollment.pdf',
+      type: 'PDF',
+      size: '3.6MB',
+      tag: 'Enrollment',
+    },
+    {
+      title: 'Evaluation.pdf',
+      type: 'PDF',
+      size: '3.6MB',
+      tag: 'Retention',
+    },
+    {
+      title: '3:Enrollment.pdf',
+      type: 'PDF',
+      size: '3.6MB',
+      tag: 'Enrollment',
+    },
+    {
+      title: 'Evaluation.pdf',
+      type: 'PDF',
+      size: '3.6MB',
+      tag: 'Retention',
+    },
   ],
   layers: {
     schools: {
