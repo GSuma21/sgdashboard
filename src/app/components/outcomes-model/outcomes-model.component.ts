@@ -420,17 +420,22 @@ onWindowResize(): void {
   return '#FAFAFA';
 }
 
-  getReferenceLayerStroke(
+getReferenceLayerStroke(
   referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
 ): string {
   const layerKey = this.referenceLayerToKey(referenceLayer);
   const layer = this.layers.find(item => item.key === layerKey);
 
-  // Disabled layer = always grey
   if (this.isDiagramLayerDisabled(layerKey)) {
     return '#BDBDBD';
   }
 
+  // New "always show own color" behavior only on the programs page
+  if (this.hasProgramOutcomeData) {
+    return layer?.color || '#E4E4E4';
+  }
+
+  // Home page: original behavior — grey unless active/hovered
   if (
     this.isReferenceLayerActive(referenceLayer) ||
     this.isLayerHovered(layerKey)
@@ -439,6 +444,23 @@ onWindowResize(): void {
   }
 
   return '#E4E4E4';
+}
+
+getReferenceLayerStrokeWidth(
+  referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+): number {
+  const layerKey = this.referenceLayerToKey(referenceLayer);
+
+  if (this.isDiagramLayerDisabled(layerKey)) {
+    return 1;
+  }
+
+  // Only vary width on the programs page; home page keeps the original flat width
+  if (!this.hasProgramOutcomeData) {
+    return 1.3;
+  }
+
+  return this.isReferenceLayerActive(referenceLayer) ? 2 : 1;
 }
 
   getReferenceLabelColor(

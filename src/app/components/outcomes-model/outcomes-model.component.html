@@ -249,6 +249,7 @@
 
           <circle
             class="seg reference-seg"
+            [style.stroke-width]="getReferenceLayerStrokeWidth('society') + 'px'"
             data-layer="network"
             cx="300"
             cy="300"
@@ -290,6 +291,7 @@
 
           <path
             class="seg reference-seg"
+            [style.stroke-width]="getReferenceLayerStrokeWidth('society') + 'px'"
             [class.disabled]="isDiagramLayerDisabled('society')"
             data-layer="society"
             d="M84.00,300.00 A216,216 0 0 1 516.00,300.00 L452.00,300.00 A152,152 0 0 0 148.00,300.00 Z"
@@ -331,6 +333,7 @@
 
           <path
             class="seg reference-seg"
+            [style.stroke-width]="getReferenceLayerStrokeWidth('society') + 'px'"
             [class.disabled]="isDiagramLayerDisabled('system')"
             data-layer="system"
             d="M516.00,300.00 A216,216 0 0 1 84.00,300.00 L148.00,300.00 A152,152 0 0 0 452.00,300.00 Z"
@@ -372,6 +375,7 @@
 
           <path
             class="seg reference-seg"
+            [style.stroke-width]="getReferenceLayerStrokeWidth('society') + 'px'"
             [class.disabled]="isDiagramLayerDisabled('community')"
             data-layer="community"
             d="M148.00,300.00 A152,152 0 0 1 452.00,300.00 L358.00,300.00 A58,58 0 0 0 242.00,300.00 Z"
@@ -413,6 +417,7 @@
 
           <path
             class="seg reference-seg"
+            [style.stroke-width]="getReferenceLayerStrokeWidth('society') + 'px'"
             [class.disabled]="isDiagramLayerDisabled('schools')"
             data-layer="school"
             d="M452.00,300.00 A152,152 0 0 1 148.00,300.00 L242.00,300.00 A58,58 0 0 0 358.00,300.00 Z"
@@ -454,6 +459,7 @@
 
           <circle
             class="seg reference-seg"
+            [style.stroke-width]="getReferenceLayerStrokeWidth('society') + 'px'"
             [class.disabled]="isDiagramLayerDisabled('students')"
             data-layer="learner"
             cx="300"
@@ -1089,42 +1095,37 @@
 
                 <a
                   class="evidence-card"
-                  *ngFor="
-                    let evidence of visibleEvidenceResources;
-                    trackBy: trackByIndex
-                  "
-                  [href]="evidence.url || null"
-                  [attr.target]="
-                    evidence.url ? '_blank' : null
-                  "
-                  [attr.rel]="
-                    evidence.url
-                      ? 'noopener noreferrer'
-                      : null
-                  "
-                >
+  *ngFor="let evidence of visibleEvidenceResources; trackBy: trackByIndex"
+>
+  <img
+  src="assets/icons/pdf.svg"
+  alt=""
+  aria-hidden="true"
+  class="pdf-icon"
+/>
 
-                  <span
-                    class="material-icons pdf-icon"
-                    aria-hidden="true"
-                  >
-                    picture_as_pdf
-                  </span>
+  <span class="evidence-name">
+    {{ evidence.title }}
+  </span>
 
-                  <span class="evidence-name">
-                    {{ evidence.title }}
-                  </span>
+  <span class="evidence-meta-row">
+  <span class="evidence-meta">
+  <span>{{ evidence.type }}</span>
+  <span>{{ evidence.size }}</span>
+</span>
 
-                  <span class="evidence-meta">
-                    {{ evidence.type }} · {{ evidence.size }}
-                  </span>
+  <img
+    src="assets/icons/mdi_eye.svg"
+    alt=""
+    aria-hidden="true"
+    class="evidence-view-icon"
+  />
+</span>
 
-                  <span class="evidence-tag">
-                    {{ evidence.tag }}
-                  </span>
-
-                </a>
-
+  <span class="evidence-tag">
+    {{ evidence.tag }}
+  </span>
+</a>
               </div>
 
 
@@ -1186,6 +1187,7 @@
             [class.active]="
               selectedLayerKey === layer.key
             "
+             [attr.data-key]="layer.key"
             [disabled]="
               !isProgramLayerAvailable(layer.key)
             "
@@ -1264,6 +1266,7 @@
                 "
                 [style.--pill-color]="layer.color"
                 (click)="selectLayer(layer.key)"
+                 [attr.data-key]="layer.key"
               >
                 {{ layer.chipLabel }}
               </button>
@@ -1285,6 +1288,7 @@
                 "
                 [style.--pill-color]="layer.color"
                 (click)="selectLayer(layer.key)"
+                 [attr.data-key]="layer.key"
               >
                 {{ layer.chipLabel }}
               </button>
@@ -1376,6 +1380,7 @@
                 "
                 [style.--pill-color]="layer.color"
                 (click)="selectLayer(layer.key)"
+                 [attr.data-key]="layer.key"
               >
                 {{ layer.chipLabel }}
               </button>
