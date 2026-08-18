@@ -647,9 +647,14 @@
 .info-button{
   background: transparent;
   border: none;
+  margin-left: 30px;
 }
 
+.info-button img{
+  width: 26px;
+  height: 26px;
 
+}
 
 .program-card-carousel .program-mode-cards {
   margin: 0;
@@ -1049,6 +1054,7 @@
   flex-shrink: 0;
   margin-right: 6px;
   object-fit: contain;
+  cursor: pointer;
 }
 
 /* ---------- Evidence navigation ---------- */
