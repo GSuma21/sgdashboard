@@ -538,7 +538,7 @@ export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
       infoLabel: 'Community program details',
       cards: [
         {
-          label: 'Parents and community...',
+          label: 'Parents and community participation and perception',
           description:
             '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
         },

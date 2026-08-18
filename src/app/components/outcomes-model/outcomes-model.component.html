@@ -989,9 +989,21 @@
 
                 <ng-template #outcomeProgramCard>
 
-                  <span class="program-mode-tag">
-                    {{ getProgramCardLabel(card, cardIndex) }}
-                  </span>
+<span
+  class="program-mode-tag"
+  [class.has-tooltip]="isLabelTruncated(getProgramCardLabel(card, cardIndex))"
+  (mouseenter)="
+    isLabelTruncated(getProgramCardLabel(card, cardIndex)) &&
+    showTooltip($event, getProgramCardLabel(card, cardIndex))
+  "
+  (mouseleave)="hideTooltip()"
+  (click)="
+    isLabelTruncated(getProgramCardLabel(card, cardIndex)) &&
+    toggleTooltipMobile($event, getProgramCardLabel(card, cardIndex))
+  "
+>
+  {{ truncateLabel(getProgramCardLabel(card, cardIndex)) }}
+</span>
 
                   <p>
                     {{ getProgramCardDescription(card) }}
@@ -1805,3 +1817,12 @@
   </div>
 
 </section>
+
+<div
+  class="global-tooltip"
+  *ngIf="tooltipVisible"
+  [style.top.px]="tooltipTop"
+  [style.left.px]="tooltipLeft"
+>
+  {{ tooltipText }}
+</div>
