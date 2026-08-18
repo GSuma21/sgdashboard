@@ -3,7 +3,7 @@
   overflow: hidden;
   background: var(--sg-footer-background);
   color: var(--sg-footer-text);
-  font-family: Comfortaa, sans-serif;
+  font-family: var(--sg-font-heading);
   padding-top: 3.1rem;
   padding-bottom: clamp(13rem, 16vw, 20.5rem);
 }
@@ -78,7 +78,7 @@
 
 .sg-footer-tagline {
   margin: 0;
-  font-family: "Source Sans 3", sans-serif;
+  font-family: var(--sg-font-body);
   font-size: 1.25rem;
   line-height: 1.5;
   font-weight: 300;
@@ -108,7 +108,7 @@
 }
 
 .sg-footer-navigation-heading {
-  font-family: "Source Sans 3", sans-serif;
+  font-family: var(--sg-font-body);
   font-size: 1.125rem;
   color: var(--sg-footer-muted-text);
   text-transform: uppercase;
@@ -197,7 +197,7 @@
 }
 
 .sg-footer-bottom p {
-  font-family: "Source Sans 3", sans-serif;
+  font-family: var(--sg-font-body);
   font-size: 1.125rem;
   font-weight: 300;
   margin: 0;

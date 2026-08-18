@@ -361,7 +361,7 @@ export class CatalysingNetwork1 implements OnInit {
   padding: 8px 0;
   width: 250px;
   border: 1px solid #000000ff;
-  font-family: Arial, sans-serif;
+  font-family: var(--sg-font-body, "Source Sans 3", sans-serif);
   box-sizing: border-box;
 
   /* NEW SCROLL STYLES */
@@ -497,7 +497,7 @@ export class CatalysingNetwork1 implements OnInit {
   padding: 8px 0;
   width: 250px;
   border: 1px solid #000000ff;
-  font-family: Arial, sans-serif;
+  font-family: var(--sg-font-body, "Source Sans 3", sans-serif);
   box-sizing: border-box;
 ">
   <!-- Pointer arrow on left, near top -->
@@ -614,7 +614,7 @@ export class CatalysingNetwork1 implements OnInit {
   padding: 8px 0;
   width: 250px;
   border: 1px solid #000000ff;
-  font-family: Arial, sans-serif;
+  font-family: var(--sg-font-body, "Source Sans 3", sans-serif);
   box-sizing: border-box;
 ">
   <!-- Pointer arrow on left, near top -->

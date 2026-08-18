@@ -1,7 +1,7 @@
 .container {
   display: flex;
   gap: 40px;
-  font-family: 'Manrope';
+  font-family: var(--sg-font-body);
   background-color: #fff;
   max-height: 50rem;
   overflow: hidden;

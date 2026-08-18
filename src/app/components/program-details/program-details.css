@@ -7,7 +7,7 @@
 }
 
 .landing-container {
-    font-family: Arial, sans-serif;
+    font-family: var(--sg-font-body);
 }
 
 
@@ -117,8 +117,8 @@
 
 .indicator-card {
     background: none;
-    padding: 2rem;
-    text-align: center;
+    padding: 1.5rem 0;
+    text-align: left;
     transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
     /* Smooth transitions */
     opacity: 0;
@@ -129,24 +129,40 @@
 
     /* Flexbox for consistent internal layout */
     display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: 430px;
+    max-width: 100%;
 }
 
 .indicator-container {
-    padding-left: 1rem;
-    border-left: 3px solid;
+    min-height: 82px;
+    padding-left: 1.25rem;
+    border-left: 3px solid #111827;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: flex-start;
 }
 
 .indicator-value {
-    margin-bottom: 0.5rem;
+    margin: 0 0 0.75rem;
+    color: var(--program-text-strong);
+    font-size: 0.9rem;
+    line-height: 1.2;
+    font-weight: 700;
 }
 
 .indicator-image {
     display: flex;
-    justify-content: center;
+    flex: 0 0 80px;
+    justify-content: flex-end;
     align-items: center;
+}
+
+.indicator-image img {
+    width: 60px;
+    height: 61px;
 }
 
 h5 {
@@ -156,16 +172,17 @@ h5 {
 
 .indicator-label {
     font-size: 2rem;
-    color: var(--text-color);
-    opacity: 0.8;
-    min-height: 2.2em;
+    color: var(--secondary-color-light);
+    opacity: 1;
+    min-height: 0;
     /* Ensure consistent height for labels */
     display: flex;
     /* Use flex to center text vertically if needed */
     align-items: center;
     justify-content: start;
-    margin-top: 0;
-    color: var(--secondary-color-light);
+    margin: 0;
+    line-height: 1;
+    font-weight: 700;
 }
 
 @keyframes slideInUpScale {
@@ -182,8 +199,10 @@ h5 {
 
 .indiactor-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    gap: 2.5rem;
 }
 
 
@@ -634,7 +653,7 @@ mat-icon {
   max-width: 520px; /* instead of fixed width */
   box-sizing: border-box; /* FIX overflow issue */
   padding: 20px 24px;
-  font-family: Arial, sans-serif;
+  font-family: var(--sg-font-body);
 }
 
 /* Header */

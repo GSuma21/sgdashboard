@@ -10,6 +10,7 @@ import { LoaderRunnerService } from '../../services/loader-runner.service';
 import { MatDialog } from '@angular/material/dialog';
 import { OutcomesModelComponent } from '../outcomes-model/outcomes-model.component';
 import { SAMPLE_PROGRAM_OUTCOME_DATA } from '../outcomes-model/outcomes-model.config';
+import { programDetailsConfig } from '../../../config/programDetailsConfig';
 
 @Component({
   selector: 'app-program-details',
@@ -19,6 +20,7 @@ import { SAMPLE_PROGRAM_OUTCOME_DATA } from '../outcomes-model/outcomes-model.co
 })
 export class ProgramDetails {
   programData :any
+  programDetailsConfig = programDetailsConfig;
   baseUrl: any = `${environment.storageURL}/${environment.bucketName}/${environment.folderName}`
   colors = [
   'var(--secondary-color-light)',
