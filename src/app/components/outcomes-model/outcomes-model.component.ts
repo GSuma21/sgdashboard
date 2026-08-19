@@ -648,20 +648,20 @@ export class OutcomesModelComponent implements OnChanges {
     );
   }
 
-  get evidenceProgress(): number {
-    if (!this.programEvidenceResources.length) {
-      return 0;
-    }
+    get evidenceThumbWidthPercent(): number {
+    const total = this.programEvidenceResources.length;
+    if (!total) return 0;
 
-    const totalPages = Math.ceil(
-      this.programEvidenceResources.length / this.evidenceCardsPerPage
-    );
+    const width = (this.evidenceCardsPerPage / total) * 100;
+    return Math.min(100, width);
+  }
 
-    if (totalPages <= 1) {
-      return 100;
-    }
+  get evidenceThumbLeftPercent(): number {
+    const totalPages = this.evidencePageCount;
+    if (totalPages <= 1) return 0;
 
-    return ((this.evidencePageIndex + 1) / totalPages) * 100;
+    const widthPercent = this.evidenceThumbWidthPercent;
+    return (this.evidencePageIndex / (totalPages - 1)) * (100 - widthPercent);
   }
 
   get evidenceCardsPerPage(): number {

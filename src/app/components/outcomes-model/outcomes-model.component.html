@@ -1092,18 +1092,19 @@
 
 
               <div
-                class="evidence-scrollbar"
-                *ngIf="canShowEvidenceControls"
-                aria-hidden="true"
-              >
+  class="evidence-scrollbar"
+  *ngIf="canShowEvidenceControls"
+  aria-hidden="true"
+>
 
-                <div
-                  class="evidence-scrollbar-progress"
-                  [style.width.%]="evidenceProgress"
-                >
-                </div>
+  <div
+    class="evidence-scrollbar-progress"
+    [style.width.%]="evidenceThumbWidthPercent"
+    [style.left.%]="evidenceThumbLeftPercent"
+  >
+  </div>
 
-              </div>
+</div>
 
             </div>
 

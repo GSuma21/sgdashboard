@@ -597,7 +597,9 @@
   background: var(--oc-scrollbar-progress);
   border-radius: 999px;
   height: 100%;
-  transition: width 0.3s ease;
+  position: absolute;
+  top: 0;
+  transition: left 0.3s ease, width 0.3s ease;
 }
 
 /* =========================================================
@@ -841,7 +843,7 @@
   justify-content: start;
   min-width: 0;
   padding: 1.125rem 0.938rem;
-  width: 11.875rem;
+  width: 11.2rem;
 }
 
 .program-card-carousel .program-mode-cards {
