@@ -146,11 +146,11 @@ onWindowResize(): void {
       return this.selectedLayer.listItems.map((item) => `${item.title}: ${item.description}`).join(' ');
     }
 
-    return 'Tap a layer to see what it means.';
+    return this.config.defaultNarrativeBody;
   }
 
   get frameworkLead(): string {
-    return 'The Shikshagraha movement measures impact across these interconnected layers, each a level through which micro-improvements contribute to systemic transformation.';
+    return this.config.frameworkLead;
   }
 
   get programPanelTitle(): string {
@@ -270,7 +270,14 @@ onWindowResize(): void {
   }
 
   getProgramCardLabel(card: ProgramOutcomeCard, index: number): string {
-    return card.label || card.title || card.name || card.heading || card.partner || `Card ${this.cardPageIndex * this.programCardsPerPage + index + 1}`;
+    return (
+      card.label ||
+      card.title ||
+      card.name ||
+      card.heading ||
+      card.partner ||
+      `${this.config.defaultCardLabelPrefix}${this.cardPageIndex * this.programCardsPerPage + index + 1}`
+    );
   }
 
   getProgramCardDescription(card: ProgramOutcomeCard): string {
@@ -278,7 +285,7 @@ onWindowResize(): void {
   }
 
   getProgramCardImage(card: ProgramOutcomeCard): string {
-    return card.src || card.logo || card.image || 'assets/partners/default-partner.svg';
+    return card.src || card.logo || card.image || this.config.defaultPartnerImage;
   }
 
   getProgramCardLink(card: ProgramOutcomeCard): string | undefined {
@@ -517,6 +524,10 @@ getReferenceLabelColor(
 
   getLayerColor(layerKey: OutcomesLayerKey): string {
     return this.layers.find((layer) => layer.key === layerKey)?.color || '#9a9a9a';
+  }
+
+  getLayerDiagramLabel(layerKey: OutcomesLayerKey): string {
+    return this.layers.find((layer) => layer.key === layerKey)?.diagramLabel.toLowerCase() || '';
   }
 
   getCurvedLabelColor(layerKey: OutcomesLayerKey): string {

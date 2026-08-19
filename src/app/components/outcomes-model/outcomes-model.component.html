@@ -12,7 +12,7 @@
           class="layer-diagram"
           viewBox="-56 -56 712 712"
           role="img"
-          aria-label="Outcome layers"
+          [attr.aria-label]="config.ariaLabels.diagram"
         >
 
           <defs>
@@ -262,7 +262,7 @@
               isDiagramLayerDisabled('network') ? 'true' : null
             "
             [attr.pointer-events]="'auto'"
-            aria-label="Network"
+            [attr.aria-label]="config.ariaLabels.network"
             [class.disabled]="isDiagramLayerDisabled('network')"
             (click)="
               !isDiagramLayerDisabled('network') &&
@@ -305,7 +305,7 @@
               isDiagramLayerDisabled('society') ? 'true' : null
             "
             role="button"
-            aria-label="Society"
+            [attr.aria-label]="config.ariaLabels.society"
             (click)="
               !isDiagramLayerDisabled('society') &&
               selectReferenceLayer('society')
@@ -347,7 +347,7 @@
               isDiagramLayerDisabled('system') ? 'true' : null
             "
             role="button"
-            aria-label="System Institutions"
+            [attr.aria-label]="config.ariaLabels.system"
             (click)="
               !isDiagramLayerDisabled('system') &&
               selectReferenceLayer('system')
@@ -389,7 +389,7 @@
               isDiagramLayerDisabled('community') ? 'true' : null
             "
             role="button"
-            aria-label="Community"
+            [attr.aria-label]="config.ariaLabels.community"
             (click)="
               !isDiagramLayerDisabled('community') &&
               selectReferenceLayer('community')
@@ -431,7 +431,7 @@
               isDiagramLayerDisabled('schools') ? 'true' : null
             "
             role="button"
-            aria-label="School and Anganwadi"
+            [attr.aria-label]="config.ariaLabels.school"
             (click)="
               !isDiagramLayerDisabled('schools') &&
               selectReferenceLayer('school')
@@ -475,7 +475,7 @@
               isDiagramLayerDisabled('students') ? 'true' : null
             "
             role="button"
-            aria-label="Learner"
+            [attr.aria-label]="config.ariaLabels.learner"
             (click)="
               !isDiagramLayerDisabled('students') &&
               selectReferenceLayer('learner')
@@ -501,7 +501,7 @@
           <!-- ICONS -->
           <!-- ===================================================== -->
 
-   
+
           <!-- ===================================================== -->
 <!-- NETWORK -->
 <!-- ===================================================== -->
@@ -914,7 +914,7 @@
               startOffset="50%"
               text-anchor="middle"
             >
-              network
+              {{ getLayerDiagramLabel('network') }}
             </textPath>
           </text>
 
@@ -935,7 +935,7 @@
               startOffset="50%"
               text-anchor="middle"
             >
-              society
+              {{ getLayerDiagramLabel('society') }}
             </textPath>
           </text>
 
@@ -956,7 +956,7 @@
               startOffset="50%"
               text-anchor="middle"
             >
-              system institutions
+              {{ getLayerDiagramLabel('system') }}
             </textPath>
           </text>
 
@@ -977,7 +977,7 @@
               startOffset="50%"
               text-anchor="middle"
             >
-              community
+              {{ getLayerDiagramLabel('community') }}
             </textPath>
           </text>
 
@@ -998,7 +998,7 @@
               startOffset="50%"
               text-anchor="middle"
             >
-              school &amp; anganwadi
+              {{ getLayerDiagramLabel('schools') }}
             </textPath>
           </text>
 
@@ -1073,7 +1073,7 @@
           <button
             type="button"
             class="program-card-nav program-card-nav-prev"
-            aria-label="Show previous cards"
+            [attr.aria-label]="config.ariaLabels.prevCards"
             *ngIf="
               canShowProgramCardControls &&
               canGoToPreviousProgramCards
@@ -1187,7 +1187,7 @@
                       text-align:center;
                     "
                   >
-                    {{ card.ctaLabel || 'Know more' }} →
+                    {{ card.ctaLabel || config.defaultCtaLabel }} →
                   </a>
 
                 </ng-container>
@@ -1227,7 +1227,7 @@
             <div
               class="program-card-indicators"
               *ngIf="canShowProgramCardControls"
-              aria-label="Card pages"
+              [attr.aria-label]="config.ariaLabels.cardPages"
             >
 
               <button
@@ -1255,7 +1255,7 @@
           <button
             type="button"
             class="program-card-nav program-card-nav-next"
-            aria-label="Show next cards"
+            [attr.aria-label]="config.ariaLabels.nextCards"
             *ngIf="
               canShowProgramCardControls &&
               canGoToNextProgramCards
@@ -1282,7 +1282,7 @@
         >
 
           <h4>
-            Evidences and Resources
+            {{ config.evidenceHeading }}
             ({{ programEvidenceResources.length }})
           </h4>
 
@@ -1292,7 +1292,7 @@
             <button
               type="button"
               class="evidence-nav evidence-nav-prev"
-              aria-label="Show previous evidences"
+              [attr.aria-label]="config.ariaLabels.prevEvidence"
               *ngIf="
                 canShowEvidenceControls &&
                 canGoToPreviousEvidence
@@ -1335,7 +1335,7 @@
   <img
     src="assets/icons/mdi_eye.svg"
     aria-hidden="true"
-    alt="View evidence"
+    [attr.alt]="config.ariaLabels.viewEvidence"
   class="evidence-view-icon"
   (click)="openEvidence($event, evidence)"
   />
@@ -1368,7 +1368,7 @@
             <button
               type="button"
               class="evidence-nav evidence-nav-next"
-              aria-label="Show next evidences"
+              [attr.aria-label]="config.ariaLabels.nextEvidence"
               *ngIf="
                 canShowEvidenceControls &&
                 canGoToNextEvidence
@@ -1393,7 +1393,7 @@
 
         <div
           class="program-layer-tiles"
-          aria-label="Outcome layer tiles"
+          [attr.aria-label]="config.ariaLabels.layerTiles"
         >
 
           <button
@@ -1425,7 +1425,7 @@
 
 
         <p class="chip-note">
-          * Click on any of the above tile to read more about it.
+          * {{ config.programChipFootnote }}
         </p>
 
       </section>
@@ -1454,7 +1454,7 @@
         >
 
           <p class="eyebrow">
-            Impact Narrative
+            {{ config.layerHeading }}
           </p>
 
           <h2>
@@ -1462,13 +1462,13 @@
           </h2>
 
           <p class="lead">
-            A learner's education is shaped across multiple layers:
+            {{ config.description }}
           </p>
 
 
           <div
             class="pillwrap"
-            aria-label="Outcome narrative layer filters"
+            [attr.aria-label]="config.ariaLabels.narrativeFilters"
           >
 
             <div class="pillrow">
@@ -1536,7 +1536,7 @@
                 class="material-icons"
                 aria-hidden="true"
               >
-                north_east
+                {{ config.ctaIcon }}
               </span>
             </a>
 
@@ -1555,11 +1555,11 @@
         >
 
           <p class="eyebrow">
-            Impact Framework
+            {{ config.frameworkHeading }}
           </p>
 
           <h2>
-            Measuring Impact Across Layers
+            {{ config.frameworkTitle }}
           </h2>
 
           <p class="framework-lead">
@@ -1569,7 +1569,7 @@
 
           <div
             class="pillwrap"
-            aria-label="Outcome framework layer filters"
+            [attr.aria-label]="config.ariaLabels.frameworkFilters"
           >
 
             <div class="pillrow">
@@ -1721,7 +1721,7 @@
               >
 
                 <h4>
-                  Evidences and Resources
+                  {{ config.evidenceHeading }}
                   ({{ programEvidenceResources.length }})
                 </h4>
 
@@ -1890,7 +1890,7 @@
                     class="material-icons"
                     aria-hidden="true"
                   >
-                    north_east
+                    {{ config.ctaIcon }}
                   </span>
 
                 </a>
@@ -1937,7 +1937,7 @@
       <button
         type="button"
         class="info-modal-close"
-        aria-label="Close"
+        [attr.aria-label]="config.ariaLabels.closeModal"
         (click)="closeInfoModal()"
       >
 

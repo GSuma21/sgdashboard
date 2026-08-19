@@ -105,23 +105,91 @@ export interface ProgramOutcomeData {
   evidencesByLayer?: Partial<Record<OutcomesLayerKey, ProgramEvidenceResource[]>>;
 }
 
+export interface OutcomesAriaLabels {
+  diagram: string;
+  learner: string;
+  school: string;
+  community: string;
+  society: string;
+  system: string;
+  network: string;
+  layerTiles: string;
+  narrativeFilters: string;
+  frameworkFilters: string;
+  cardPages: string;
+  prevCards: string;
+  nextCards: string;
+  prevEvidence: string;
+  nextEvidence: string;
+  viewEvidence: string;
+  closeModal: string;
+}
+
 export interface OutcomesModelConfig {
+  layerHeading: string;
   title: string;
+  description: string;
   layerFootnote: string;
   chipFootnote: string;
   defaultLayer: OutcomesLayerKey;
   programChipLabel: string;
   programColor: string;
   layers: OutcomesLayerConfig[];
+  frameworkHeading: string;
+  frameworkTitle: string;
+  frameworkLead: string;
+  evidenceHeading: string;
+  programChipFootnote: string;
+  defaultNarrativeBody: string;
+  defaultCtaLabel: string;
+  defaultPartnerImage: string;
+  defaultCardLabelPrefix: string;
+  ctaIcon: string;
+  ariaLabels: OutcomesAriaLabels;
 }
 
 export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
+  layerHeading: 'Impact Narrative',
   title: 'What Shapes Student Outcomes',
+  description: "A learner's education is shaped across multiple layers:",
   layerFootnote: 'Click on any of the above Layer to read more about it.',
   chipFootnote: 'Click on any of the above quick chip to read more about it.',
   defaultLayer: 'students',
   programChipLabel: 'Learner Outcomes:',
   programColor: '#ff9911',
+
+  frameworkHeading: 'Impact Framework',
+  frameworkTitle: 'Measuring Impact Across Layers',
+  frameworkLead:
+    'The Shikshagraha movement measures impact across these interconnected layers, each a level through which micro-improvements contribute to systemic transformation.',
+  evidenceHeading: 'Evidences and Resources',
+  programChipFootnote: '* Click on any of the above tile to read more about it.',
+  defaultNarrativeBody: 'Tap a layer to see what it means.',
+  defaultCtaLabel: 'Know more',
+  defaultPartnerImage: 'assets/partners/default-partner.svg',
+  defaultCardLabelPrefix: 'Card ',
+  ctaIcon: 'north_east',
+
+  ariaLabels: {
+    diagram: 'Outcome layers',
+    learner: 'Learner',
+    school: 'School and Anganwadi',
+    community: 'Community',
+    society: 'Society',
+    system: 'System Institutions',
+    network: 'Network',
+    layerTiles: 'Outcome layer tiles',
+    narrativeFilters: 'Outcome narrative layer filters',
+    frameworkFilters: 'Outcome framework layer filters',
+    cardPages: 'Card pages',
+    prevCards: 'Show previous cards',
+    nextCards: 'Show next cards',
+    prevEvidence: 'Show previous evidences',
+    nextEvidence: 'Show next evidences',
+    viewEvidence: 'View evidence',
+    closeModal: 'Close',
+  },
+
   layers: [
     {
       key: 'students',
@@ -279,7 +347,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
           icon: 'groups',
           title: 'Parents and community participation and perception',
           description:
-            'Are parents and communities actively engaged in supporting schools and children’s learning?',
+            "Are parents and communities actively engaged in supporting schools and children's learning?",
         },
         {
           letter: 'L',
@@ -450,9 +518,7 @@ export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
       description:
         '10% of improvement will be shown from baseline to endline in academic achievement and 21st century skills.',
     },
-
-
-     {
+    {
       label: 'Enrollment',
       description:
         '2:75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
@@ -467,7 +533,7 @@ export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
       description:
         '10% of improvement will be shown from baseline to endline in academic achievement and 21st century skills.',
     },
-     {
+    {
       label: 'Enrollment',
       description:
         '3:75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
@@ -497,7 +563,6 @@ export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
       size: '3.6MB',
       tag: 'Retention',
     },
-
     {
       title: '2:Enrollment.pdf',
       type: 'PDF',
