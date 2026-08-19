@@ -29,7 +29,7 @@ export class OutcomesModelComponent implements OnChanges {
   selectedPanel: 'programs' | 'layer' = 'layer';
   isInfoModalOpen = false;
   cardPageIndex = 0;
-  readonly programCardsPerPage = 3;
+  private readonly MOBILE_BREAKPOINT = 768;
   private readonly diagramCenter = 300;
   evidencesPerPage = 2;
   evidencePageIndex = 0;
@@ -62,16 +62,21 @@ export class OutcomesModelComponent implements OnChanges {
     this.evidencePageIndex = 0;
   }
 
-  @HostListener('window:resize')
+    @HostListener('window:resize')
   onWindowResize(): void {
-    const newPerPage = window.innerWidth <= 768 ? 1 : 2;
+    const newEvidencePerPage = this.isMobileViewport() ? 1 : 2;
 
-    if (this.evidencesPerPage !== newPerPage) {
-      this.evidencesPerPage = newPerPage;
+    if (this.evidencesPerPage !== newEvidencePerPage) {
+      this.evidencesPerPage = newEvidencePerPage;
 
       if (this.evidencePageIndex >= this.evidencePageCount) {
         this.evidencePageIndex = Math.max(0, this.evidencePageCount - 1);
       }
+    }
+
+    // programCardsPerPage is now viewport-driven too — reclamp cardPageIndex
+    if (this.cardPageIndex >= this.programCardPageCount) {
+      this.cardPageIndex = Math.max(0, this.programCardPageCount - 1);
     }
   }
 
@@ -668,8 +673,8 @@ export class OutcomesModelComponent implements OnChanges {
     return (this.evidencePageIndex / (totalPages - 1)) * (100 - widthPercent);
   }
 
-  get evidenceCardsPerPage(): number {
-    return window.innerWidth <= 768 ? 1 : 2;
+    get evidenceCardsPerPage(): number {
+    return this.isMobileViewport() ? 1 : 2;
   }
 
   isDiagramLayerDisabled(layerKey: OutcomesLayerKey): boolean {
@@ -747,5 +752,13 @@ export class OutcomesModelComponent implements OnChanges {
 
     this.cssVarCache.set(name, value);
     return value;
+  }
+
+  get programCardsPerPage(): number {
+    return this.isMobileViewport() ? 1 : 3;
+  }
+
+  private isMobileViewport(): boolean {
+    return typeof window !== 'undefined' && window.innerWidth <= this.MOBILE_BREAKPOINT;
   }
 }

@@ -1411,32 +1411,49 @@
     width: 1.375rem;
   }
 
-  /* =======================================================
-     PROGRAM CAROUSEL
-     ======================================================= */
+/* =======================================================
+   PROGRAM CAROUSEL
+   ======================================================= */
 
-  .program-card-carousel {
-    margin-bottom: 1.5rem;
-    padding: 0 1.5rem;
-  }
+.program-card-carousel {
 
-  .program-card-content {
-    margin: 0;
-    width: 100%;
-  }
+  margin-bottom: 1.5rem;
 
-  .program-mode-cards {
-    display: grid;
-    gap: 0.75rem;
-    grid-template-columns: 1fr;
-    width: 100%;
-  }
+  padding: 0 1.5rem;
+}
 
-  .program-mode-card {
-    min-height: auto;
-    padding: 1rem;
-    width: 100%;
-  }
+.program-card-content {
+
+  margin: 0;
+
+  width: 100%;
+
+  display: flex;
+        align-items: center;
+        flex-direction: column;
+}
+
+.program-mode-cards {
+
+  display: grid;
+
+  gap: 0.75rem;
+
+  grid-template-columns: 1fr;
+
+  /* CHANGE HERE */
+  margin: 0 auto;
+  width: 90%;
+}
+
+.program-mode-card {
+
+  min-height: auto;
+
+  padding: 1rem;
+
+  width: 100%;
+}
 
   /* Partner cards */
 
