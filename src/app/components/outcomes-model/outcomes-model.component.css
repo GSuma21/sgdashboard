@@ -24,10 +24,15 @@
 }
 
 @media (max-width: 1100px) {
-  .outcomes-model { --side: 34px; }
+  .outcomes-model {
+    --side: 34px;
+  }
 }
+
 @media (max-width: 640px) {
-  .outcomes-model { --side: 20px; }
+  .outcomes-model {
+    --side: 20px;
+  }
 }
 
 /* ---------- grid / stage ---------- */
@@ -260,7 +265,7 @@
 /* ---------- narrative card (== raw .defbox) ---------- */
 
 .definition-card,
-.definition-card2{
+.definition-card2 {
   border-left: 4px solid var(--active-color);
   padding: 2px 0 2px 20px;
 }
@@ -323,7 +328,8 @@
 }
 
 .heading-icon {
-  display: none; /* raw's fwcard has no leading icon */
+  display: none;
+  /* raw's fwcard has no leading icon */
 }
 
 .framework-heading h3 {
@@ -645,13 +651,13 @@
   margin: 0;
 }
 
-.info-button{
+.info-button {
   background: transparent;
   border: none;
   margin-left: 30px;
 }
 
-.info-button img{
+.info-button img {
   width: 26px;
   height: 26px;
 
@@ -872,6 +878,7 @@
     padding-left: 0;
   }
 }
+
 /* ---------- program card carousel ---------- */
 .program-card-carousel {
   position: relative;
@@ -949,6 +956,7 @@
 .program-card-nav-next {
   right: -50px;
 }
+
 /* ---------- page indicators ---------- */
 
 .program-card-indicators {
@@ -1224,4 +1232,27 @@
   transform: translateX(-50%);
   border: 5px solid transparent;
   border-top-color: #1a1622;
+}
+
+.program-partner-card-image {
+  display: block;
+  height: 82px;
+  margin: 0 auto 22px;
+  object-fit: contain;
+  width: 112px;
+}
+
+.program-partner-card-title {
+  color: #151b27;
+  font-size: 27px;
+  margin: 0 0 10px;
+  text-align: center;
+}
+
+.program-partner-card-link {
+  color: #151b27;
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: center;
 }

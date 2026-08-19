@@ -1156,21 +1156,11 @@
                       card.alt ||
                       getProgramCardLabel(card, cardIndex)
                     "
-                    style="
-                      display:block;
-                      height:82px;
-                      margin:0 auto 22px;
-                      object-fit:contain;
-                      width:112px;
-                    "
+                    class="program-partner-card-image"
                   />
 
-                  <h4 style="
-                    color:#151b27;
-                    font-size:27px;
-                    margin:0 0 10px;
-                    text-align:center;
-                  ">
+                  <h4 
+                  class="program-partner-card-title">
                     {{ getProgramCardLabel(card, cardIndex) }}
                   </h4>
 
@@ -1179,13 +1169,7 @@
                     [href]="getProgramCardLink(card)"
                     target="_blank"
                     rel="noopener noreferrer"
-                    style="
-                      color:#151b27;
-                      display:block;
-                      font-size:12px;
-                      font-weight:800;
-                      text-align:center;
-                    "
+                    class="program-partner-card-link"
                   >
                     {{ card.ctaLabel || config.defaultCtaLabel }} →
                   </a>
