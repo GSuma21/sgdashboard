@@ -6,11 +6,11 @@
   --side: 4rem;
   --stage-top: 1.75rem;
   --rail-lift: 5.625rem;
-  --violet: #7e22ce;
-  --ink: #1a1622;
-  --muted: #6b6580;
-  --line: #ece8f2;
-  background: #ffffff00;
+  --violet: var(--oc-violet);
+  --ink: var(--oc-ink);
+  --muted: var(--oc-muted);
+  --line: var(--oc-line);
+  background: var(--oc-transparent);
   color: var(--ink);
   font-family: 'Source Sans 3', sans-serif;
   font-size: 1.125rem;
@@ -69,7 +69,7 @@
 
 .diagram-note,
 .chip-note {
-  color: #000;
+  color: var(--oc-black);
   font-size: 0.875rem;
   font-weight: 600;
 }
@@ -103,8 +103,8 @@
 }
 
 .reference-seg.disabled:hover {
-  fill: #ffffff !important;
-  stroke: #bdbdbd !important;
+  fill: var(--oc-white) !important;
+  stroke: var(--oc-disabled-border) !important;
 }
 
 .rlabel {
@@ -152,7 +152,7 @@
 }
 
 .rail {
-  --active-color: #572e91;
+  --active-color: var(--primary-color, var(--primary-color-light));
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -241,9 +241,9 @@
 }
 
 .pill {
-  --pill-color: #572e91;
+  --pill-color: var(--primary-color, var(--primary-color-light));
   appearance: none;
-  background: #fff;
+  background: var(--oc-white);
   border: 0.125rem solid currentColor;
   border-radius: 1.5rem;
   color: var(--pill-color);
@@ -261,21 +261,21 @@
 
 .pill.active {
   background: var(--pill-color);
-  border-color: var(--pill-active-border, rgba(255, 255, 255, 0.92));
-  color: var(--pill-active-color, #fff);
+  border-color: var(--pill-active-border, var(--oc-pill-active-border));
+  color: var(--pill-active-color, var(--oc-white));
 }
 
 .pill[data-key='students'].active,
 .pill[data-key='learner'].active {
-  background: #ff9911;
-  border-color: #e08400;
-  color: #000;
+  background: var(--oc-accent-orange);
+  border-color: var(--oc-accent-orange-border);
+  color: var(--oc-black);
 }
 
 .pill[data-key='network'].active {
-  background: #961c00;
-  border-color: #961c00;
-  color: #fff;
+  background: var(--oc-accent-red);
+  border-color: var(--oc-accent-red);
+  color: var(--oc-white);
 }
 
 .pill:focus,
@@ -301,7 +301,7 @@
 }
 
 .definition-card p {
-  color: #463f5c;
+  color: var(--oc-body-text);
   font-size: 1.125rem;
   line-height: 1.6;
   margin: 0;
@@ -315,7 +315,7 @@
 }
 
 .fwnote {
-  color: #9a93ac;
+  color: var(--oc-fwnote);
   font-style: italic;
 }
 
@@ -366,7 +366,7 @@
 }
 
 .fwsub {
-  color: #463f5c;
+  color: var(--oc-body-text);
   font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.45;
@@ -384,7 +384,7 @@
 
 .framework-list li {
   align-items: start;
-  background: #fff;
+  background: var(--oc-white);
   border: 0.063rem solid var(--line);
   border-radius: 0.625rem;
   display: grid;
@@ -397,7 +397,7 @@
 .framework-key {
   background: var(--active-color);
   border-radius: 50%;
-  color: #fff;
+  color: var(--oc-white);
   font-size: 0.719rem;
   font-weight: 700;
   height: 1.25rem;
@@ -416,7 +416,7 @@
 
 .framework-question {
   border-left: 0.063rem solid var(--line);
-  color: #463f5c;
+  color: var(--oc-body-text);
   font-size: 0.8rem;
   font-weight: 400;
   line-height: 1.4;
@@ -433,7 +433,7 @@
 
 .evidence-section h4,
 .program-mode-evidence h4 {
-  color: #111;
+  color: var(--oc-heading-dark);
   font-size: 0.938rem;
   font-weight: 800;
   margin: 0 0 0.625rem;
@@ -463,7 +463,7 @@
 
 .evidence-card {
   align-items: center;
-  background-color: #fff;
+  background-color: var(--oc-white);
   border: 0.063rem solid var(--line);
   border-radius: 0.5rem;
   color: var(--ink);
@@ -499,7 +499,7 @@
 }
 
 .evidence-meta {
-  color: #636363;
+  color: var(--oc-evidence-meta);
   display: flex;
   font-size: 0.625rem;
   font-weight: 600;
@@ -520,7 +520,7 @@
 .evidence-tag {
   background: var(--active-color);
   border-radius: 0.438rem;
-  color: #000;
+  color: var(--oc-black);
   font-size: 0.688rem;
   font-weight: 800;
   grid-area: tag;
@@ -584,7 +584,7 @@
    ========================================================= */
 
 .evidence-scrollbar {
-  background: #d9d9d9;
+  background: var(--oc-scrollbar-track);
   border-radius: 999px;
   height: 0.25rem;
   margin-top: 0.875rem;
@@ -594,7 +594,7 @@
 }
 
 .evidence-scrollbar-progress {
-  background: #000;
+  background: var(--oc-scrollbar-progress);
   border-radius: 999px;
   height: 100%;
   transition: width 0.3s ease;
@@ -610,7 +610,7 @@
   background: var(--active-color);
   border: 0;
   border-radius: 50%;
-  color: #fff;
+  color: var(--oc-white);
   cursor: pointer;
   display: inline-flex;
   height: 1.875rem;
@@ -636,7 +636,7 @@
 
 .info-modal-backdrop {
   align-items: center;
-  background: rgba(0, 0, 0, 0.35);
+  background: var(--oc-backdrop);
   display: flex;
   inset: 0;
   justify-content: center;
@@ -646,9 +646,9 @@
 }
 
 .info-modal {
-  background: #fff;
+  background: var(--oc-white);
   border-radius: 0.5rem;
-  box-shadow: 0 1.125rem 2.625rem rgba(0, 0, 0, 0.22);
+  box-shadow: 0 1.125rem 2.625rem var(--oc-modal-shadow);
   max-width: 45.875rem;
   padding: 3.375rem 1.875rem 1.5rem;
   position: relative;
@@ -659,7 +659,7 @@
   appearance: none;
   background: transparent;
   border: 0;
-  color: #ff3833;
+  color: var(--oc-danger);
   cursor: pointer;
   padding: 0.25rem;
   position: absolute;
@@ -690,7 +690,7 @@
 }
 
 .info-modal-heading p {
-  color: #463f5c;
+  color: var(--oc-body-text);
   font-size: 0.813rem;
   font-weight: 700;
   line-height: 1.35;
@@ -707,7 +707,7 @@
 
 .info-modal-row {
   align-items: center;
-  border: 0.063rem solid #ffe0de;
+  border: 0.063rem solid var(--oc-danger-bg);
   border-radius: 0.375rem;
   display: grid;
   gap: 0.625rem;
@@ -719,7 +719,7 @@
 .info-modal-letter {
   align-items: center;
   border-radius: 50%;
-  color: #fff;
+  color: var(--oc-white);
   display: inline-flex;
   font-size: 1.125rem;
   font-weight: 800;
@@ -735,8 +735,8 @@
 }
 
 .info-modal-row p {
-  border-left: 0.063rem solid #ffc2c2;
-  color: #463f5c;
+  border-left: 0.063rem solid var(--oc-danger-border);
+  color: var(--oc-body-text);
   font-size: 0.813rem;
   font-weight: 600;
   line-height: 1.35;
@@ -749,7 +749,7 @@
    ========================================================= */
 
 .program-mode-panel {
-  --active-color: #e0338a;
+  --active-color: var(--oc-accent-pink);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -783,7 +783,7 @@
 }
 
 .program-mode-heading p {
-  color: #111;
+  color: var(--oc-heading-dark);
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.45;
@@ -829,12 +829,12 @@
 
 .program-mode-card {
   align-items: flex-start;
-  background: color-mix(in srgb, var(--active-color) 15%, #fff);
+  background: color-mix(in srgb, var(--active-color) 15%, var(--oc-white));
   border: 0.131rem solid var(--active-color);
   border-radius: 1.304rem;
-  box-shadow: 0.261rem 0.261rem 1.304rem rgba(157, 107, 153, 0.24);
+  box-shadow: 0.261rem 0.261rem 1.304rem var(--oc-card-shadow);
   box-sizing: border-box;
-  color: #111;
+  color: var(--oc-heading-dark);
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -903,7 +903,7 @@
 .program-mode-tag {
   background: var(--active-color);
   border-radius: 999px;
-  color: #000;
+  color: var(--oc-black);
   display: inline-block;
   font-size: 0.75rem;
   font-weight: 500;
@@ -919,7 +919,7 @@
 }
 
 .program-mode-card p {
-  color: #111;
+  color: var(--oc-heading-dark);
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.22;
@@ -940,7 +940,7 @@
 
 .program-card-indicator {
   appearance: none;
-  background: #000;
+  background: var(--oc-black);
   border: 0;
   border-radius: 50%;
   cursor: pointer;
@@ -989,9 +989,9 @@
 }
 
 .program-layer-tile {
-  --tile-color: #572e91;
+  --tile-color: var(--primary-color, var(--primary-color-light));
   appearance: none;
-  background: #fff;
+  background: var(--oc-white);
   border: 0.125rem solid var(--tile-color);
   border-radius: 1.5rem;
   color: var(--tile-color);
@@ -1011,16 +1011,16 @@
 .program-layer-tile:not(:disabled):hover {
   background: var(--tile-color);
   border-color: var(--tile-color);
-  color: #fff;
+  color: var(--oc-white);
 }
 
 .program-layer-tile[data-key='students'].active,
 .program-layer-tile[data-key='learner'].active,
 .program-layer-tile[data-key='students']:not(:disabled):hover,
 .program-layer-tile[data-key='learner']:not(:disabled):hover {
-  background: #ff9911;
-  border-color: #e08400;
-  color: #000;
+  background: var(--oc-accent-orange);
+  border-color: var(--oc-accent-orange-border);
+  color: var(--oc-black);
 }
 
 .program-layer-tile:focus,
@@ -1030,17 +1030,17 @@
 }
 
 .program-layer-tile:disabled {
-  background: #fff;
-  border: 0.125rem dotted #aaa;
-  color: #aaa !important;
+  background: var(--oc-white);
+  border: 0.125rem dotted var(--oc-disabled-border-light);
+  color: var(--oc-disabled-border-light) !important;
   cursor: not-allowed;
   opacity: 1;
 }
 
 .program-layer-tile:disabled:hover {
-  background: #fff;
-  border-color: #aaa;
-  color: #aaa !important;
+  background: var(--oc-white);
+  border-color: var(--oc-disabled-border-light);
+  color: var(--oc-disabled-border-light) !important;
 }
 
 /* =========================================================
@@ -1048,10 +1048,10 @@
    ========================================================= */
 
 .global-tooltip {
-  background: #1a1622;
+  background: var(--oc-tooltip-bg);
   border-radius: 0.375rem;
-  box-shadow: 0 0.25rem 0.875rem rgba(0, 0, 0, 0.25);
-  color: #fff;
+  box-shadow: 0 0.25rem 0.875rem var(--oc-tooltip-shadow);
+  color: var(--oc-white);
   font-size: 0.75rem;
   font-weight: 600;
   left: 0;
@@ -1069,7 +1069,7 @@
 
 .global-tooltip::after {
   border: 0.313rem solid transparent;
-  border-top-color: #1a1622;
+  border-top-color: var(--oc-tooltip-bg);
   content: '';
   left: 50%;
   position: absolute;
@@ -1090,14 +1090,14 @@
 }
 
 .program-partner-card-title {
-  color: #151b27;
+  color: var(--oc-partner-title);
   font-size: 1.688rem;
   margin: 0 0 0.625rem;
   text-align: center;
 }
 
 .program-partner-card-link {
-  color: #151b27;
+  color: var(--oc-partner-title);
   display: block;
   font-size: 0.75rem;
   font-weight: 800;

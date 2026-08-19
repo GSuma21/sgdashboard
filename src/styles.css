@@ -41,6 +41,45 @@ html {
   --sg-subheading-size: 24px;
   --sg-subheading-size-mobile: 18px;
   --sg-body-size: 16px;
+
+  /* Outcomes Model component colors */
+  --oc-violet: #7e22ce;
+  --oc-ink: #1a1622;
+  --oc-muted: #6b6580;
+  --oc-line: #ece8f2;
+  --oc-body-text: #463f5c;
+  --oc-fwnote: #9a93ac;
+  --oc-evidence-meta: #636363;
+
+  --oc-accent-pink: #e0338a;
+  --oc-accent-orange: #ff9911;
+  --oc-accent-orange-border: #e08400;
+  --oc-accent-red: #961c00;
+
+  --oc-danger: #ff3833;
+  --oc-danger-bg: #ffe0de;
+  --oc-danger-border: #ffc2c2;
+
+  --oc-tooltip-bg: #1a1622;
+  --oc-partner-title: #151b27;
+
+  --oc-scrollbar-track: #d9d9d9;
+  --oc-scrollbar-progress: #000000;
+  --oc-disabled-border: #bdbdbd;
+--oc-transparent: #ffffff00;
+--oc-white: #ffffff;
+--oc-black: #000000;
+--oc-heading-dark: #111111;
+--oc-disabled-border-light: #aaaaaa;
+--oc-pill-active-border: rgba(255, 255, 255, 0.92);
+--oc-backdrop: rgba(0, 0, 0, 0.35);
+--oc-modal-shadow: rgba(0, 0, 0, 0.22);
+--oc-card-shadow: rgba(157, 107, 153, 0.24);
+--oc-tooltip-shadow: rgba(0, 0, 0, 0.25);
+--oc-neutral-grey: #9a9a9a;
+  --oc-inactive-icon: #b9b9b9;
+  --oc-fill-light: #fafafa;
+  --oc-stroke-light: #e4e4e4;
 }
 
 html.light-theme {

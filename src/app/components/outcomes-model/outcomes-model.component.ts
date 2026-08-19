@@ -32,48 +32,48 @@ export class OutcomesModelComponent implements OnChanges {
   readonly programCardsPerPage = 3;
   private readonly diagramCenter = 300;
   evidencesPerPage = 2;
-evidencePageIndex = 0;
-tooltipText: string | null = null;
-tooltipTop = 0;
-tooltipLeft = 0;
-tooltipVisible = false;
+  evidencePageIndex = 0;
+  tooltipText: string | null = null;
+  tooltipTop = 0;
+  tooltipLeft = 0;
+  tooltipVisible = false;
+  private readonly cssVarCache = new Map<string, string>();
 
   ngOnChanges(): void {
-  this.selectedLayerKey =
-    this.activeLayer ||
-    this.programOutcomeData?.layerKey ||
-    this.selectedLayerKey ||
-    this.config.defaultLayer;
+    this.selectedLayerKey =
+      this.activeLayer ||
+      this.programOutcomeData?.layerKey ||
+      this.selectedLayerKey ||
+      this.config.defaultLayer;
 
-  if (
-    this.hasProgramOutcomeData &&
-    !this.isProgramLayerAvailable(this.selectedLayerKey)
-  ) {
-    this.selectedLayerKey = this.firstAvailableProgramLayerKey;
+    if (
+      this.hasProgramOutcomeData &&
+      !this.isProgramLayerAvailable(this.selectedLayerKey)
+    ) {
+      this.selectedLayerKey = this.firstAvailableProgramLayerKey;
+    }
+
+    this.selectedPanel =
+      this.showProgramPanel && this.hasProgramOutcomeData
+        ? 'programs'
+        : this.selectedPanel;
+
+    this.cardPageIndex = 0;
+    this.evidencePageIndex = 0;
   }
 
-  this.selectedPanel =
-    this.showProgramPanel && this.hasProgramOutcomeData
-      ? 'programs'
-      : this.selectedPanel;
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    const newPerPage = window.innerWidth <= 768 ? 1 : 2;
 
-  this.cardPageIndex = 0;
-  this.evidencePageIndex = 0;
-}
+    if (this.evidencesPerPage !== newPerPage) {
+      this.evidencesPerPage = newPerPage;
 
-@HostListener('window:resize')
-onWindowResize(): void {
-  const newPerPage = window.innerWidth <= 768 ? 1 : 2;
-
-  if (this.evidencesPerPage !== newPerPage) {
-    this.evidencesPerPage = newPerPage;
-
-    // Prevent current page from becoming invalid
-    if (this.evidencePageIndex >= this.evidencePageCount) {
-      this.evidencePageIndex = Math.max(0, this.evidencePageCount - 1);
+      if (this.evidencePageIndex >= this.evidencePageCount) {
+        this.evidencePageIndex = Math.max(0, this.evidencePageCount - 1);
+      }
     }
   }
-}
 
   get layers(): OutcomesLayerConfig[] {
     return this.config.layers;
@@ -241,25 +241,25 @@ onWindowResize(): void {
     });
   }
 
- selectLayer(layerKey: OutcomesLayerKey): void {
-  if (this.hasProgramOutcomeData && !this.isProgramLayerAvailable(layerKey)) {
-    return;
+  selectLayer(layerKey: OutcomesLayerKey): void {
+    if (this.hasProgramOutcomeData && !this.isProgramLayerAvailable(layerKey)) {
+      return;
+    }
+
+    this.selectedLayerKey = layerKey;
+    this.selectedPanel = 'layer';
+
+    this.cardPageIndex = 0;
+    this.evidencePageIndex = 0;
   }
 
-  this.selectedLayerKey = layerKey;
-  this.selectedPanel = 'layer';
+  selectProgramPanel(): void {
+    if (!this.hasProgramOutcomeData) return;
 
-  this.cardPageIndex = 0;
-  this.evidencePageIndex = 0;
-}
-
- selectProgramPanel(): void {
-  if (!this.hasProgramOutcomeData) return;
-
-  this.selectedPanel = 'programs';
-  this.cardPageIndex = 0;
-  this.evidencePageIndex = 0;
-}
+    this.selectedPanel = 'programs';
+    this.cardPageIndex = 0;
+    this.evidencePageIndex = 0;
+  }
 
   showPreviousProgramCards(): void {
     this.cardPageIndex = Math.max(0, this.cardPageIndex - 1);
@@ -378,25 +378,6 @@ onWindowResize(): void {
     return (layer.diagram.labelLayout || 'inline') !== 'icon-only';
   }
 
-  getLayerIconColor(layer: OutcomesLayerConfig): string {
-  // Disabled layer
-  if (this.isDiagramLayerDisabled(layer.key)) {
-    return '#AAAAAA';
-  }
-
-  // Programs page:
-  // Available layers always use their own color.
-  if (this.hasProgramOutcomeData) {
-    return layer.diagram.icon.color || layer.color || '#9A9A9A';
-  }
-
-  // Normal/home page:
-  // Only active layer gets its color.
-  return this.isLayerActive(layer.key)
-    ? layer.diagram.icon.color || layer.color
-    : '#b9b9b9';
-}
-
   isLayerActive(layerKey: OutcomesLayerKey): boolean {
     return this.selectedLayerKey === layerKey;
   }
@@ -406,132 +387,123 @@ onWindowResize(): void {
   }
 
   selectReferenceLayer(
-  referenceLayer:
-    | 'learner'
-    | 'school'
-    | 'community'
-    | 'society'
-    | 'system'
-    | 'network'
-): void {
-  const layerKey = this.referenceLayerToKey(referenceLayer);
+    referenceLayer:
+      | 'learner'
+      | 'school'
+      | 'community'
+      | 'society'
+      | 'system'
+      | 'network'
+  ): void {
+    const layerKey = this.referenceLayerToKey(referenceLayer);
 
-  if (this.isDiagramLayerDisabled(layerKey)) {
-    return;
+    if (this.isDiagramLayerDisabled(layerKey)) {
+      return;
+    }
+
+    this.selectLayer(layerKey);
   }
 
-  this.selectLayer(layerKey);
-}
+  getReferenceLayerStrokeWidth(
+    referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+  ): number {
+    const layerKey = this.referenceLayerToKey(referenceLayer);
 
-  getReferenceLayerFill(
-  referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
-): string {
-  const layerKey = this.referenceLayerToKey(referenceLayer);
-  const layer = this.layers.find(item => item.key === layerKey);
+    if (this.isDiagramLayerDisabled(layerKey)) {
+      return 1;
+    }
 
-  // Disabled layer = always grey
-  if (this.isDiagramLayerDisabled(layerKey)) {
-    return '#ffffff';
-  }
+    // Only vary width on the programs page; home page keeps the original flat width
+    if (!this.hasProgramOutcomeData) {
+      return 1.3;
+    }
 
-  if (
-    this.isReferenceLayerActive(referenceLayer) ||
-    this.isLayerHovered(layerKey)
-  ) {
-    return layer?.fill || '#FAFAFA';
-  }
-
-  return '#FAFAFA';
-}
-
-getReferenceLayerStroke(
-  referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
-): string {
-  const layerKey = this.referenceLayerToKey(referenceLayer);
-  const layer = this.layers.find(item => item.key === layerKey);
-
-  if (this.isDiagramLayerDisabled(layerKey)) {
-    return '#BDBDBD';
-  }
-
-  // New "always show own color" behavior only on the programs page
-  if (this.hasProgramOutcomeData) {
-    return layer?.color || '#E4E4E4';
-  }
-
-  // Home page: original behavior — grey unless active/hovered
-  if (
-    this.isReferenceLayerActive(referenceLayer) ||
-    this.isLayerHovered(layerKey)
-  ) {
-    return layer?.color || '#E4E4E4';
-  }
-
-  return '#E4E4E4';
-}
-
-getReferenceLayerStrokeWidth(
-  referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
-): number {
-  const layerKey = this.referenceLayerToKey(referenceLayer);
-
-  if (this.isDiagramLayerDisabled(layerKey)) {
-    return 1;
-  }
-
-  // Only vary width on the programs page; home page keeps the original flat width
-  if (!this.hasProgramOutcomeData) {
-    return 1.3;
-  }
-
-  return this.isReferenceLayerActive(referenceLayer) ? 2 : 1;
-}
-
-getReferenceLabelColor(
-  referenceLayer:
-    | 'learner'
-    | 'school'
-    | 'community'
-    | 'society'
-    | 'system'
-    | 'network'
-): string {
-  const layerKey = this.referenceLayerToKey(referenceLayer);
-  const layer = this.layers.find(item => item.key === layerKey);
-
-  // Disabled layer = always grey
-  if (this.isDiagramLayerDisabled(layerKey)) {
-    return '#AAAAAA';
-  }
-
-  // Programs page:
-  // Every available layer gets its own color.
-  if (this.hasProgramOutcomeData) {
-    return layer?.color || '#9A9A9A';
-  }
-
-  // Normal/home page:
-  // Only active or hovered layer gets its color.
-  if (
-    this.isReferenceLayerActive(referenceLayer) ||
-    this.isLayerHovered(layerKey)
-  ) {
-    return layer?.color || '#9A9A9A';
-  }
-
-  return '#9A9A9A';
-}
-
-  getLayerColor(layerKey: OutcomesLayerKey): string {
-    return this.layers.find((layer) => layer.key === layerKey)?.color || '#9a9a9a';
+    return this.isReferenceLayerActive(referenceLayer) ? 2 : 1;
   }
 
   getLayerDiagramLabel(layerKey: OutcomesLayerKey): string {
     return this.layers.find((layer) => layer.key === layerKey)?.diagramLabel.toLowerCase() || '';
   }
 
+    getLayerIconColor(layer: OutcomesLayerConfig): string {
+    if (this.isDiagramLayerDisabled(layer.key)) {
+      return this.cssVar('--oc-disabled-border-light');
+    }
+
+    if (this.hasProgramOutcomeData) {
+      return layer.diagram.icon.color || layer.color || this.cssVar('--oc-neutral-grey');
+    }
+
+    return this.isLayerActive(layer.key)
+      ? layer.diagram.icon.color || layer.color
+      : this.cssVar('--oc-inactive-icon');
+  }
+
+  getReferenceLayerFill(
+    referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+  ): string {
+    const layerKey = this.referenceLayerToKey(referenceLayer);
+    const layer = this.layers.find(item => item.key === layerKey);
+
+    if (this.isDiagramLayerDisabled(layerKey)) {
+      return this.cssVar('--oc-white');
+    }
+
+    if (this.isReferenceLayerActive(referenceLayer) || this.isLayerHovered(layerKey)) {
+      return layer?.fill || this.cssVar('--oc-fill-light');
+    }
+
+    return this.cssVar('--oc-fill-light');
+  }
+
+  getReferenceLayerStroke(
+    referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+  ): string {
+    const layerKey = this.referenceLayerToKey(referenceLayer);
+    const layer = this.layers.find(item => item.key === layerKey);
+
+    if (this.isDiagramLayerDisabled(layerKey)) {
+      return this.cssVar('--oc-disabled-border');
+    }
+
+    if (this.hasProgramOutcomeData) {
+      return layer?.color || this.cssVar('--oc-stroke-light');
+    }
+
+    if (this.isReferenceLayerActive(referenceLayer) || this.isLayerHovered(layerKey)) {
+      return layer?.color || this.cssVar('--oc-stroke-light');
+    }
+
+    return this.cssVar('--oc-stroke-light');
+  }
+
+  getReferenceLabelColor(
+    referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+  ): string {
+    const layerKey = this.referenceLayerToKey(referenceLayer);
+    const layer = this.layers.find(item => item.key === layerKey);
+
+    if (this.isDiagramLayerDisabled(layerKey)) {
+      return this.cssVar('--oc-disabled-border-light');
+    }
+
+    if (this.hasProgramOutcomeData) {
+      return layer?.color || this.cssVar('--oc-neutral-grey');
+    }
+
+    if (this.isReferenceLayerActive(referenceLayer) || this.isLayerHovered(layerKey)) {
+      return layer?.color || this.cssVar('--oc-neutral-grey');
+    }
+
+    return this.cssVar('--oc-neutral-grey');
+  }
+
+  getLayerColor(layerKey: OutcomesLayerKey): string {
+    return this.layers.find((layer) => layer.key === layerKey)?.color || this.cssVar('--oc-neutral-grey');
+  }
+
   getCurvedLabelColor(layerKey: OutcomesLayerKey): string {
-    return this.isLayerActive(layerKey) ? this.getLayerColor(layerKey) : '#9a9a9a';
+    return this.isLayerActive(layerKey) ? this.getLayerColor(layerKey) : this.cssVar('--oc-neutral-grey');
   }
 
   private referenceLayerToKey(referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'): OutcomesLayerKey {
@@ -617,140 +589,159 @@ getReferenceLabelColor(
     return this.hoveredLayerKey === layerKey;
   }
 
-get programCardPages(): number[] {
-  return Array.from(
-    { length: this.programCardPageCount },
-    (_, index) => index
-  );
-}
-
-goToProgramCardPage(pageIndex: number): void {
-  if (pageIndex < 0 || pageIndex >= this.programCardPageCount) {
-    return;
+  get programCardPages(): number[] {
+    return Array.from(
+      { length: this.programCardPageCount },
+      (_, index) => index
+    );
   }
 
-  this.cardPageIndex = pageIndex;
-}
+  goToProgramCardPage(pageIndex: number): void {
+    if (pageIndex < 0 || pageIndex >= this.programCardPageCount) {
+      return;
+    }
 
-get visibleEvidenceResources(): ProgramEvidenceResource[] {
-  const startIndex = this.evidencePageIndex * this.evidenceCardsPerPage;
-
-  return this.programEvidenceResources.slice(
-    startIndex,
-    startIndex + this.evidenceCardsPerPage
-  );
-}
-
-get evidencePageCount(): number {
-  return Math.max(
-    1,
-    Math.ceil(
-      this.programEvidenceResources.length / this.evidencesPerPage
-    )
-  );
-}
-
-get canShowEvidenceControls(): boolean {
-  return this.programEvidenceResources.length > this.evidencesPerPage;
-}
-
-get canGoToPreviousEvidence(): boolean {
-  return this.evidencePageIndex > 0;
-}
-
-get canGoToNextEvidence(): boolean {
-  return this.evidencePageIndex < this.evidencePageCount - 1;
-}
-
-showPreviousEvidence(): void {
-  this.evidencePageIndex = Math.max(
-    0,
-    this.evidencePageIndex - 1
-  );
-}
-
-showNextEvidence(): void {
-  this.evidencePageIndex = Math.min(
-    this.evidencePageCount - 1,
-    this.evidencePageIndex + 1
-  );
-}
-
-get evidenceProgress(): number {
-  if (!this.programEvidenceResources.length) {
-    return 0;
+    this.cardPageIndex = pageIndex;
   }
 
-  const totalPages = Math.ceil(
-    this.programEvidenceResources.length / this.evidenceCardsPerPage
-  );
+  get visibleEvidenceResources(): ProgramEvidenceResource[] {
+    const startIndex = this.evidencePageIndex * this.evidenceCardsPerPage;
 
-  if (totalPages <= 1) {
-    return 100;
+    return this.programEvidenceResources.slice(
+      startIndex,
+      startIndex + this.evidenceCardsPerPage
+    );
   }
 
-  return ((this.evidencePageIndex + 1) / totalPages) * 100;
-}
+  get evidencePageCount(): number {
+    return Math.max(
+      1,
+      Math.ceil(
+        this.programEvidenceResources.length / this.evidencesPerPage
+      )
+    );
+  }
 
-get evidenceCardsPerPage(): number {
-  return window.innerWidth <= 768 ? 1 : 2;
-}
+  get canShowEvidenceControls(): boolean {
+    return this.programEvidenceResources.length > this.evidencesPerPage;
+  }
 
-isDiagramLayerDisabled(layerKey: OutcomesLayerKey): boolean {
-  return this.hasProgramOutcomeData &&
-    !this.isProgramLayerAvailable(layerKey);
-}
+  get canGoToPreviousEvidence(): boolean {
+    return this.evidencePageIndex > 0;
+  }
 
-showTooltip(event: MouseEvent, text: string): void {
-  const target = event.currentTarget as HTMLElement;
-  const rect = target.getBoundingClientRect();
-  this.tooltipText = text;
-  this.tooltipTop = rect.top - 8;
-  this.tooltipLeft = rect.left + rect.width / 2;
-  this.tooltipVisible = true;
-}
+  get canGoToNextEvidence(): boolean {
+    return this.evidencePageIndex < this.evidencePageCount - 1;
+  }
 
-hideTooltip(): void {
-  this.tooltipVisible = false;
-}
+  showPreviousEvidence(): void {
+    this.evidencePageIndex = Math.max(
+      0,
+      this.evidencePageIndex - 1
+    );
+  }
 
-toggleTooltipMobile(event: MouseEvent, text: string): void {
-  if (this.tooltipVisible && this.tooltipText === text) {
+  showNextEvidence(): void {
+    this.evidencePageIndex = Math.min(
+      this.evidencePageCount - 1,
+      this.evidencePageIndex + 1
+    );
+  }
+
+  get evidenceProgress(): number {
+    if (!this.programEvidenceResources.length) {
+      return 0;
+    }
+
+    const totalPages = Math.ceil(
+      this.programEvidenceResources.length / this.evidenceCardsPerPage
+    );
+
+    if (totalPages <= 1) {
+      return 100;
+    }
+
+    return ((this.evidencePageIndex + 1) / totalPages) * 100;
+  }
+
+  get evidenceCardsPerPage(): number {
+    return window.innerWidth <= 768 ? 1 : 2;
+  }
+
+  isDiagramLayerDisabled(layerKey: OutcomesLayerKey): boolean {
+    return this.hasProgramOutcomeData &&
+      !this.isProgramLayerAvailable(layerKey);
+  }
+
+  showTooltip(event: MouseEvent, text: string): void {
+    const target = event.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+    this.tooltipText = text;
+    this.tooltipTop = rect.top - 8;
+    this.tooltipLeft = rect.left + rect.width / 2;
+    this.tooltipVisible = true;
+  }
+
+  hideTooltip(): void {
+    this.tooltipVisible = false;
+  }
+
+  toggleTooltipMobile(event: MouseEvent, text: string): void {
+    if (this.tooltipVisible && this.tooltipText === text) {
+      this.hideTooltip();
+    } else {
+      this.showTooltip(event, text);
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.program-mode-tag')) {
+      this.hideTooltip();
+    }
+  }
+
+  @HostListener('window:scroll')
+  @HostListener('window:resize')
+  onViewportChange(): void {
     this.hideTooltip();
-  } else {
-    this.showTooltip(event, text);
   }
-}
 
-@HostListener('document:click', ['$event'])
-onDocumentClick(event: MouseEvent): void {
-  const target = event.target as HTMLElement;
-  if (!target.closest('.program-mode-tag')) {
-    this.hideTooltip();
+  truncateLabel(text: string, limit = 21): string {
+    if (!text) return '';
+    return text.length > limit ? text.slice(0, limit) + '...' : text;
   }
-}
 
-@HostListener('window:scroll')
-@HostListener('window:resize')
-onViewportChange(): void {
-  this.hideTooltip();
-}
-
-truncateLabel(text: string, limit = 21): string {
-  if (!text) return '';
-  return text.length > limit ? text.slice(0, limit) + '...' : text;
-}
-
-isLabelTruncated(text: string, limit = 21): boolean {
-  return !!text && text.length > limit;
-}
-
-openEvidence(event: MouseEvent, evidence: ProgramEvidenceResource): void {
-  event.preventDefault();
-  event.stopPropagation();
-
-  if (evidence?.url) {
-    window.open(evidence.url, '_blank', 'noopener,noreferrer');
+  isLabelTruncated(text: string, limit = 21): boolean {
+    return !!text && text.length > limit;
   }
-}
+
+  openEvidence(event: MouseEvent, evidence: ProgramEvidenceResource): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (evidence?.url) {
+      window.open(evidence.url, '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  private cssVar(name: string): string {
+    if (this.cssVarCache.has(name)) {
+      return this.cssVarCache.get(name)!;
+    }
+
+    let value = '';
+
+    if (typeof window !== 'undefined' && typeof getComputedStyle === 'function') {
+      value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    if (!value) {
+      console.warn(`[OutcomesModelComponent] Missing CSS variable "${name}" in style.css`);
+    }
+
+    this.cssVarCache.set(name, value);
+    return value;
+  }
 }
