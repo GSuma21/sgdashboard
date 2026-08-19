@@ -44,7 +44,7 @@
   align-items: start;
   display: grid;
   gap: 3.25rem;
-  grid-template-columns: 1.02fr 1fr;
+  grid-template-columns: minmax(0, 33.25rem) minmax(0, 1fr);
 }
 
 .sticky-stage {
@@ -59,6 +59,7 @@
 .stage {
   margin: 0 auto;
   width: 96%;
+  max-width: 33.25rem
 }
 
 .layer-diagram {
