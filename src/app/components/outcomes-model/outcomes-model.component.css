@@ -3,44 +3,47 @@
 }
 
 .outcomes-model {
-  --side: 64px;
-  --stage-top: 28px;
-  --rail-lift: 90px;
-  --brand: #4b1d8f;
-  --brand2: #5b2a9e;
+  --side: 4rem;
+  --stage-top: 1.75rem;
+  --rail-lift: 5.625rem;
   --violet: #7e22ce;
-  --pink: #e0338a;
   --ink: #1a1622;
   --muted: #6b6580;
   --line: #ece8f2;
   background: #ffffff00;
   color: var(--ink);
   font-family: 'Source Sans 3', sans-serif;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.6;
   padding: 0 var(--side);
-  border-top: 1px solid var(--line);
-  margin-top: 65px;
+  border-top: 0.063rem solid var(--line);
+  margin-top: 4.063rem;
 }
 
-@media (max-width: 1100px) {
+/* =========================================================
+   RESPONSIVE SIDE SPACING
+   ========================================================= */
+
+@media (max-width: 68.75rem) {
   .outcomes-model {
-    --side: 34px;
+    --side: 2.125rem;
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
   .outcomes-model {
-    --side: 20px;
+    --side: 1.25rem;
   }
 }
 
-/* ---------- grid / stage ---------- */
+/* =========================================================
+   GRID / STAGE
+   ========================================================= */
 
 .outcomes-grid {
   align-items: start;
   display: grid;
-  gap: 52px;
+  gap: 3.25rem;
   grid-template-columns: 1.02fr 1fr;
 }
 
@@ -64,15 +67,25 @@
   width: 100%;
 }
 
-.diagram-note {
-  color: #000000;
-  font-size: 14px;
+.diagram-note,
+.chip-note {
+  color: #000;
+  font-size: 0.875rem;
   font-weight: 600;
-  line-height: 1.35;
-  margin: 18px 0 0;
 }
 
-/* ---------- svg segments / labels / icons (unchanged behaviour, matches raw) ---------- */
+.diagram-note {
+  line-height: 1.35;
+  margin: 1.125rem 0 0;
+}
+
+.chip-note {
+  margin: 1.125rem 0 0;
+}
+
+/* =========================================================
+   SVG SEGMENTS / LABELS / ICONS
+   ========================================================= */
 
 .seg {
   cursor: pointer;
@@ -85,9 +98,18 @@
   outline: none;
 }
 
+.reference-seg.disabled {
+  cursor: not-allowed;
+}
+
+.reference-seg.disabled:hover {
+  fill: #e5e5e5 !important;
+  stroke: #bdbdbd !important;
+}
+
 .rlabel {
   font-family: 'Source Sans 3', sans-serif;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 600;
   pointer-events: none;
   transition: fill 0.3s ease;
@@ -102,6 +124,11 @@
   filter: none;
 }
 
+.iconwrap.disabled {
+  filter: grayscale(1) opacity(0.35);
+  pointer-events: none;
+}
+
 #netGlow {
   transition: opacity 0.4s ease;
 }
@@ -111,11 +138,13 @@
   transition: stroke 0.35s ease, fill 0.35s ease;
 }
 
-/* ---------- rail (== raw .sec + .rail combined) ---------- */
+/* =========================================================
+   NORMAL OUTCOME RAIL
+   ========================================================= */
 
 .rail-sections {
   min-width: 0;
-  margin-top: 20px;
+  margin-top: 1.25rem;
 }
 
 .rail {
@@ -124,19 +153,23 @@
   flex-direction: column;
   justify-content: center;
   min-height: calc(100vh - var(--stage-top));
-  padding-bottom: calc(60px + var(--rail-lift));
-  /* padding-top: 60px; */
-  /* margin-top: 80px; */
+  padding-bottom: calc(3.75rem + var(--rail-lift));
 }
 
-/* ---------- eyebrows ----------
-   Raw draws a hard line here: the section-level eyebrow ("Impact Narrative" /
-   "Impact Framework") is always violet, regardless of the selected layer.
-   Only the small in-card eyebrow (per-layer name) tracks the active color. */
+@media (min-width: 58.813rem) and (pointer: fine) {
+  .rail {
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+}
+
+/* =========================================================
+   HEADINGS / TEXT
+   ========================================================= */
 
 .eyebrow {
   color: var(--violet);
-  font-size: 12.5px;
+  font-size: 0.781rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   line-height: 1.2;
@@ -146,7 +179,7 @@
 
 .framework-eyebrow {
   color: var(--active-color);
-  font-size: 13px;
+  font-size: 0.813rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   line-height: 1.2;
@@ -157,34 +190,36 @@
 .rail h2 {
   color: var(--ink);
   font-family: Comfortaa, cursive;
-  font-size: 33px;
-  line-height: 1.16;
-  margin: 10px 0 20px;
+  font-size: 2.063rem;
   font-weight: bold;
+  line-height: 1.16;
+  margin: 0.625rem 0 1.25rem;
 }
 
 .lead {
   color: var(--ink);
-  font-size: 17.5px;
+  font-size: 1.094rem;
   font-weight: 600;
-  margin: 0 0 18px;
+  margin: 0 0 1.125rem;
 }
 
 .framework-lead {
   color: var(--muted);
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.6;
-  margin: 0 0 22px;
-  max-width: 520px;
+  margin: 0 0 1.375rem;
+  max-width: 32.5rem;
 }
 
-/* ---------- pills ---------- */
+/* =========================================================
+   PILLS
+   ========================================================= */
 
 .pillwrap {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .rail-narrative .pillwrap {
@@ -192,65 +227,42 @@
 }
 
 .rail-framework .pillwrap {
-  margin: 4px 0 18px;
+  margin: 0.25rem 0 1.125rem;
 }
 
 .pillrow {
   display: flex;
   flex-wrap: wrap;
-  gap: 11px;
+  gap: 0.688rem;
 }
 
 .pill {
   --pill-color: #572e91;
   appearance: none;
   background: #fff;
-  border: 2px solid currentColor;
-  border-radius: 24px;
+  border: 0.125rem solid currentColor;
+  border-radius: 1.5rem;
   color: var(--pill-color);
   cursor: pointer;
   font-family: 'Source Sans 3', sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   line-height: 1;
-  padding: 9px 19px;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  padding: 0.563rem 1.188rem;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
 }
 
-/* Raw's active state: bg = layer color, text = white, and (except for
-   learner/network, which hard-code their own values) a white "ring" border
-   drawn on top of the fill — not border = bg, which is what made active
-   pills look flat/borderless before. Learner and network are special-cased;
-   if your layer config later exposes --pill-active-color/--pill-active-border
-   per layer, these fall back to it automatically. */
 .pill.active {
   background: var(--pill-color);
   border-color: var(--pill-active-border, rgba(255, 255, 255, 0.92));
   color: var(--pill-active-color, #fff);
 }
 
-.pill:focus,
-.pill:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
 .pill[data-key='students'].active,
 .pill[data-key='learner'].active {
-  background: #ff9911;
-  border-color: #e08400;
-  color: #000;
-}
-
-.program-layer-tile[data-key='students'].active,
-.program-layer-tile[data-key='learner'].active {
-  background: #ff9911;
-  border-color: #e08400;
-  color: #000;
-}
-
-.program-layer-tile[data-key='students']:not(:disabled):hover,
-.program-layer-tile[data-key='learner']:not(:disabled):hover {
   background: #ff9911;
   border-color: #e08400;
   color: #000;
@@ -262,31 +274,39 @@
   color: #fff;
 }
 
-/* ---------- narrative card (== raw .defbox) ---------- */
+.pill:focus,
+.pill:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* =========================================================
+   DEFINITION / NARRATIVE CARDS
+   ========================================================= */
 
 .definition-card,
 .definition-card2 {
-  border-left: 4px solid var(--active-color);
-  padding: 2px 0 2px 20px;
+  border-left: 0.25rem solid var(--active-color);
+  padding: 0.125rem 0 0.125rem 1.25rem;
 }
 
 .narrative-card {
-  border-left-width: 3px;
-  margin: 22px 0 0;
-  padding: 0 0 0 14px;
+  border-left-width: 0.188rem;
+  margin: 1.375rem 0 0;
+  padding: 0 0 0 0.875rem;
 }
 
 .definition-card p {
   color: #463f5c;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.6;
   margin: 0;
-  max-width: 520px;
+  max-width: 32.5rem;
 }
 
 .rail-framework .definition-card p {
-  font-size: 17px;
-  margin: 0 0 10px;
+  font-size: 1.063rem;
+  margin: 0 0 0.625rem;
   max-width: none;
 }
 
@@ -297,28 +317,30 @@
 
 .story-cta {
   align-items: center;
-  border-bottom: 2px solid currentColor;
+  border-bottom: 0.125rem solid currentColor;
   color: var(--active-color);
   display: inline-flex;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
-  gap: 8px;
-  padding-bottom: 2px;
+  gap: 0.5rem;
+  padding-bottom: 0.125rem;
 }
 
 .narrative-card .story-cta {
-  margin-top: 14px;
+  margin-top: 0.875rem;
 }
 
 .rail-framework .definition-card .story-cta {
-  margin-top: 10px;
+  margin-top: 0.625rem;
 }
 
 .story-cta:hover {
   opacity: 0.75;
 }
 
-/* ---------- framework card (== raw .fwcard) ---------- */
+/* =========================================================
+   FRAMEWORK CARD
+   ========================================================= */
 
 .framework-heading {
   align-items: baseline;
@@ -329,29 +351,28 @@
 
 .heading-icon {
   display: none;
-  /* raw's fwcard has no leading icon */
 }
 
 .framework-heading h3 {
   color: var(--ink);
   font-family: Comfortaa, cursive;
-  font-size: 19px;
+  font-size: 1.188rem;
   line-height: 1.2;
-  margin: 8px 0 10px;
+  margin: 0.5rem 0 0.625rem;
 }
 
 .fwsub {
   color: #463f5c;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.45;
-  margin: 0 0 10px;
+  margin: 0 0 0.625rem;
 }
 
 .framework-list {
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 0.563rem;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -360,745 +381,175 @@
 .framework-list li {
   align-items: start;
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 10px;
+  border: 0.063rem solid var(--line);
+  border-radius: 0.625rem;
   display: grid;
-  gap: 9px;
-  grid-template-columns: 21px minmax(120px, 0.85fr) 1.3fr;
+  gap: 0.563rem;
+  grid-template-columns: 1.313rem minmax(7.5rem, 0.85fr) 1.3fr;
   margin: 0;
-  padding: 7px 10px;
+  padding: 0.438rem 0.625rem;
 }
 
 .framework-key {
   background: var(--active-color);
   border-radius: 50%;
   color: #fff;
-  font-size: 11.5px;
+  font-size: 0.719rem;
   font-weight: 700;
-  height: 20px;
-  line-height: 20px;
+  height: 1.25rem;
+  line-height: 1.25rem;
   text-align: center;
-  width: 20px;
+  width: 1.25rem;
 }
 
 .framework-term {
   color: var(--active-color);
-  font-size: 12.8px;
+  font-size: 0.8rem;
   font-weight: 600;
   line-height: 1.35;
-  padding-top: 3px;
+  padding-top: 0.188rem;
 }
 
 .framework-question {
-  border-left: 1px solid var(--line);
+  border-left: 0.063rem solid var(--line);
   color: #463f5c;
-  font-size: 12.8px;
+  font-size: 0.8rem;
   font-weight: 400;
   line-height: 1.4;
-  padding: 3px 0 0 9px;
+  padding: 0.188rem 0 0 0.563rem;
 }
 
-.chip-note {
-  color: #000000;
-  font-size: 14px;
-  font-weight: 600;
-  margin: 18px 0 0;
-}
-
-/* ---------- evidence / info modal / program mode ----------
-   No raw equivalent exists for these (program mode, evidence grid, info
-   modal are Angular-only additions) — kept close to your original, just
-   pulled onto the same color/spacing tokens as the rest so they read as
-   part of one system rather than a separate style. */
+/* =========================================================
+   EVIDENCE
+   ========================================================= */
 
 .evidence-section {
-  margin-top: 18px;
+  margin-top: 1.125rem;
 }
 
-.evidence-section h4 {
-  color: var(--ink);
-  font-size: 15px;
+.evidence-section h4,
+.program-mode-evidence h4 {
+  color: #111;
+  font-size: 0.938rem;
   font-weight: 800;
-  margin: 0 0 10px;
+  margin: 0 0 0.625rem;
+}
+
+.evidence-carousel {
+  box-sizing: border-box;
+  margin: 0 0 2.125rem;
+  position: relative;
+  width: 100%;
+}
+
+.evidence-content {
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 100%;
 }
 
 .evidence-grid {
+  box-sizing: border-box;
   display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 0;
+  width: 100%;
 }
 
 .evidence-card {
   align-items: center;
-  border: 1px solid var(--line);
-  border-radius: 8px;
+  background-color: #fff;
+  border: 0.063rem solid var(--line);
+  border-radius: 0.5rem;
   color: var(--ink);
   display: grid;
-  gap: 2px 10px;
-  grid-template-areas: 'icon name tag' 'icon meta tag';
-  grid-template-columns: 34px 1fr auto;
-  min-height: 66px;
-  padding: 9px 11px;
+  gap: 0.125rem 0.938rem;
+  grid-template-areas:
+    'icon name tag'
+    'icon meta meta';
+  grid-template-columns: 2.125rem 1fr auto;
+  min-height: 4.125rem;
+  padding: 0.563rem 0.688rem;
 }
 
 .pdf-icon {
   display: block;
-  width: 45px;
-  height: 45px;
+  width: 2.813rem;
+  height: 2.813rem;
   grid-area: icon;
   object-fit: contain;
 }
 
 .evidence-name {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 800;
   grid-area: name;
-}
-
-.evidence-meta {
-  color: #6f687e;
-  font-size: 12px;
-  font-weight: 600;
-  grid-area: meta;
-}
-
-.evidence-tag {
-  background: var(--active-color);
-  border-radius: 7px;
-  color: #000000;
-  font-size: 11px;
-  font-weight: 800;
-  grid-area: tag;
-  justify-self: end;
-  padding: 3px 5px;
-}
-
-.info-icon-button {
-  align-items: center;
-  appearance: none;
-  background: var(--active-color);
-  border: 0;
-  border-radius: 50%;
-  color: #fff;
-  cursor: pointer;
-  display: inline-flex;
-  height: 30px;
-  justify-content: center;
-  margin-left: auto;
-  padding: 0;
-  width: 30px;
-}
-
-.info-icon-button img {
-  display: block;
-  width: 20px;
-  height: 20px;
-}
-
-.info-icon-button span {
-  font-size: 18px;
-}
-
-.info-modal-backdrop {
-  align-items: center;
-  background: rgba(0, 0, 0, 0.35);
-  display: flex;
-  inset: 0;
-  justify-content: center;
-  padding: 24px;
-  position: fixed;
-  z-index: 2000;
-}
-
-.info-modal {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
-  max-width: 734px;
-  padding: 54px 30px 24px;
-  position: relative;
-  width: min(734px, 100%);
-}
-
-.info-modal-close {
-  appearance: none;
-  background: transparent;
-  border: 0;
-  color: #ff3833;
-  cursor: pointer;
-  padding: 4px;
-  position: absolute;
-  right: 20px;
-  top: 18px;
-}
-
-.info-modal-close span {
-  font-size: 24px;
-}
-
-.info-modal-heading {
-  align-items: center;
-  display: flex;
-  gap: 14px;
-  margin-bottom: 10px;
-}
-
-.info-modal-heading-icon {
-  font-size: 34px;
-}
-
-.info-modal-heading h3 {
-  font-family: Comfortaa, cursive;
-  font-size: 18px;
-  font-weight: 800;
-  margin: 0;
-}
-
-.info-modal-heading p {
-  color: #463f5c;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.35;
-  margin: 3px 0 0;
-}
-
-.info-modal-content {
-  border-left: 3px solid;
-  display: grid;
-  gap: 14px;
-  margin-left: 7px;
-  padding: 18px 0 0 10px;
-}
-
-.info-modal-row {
-  align-items: center;
-  border: 1px solid #ffe0de;
-  border-radius: 6px;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 30px minmax(120px, 0.48fr) 1fr;
-  min-height: 50px;
-  padding: 8px 10px;
-}
-
-.info-modal-letter {
-  align-items: center;
-  border-radius: 50%;
-  color: #fff;
-  display: inline-flex;
-  font-size: 18px;
-  font-weight: 800;
-  height: 30px;
-  justify-content: center;
-  width: 30px;
-}
-
-.info-modal-row h4 {
-  font-size: 14px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.info-modal-row p {
-  border-left: 1px solid #ffc2c2;
-  color: #463f5c;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.35;
-  margin: 0;
-  padding-left: 10px;
-}
-
-.program-mode-panel {
-  --active-color: #e0338a;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: calc(100vh - var(--stage-top));
-  padding: 60px 0 calc(60px + var(--rail-lift));
-}
-
-.program-mode-heading {
-  align-items: center;
-  display: grid;
-  gap: 16px;
-  grid-template-columns: 48px minmax(0, 1fr) 34px;
-  margin-bottom: 46px;
-  max-width: 780px;
-}
-
-.program-mode-icon {
-  display: block;
-  width: 65px;
-  height: 65px;
-  object-fit: contain;
-}
-
-.program-mode-heading h3 {
-  color: var(--active-color);
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1.15;
-  margin: 0 0 4px;
-}
-
-.program-mode-heading p {
-  color: #111;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.45;
-  margin: 0;
-}
-
-.info-button {
-  background: transparent;
-  border: none;
-  margin-left: 30px;
-}
-
-.info-button img {
-  width: 26px;
-  height: 26px;
-
-}
-
-.program-card-carousel .program-mode-cards {
-  margin: 0;
-}
-
-.program-mode-cards {
-  display: grid;
-  gap: 80px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  /* margin: 0 0 34px; */
-}
-
-.program-mode-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: flex-start;
-
-  padding: 18px 15px;
-  gap: 4px;
-
-  width: 190px;
-  /* height: 313.02px; */
-
-  background: color-mix(in srgb, var(--active-color) 15%, #fff);
-  border: 2.09px solid var(--active-color);
-  box-shadow: 4.17px 4.17px 20.87px rgba(157, 107, 153, 0.24);
-  border-radius: 20.87px;
-
-  color: #111;
-  box-sizing: border-box;
-}
-
-.program-card-nav {
-  margin: 0;
-  padding: 0;
-}
-
-.program-card-nav:disabled {
-  cursor: default;
-  opacity: 0.32;
-}
-
-.program-mode-tag {
-  background: var(--active-color);
-  border-radius: 999px;
-  color: #000000;
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.1;
-  margin-bottom: 6px;
-  max-width: 174px;
-  padding: 4px 7px;
-}
-
-.program-mode-card p {
-  color: #111;
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1.22;
-  margin: 0;
-}
-
-.program-mode-evidence {
-  margin-bottom: 20px;
-}
-
-.program-mode-evidence h4 {
-  color: #111;
-  font-size: 16px;
-  font-weight: 800;
-  margin: 0 0 13px;
-}
-
-.program-layer-tiles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 11px;
-  max-width: 650px;
-}
-
-.program-layer-tile {
-  --tile-color: #572e91;
-  appearance: none;
-  background: #fff;
-  border: 2px solid var(--tile-color);
-  border-radius: 24px;
-  color: var(--tile-color);
-  cursor: pointer;
-  font-family: 'Source Sans 3', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 1;
-  padding: 9px 19px;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-}
-
-/* Active tile - same style as .pill.active */
-.program-layer-tile.active {
-  background: var(--tile-color);
-  border-color: var(--tile-color);
-  color: #fff;
-}
-
-.program-layer-tile:focus,
-.program-layer-tile:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
-/* Hover */
-.program-layer-tile:not(:disabled):hover {
-  background: var(--tile-color);
-  border-color: var(--tile-color);
-  color: #fff;
-}
-
-/* Disabled tiles - Society / System Institutions */
-.program-layer-tile:disabled {
-  background: #fff;
-  border: 2px dotted #aaa;
-  color: #aaa !important;
-  cursor: not-allowed;
-  opacity: 1;
-}
-
-/* No hover effect for disabled tiles */
-.program-layer-tile:disabled:hover {
-  background: #fff;
-  border-color: #aaa;
-  color: #aaa !important;
-}
-
-/* ---------- responsive (matches raw's actual breakpoints) ---------- */
-
-@media (min-width: 941px) and (pointer: fine) {
-  .rail {
-    scroll-snap-align: center;
-    scroll-snap-stop: always;
-  }
-}
-
-@media (max-width: 940px) {
-  .outcomes-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .sticky-stage {
-    height: auto;
-    margin-bottom: 10px;
-    position: relative;
-    top: 0;
-  }
-
-  .stage {
-    width: 74%;
-  }
-
-  .rail {
-    min-height: 0;
-    padding: 30px 0;
-  }
-
-  .program-mode-panel {
-    min-height: 0;
-    padding: 30px 0 44px;
-  }
-}
-
-@media (max-width: 760px) {
-  .framework-list li {
-    grid-template-columns: 26px 1fr;
-  }
-
-  .framework-question {
-    border-left: 0;
-    grid-column: 2;
-    padding: 0;
-  }
-
-  .evidence-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .program-mode-heading {
-    grid-template-columns: 42px minmax(0, 1fr) 32px;
-    margin-bottom: 28px;
-  }
-
-  .program-mode-cards {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 560px) {
-  .pill {
-    font-size: 14px;
-    padding: 8px 13px;
-  }
-
-  .definition-card {
-    padding-left: 14px;
-  }
-
-  .info-modal-row {
-    align-items: start;
-    grid-template-columns: 30px 1fr;
-  }
-
-  .info-modal-row p {
-    border-left: 0;
-    grid-column: 2;
-    padding-left: 0;
-  }
-}
-
-/* ---------- program card carousel ---------- */
-.program-card-carousel {
-  position: relative;
-  width: 100%;
-  margin: 0 0 34px;
-  box-sizing: border-box;
-}
-
-/* Only the cards occupy this area */
-.program-card-content {
-  width: 100%;
-  overflow: hidden;
-  box-sizing: border-box;
-  margin-right: 15px;
-}
-
-/* Cards */
-.program-mode-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 180px);
-  gap: 36px;
-  width: max-content;
-  box-sizing: border-box;
-}
-
-/* Arrows are positioned OUTSIDE the card area */
-.program-card-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-
-  align-items: center;
-  appearance: none;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-
-  display: inline-flex;
-  height: 42px;
-  justify-content: center;
-  padding: 0;
-
-  width: 40px;
-  z-index: 10;
-}
-
-.program-card-nav img {
-  display: block;
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-}
-
-.program-card-nav:hover img {
-  transform: scale(1.08);
-}
-
-.program-card-nav:focus,
-.program-card-nav:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
-.program-card-nav:disabled {
-  cursor: default;
-  opacity: 0.35;
-}
-
-/* Left arrow */
-.program-card-nav-prev {
-  left: -50px;
-}
-
-/* Right arrow */
-.program-card-nav-next {
-  right: -50px;
-}
-
-/* ---------- page indicators ---------- */
-
-.program-card-indicators {
-  align-items: center;
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin-top: 18px;
-}
-
-.program-card-indicator {
-  appearance: none;
-  background: #000;
-  border: 0;
-  border-radius: 50%;
-  cursor: pointer;
-  height: 7px;
-  padding: 0;
-  width: 7px;
-}
-
-.program-card-indicator.active {
-  height: 10px;
-  width: 10px;
-}
-
-.program-card-indicator:hover {
-  transform: scale(1.15);
-}
-
-.program-card-indicator:focus,
-.program-card-indicator:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
-
-.program-mode-card {
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-/* ---------- evidence carousel ---------- */
-/* ---------- evidence carousel ---------- */
-
-.evidence-carousel {
-  position: relative;
-  width: 100%;
-  margin: 0 0 34px;
-  box-sizing: border-box;
-}
-
-/* Only cards + scrollbar occupy this area */
-.evidence-content {
-  width: 100%;
-  overflow: hidden;
-  box-sizing: border-box;
-}
-
-/* Evidence cards */
-.evidence-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-.evidence-card {
-  align-items: center;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  color: var(--ink);
-  display: grid;
-  gap: 2px 15px;
-  grid-template-areas:
-    'icon name tag'
-    'icon meta meta';
-  grid-template-columns: 34px 1fr auto;
-  min-height: 66px;
-  padding: 9px 11px;
-  background-color: #fff;
 }
 
 .evidence-meta-row {
   align-items: center;
   display: flex;
-  justify-content: space-between;
   grid-area: meta;
+  justify-content: space-between;
 }
 
 .evidence-meta {
   color: #636363;
-  font-size: 10px;
-  font-weight: 600;
   display: flex;
+  font-size: 0.625rem;
+  font-weight: 600;
+  gap: clamp(2.5rem, 8vw, 3.125rem);
   justify-content: flex-start;
-  gap: clamp(40px, 8vw, 50px);
 }
 
 .evidence-view-icon {
-  display: block;
-  width: 19px;
-  height: 19px;
-  flex-shrink: 0;
-  margin-right: 6px;
-  object-fit: contain;
   cursor: pointer;
+  display: block;
+  flex-shrink: 0;
+  height: 1.188rem;
+  margin-right: 0.375rem;
+  object-fit: contain;
+  width: 1.188rem;
 }
 
-/* ---------- Evidence navigation ---------- */
+.evidence-tag {
+  background: var(--active-color);
+  border-radius: 0.438rem;
+  color: #000;
+  font-size: 0.688rem;
+  font-weight: 800;
+  grid-area: tag;
+  justify-self: end;
+  padding: 0.188rem 0.313rem;
+}
+
+/* =========================================================
+   EVIDENCE NAVIGATION
+   ========================================================= */
 
 .evidence-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-
   align-items: center;
   appearance: none;
   background: transparent;
   border: 0;
   cursor: pointer;
-
   display: inline-flex;
-
-  height: 42px;
-  width: 40px;
-
+  height: 2.625rem;
   justify-content: center;
   padding: 0;
-
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
   z-index: 10;
 }
 
 .evidence-nav img {
   display: block;
-
-  width: 32px;
-  height: 32px;
-
+  height: 2rem;
   object-fit: contain;
+  width: 2rem;
 }
 
 .evidence-nav:hover img {
@@ -1116,89 +567,346 @@
   opacity: 0.35;
 }
 
-/* Same position as program card arrows */
 .evidence-nav-prev {
-  left: -50px;
+  left: -3.125rem;
 }
 
 .evidence-nav-next {
-  right: -50px;
+  right: -3.125rem;
 }
 
-/* ---------- black scroll/progress line ---------- */
+/* =========================================================
+   EVIDENCE PROGRESS
+   ========================================================= */
 
 .evidence-scrollbar {
-  position: relative;
-
-  width: 100%;
-  height: 4px;
-
-  margin-top: 14px;
-
   background: #d9d9d9;
   border-radius: 999px;
-
+  height: 0.25rem;
+  margin-top: 0.875rem;
   overflow: hidden;
+  position: relative;
+  width: 100%;
 }
 
 .evidence-scrollbar-progress {
-  height: 100%;
-
   background: #000;
   border-radius: 999px;
-
+  height: 100%;
   transition: width 0.3s ease;
 }
 
+/* =========================================================
+   INFO BUTTONS
+   ========================================================= */
 
-/* ---------- mobile ---------- */
-
-@media (max-width: 768px) {
-
-  .evidence-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .evidence-nav {
-    width: 40px;
-    height: 42px;
-  }
-
-  .evidence-nav img {
-    width: 32px;
-    height: 32px;
-  }
-
-  .evidence-nav-prev {
-    left: -42px;
-  }
-
-  .evidence-nav-next {
-    right: -42px;
-  }
-
-  .evidence-scrollbar {
-    height: 4px;
-    margin-top: 12px;
-  }
+.info-icon-button {
+  align-items: center;
+  appearance: none;
+  background: var(--active-color);
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  height: 1.875rem;
+  justify-content: center;
+  margin-left: auto;
+  padding: 0;
+  width: 1.875rem;
 }
 
-.reference-seg.disabled {
-  cursor: not-allowed;
+.info-icon-button img {
+  display: block;
+  height: 1.25rem;
+  width: 1.25rem;
 }
 
-.reference-seg.disabled:hover {
-  fill: #e5e5e5 !important;
-  stroke: #bdbdbd !important;
+.info-icon-button span {
+  font-size: 1.125rem;
 }
 
-.iconwrap.disabled {
-  filter: grayscale(1) opacity(0.35);
-  pointer-events: none;
+/* =========================================================
+   INFO MODAL
+   ========================================================= */
+
+.info-modal-backdrop {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: 1.5rem;
+  position: fixed;
+  z-index: 2000;
 }
+
+.info-modal {
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1.125rem 2.625rem rgba(0, 0, 0, 0.22);
+  max-width: 45.875rem;
+  padding: 3.375rem 1.875rem 1.5rem;
+  position: relative;
+  width: min(45.875rem, 100%);
+}
+
+.info-modal-close {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: #ff3833;
+  cursor: pointer;
+  padding: 0.25rem;
+  position: absolute;
+  right: 1.25rem;
+  top: 1.125rem;
+}
+
+.info-modal-close span {
+  font-size: 1.5rem;
+}
+
+.info-modal-heading {
+  align-items: center;
+  display: flex;
+  gap: 0.875rem;
+  margin-bottom: 0.625rem;
+}
+
+.info-modal-heading-icon {
+  font-size: 2.125rem;
+}
+
+.info-modal-heading h3 {
+  font-family: Comfortaa, cursive;
+  font-size: 1.125rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.info-modal-heading p {
+  color: #463f5c;
+  font-size: 0.813rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0.188rem 0 0;
+}
+
+.info-modal-content {
+  border-left: 0.188rem solid;
+  display: grid;
+  gap: 0.875rem;
+  margin-left: 0.438rem;
+  padding: 1.125rem 0 0 0.625rem;
+}
+
+.info-modal-row {
+  align-items: center;
+  border: 0.063rem solid #ffe0de;
+  border-radius: 0.375rem;
+  display: grid;
+  gap: 0.625rem;
+  grid-template-columns: 1.875rem minmax(7.5rem, 0.48fr) 1fr;
+  min-height: 3.125rem;
+  padding: 0.5rem 0.625rem;
+}
+
+.info-modal-letter {
+  align-items: center;
+  border-radius: 50%;
+  color: #fff;
+  display: inline-flex;
+  font-size: 1.125rem;
+  font-weight: 800;
+  height: 1.875rem;
+  justify-content: center;
+  width: 1.875rem;
+}
+
+.info-modal-row h4 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.info-modal-row p {
+  border-left: 0.063rem solid #ffc2c2;
+  color: #463f5c;
+  font-size: 0.813rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0;
+  padding-left: 0.625rem;
+}
+
+/* =========================================================
+   PROGRAM MODE
+   ========================================================= */
+
+.program-mode-panel {
+  --active-color: #e0338a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - var(--stage-top));
+  padding: 3.75rem 0 calc(3.75rem + var(--rail-lift));
+}
+
+.program-mode-heading {
+  align-items: center;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 3rem minmax(0, 1fr) 2.125rem;
+  margin-bottom: 2.875rem;
+  max-width: 48.75rem;
+}
+
+.program-mode-icon {
+  display: block;
+  height: 4.063rem;
+  object-fit: contain;
+  width: 4.063rem;
+}
+
+.program-mode-heading h3 {
+  color: var(--active-color);
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 0.25rem;
+}
+
+.program-mode-heading p {
+  color: #111;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.info-button {
+  background: transparent;
+  border: none;
+  margin-left: 1.875rem;
+}
+
+.info-button img {
+  height: 1.625rem;
+  width: 1.625rem;
+}
+
+/* =========================================================
+   PROGRAM CARD CAROUSEL
+   ========================================================= */
+
+.program-card-carousel {
+  box-sizing: border-box;
+  margin: 0 0 2.125rem;
+  position: relative;
+  width: 100%;
+}
+
+.program-card-content {
+  box-sizing: border-box;
+  margin-right: 0.938rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.program-mode-cards {
+  box-sizing: border-box;
+  display: grid;
+  gap: 2.25rem;
+  grid-template-columns: repeat(3, 11.25rem);
+  width: max-content;
+}
+
+.program-mode-card {
+  align-items: flex-start;
+  background: color-mix(in srgb, var(--active-color) 15%, #fff);
+  border: 0.131rem solid var(--active-color);
+  border-radius: 1.304rem;
+  box-shadow: 0.261rem 0.261rem 1.304rem rgba(157, 107, 153, 0.24);
+  box-sizing: border-box;
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: start;
+  min-width: 0;
+  padding: 1.125rem 0.938rem;
+  width: 11.875rem;
+}
+
+.program-card-carousel .program-mode-cards {
+  margin: 0;
+}
+
+.program-card-nav {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  height: 2.625rem;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  z-index: 10;
+}
+
+.program-card-nav img {
+  display: block;
+  height: 2rem;
+  object-fit: contain;
+  width: 2rem;
+}
+
+.program-card-nav:hover img {
+  transform: scale(1.08);
+}
+
+.program-card-nav:focus,
+.program-card-nav:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.program-card-nav:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.program-card-nav-prev {
+  left: -3.125rem;
+}
+
+.program-card-nav-next {
+  right: -3.125rem;
+}
+
+/* =========================================================
+   PROGRAM CARD CONTENT
+   ========================================================= */
 
 .program-mode-tag {
+  background: var(--active-color);
+  border-radius: 999px;
+  color: #000;
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: 0.375rem;
+  max-width: 10.875rem;
+  padding: 0.25rem 0.438rem;
   position: relative;
 }
 
@@ -1206,53 +914,290 @@
   cursor: pointer;
 }
 
-.global-tooltip {
-  position: fixed;
-  transform: translate(-50%, -100%);
-  background: #1a1622;
-  color: #fff;
-  font-size: 12px;
+.program-mode-card p {
+  color: #111;
+  font-size: 0.75rem;
   font-weight: 600;
-  padding: 6px 10px;
-  border-radius: 6px;
-  max-width: 260px;
-  white-space: normal;
-  text-align: center;
+  line-height: 1.22;
+  margin: 0;
+}
+
+/* =========================================================
+   PROGRAM PAGE INDICATORS
+   ========================================================= */
+
+.program-card-indicators {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1.125rem;
+}
+
+.program-card-indicator {
+  appearance: none;
+  background: #000;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 0.438rem;
+  padding: 0;
+  width: 0.438rem;
+}
+
+.program-card-indicator.active {
+  height: 0.625rem;
+  width: 0.625rem;
+}
+
+.program-card-indicator:hover {
+  transform: scale(1.15);
+}
+
+.program-card-indicator:focus,
+.program-card-indicator:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* =========================================================
+   PROGRAM EVIDENCE
+   ========================================================= */
+
+.program-mode-evidence {
+  margin-bottom: 1.25rem;
+}
+
+.program-mode-evidence h4 {
+  font-size: 1rem;
+  margin-bottom: 0.813rem;
+}
+
+/* =========================================================
+   PROGRAM LAYER TILES
+   ========================================================= */
+
+.program-layer-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.688rem;
+  max-width: 40.625rem;
+}
+
+.program-layer-tile {
+  --tile-color: #572e91;
+  appearance: none;
+  background: #fff;
+  border: 0.125rem solid var(--tile-color);
+  border-radius: 1.5rem;
+  color: var(--tile-color);
+  cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.563rem 1.188rem;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.program-layer-tile.active,
+.program-layer-tile:not(:disabled):hover {
+  background: var(--tile-color);
+  border-color: var(--tile-color);
+  color: #fff;
+}
+
+.program-layer-tile[data-key='students'].active,
+.program-layer-tile[data-key='learner'].active,
+.program-layer-tile[data-key='students']:not(:disabled):hover,
+.program-layer-tile[data-key='learner']:not(:disabled):hover {
+  background: #ff9911;
+  border-color: #e08400;
+  color: #000;
+}
+
+.program-layer-tile:focus,
+.program-layer-tile:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.program-layer-tile:disabled {
+  background: #fff;
+  border: 0.125rem dotted #aaa;
+  color: #aaa !important;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.program-layer-tile:disabled:hover {
+  background: #fff;
+  border-color: #aaa;
+  color: #aaa !important;
+}
+
+/* =========================================================
+   GLOBAL TOOLTIP
+   ========================================================= */
+
+.global-tooltip {
+  background: #1a1622;
+  border-radius: 0.375rem;
+  box-shadow: 0 0.25rem 0.875rem rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  left: 0;
   line-height: 1.35;
-  z-index: 9999;
+  max-width: 16.25rem;
+  padding: 0.375rem 0.625rem;
   pointer-events: none;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  position: fixed;
+  text-align: center;
+  top: 0;
+  transform: translate(-50%, -100%);
+  white-space: normal;
+  z-index: 9999;
 }
 
 .global-tooltip::after {
+  border: 0.313rem solid transparent;
+  border-top-color: #1a1622;
   content: '';
+  left: 50%;
   position: absolute;
   top: 100%;
-  left: 50%;
   transform: translateX(-50%);
-  border: 5px solid transparent;
-  border-top-color: #1a1622;
 }
+
+/* =========================================================
+   PARTNER CARDS
+   ========================================================= */
 
 .program-partner-card-image {
   display: block;
-  height: 82px;
-  margin: 0 auto 22px;
+  height: 5.125rem;
+  margin: 0 auto 1.375rem;
   object-fit: contain;
-  width: 112px;
+  width: 7rem;
 }
 
 .program-partner-card-title {
   color: #151b27;
-  font-size: 27px;
-  margin: 0 0 10px;
+  font-size: 1.688rem;
+  margin: 0 0 0.625rem;
   text-align: center;
 }
 
 .program-partner-card-link {
   color: #151b27;
   display: block;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 800;
   text-align: center;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 58.75rem) {
+  .outcomes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sticky-stage {
+    height: auto;
+    margin-bottom: 0.625rem;
+    position: relative;
+    top: 0;
+  }
+
+  .stage {
+    width: 74%;
+  }
+
+  .rail {
+    min-height: 0;
+    padding: 1.875rem 0;
+  }
+
+  .program-mode-panel {
+    min-height: 0;
+    padding: 1.875rem 0 2.75rem;
+  }
+}
+
+@media (max-width: 47.5rem) {
+  .framework-list li {
+    grid-template-columns: 1.625rem 1fr;
+  }
+
+  .framework-question {
+    border-left: 0;
+    grid-column: 2;
+    padding: 0;
+  }
+
+  .evidence-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .program-mode-heading {
+    grid-template-columns: 2.625rem minmax(0, 1fr) 2rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .program-mode-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .evidence-nav {
+    height: 2.625rem;
+    width: 2.5rem;
+  }
+
+  .evidence-nav img {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .evidence-nav-prev {
+    left: -2.625rem;
+  }
+
+  .evidence-nav-next {
+    right: -2.625rem;
+  }
+
+  .evidence-scrollbar {
+    height: 0.25rem;
+    margin-top: 0.75rem;
+  }
+}
+
+@media (max-width: 35rem) {
+  .pill {
+    font-size: 0.875rem;
+    padding: 0.5rem 0.813rem;
+  }
+
+  .definition-card {
+    padding-left: 0.875rem;
+  }
+
+  .info-modal-row {
+    align-items: start;
+    grid-template-columns: 1.875rem 1fr;
+  }
+
+  .info-modal-row p {
+    border-left: 0;
+    grid-column: 2;
+    padding-left: 0;
+  }
 }
