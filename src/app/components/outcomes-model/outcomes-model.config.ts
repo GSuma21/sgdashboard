@@ -49,6 +49,7 @@ export interface OutcomesLayerConfig {
   fill: string;
   diagram: OutcomesDiagramConfig;
   panelType: OutcomesPanelType;
+  imgPath: string;
   heading?: string;
   eyebrow?: string;
   subheading?: string;
@@ -216,6 +217,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         },
       },
       panelType: 'list',
+      imgPath: 'assets/icons/student.svg',
       heading: 'Learners Outcomes',
       subheading:
         "Measures whether children are experiencing improved learning outcomes through better access, learning, well-being, aspirations, and future readiness.",
@@ -283,6 +285,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         },
       },
       panelType: 'list',
+      imgPath: 'assets/icons/school-solid.svg',
       heading: 'Schools and Anganwadi Improvement',
       subheading:
         'Measuring how learning environments, teaching practices, school leadership, and community participation',
@@ -337,6 +340,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         },
       },
       panelType: 'story',
+      imgPath: 'assets/icons/community-group.svg',
       eyebrow: 'Community',
       heading: 'Community',
       subheading:
@@ -385,6 +389,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         },
       },
       panelType: 'story',
+      imgPath: '',
       eyebrow: 'Society',
       body: 'The broader social norms and structures that surround the community. (placeholder definition)',
       frameworkNote: 'Framework being defined.',
@@ -423,6 +428,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         },
       },
       panelType: 'list',
+      imgPath: '',
       eyebrow: 'System Institutions',
       subheading: 'Placeholder Header',
       body: 'The governance, policy and institutions that enable and resource education. (placeholder definition)',
@@ -482,6 +488,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
           height: 34,
         },
       },
+      imgPath: 'assets/icons/network-users.svg',
       panelType: 'story',
       eyebrow: 'Network',
       heading: 'Network',

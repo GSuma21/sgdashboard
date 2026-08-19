@@ -790,12 +790,12 @@
 
         <div class="program-mode-heading">
 
-          <img
-  src="assets/icons/student.svg"
-  alt=""
-  aria-hidden="true"
-  class="program-mode-icon"
-/>
+ <img
+ *ngIf="programPanelIcon"
+    [src]="programPanelIcon"
+    aria-hidden="true"
+    class="program-mode-icon"
+  />
 
           <div>
             <h3>{{ programPanelTitle }}</h3>

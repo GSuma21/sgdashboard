@@ -169,6 +169,10 @@ export class OutcomesModelComponent implements OnChanges {
     );
   }
 
+  get programPanelIcon(): string {
+    return this.selectedLayer.imgPath;
+  }
+
   get visibleProgramCards(): ProgramOutcomeCard[] {
     const startIndex = this.cardPageIndex * this.programCardsPerPage;
     return this.programCards.slice(startIndex, startIndex + this.programCardsPerPage);
