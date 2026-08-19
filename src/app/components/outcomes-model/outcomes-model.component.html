@@ -504,9 +504,12 @@
           <g
             class="iconwrap"
             [class.on]="
-              isReferenceLayerActive('community') &&
-              !isDiagramLayerDisabled('community')
-            "
+  (
+    hasProgramOutcomeData ||
+    isReferenceLayerActive('community')
+  ) &&
+  !isDiagramLayerDisabled('community')
+"
             [class.disabled]="isDiagramLayerDisabled('community')"
             data-icon="community"
           >
@@ -583,9 +586,12 @@
           <g
             class="iconwrap"
             [class.on]="
-              isReferenceLayerActive('school') &&
-              !isDiagramLayerDisabled('schools')
-            "
+  (
+    hasProgramOutcomeData ||
+    isReferenceLayerActive('school')
+  ) &&
+  !isDiagramLayerDisabled('schools')
+"
             [class.disabled]="isDiagramLayerDisabled('schools')"
             data-icon="school"
           >
@@ -630,9 +636,12 @@
           <g
             class="iconwrap"
             [class.on]="
-              isReferenceLayerActive('learner') &&
-              !isDiagramLayerDisabled('students')
-            "
+  (
+    hasProgramOutcomeData ||
+    isReferenceLayerActive('learner')
+  ) &&
+  !isDiagramLayerDisabled('students')
+"
             [class.disabled]="isDiagramLayerDisabled('students')"
             data-icon="learner"
           >

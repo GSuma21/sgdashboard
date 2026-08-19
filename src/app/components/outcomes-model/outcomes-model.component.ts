@@ -372,8 +372,23 @@ onWindowResize(): void {
   }
 
   getLayerIconColor(layer: OutcomesLayerConfig): string {
-    return this.isLayerActive(layer.key) ? layer.diagram.icon.color || layer.color : '#b9b9b9';
+  // Disabled layer
+  if (this.isDiagramLayerDisabled(layer.key)) {
+    return '#AAAAAA';
   }
+
+  // Programs page:
+  // Available layers always use their own color.
+  if (this.hasProgramOutcomeData) {
+    return layer.diagram.icon.color || layer.color || '#9A9A9A';
+  }
+
+  // Normal/home page:
+  // Only active layer gets its color.
+  return this.isLayerActive(layer.key)
+    ? layer.diagram.icon.color || layer.color
+    : '#b9b9b9';
+}
 
   isLayerActive(layerKey: OutcomesLayerKey): boolean {
     return this.selectedLayerKey === layerKey;
@@ -465,8 +480,14 @@ getReferenceLayerStrokeWidth(
   return this.isReferenceLayerActive(referenceLayer) ? 2 : 1;
 }
 
-  getReferenceLabelColor(
-  referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+getReferenceLabelColor(
+  referenceLayer:
+    | 'learner'
+    | 'school'
+    | 'community'
+    | 'society'
+    | 'system'
+    | 'network'
 ): string {
   const layerKey = this.referenceLayerToKey(referenceLayer);
   const layer = this.layers.find(item => item.key === layerKey);
@@ -476,6 +497,14 @@ getReferenceLayerStrokeWidth(
     return '#AAAAAA';
   }
 
+  // Programs page:
+  // Every available layer gets its own color.
+  if (this.hasProgramOutcomeData) {
+    return layer?.color || '#9A9A9A';
+  }
+
+  // Normal/home page:
+  // Only active or hovered layer gets its color.
   if (
     this.isReferenceLayerActive(referenceLayer) ||
     this.isLayerHovered(layerKey)
