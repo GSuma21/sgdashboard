@@ -518,61 +518,17 @@
   [class.disabled]="isDiagramLayerDisabled('network')"
   data-icon="network"
 >
-  <g
-    transform="translate(278.0,20.0) scale(0.2000)"
+  <image
+    href="assets/icons/network.svg"
+    x="215"
+    y="45"
+    width="32"
+    height="32"
+    preserveAspectRatio="xMidYMid meet"
     pointer-events="none"
-  >
-
-    <!-- Network nodes -->
-    <circle
-      cx="100"
-      cy="45"
-      r="18"
-      fill="#EDE9FE"
-      stroke="#5B21B6"
-      stroke-width="5"
-    />
-
-    <circle
-      cx="45"
-      cy="105"
-      r="18"
-      fill="#EDE9FE"
-      stroke="#5B21B6"
-      stroke-width="5"
-    />
-
-    <circle
-      cx="155"
-      cy="105"
-      r="18"
-      fill="#EDE9FE"
-      stroke="#5B21B6"
-      stroke-width="5"
-    />
-
-    <circle
-      cx="100"
-      cy="165"
-      r="18"
-      fill="#EDE9FE"
-      stroke="#5B21B6"
-      stroke-width="5"
-    />
-
-    <!-- Connections -->
-    <path
-      d="M88 58 L57 92
-         M112 58 L143 92
-         M58 117 L88 153
-         M142 117 L112 153"
-      stroke="#7C3AED"
-      stroke-width="7"
-      stroke-linecap="round"
-    />
-
-  </g>
+  />
 </g>
+
 <g
   class="iconwrap"
   [class.on]="
@@ -585,146 +541,41 @@
   [class.disabled]="isDiagramLayerDisabled('society')"
   data-icon="society"
 >
-  <g
-    transform="translate(278.0,95.0) scale(0.2000)"
+  <image
+    href="assets/icons/society.svg"
+    x="235"
+    y="100"
+    width="32"
+    height="32"
+    preserveAspectRatio="xMidYMid meet"
     pointer-events="none"
-  >
-
-    <path
-      d="M45 92 H155 V160 H45 Z"
-      fill="#FCE7F3"
-      stroke="#9D174D"
-      stroke-width="5"
-    />
-
-    <path
-      d="M32 92 L100 48 L168 92 Z"
-      fill="#EC4899"
-      stroke="#9D174D"
-      stroke-width="5"
-      stroke-linejoin="round"
-    />
-
-    <path
-      d="M84 118 H116 V160 H84 Z"
-      fill="#F9A8D4"
-      stroke="#9D174D"
-      stroke-width="4"
-    />
-
-    <rect
-      x="57"
-      y="110"
-      width="18"
-      height="18"
-      rx="2"
-      fill="#F9A8D4"
-      stroke="#9D174D"
-      stroke-width="3"
-    />
-
-    <rect
-      x="125"
-      y="110"
-      width="18"
-      height="18"
-      rx="2"
-      fill="#F9A8D4"
-      stroke="#9D174D"
-      stroke-width="3"
-    />
-
-    <path
-      d="M28 160 H172"
-      stroke="#9D174D"
-      stroke-width="5"
-      stroke-linecap="round"
-    />
-
-  </g>
+  />
 </g>
-          <g
-            class="iconwrap"
-            [class.on]="
-  (
-    hasProgramOutcomeData ||
-    isReferenceLayerActive('community')
-  ) &&
-  !isDiagramLayerDisabled('community')
-"
-            [class.disabled]="isDiagramLayerDisabled('community')"
-            data-icon="community"
-          >
-            <g
-              transform="translate(277.0,188.0) scale(0.2300)"
-              pointer-events="none"
-            >
-              <path d="M84 84 L116 84 L116 108 L84 108 Z"
-                fill="#FCE1EC"
-                stroke="#8A2B4E"
-                stroke-width="3">
-              </path>
-
-              <path d="M80 84 L100 64 L120 84 Z"
-                fill="#EC4899"
-                stroke="#8A2B4E"
-                stroke-width="3"
-                stroke-linejoin="round">
-              </path>
-
-              <path d="M95 96 h10 v12 h-10 z"
-                fill="#F472B6"
-                stroke="#8A2B4E"
-                stroke-width="2.4">
-              </path>
-
-              <path d="M44 120 L76 120 L76 150 L44 150 Z"
-                fill="#FCE1EC"
-                stroke="#8A2B4E"
-                stroke-width="3">
-              </path>
-
-              <path d="M40 120 L60 100 L80 120 Z"
-                fill="#F472B6"
-                stroke="#8A2B4E"
-                stroke-width="3"
-                stroke-linejoin="round">
-              </path>
-
-              <path d="M55 134 h10 v16 h-10 z"
-                fill="#DB2777"
-                stroke="#8A2B4E"
-                stroke-width="2.4">
-              </path>
-
-              <path d="M124 120 L156 120 L156 150 L124 150 Z"
-                fill="#FCE1EC"
-                stroke="#8A2B4E"
-                stroke-width="3">
-              </path>
-
-              <path d="M120 120 L140 100 L160 120 Z"
-                fill="#F472B6"
-                stroke="#8A2B4E"
-                stroke-width="3"
-                stroke-linejoin="round">
-              </path>
-
-              <path d="M135 134 h10 v16 h-10 z"
-                fill="#DB2777"
-                stroke="#8A2B4E"
-                stroke-width="2.4">
-              </path>
-
-              <path d="M36 168 H164"
-                stroke="#8A2B4E"
-                stroke-width="3"
-                stroke-linecap="round">
-              </path>
-            </g>
-          </g>
 
           <g
+  class="iconwrap"
+  [class.on]="
+    (
+      hasProgramOutcomeData ||
+      isReferenceLayerActive('community')
+    ) &&
+    !isDiagramLayerDisabled('community')
+  "
+  [class.disabled]="isDiagramLayerDisabled('community')"
+  data-icon="community"
+>
+  <image
+    href="assets/icons/community.svg"
+    x="277"
+    y="188"
+    width="46"
+    height="46"
+    preserveAspectRatio="xMidYMid meet"
+    pointer-events="none"
+  />
+</g>
+
+<g
   class="iconwrap"
   [class.on]="
     (
@@ -736,229 +587,137 @@
   [class.disabled]="isDiagramLayerDisabled('system')"
   data-icon="system"
 >
-  <g
-    transform="translate(278.0,430.0) scale(0.2000)"
+  <image
+    href="assets/icons/system-institutions.svg"
+    x="195"
+    y="460"
+    width="32"
+    height="32"
+    preserveAspectRatio="xMidYMid meet"
     pointer-events="none"
-  >
-
-    <path
-      d="M42 88 H158 V160 H42 Z"
-      fill="#EDE9FE"
-      stroke="#5B21B6"
-      stroke-width="5"
-    />
-
-    <path
-      d="M58 98 V158 M82 98 V158 M118 98 V158 M142 98 V158"
-      stroke="#7C3AED"
-      stroke-width="9"
-      stroke-linecap="round"
-    />
-
-    <path
-      d="M28 88 L100 42 L172 88 Z"
-      fill="#8B5CF6"
-      stroke="#5B21B6"
-      stroke-width="5"
-      stroke-linejoin="round"
-    />
-
-    <path
-      d="M88 126 H112 V160 H88 Z"
-      fill="#DDD6FE"
-      stroke="#5B21B6"
-      stroke-width="4"
-    />
-
-    <path
-      d="M25 160 H175"
-      stroke="#5B21B6"
-      stroke-width="5"
-      stroke-linecap="round"
-    />
-
-  </g>
+  />
 </g>
 
           <g
-            class="iconwrap"
-            [class.on]="
-  (
-    hasProgramOutcomeData ||
-    isReferenceLayerActive('school')
-  ) &&
-  !isDiagramLayerDisabled('schools')
-"
-            [class.disabled]="isDiagramLayerDisabled('schools')"
-            data-icon="school"
-          >
-            <g
-              transform="translate(277.0,366.0) scale(0.2300)"
-              pointer-events="none"
-            >
-              <path d="M48 86 h104 v72 H48 Z"
-                fill="#EFF0FC"
-                stroke="#2E3A8C"
-                stroke-width="6">
-              </path>
-
-              <path d="M36 86 L100 44 L164 86 Z"
-                fill="#5B6EE0"
-                stroke="#2E3A8C"
-                stroke-width="6"
-                stroke-linejoin="round">
-              </path>
-
-              <path d="M84 116 h32 v42 H84 Z"
-                fill="#DCE2FF"
-                stroke="#2E3A8C"
-                stroke-width="5">
-              </path>
-
-              <path d="M64 102 H80 M120 102 H136 M64 128 H80 M120 128 H136"
-                stroke="#5B6EE0"
-                stroke-width="5"
-                stroke-linecap="round">
-              </path>
-
-              <path d="M30 170 H170"
-                stroke="#2E3A8C"
-                stroke-width="5"
-                stroke-linecap="round">
-              </path>
-            </g>
-          </g>
+  class="iconwrap"
+  [class.on]="
+    (
+      hasProgramOutcomeData ||
+      isReferenceLayerActive('school')
+    ) &&
+    !isDiagramLayerDisabled('schools')
+  "
+  [class.disabled]="isDiagramLayerDisabled('schools')"
+  data-icon="school"
+>
+  <image
+    href="assets/icons/school.svg"
+    x="277"
+    y="366"
+    width="46"
+    height="46"
+    preserveAspectRatio="xMidYMid meet"
+    pointer-events="none"
+  />
+</g>
 
 
-          <g
-            class="iconwrap"
-            [class.on]="
-  (
-    hasProgramOutcomeData ||
-    isReferenceLayerActive('learner')
-  ) &&
-  !isDiagramLayerDisabled('students')
-"
-            [class.disabled]="isDiagramLayerDisabled('students')"
-            data-icon="learner"
-          >
-            <g
-              transform="translate(267.0,267.0) scale(0.3300)"
-              pointer-events="none"
-            >
-              <circle
-                cx="100"
-                cy="62"
-                r="28"
-                fill="#FFFBEF"
-                stroke="#8A6400"
-                stroke-width="5">
-              </circle>
+<g
+  class="learner-icon"
+  [class.on]="
+    (
+      hasProgramOutcomeData ||
+      isReferenceLayerActive('learner')
+    ) &&
+    !isDiagramLayerDisabled('students')
+  "
+  [class.disabled]="isDiagramLayerDisabled('students')"
+  data-icon="learner"
+>
 
-              <path
-                d="M54 152 C54 110 69 94 100 94 C131 94 146 110 146 152 C133 160 67 160 54 152 Z"
-                fill="#FFC61A"
-                stroke="#8A6400"
-                stroke-width="5">
-              </path>
+  <!-- Learner image -->
+  <image
+    href="assets/icons/learner.svg"
+    x="275"
+    y="275"
+    width="40"
+    height="40"
+    preserveAspectRatio="xMidYMid meet"
+    pointer-events="none"
+  />
 
-              <path
-                d="M72 60 C75 37 88 27 106 30 C123 33 132 44 132 64 C119 52 91 48 72 60 Z"
-                fill="#3A2E12">
-              </path>
+  <!-- Learner label -->
+  <text
+    x="300"
+    y="325"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    fill="#1a1622"
+    font-size="23"
+    font-weight="600"
+    pointer-events="none"
+  >
+    Learner
+  </text>
 
-              <circle cx="90" cy="65" r="3.6" fill="#5A4A1A"></circle>
-              <circle cx="110" cy="65" r="3.6" fill="#5A4A1A"></circle>
-
-              <path
-                d="M92 78 C98 82 104 82 110 78"
-                stroke="#8A6400"
-                stroke-width="3"
-                stroke-linecap="round">
-              </path>
-
-              <path
-                d="M55 120 L99 136 L99 178 L55 162 Z"
-                fill="#FFFBEF"
-                stroke="#8A6400"
-                stroke-width="5">
-              </path>
-
-              <path
-                d="M145 120 L99 136 L99 178 L145 162 Z"
-                fill="#FFFBEF"
-                stroke="#8A6400"
-                stroke-width="5">
-              </path>
-            </g>
-          </g>
+</g>
 
 
           <!-- ===================================================== -->
           <!-- CURVED LABELS -->
           <!-- ===================================================== -->
 
-          <path
-            id="aNet"
-            fill="none"
-            d="M233.57,68.34 A241,241 0 0 1 366.43,68.34">
-          </path>
-
           <text
-            class="rlabel"
-            data-lab-for="network"
-            [attr.fill]="getReferenceLabelColor('network')"
-          >
-            <textPath
-              href="#aNet"
-              startOffset="50%"
-              text-anchor="middle"
-            >
-              {{ getLayerDiagramLabel('network') }}
-            </textPath>
-          </text>
+  class="rlabel"
+  data-lab-for="network"
+  [attr.fill]="getReferenceLabelColor('network')"
+  x="255"
+  y="70"
+>
+  {{ getLayerDiagramLabel('network') }}
+</text>
 
 
-          <path
-            id="aSoc"
-            fill="none"
-            d="M233.70,127.29 A185,185 0 0 1 366.30,127.29">
-          </path>
+        <path
+  id="aSoc"
+  fill="none"
+  d="M233.70,127.29 A185,185 0 0 1 366.30,127.29">
+</path>
 
-          <text
-            class="rlabel"
-            data-lab-for="society"
-            [attr.fill]="getReferenceLabelColor('society')"
-          >
-            <textPath
-              href="#aSoc"
-              startOffset="50%"
-              text-anchor="middle"
-            >
-              {{ getLayerDiagramLabel('society') }}
-            </textPath>
-          </text>
+<text
+  class="rlabel"
+  data-lab-for="society"
+  [attr.fill]="getReferenceLabelColor('society')"
+>
+  <textPath
+    href="#aSoc"
+    startOffset="50%"
+    text-anchor="middle"
+  >
+    {{ getLayerDiagramLabel('society') }}
+  </textPath>
+</text>
 
 
-          <path
-            id="aSys"
-            fill="none"
-            d="M138.95,423.58 A203,203 0 0 0 461.05,423.58">
-          </path>
+         <path
+  id="aSys"
+  fill="none"
+  d="M138.95,423.58 A203,203 0 0 0 461.05,423.58">
+</path>
 
-          <text
-            class="rlabel"
-            data-lab-for="system institutions"
-            [attr.fill]="getReferenceLabelColor('system')"
-          >
-            <textPath
-              href="#aSys"
-              startOffset="50%"
-              text-anchor="middle"
-            >
-              {{ getLayerDiagramLabel('system') }}
-            </textPath>
-          </text>
+<text
+  class="rlabel"
+  data-lab-for="system institutions"
+  [attr.fill]="getReferenceLabelColor('system')"
+>
+  <textPath
+    href="#aSys"
+    startOffset="50%"
+    text-anchor="middle"
+  >
+    {{ getLayerDiagramLabel('system') }}
+  </textPath>
+</text>
 
 
           <path

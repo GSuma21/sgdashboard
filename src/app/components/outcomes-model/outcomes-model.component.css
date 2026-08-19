@@ -103,7 +103,7 @@
 }
 
 .reference-seg.disabled:hover {
-  fill: #e5e5e5 !important;
+  fill: #ffffff !important;
   stroke: #bdbdbd !important;
 }
 
@@ -113,6 +113,10 @@
   font-weight: 600;
   pointer-events: none;
   transition: fill 0.3s ease;
+}
+
+.layer-label {
+  pointer-events: none;
 }
 
 .iconwrap {

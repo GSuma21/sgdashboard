@@ -4,7 +4,8 @@ export type OutcomesLayerKey =
   | 'community'
   | 'society'
   | 'system'
-  | 'network';
+  | 'network'
+  | 'learner';
 
 export type OutcomesPanelType = 'programs' | 'list' | 'story';
 export type OutcomesLayerShape = 'full' | 'top' | 'bottom';

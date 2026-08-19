@@ -431,7 +431,7 @@ onWindowResize(): void {
 
   // Disabled layer = always grey
   if (this.isDiagramLayerDisabled(layerKey)) {
-    return '#E5E5E5';
+    return '#ffffff';
   }
 
   if (
