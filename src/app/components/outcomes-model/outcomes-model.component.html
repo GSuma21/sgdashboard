@@ -501,6 +501,148 @@
           <!-- ICONS -->
           <!-- ===================================================== -->
 
+   
+          <!-- ===================================================== -->
+<!-- NETWORK -->
+<!-- ===================================================== -->
+
+<g
+  class="iconwrap"
+  [class.on]="
+    (
+      hasProgramOutcomeData ||
+      isReferenceLayerActive('network')
+    ) &&
+    !isDiagramLayerDisabled('network')
+  "
+  [class.disabled]="isDiagramLayerDisabled('network')"
+  data-icon="network"
+>
+  <g
+    transform="translate(278.0,20.0) scale(0.2000)"
+    pointer-events="none"
+  >
+
+    <!-- Network nodes -->
+    <circle
+      cx="100"
+      cy="45"
+      r="18"
+      fill="#EDE9FE"
+      stroke="#5B21B6"
+      stroke-width="5"
+    />
+
+    <circle
+      cx="45"
+      cy="105"
+      r="18"
+      fill="#EDE9FE"
+      stroke="#5B21B6"
+      stroke-width="5"
+    />
+
+    <circle
+      cx="155"
+      cy="105"
+      r="18"
+      fill="#EDE9FE"
+      stroke="#5B21B6"
+      stroke-width="5"
+    />
+
+    <circle
+      cx="100"
+      cy="165"
+      r="18"
+      fill="#EDE9FE"
+      stroke="#5B21B6"
+      stroke-width="5"
+    />
+
+    <!-- Connections -->
+    <path
+      d="M88 58 L57 92
+         M112 58 L143 92
+         M58 117 L88 153
+         M142 117 L112 153"
+      stroke="#7C3AED"
+      stroke-width="7"
+      stroke-linecap="round"
+    />
+
+  </g>
+</g>
+<g
+  class="iconwrap"
+  [class.on]="
+    (
+      hasProgramOutcomeData ||
+      isReferenceLayerActive('society')
+    ) &&
+    !isDiagramLayerDisabled('society')
+  "
+  [class.disabled]="isDiagramLayerDisabled('society')"
+  data-icon="society"
+>
+  <g
+    transform="translate(278.0,95.0) scale(0.2000)"
+    pointer-events="none"
+  >
+
+    <path
+      d="M45 92 H155 V160 H45 Z"
+      fill="#FCE7F3"
+      stroke="#9D174D"
+      stroke-width="5"
+    />
+
+    <path
+      d="M32 92 L100 48 L168 92 Z"
+      fill="#EC4899"
+      stroke="#9D174D"
+      stroke-width="5"
+      stroke-linejoin="round"
+    />
+
+    <path
+      d="M84 118 H116 V160 H84 Z"
+      fill="#F9A8D4"
+      stroke="#9D174D"
+      stroke-width="4"
+    />
+
+    <rect
+      x="57"
+      y="110"
+      width="18"
+      height="18"
+      rx="2"
+      fill="#F9A8D4"
+      stroke="#9D174D"
+      stroke-width="3"
+    />
+
+    <rect
+      x="125"
+      y="110"
+      width="18"
+      height="18"
+      rx="2"
+      fill="#F9A8D4"
+      stroke="#9D174D"
+      stroke-width="3"
+    />
+
+    <path
+      d="M28 160 H172"
+      stroke="#9D174D"
+      stroke-width="5"
+      stroke-linecap="round"
+    />
+
+  </g>
+</g>
           <g
             class="iconwrap"
             [class.on]="
@@ -582,6 +724,61 @@
             </g>
           </g>
 
+          <g
+  class="iconwrap"
+  [class.on]="
+    (
+      hasProgramOutcomeData ||
+      isReferenceLayerActive('system')
+    ) &&
+    !isDiagramLayerDisabled('system')
+  "
+  [class.disabled]="isDiagramLayerDisabled('system')"
+  data-icon="system"
+>
+  <g
+    transform="translate(278.0,430.0) scale(0.2000)"
+    pointer-events="none"
+  >
+
+    <path
+      d="M42 88 H158 V160 H42 Z"
+      fill="#EDE9FE"
+      stroke="#5B21B6"
+      stroke-width="5"
+    />
+
+    <path
+      d="M58 98 V158 M82 98 V158 M118 98 V158 M142 98 V158"
+      stroke="#7C3AED"
+      stroke-width="9"
+      stroke-linecap="round"
+    />
+
+    <path
+      d="M28 88 L100 42 L172 88 Z"
+      fill="#8B5CF6"
+      stroke="#5B21B6"
+      stroke-width="5"
+      stroke-linejoin="round"
+    />
+
+    <path
+      d="M88 126 H112 V160 H88 Z"
+      fill="#DDD6FE"
+      stroke="#5B21B6"
+      stroke-width="4"
+    />
+
+    <path
+      d="M25 160 H175"
+      stroke="#5B21B6"
+      stroke-width="5"
+      stroke-linecap="round"
+    />
+
+  </g>
+</g>
 
           <g
             class="iconwrap"
