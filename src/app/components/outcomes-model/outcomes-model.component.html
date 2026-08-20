@@ -519,14 +519,14 @@
   data-icon="network"
 >
   <image
-    href="assets/icons/network.svg"
-    x="215"
-    y="45"
-    width="32"
-    height="32"
-    preserveAspectRatio="xMidYMid meet"
-    pointer-events="none"
-  />
+  [attr.href]="getDiagramIcon('network').value"
+  x="215"
+  y="45"
+  [attr.width]="getDiagramIcon('network').width"
+  [attr.height]="getDiagramIcon('network').height"
+  preserveAspectRatio="xMidYMid meet"
+  pointer-events="none"
+/>
 </g>
 
 <g
@@ -542,14 +542,14 @@
   data-icon="society"
 >
   <image
-    href="assets/icons/society.svg"
-    x="235"
-    y="100"
-    width="32"
-    height="32"
-    preserveAspectRatio="xMidYMid meet"
-    pointer-events="none"
-  />
+  [attr.href]="getDiagramIcon('society').value"
+  x="235"
+  y="100"
+  [attr.width]="getDiagramIcon('society').width"
+  [attr.height]="getDiagramIcon('society').height"
+  preserveAspectRatio="xMidYMid meet"
+  pointer-events="none"
+/>
 </g>
 
           <g
@@ -565,14 +565,14 @@
   data-icon="community"
 >
   <image
-    href="assets/icons/community.svg"
-    x="277"
-    y="188"
-    width="46"
-    height="46"
-    preserveAspectRatio="xMidYMid meet"
-    pointer-events="none"
-  />
+  [attr.href]="getDiagramIcon('community').value"
+  x="277"
+  y="188"
+  [attr.width]="getDiagramIcon('community').width"
+  [attr.height]="getDiagramIcon('community').height"
+  preserveAspectRatio="xMidYMid meet"
+  pointer-events="none"
+/>
 </g>
 
 <g
@@ -588,14 +588,14 @@
   data-icon="system"
 >
   <image
-    href="assets/icons/system-institutions.svg"
-    x="195"
-    y="460"
-    width="32"
-    height="32"
-    preserveAspectRatio="xMidYMid meet"
-    pointer-events="none"
-  />
+  [attr.href]="getDiagramIcon('system').value"
+  x="195"
+  y="460"
+  [attr.width]="getDiagramIcon('system').width"
+  [attr.height]="getDiagramIcon('system').height"
+  preserveAspectRatio="xMidYMid meet"
+  pointer-events="none"
+/>
 </g>
 
           <g
@@ -611,14 +611,14 @@
   data-icon="school"
 >
   <image
-    href="assets/icons/school.svg"
-    x="277"
-    y="366"
-    width="46"
-    height="46"
-    preserveAspectRatio="xMidYMid meet"
-    pointer-events="none"
-  />
+  [attr.href]="getDiagramIcon('schools').value"
+  x="277"
+  y="366"
+  [attr.width]="getDiagramIcon('schools').width"
+  [attr.height]="getDiagramIcon('schools').height"
+  preserveAspectRatio="xMidYMid meet"
+  pointer-events="none"
+/>
 </g>
 
 
@@ -637,28 +637,28 @@
 
   <!-- Learner image -->
   <image
-    href="assets/icons/learner.svg"
-    x="275"
-    y="275"
-    width="40"
-    height="40"
-    preserveAspectRatio="xMidYMid meet"
-    pointer-events="none"
-  />
+  [attr.href]="getDiagramIcon('students').value"
+  x="275"
+  y="275"
+  [attr.width]="getDiagramIcon('students').width"
+  [attr.height]="getDiagramIcon('students').height"
+  preserveAspectRatio="xMidYMid meet"
+  pointer-events="none"
+/>
 
   <!-- Learner label -->
   <text
-    x="300"
-    y="325"
-    text-anchor="middle"
-    dominant-baseline="middle"
-    fill="#1a1622"
-    font-size="23"
-    font-weight="600"
-    pointer-events="none"
-  >
-    Learner
-  </text>
+  [attr.x]="getDiagramText('students')?.x"
+  [attr.y]="getDiagramText('students')?.y"
+  [attr.fill]="getDiagramText('students')?.fill"
+  [attr.font-size]="getDiagramText('students')?.fontSize"
+  [attr.font-weight]="getDiagramText('students')?.fontWeight"
+  text-anchor="middle"
+  dominant-baseline="middle"
+  pointer-events="none"
+>
+  {{ getLayerDiagramLabel('students') }}
+</text>
 
 </g>
 
@@ -670,9 +670,16 @@
           <text
   class="rlabel"
   data-lab-for="network"
-  [attr.fill]="getReferenceLabelColor('network')"
-  x="255"
-  y="70"
+  [attr.x]="getDiagramText('network')?.x"
+  [attr.y]="getDiagramText('network')?.y"
+  [attr.fill]="
+    getDiagramText('network')?.fill ||
+    getReferenceLabelColor('network')
+  "
+  [attr.font-size]="getDiagramText('network')?.fontSize"
+  [attr.font-weight]="getDiagramText('network')?.fontWeight"
+  text-anchor="middle"
+  dominant-baseline="middle"
 >
   {{ getLayerDiagramLabel('network') }}
 </text>
@@ -687,7 +694,12 @@
 <text
   class="rlabel"
   data-lab-for="society"
-  [attr.fill]="getReferenceLabelColor('society')"
+  [attr.fill]="
+    getDiagramText('society')?.fill ||
+    getReferenceLabelColor('society')
+  "
+  [attr.font-size]="getDiagramText('society')?.fontSize"
+  [attr.font-weight]="getDiagramText('society')?.fontWeight"
 >
   <textPath
     href="#aSoc"
@@ -708,7 +720,12 @@
 <text
   class="rlabel"
   data-lab-for="system institutions"
-  [attr.fill]="getReferenceLabelColor('system')"
+  [attr.fill]="
+    getDiagramText('system')?.fill ||
+    getReferenceLabelColor('system')
+  "
+  [attr.font-size]="getDiagramText('system')?.fontSize"
+  [attr.font-weight]="getDiagramText('system')?.fontWeight"
 >
   <textPath
     href="#aSys"
@@ -727,18 +744,23 @@
           </path>
 
           <text
-            class="rlabel"
-            data-lab-for="community"
-            [attr.fill]="getReferenceLabelColor('community')"
-          >
-            <textPath
-              href="#aCom"
-              startOffset="50%"
-              text-anchor="middle"
-            >
-              {{ getLayerDiagramLabel('community') }}
-            </textPath>
-          </text>
+  class="rlabel"
+  data-lab-for="community"
+  [attr.fill]="
+    getDiagramText('community')?.fill ||
+    getReferenceLabelColor('community')
+  "
+  [attr.font-size]="getDiagramText('community')?.fontSize"
+  [attr.font-weight]="getDiagramText('community')?.fontWeight"
+>
+  <textPath
+    href="#aCom"
+    startOffset="50%"
+    text-anchor="middle"
+  >
+    {{ getLayerDiagramLabel('community') }}
+  </textPath>
+</text>
 
 
           <path
@@ -748,18 +770,23 @@
           </path>
 
           <text
-            class="rlabel"
-            data-lab-for="school &amp; anganwadi"
-            [attr.fill]="getReferenceLabelColor('school')"
-          >
-            <textPath
-              href="#aSch"
-              startOffset="50%"
-              text-anchor="middle"
-            >
-              {{ getLayerDiagramLabel('schools') }}
-            </textPath>
-          </text>
+  class="rlabel"
+  data-lab-for="school &amp; anganwadi"
+  [attr.fill]="
+    getDiagramText('schools')?.fill ||
+    getReferenceLabelColor('school')
+  "
+  [attr.font-size]="getDiagramText('schools')?.fontSize"
+  [attr.font-weight]="getDiagramText('schools')?.fontWeight"
+>
+  <textPath
+    href="#aSch"
+    startOffset="50%"
+    text-anchor="middle"
+  >
+    {{ getLayerDiagramLabel('schools') }}
+  </textPath>
+</text>
 
         </svg>
 

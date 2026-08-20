@@ -3,6 +3,7 @@ import { Component, HostListener, Input, OnChanges } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   OUTCOMES_MODEL_CONFIG,
+  OutcomesDiagramIcon,
   OutcomesLayerConfig,
   OutcomesLayerKey,
   OutcomesModelConfig,
@@ -761,4 +762,19 @@ export class OutcomesModelComponent implements OnChanges {
   private isMobileViewport(): boolean {
     return typeof window !== 'undefined' && window.innerWidth <= this.MOBILE_BREAKPOINT;
   }
+
+  getDiagramIcon(layerKey: OutcomesLayerKey): OutcomesDiagramIcon {
+  const layer = this.config.layers.find(
+    (item) => item.key === layerKey
+  );
+
+  return layer?.diagram.icon ?? {
+    type: 'image',
+    value: '',
+  };
+}
+
+getDiagramText(layerKey: OutcomesLayerKey) {
+  return this.layers.find(layer => layer.key === layerKey)?.diagram.text;
+}
 }

@@ -31,6 +31,14 @@ export interface OutcomesDiagramConfig {
   textOffsetX?: number;
   textOffsetY?: number;
   icon: OutcomesDiagramIcon;
+
+  text?: {
+    x: number;
+    y: number;
+    fill?: string;
+    fontSize?: number;
+    fontWeight?: number;
+  };
 }
 
 export interface OutcomesListItem {
@@ -210,11 +218,18 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         labelAnchor: 'middle',
         icon: {
           type: 'material',
-          value: 'child_care',
+          value: 'assets/icons/learner.svg',
           color: '#ff9911',
           width: 34,
           height: 34,
         },
+        text: {
+    x: 300,
+    y: 325,
+    fill: '#1a1622',
+    fontSize: 23,
+    fontWeight: 600,
+  },
       },
       panelType: 'list',
       imgPath: 'assets/icons/student.svg',
@@ -278,11 +293,18 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         textOffsetY: 20,
         icon: {
           type: 'material',
-          value: 'account_balance',
+          value: 'assets/icons/school.svg',
           color: '#5b6ee0',
           width: 34,
           height: 34,
         },
+        text: {
+    x: 300,
+    y: 402,
+    fill: '#1a1622',
+    fontSize: 23,
+    fontWeight: 600,
+  },
       },
       panelType: 'list',
       imgPath: 'assets/icons/school-solid.svg',
@@ -333,11 +355,18 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         textOffsetY: 22,
         icon: {
           type: 'material',
-          value: 'group',
+          value: 'assets/icons/community.svg',
           color: '#e0338a',
           width: 34,
           height: 34,
         },
+        text: {
+    x: 300,
+    y: 198,
+    fill: '#1a1622',
+    fontSize: 23,
+    fontWeight: 600,
+  },
       },
       panelType: 'story',
       imgPath: 'assets/icons/community-group.svg',
@@ -382,11 +411,18 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         textOffsetY: 4,
         icon: {
           type: 'material',
-          value: 'diversity_3',
+          value: 'assets/icons/society.svg',
           color: '#99459a',
           width: 34,
           height: 34,
         },
+        text: {
+    x: 300,
+    y: 118,
+    fill: '#1a1622',
+    fontSize: 23,
+    fontWeight: 600,
+  },
       },
       panelType: 'story',
       imgPath: '',
@@ -421,11 +457,18 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         textOffsetY: 4,
         icon: {
           type: 'material',
-          value: 'article',
+          value: 'assets/icons/system-institutions.svg',
           color: '#562f91',
           width: 34,
           height: 34,
         },
+        text: {
+    x: 300,
+    y: 482,
+    fill: '#1a1622',
+    fontSize: 23,
+    fontWeight: 600,
+  },
       },
       panelType: 'list',
       imgPath: '',
@@ -482,11 +525,18 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         textOffsetY: 4,
         icon: {
           type: 'material',
-          value: 'public',
+          value: 'assets/icons/network.svg',
           color: '#961c00',
           width: 34,
           height: 34,
         },
+        text: {
+    x: 300,
+    y: 58,
+    fill: '#1a1622',
+    fontSize: 23,
+    fontWeight: 600,
+  },
       },
       imgPath: 'assets/icons/network-users.svg',
       panelType: 'story',
