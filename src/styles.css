@@ -81,6 +81,8 @@ html {
   --oc-inactive-icon: #b9b9b9;
   --oc-fill-light: #fafafa;
   --oc-stroke-light: #e4e4e4;
+  --oc-stroke-grey: #666666;
+
 }
 
 html.light-theme {

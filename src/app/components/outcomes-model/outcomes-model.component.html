@@ -1,10 +1,6 @@
 <section class="outcomes-model">
   <div class="outcomes-grid">
 
-    <!-- ========================================================= -->
-    <!-- LEFT : OUTCOME LAYER DIAGRAM -->
-    <!-- ========================================================= -->
-
     <div class="sticky-stage">
       <div class="stage">
 
@@ -63,67 +59,55 @@
 
           </defs>
 
-
-          <!-- ===================================================== -->
-          <!-- NETWORK GLOW -->
-          <!-- ===================================================== -->
-
           <circle
-            id="netGlow"
+            id="outerGlow"
             cx="300"
             cy="300"
-            r="304"
+            [attr.r]="outerLayer.diagram.outerRadius"
             [attr.fill]="
-              isDiagramLayerDisabled('network')
+              isDiagramLayerDisabled(outerLayer.key)
                 ? 'url(#netRest)'
                 : (
-                    isReferenceLayerActive('network') ||
-                    isLayerHovered('network')
+                    isReferenceLayerActive(outerLayer.key) ||
+                    isLayerHovered(outerLayer.key)
                       ? 'url(#netActive)'
                       : 'url(#netRest)'
                   )
             "
             [style.opacity]="
-              isDiagramLayerDisabled('network') ? 0.35 : 1
+              isDiagramLayerDisabled(outerLayer.key) ? 0.35 : 1
             "
             filter="url(#soft)"
           >
           </circle>
 
-
-          <!-- ===================================================== -->
-          <!-- NETWORK WEB -->
-          <!-- ===================================================== -->
-
           <g
-            id="netWeb"
+            id="outerWeb"
             mask="url(#netMask)"
             pointer-events="none"
             [style.opacity]="
-              isDiagramLayerDisabled('network') ? 0.35 : 1
+              isDiagramLayerDisabled(outerLayer.key) ? 0.35 : 1
             "
           >
-
-            <!-- BACK WEB -->
 
             <g
               id="webBack"
               [attr.stroke]="
-                isDiagramLayerDisabled('network')
+                isDiagramLayerDisabled(outerLayer.key)
                   ? '#CFCFCF'
                   : (
-                      isReferenceLayerActive('network') ||
-                      isLayerHovered('network')
+                      isReferenceLayerActive(outerLayer.key) ||
+                      isLayerHovered(outerLayer.key)
                         ? '#FFFFFF'
                         : '#DEDEDE'
                     )
               "
               [attr.fill]="
-                isDiagramLayerDisabled('network')
+                isDiagramLayerDisabled(outerLayer.key)
                   ? '#CFCFCF'
                   : (
-                      isReferenceLayerActive('network') ||
-                      isLayerHovered('network')
+                      isReferenceLayerActive(outerLayer.key) ||
+                      isLayerHovered(outerLayer.key)
                         ? '#FFFFFF'
                         : '#DEDEDE'
                     )
@@ -187,27 +171,24 @@
 
             </g>
 
-
-            <!-- FRONT WEB -->
-
             <g
               id="webFront"
               [attr.stroke]="
-                isDiagramLayerDisabled('network')
+                isDiagramLayerDisabled(outerLayer.key)
                   ? '#C4C4C4'
                   : (
-                      isReferenceLayerActive('network') ||
-                      isLayerHovered('network')
+                      isReferenceLayerActive(outerLayer.key) ||
+                      isLayerHovered(outerLayer.key)
                         ? '#FFFFFF'
                         : '#C4C4C4'
                     )
               "
               [attr.fill]="
-                isDiagramLayerDisabled('network')
+                isDiagramLayerDisabled(outerLayer.key)
                   ? '#C4C4C4'
                   : (
-                      isReferenceLayerActive('network') ||
-                      isLayerHovered('network')
+                      isReferenceLayerActive(outerLayer.key) ||
+                      isLayerHovered(outerLayer.key)
                         ? '#FFFFFF'
                         : '#C4C4C4'
                     )
@@ -242,556 +223,170 @@
 
           </g>
 
+          <ng-container *ngFor="let layer of reversedLayers; trackBy: trackByLayerKey">
 
-          <!-- ===================================================== -->
-          <!-- NETWORK -->
-          <!-- ===================================================== -->
+            <circle
+              *ngIf="layer.diagram.shape === 'full'"
+              class="seg reference-seg"
+              [style.stroke-width]="getReferenceLayerStrokeWidth(layer.key) + 'px'"
+              [class.disabled]="isDiagramLayerDisabled(layer.key)"
+              [attr.data-layer]="getLayerDataAttr(layer)"
+              cx="300"
+              cy="300"
+              [attr.r]="layer.diagram.isHitTarget ? layer.diagram.hitRadius : layer.diagram.outerRadius"
+              [attr.fill]="layer.diagram.isHitTarget ? 'transparent' : getReferenceLayerFill(layer.key)"
+              [attr.stroke]="layer.diagram.isHitTarget ? 'none' : getReferenceLayerStroke(layer.key)"
+              role="button"
+              [attr.tabindex]="isDiagramLayerDisabled(layer.key) ? -1 : 0"
+              [attr.aria-disabled]="isDiagramLayerDisabled(layer.key) ? 'true' : null"
+              pointer-events="auto"
+              [attr.aria-label]="getLayerAriaLabel(layer.key)"
+              (click)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
+              (keydown.enter)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
+              (keydown.space)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
+              (mouseenter)="!isDiagramLayerDisabled(layer.key) && setHoveredLayer(layer.key)"
+              (mouseleave)="clearHoveredLayer()"
+            >
+            </circle>
 
-          <circle
-            class="seg reference-seg"
-            [style.stroke-width]="getReferenceLayerStrokeWidth('network') + 'px'"
-            data-layer="network"
-            cx="300"
-            cy="300"
-            r="344"
-            fill="transparent"
-            stroke="none"
-            role="button"
-            [attr.tabindex]="isDiagramLayerDisabled('network') ? -1 : 0"
-            [attr.aria-disabled]="
-              isDiagramLayerDisabled('network') ? 'true' : null
-            "
-            [attr.pointer-events]="'auto'"
-            [attr.aria-label]="config.ariaLabels.network"
-            [class.disabled]="isDiagramLayerDisabled('network')"
-            (click)="
-              !isDiagramLayerDisabled('network') &&
-              selectReferenceLayer('network')
-            "
-            (keydown.enter)="
-              !isDiagramLayerDisabled('network') &&
-              selectReferenceLayer('network')
-            "
-            (keydown.space)="
-              !isDiagramLayerDisabled('network') &&
-              selectReferenceLayer('network')
-            "
-            (mouseenter)="
-              !isDiagramLayerDisabled('network') &&
-              setHoveredLayer('network')
-            "
-            (mouseleave)="clearHoveredLayer()"
-          >
-          </circle>
+            <path
+              *ngIf="layer.diagram.shape !== 'full'"
+              class="seg reference-seg"
+              [style.stroke-width]="getReferenceLayerStrokeWidth(layer.key) + 'px'"
+              [class.disabled]="isDiagramLayerDisabled(layer.key)"
+              [attr.data-layer]="getLayerDataAttr(layer)"
+              [attr.d]="getLayerPath(layer)"
+              [attr.fill]="getReferenceLayerFill(layer.key)"
+              [attr.stroke]="getReferenceLayerStroke(layer.key)"
+              [attr.pointer-events]="'auto'"
+              [attr.tabindex]="isDiagramLayerDisabled(layer.key) ? -1 : 0"
+              [attr.aria-disabled]="isDiagramLayerDisabled(layer.key) ? 'true' : null"
+              role="button"
+              [attr.aria-label]="getLayerAriaLabel(layer.key)"
+              (click)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
+              (keydown.enter)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
+              (keydown.space)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
+              (mouseenter)="!isDiagramLayerDisabled(layer.key) && setHoveredLayer(layer.key)"
+              (mouseleave)="clearHoveredLayer()"
+            >
+            </path>
 
+          </ng-container>
 
-          <!-- ===================================================== -->
-          <!-- SOCIETY -->
-          <!-- ===================================================== -->
-
-          <path
-            class="seg reference-seg"
-            [style.stroke-width]="getReferenceLayerStrokeWidth('society') + 'px'"
-            [class.disabled]="isDiagramLayerDisabled('society')"
-            data-layer="society"
-            d="M84.00,300.00 A216,216 0 0 1 516.00,300.00 L452.00,300.00 A152,152 0 0 0 148.00,300.00 Z"
-            [attr.fill]="getReferenceLayerFill('society')"
-            [attr.stroke]="getReferenceLayerStroke('society')"
-            [attr.pointer-events]="'auto'"
-            [attr.tabindex]="
-              isDiagramLayerDisabled('society') ? -1 : 0
-            "
-            [attr.aria-disabled]="
-              isDiagramLayerDisabled('society') ? 'true' : null
-            "
-            role="button"
-            [attr.aria-label]="config.ariaLabels.society"
-            (click)="
-              !isDiagramLayerDisabled('society') &&
-              selectReferenceLayer('society')
-            "
-            (keydown.enter)="
-              !isDiagramLayerDisabled('society') &&
-              selectReferenceLayer('society')
-            "
-            (keydown.space)="
-              !isDiagramLayerDisabled('society') &&
-              selectReferenceLayer('society')
-            "
-            (mouseenter)="
-              !isDiagramLayerDisabled('society') &&
-              setHoveredLayer('society')
-            "
-            (mouseleave)="clearHoveredLayer()"
-          >
-          </path>
-
-
-          <!-- ===================================================== -->
-          <!-- SYSTEM INSTITUTIONS -->
-          <!-- ===================================================== -->
-
-          <path
-            class="seg reference-seg"
-            [style.stroke-width]="getReferenceLayerStrokeWidth('system') + 'px'"
-            [class.disabled]="isDiagramLayerDisabled('system')"
-            data-layer="system"
-            d="M516.00,300.00 A216,216 0 0 1 84.00,300.00 L148.00,300.00 A152,152 0 0 0 452.00,300.00 Z"
-            [attr.fill]="getReferenceLayerFill('system')"
-            [attr.stroke]="getReferenceLayerStroke('system')"
-            [attr.pointer-events]="'auto'"
-            [attr.tabindex]="
-              isDiagramLayerDisabled('system') ? -1 : 0
-            "
-            [attr.aria-disabled]="
-              isDiagramLayerDisabled('system') ? 'true' : null
-            "
-            role="button"
-            [attr.aria-label]="config.ariaLabels.system"
-            (click)="
-              !isDiagramLayerDisabled('system') &&
-              selectReferenceLayer('system')
-            "
-            (keydown.enter)="
-              !isDiagramLayerDisabled('system') &&
-              selectReferenceLayer('system')
-            "
-            (keydown.space)="
-              !isDiagramLayerDisabled('system') &&
-              selectReferenceLayer('system')
-            "
-            (mouseenter)="
-              !isDiagramLayerDisabled('system') &&
-              setHoveredLayer('system')
-            "
-            (mouseleave)="clearHoveredLayer()"
-          >
-          </path>
-
-
-          <!-- ===================================================== -->
-          <!-- COMMUNITY -->
-          <!-- ===================================================== -->
-
-          <path
-            class="seg reference-seg"
-            [style.stroke-width]="getReferenceLayerStrokeWidth('community') + 'px'"
-            [class.disabled]="isDiagramLayerDisabled('community')"
-            data-layer="community"
-            d="M148.00,300.00 A152,152 0 0 1 452.00,300.00 L358.00,300.00 A58,58 0 0 0 242.00,300.00 Z"
-            [attr.fill]="getReferenceLayerFill('community')"
-            [attr.stroke]="getReferenceLayerStroke('community')"
-            [attr.pointer-events]="'auto'"
-            [attr.tabindex]="
-              isDiagramLayerDisabled('community') ? -1 : 0
-            "
-            [attr.aria-disabled]="
-              isDiagramLayerDisabled('community') ? 'true' : null
-            "
-            role="button"
-            [attr.aria-label]="config.ariaLabels.community"
-            (click)="
-              !isDiagramLayerDisabled('community') &&
-              selectReferenceLayer('community')
-            "
-            (keydown.enter)="
-              !isDiagramLayerDisabled('community') &&
-              selectReferenceLayer('community')
-            "
-            (keydown.space)="
-              !isDiagramLayerDisabled('community') &&
-              selectReferenceLayer('community')
-            "
-            (mouseenter)="
-              !isDiagramLayerDisabled('community') &&
-              setHoveredLayer('community')
-            "
-            (mouseleave)="clearHoveredLayer()"
-          >
-          </path>
-
-
-          <!-- ===================================================== -->
-          <!-- SCHOOL / ANGANWADI -->
-          <!-- ===================================================== -->
-
-          <path
-            class="seg reference-seg"
-            [style.stroke-width]="getReferenceLayerStrokeWidth('schools') + 'px'"
-            [class.disabled]="isDiagramLayerDisabled('schools')"
-            data-layer="schools"
-            d="M452.00,300.00 A152,152 0 0 1 148.00,300.00 L242.00,300.00 A58,58 0 0 0 358.00,300.00 Z"
-            [attr.fill]="getReferenceLayerFill('schools')"
-            [attr.stroke]="getReferenceLayerStroke('schools')"
-            [attr.pointer-events]="'auto'"
-            [attr.tabindex]="
-              isDiagramLayerDisabled('schools') ? -1 : 0
-            "
-            [attr.aria-disabled]="
-              isDiagramLayerDisabled('schools') ? 'true' : null
-            "
-            role="button"
-            [attr.aria-label]="config.ariaLabels.school"
-            (click)="
-              !isDiagramLayerDisabled('schools') &&
-              selectReferenceLayer('schools')
-            "
-            (keydown.enter)="
-              !isDiagramLayerDisabled('schools') &&
-              selectReferenceLayer('schools')
-            "
-            (keydown.space)="
-              !isDiagramLayerDisabled('schools') &&
-              selectReferenceLayer('schools')
-            "
-            (mouseenter)="
-              !isDiagramLayerDisabled('schools') &&
-              setHoveredLayer('schools')
-            "
-            (mouseleave)="clearHoveredLayer()"
-          >
-          </path>
-
-
-          <!-- ===================================================== -->
-          <!-- LEARNER -->
-          <!-- ===================================================== -->
-
-          <circle
-            class="seg reference-seg"
-            [style.stroke-width]="getReferenceLayerStrokeWidth('students') + 'px'"
-            [class.disabled]="isDiagramLayerDisabled('students')"
-            data-layer="learner"
-            cx="300"
-            cy="300"
-            r="58"
-            [attr.fill]="getReferenceLayerFill('students')"
-            [attr.stroke]="getReferenceLayerStroke('students')"
-            [attr.pointer-events]="'auto'"
-            [attr.tabindex]="
-              isDiagramLayerDisabled('students') ? -1 : 0
-            "
-            [attr.aria-disabled]="
-              isDiagramLayerDisabled('students') ? 'true' : null
-            "
-            role="button"
-            [attr.aria-label]="config.ariaLabels.learner"
-            (click)="
-              !isDiagramLayerDisabled('students') &&
-              selectReferenceLayer('students')
-            "
-            (keydown.enter)="
-              !isDiagramLayerDisabled('students') &&
-              selectReferenceLayer('students')
-            "
-            (keydown.space)="
-              !isDiagramLayerDisabled('students') &&
-              selectReferenceLayer('students')
-            "
-            (mouseenter)="
-              !isDiagramLayerDisabled('students') &&
-              setHoveredLayer('students')
-            "
-            (mouseleave)="clearHoveredLayer()"
-          >
-          </circle>
-
-
-          <!-- ===================================================== -->
-          <!-- ICONS -->
-          <!-- ===================================================== -->
-
-
-          <!-- ===================================================== -->
-<!-- NETWORK -->
-<!-- ===================================================== -->
-
-<g
-  class="iconwrap"
-  [class.on]="
-  !isDiagramLayerDisabled('network') &&
-  (
-    hasProgramOutcomeData ||
-isReferenceLayerActive('network') ||
-isLayerHovered('network')
-  )
-"
-  [class.disabled]="isDiagramLayerDisabled('network')"
-  data-icon="network"
->
-  <image
-  [attr.href]="getDiagramIcon('network').value"
-  x="215"
-  y="45"
-  [attr.width]="getDiagramIcon('network').width"
-  [attr.height]="getDiagramIcon('network').height"
-  preserveAspectRatio="xMidYMid meet"
-  pointer-events="none"
-/>
-</g>
-
-<g
-  class="iconwrap"
-  [class.on]="
-  !isDiagramLayerDisabled('society') &&
-  (
-    hasProgramOutcomeData ||
-    isReferenceLayerActive('society') ||
-    isLayerHovered('society')
-  )
-"
-  [class.disabled]="isDiagramLayerDisabled('society')"
-  data-icon="society"
->
-  <image
-  [attr.href]="getDiagramIcon('society').value"
-  x="235"
-  y="100"
-  [attr.width]="getDiagramIcon('society').width"
-  [attr.height]="getDiagramIcon('society').height"
-  preserveAspectRatio="xMidYMid meet"
-  pointer-events="none"
-/>
-</g>
+          <ng-container *ngFor="let layer of reversedLayers; trackBy: trackByLayerKey">
+            <g
+              *ngIf="layer.key !== innerLayer.key"
+              class="iconwrap"
+              [class.on]="
+                !isDiagramLayerDisabled(layer.key) &&
+                (hasProgramOutcomeData || isReferenceLayerActive(layer.key) || isLayerHovered(layer.key))
+              "
+              [class.disabled]="isDiagramLayerDisabled(layer.key)"
+              [attr.data-icon]="layer.key"
+            >
+              <image
+                [attr.href]="layer.diagram.icon.value"
+                [attr.x]="layer.diagram.iconX"
+                [attr.y]="layer.diagram.iconY"
+                [attr.width]="layer.diagram.icon.width"
+                [attr.height]="layer.diagram.icon.height"
+                preserveAspectRatio="xMidYMid meet"
+                pointer-events="none"
+              />
+            </g>
+          </ng-container>
 
           <g
-  class="iconwrap"
-  [class.on]="
-  !isDiagramLayerDisabled('community') &&
-  (
-    hasProgramOutcomeData ||
-    isReferenceLayerActive('community') ||
-    isLayerHovered('community')
-  )
-"
-  [class.disabled]="isDiagramLayerDisabled('community')"
-  data-icon="community"
->
-  <image
-  [attr.href]="getDiagramIcon('community').value"
-  x="277"
-  y="188"
-  [attr.width]="getDiagramIcon('community').width"
-  [attr.height]="getDiagramIcon('community').height"
-  preserveAspectRatio="xMidYMid meet"
-  pointer-events="none"
-/>
-</g>
+            class="iconwrap inner-layer-icon"
+            [class.on]="
+              !isDiagramLayerDisabled(innerLayer.key) &&
+              (hasProgramOutcomeData || isReferenceLayerActive(innerLayer.key) || isLayerHovered(innerLayer.key))
+            "
+            [class.disabled]="isDiagramLayerDisabled(innerLayer.key)"
+            [attr.data-icon]="innerLayer.key"
+          >
 
-<g
-  class="iconwrap"
-  [class.on]="
-  !isDiagramLayerDisabled('system') &&
-  (
-    hasProgramOutcomeData ||
-    isReferenceLayerActive('system') ||
-    isLayerHovered('system')
-  )
-"
-  [class.disabled]="isDiagramLayerDisabled('system')"
-  data-icon="system"
->
-  <image
-  [attr.href]="getDiagramIcon('system').value"
-  x="195"
-  y="460"
-  [attr.width]="getDiagramIcon('system').width"
-  [attr.height]="getDiagramIcon('system').height"
-  preserveAspectRatio="xMidYMid meet"
-  pointer-events="none"
-/>
-</g>
+            <image
+              [attr.href]="innerLayer.diagram.icon.value"
+              [attr.x]="innerLayer.diagram.iconX"
+              [attr.y]="innerLayer.diagram.iconY"
+              [attr.width]="innerLayer.diagram.icon.width"
+              [attr.height]="innerLayer.diagram.icon.height"
+              preserveAspectRatio="xMidYMid meet"
+              pointer-events="none"
+            />
 
-          <g
-  class="iconwrap"
-  [class.on]="
-  !isDiagramLayerDisabled('schools') &&
-  (
-    hasProgramOutcomeData ||
-    isReferenceLayerActive('schools') ||
-    isLayerHovered('schools')
-  )
-"
-  [class.disabled]="isDiagramLayerDisabled('schools')"
-  data-icon="schools"
->
-  <image
-  [attr.href]="getDiagramIcon('schools').value"
-  x="277"
-  y="366"
-  [attr.width]="getDiagramIcon('schools').width"
-  [attr.height]="getDiagramIcon('schools').height"
-  preserveAspectRatio="xMidYMid meet"
-  pointer-events="none"
-/>
-</g>
+            <text
+              [attr.x]="getDiagramText(innerLayer.key)?.x"
+              [attr.y]="getDiagramText(innerLayer.key)?.y"
+              [attr.fill]="getDiagramLabelColor(innerLayer.key)"
+              [attr.font-size]="getDiagramText(innerLayer.key)?.fontSize"
+              [attr.font-weight]="getDiagramText(innerLayer.key)?.fontWeight"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              pointer-events="none"
+            >
+              {{ getLayerDiagramLabel(innerLayer.key) }}
+            </text>
 
+          </g>
 
-<g
-  class="iconwrap learner-icon"
-  [class.on]="
-  !isDiagramLayerDisabled('students') &&
-  (
-    hasProgramOutcomeData ||
-    isReferenceLayerActive('students') ||
-    isLayerHovered('students')
-  )
-"
-  [class.disabled]="isDiagramLayerDisabled('students')"
-  data-icon="students"
->
+          <ng-container *ngFor="let layer of layers; trackBy: trackByLayerKey">
+            <ng-container *ngIf="shouldShowDiagramText(layer)">
 
-  <!-- Learner image -->
-  <image
-  [attr.href]="getDiagramIcon('students').value"
-  x="275"
-  y="275"
-  [attr.width]="getDiagramIcon('students').width"
-  [attr.height]="getDiagramIcon('students').height"
-  preserveAspectRatio="xMidYMid meet"
-  pointer-events="none"
-/>
+              <ng-container *ngIf="layer.diagram.curvedLabelPath; else straightLabel">
 
-  <!-- Learner label -->
-  <text
-  [attr.x]="getDiagramText('students')?.x"
-  [attr.y]="getDiagramText('students')?.y"
-  [attr.fill]="getDiagramLabelColor('students')"
-  [attr.font-size]="getDiagramText('students')?.fontSize"
-  [attr.font-weight]="getDiagramText('students')?.fontWeight"
-  text-anchor="middle"
-  dominant-baseline="middle"
-  pointer-events="none"
->
-  {{ getLayerDiagramLabel('students') }}
-</text>
+                <path
+                  [attr.id]="'lab-arc-' + layer.key"
+                  fill="none"
+                  [attr.d]="layer.diagram.curvedLabelPath"
+                ></path>
 
-</g>
+                <text
+                  class="rlabel"
+                  [attr.data-lab-for]="getLayerLabelForAttr(layer)"
+                  [attr.fill]="getDiagramLabelColor(layer.key)"
+                  [attr.font-size]="getDiagramText(layer.key)?.fontSize"
+                  [attr.font-weight]="getDiagramText(layer.key)?.fontWeight"
+                >
+                  <textPath
+                    [attr.href]="'#lab-arc-' + layer.key"
+                    startOffset="50%"
+                    text-anchor="middle"
+                  >
+                    {{ getLayerDiagramLabel(layer.key) }}
+                  </textPath>
+                </text>
 
+              </ng-container>
 
-          <!-- ===================================================== -->
-          <!-- CURVED LABELS -->
-          <!-- ===================================================== -->
+              <ng-template #straightLabel>
+                <text
+                  class="rlabel"
+                  [attr.data-lab-for]="getLayerLabelForAttr(layer)"
+                  [attr.x]="getDiagramText(layer.key)?.x"
+                  [attr.y]="getDiagramText(layer.key)?.y"
+                  [attr.fill]="getDiagramLabelColor(layer.key)"
+                  [attr.font-size]="getDiagramText(layer.key)?.fontSize"
+                  [attr.font-weight]="getDiagramText(layer.key)?.fontWeight"
+                  text-anchor="middle"
+                  dominant-baseline="middle"
+                >
+                  {{ getLayerDiagramLabel(layer.key) }}
+                </text>
+              </ng-template>
 
-          <text
-  class="rlabel"
-  data-lab-for="network"
-  [attr.x]="getDiagramText('network')?.x"
-  [attr.y]="getDiagramText('network')?.y"
-  [attr.fill]="getDiagramLabelColor('network')"
-  [attr.font-size]="getDiagramText('network')?.fontSize"
-  [attr.font-weight]="getDiagramText('network')?.fontWeight"
-  text-anchor="middle"
-  dominant-baseline="middle"
->
-  {{ getLayerDiagramLabel('network') }}
-</text>
-
-
-        <path
-  id="aSoc"
-  fill="none"
-  d="M233.70,127.29 A185,185 0 0 1 366.30,127.29">
-</path>
-
-<text
-  class="rlabel"
-  data-lab-for="society"
-  [attr.fill]="getDiagramLabelColor('society')"
-  [attr.font-size]="getDiagramText('society')?.fontSize"
-  [attr.font-weight]="getDiagramText('society')?.fontWeight"
->
-  <textPath
-    href="#aSoc"
-    startOffset="50%"
-    text-anchor="middle"
-  >
-    {{ getLayerDiagramLabel('society') }}
-  </textPath>
-</text>
-
-
-         <path
-  id="aSys"
-  fill="none"
-  d="M138.95,423.58 A203,203 0 0 0 461.05,423.58">
-</path>
-
-<text
-  class="rlabel"
-  data-lab-for="system institutions"
-  [attr.fill]="getDiagramLabelColor('system')"
-  [attr.font-size]="getDiagramText('system')?.fontSize"
-  [attr.font-weight]="getDiagramText('system')?.fontWeight"
->
-  <textPath
-    href="#aSys"
-    startOffset="50%"
-    text-anchor="middle"
-  >
-    {{ getLayerDiagramLabel('system') }}
-  </textPath>
-</text>
-
-
-          <path
-            id="aCom"
-            fill="none"
-            d="M219.82,209.38 A121,121 0 0 1 380.18,209.38">
-          </path>
-
-          <text
-  class="rlabel"
-  data-lab-for="community"
-  [attr.fill]="getDiagramLabelColor('community')"
-  [attr.font-size]="getDiagramText('community')?.fontSize"
-  [attr.font-weight]="getDiagramText('community')?.fontWeight"
->
-  <textPath
-    href="#aCom"
-    startOffset="50%"
-    text-anchor="middle"
-  >
-    {{ getLayerDiagramLabel('community') }}
-  </textPath>
-</text>
-
-
-          <path
-            id="aSch"
-            fill="none"
-            d="M167.43,341.80 A139,139 0 0 0 432.57,341.80">
-          </path>
-
-          <text
-  class="rlabel"
-  data-lab-for="school &amp; anganwadi"
-  [attr.fill]="getDiagramLabelColor('schools')"
-  [attr.font-size]="getDiagramText('schools')?.fontSize"
-  [attr.font-weight]="getDiagramText('schools')?.fontWeight"
->
-  <textPath
-    href="#aSch"
-    startOffset="50%"
-    text-anchor="middle"
-  >
-    {{ getLayerDiagramLabel('schools') }}
-  </textPath>
-</text>
+            </ng-container>
+          </ng-container>
 
         </svg>
 
         <p class="diagram-note">
-          * {{ config.layerFootnote }}
+          {{ config.staticTexts?.diagramNotePrefix || '*' }} {{ config.layerFootnote }}
         </p>
 
       </div>
     </div>
-
-
-    <!-- ========================================================= -->
-    <!-- RIGHT SIDE -->
-    <!-- ========================================================= -->
 
     <ng-container
       *ngIf="hasProgramOutcomeData; else normalOutcomeSections"
@@ -802,18 +397,14 @@ isLayerHovered('network')
         [style.--active-color]="selectedLayer.color"
       >
 
-        <!-- ===================================================== -->
-        <!-- PROGRAM HEADER -->
-        <!-- ===================================================== -->
-
         <div class="program-mode-heading">
 
- <img
- *ngIf="programPanelIcon"
-    [src]="programPanelIcon"
-    aria-hidden="true"
-    class="program-mode-icon"
-  />
+          <img
+            *ngIf="programPanelIcon"
+            [src]="programPanelIcon"
+            aria-hidden="true"
+            class="program-mode-icon"
+          />
 
           <div>
             <h3>{{ programPanelTitle }}:</h3>
@@ -821,24 +412,19 @@ isLayerHovered('network')
           </div>
 
           <button
-  type="button"
-  class="info-button"
-  [style.--info-color]="selectedLayer.color"
-  [attr.aria-label]="'Show ' + programPanelTitle + ' explanation'"
-  (click)="openInfoModal()"
->
-  <span
-    class="info-button-icon"
-    aria-hidden="true"
-  ></span>
-</button>
+            type="button"
+            class="info-button"
+            [style.--info-color]="selectedLayer.color"
+            [attr.aria-label]="'Show ' + programPanelTitle + ' explanation'"
+            (click)="openInfoModal()"
+          >
+            <span
+              class="info-button-icon"
+              aria-hidden="true"
+            ></span>
+          </button>
 
         </div>
-
-
-        <!-- ===================================================== -->
-        <!-- PROGRAM CAROUSEL -->
-        <!-- ===================================================== -->
 
         <div
           class="program-card-carousel"
@@ -954,21 +540,21 @@ isLayerHovered('network')
 
                 <ng-template #outcomeProgramCard>
 
-<span
-  class="program-mode-tag"
-  [class.has-tooltip]="isLabelTruncated(getProgramCardLabel(card, cardIndex))"
-  (mouseenter)="
-    isLabelTruncated(getProgramCardLabel(card, cardIndex)) &&
-    showTooltip($event, getProgramCardLabel(card, cardIndex))
-  "
-  (mouseleave)="hideTooltip()"
-  (click)="
-    isLabelTruncated(getProgramCardLabel(card, cardIndex)) &&
-    toggleTooltipMobile($event, getProgramCardLabel(card, cardIndex))
-  "
->
-  {{ truncateLabel(getProgramCardLabel(card, cardIndex)) }}
-</span>
+                  <span
+                    class="program-mode-tag"
+                    [class.has-tooltip]="isLabelTruncated(getProgramCardLabel(card, cardIndex))"
+                    (mouseenter)="
+                      isLabelTruncated(getProgramCardLabel(card, cardIndex)) &&
+                      showTooltip($event, getProgramCardLabel(card, cardIndex))
+                    "
+                    (mouseleave)="hideTooltip()"
+                    (click)="
+                      isLabelTruncated(getProgramCardLabel(card, cardIndex)) &&
+                      toggleTooltipMobile($event, getProgramCardLabel(card, cardIndex))
+                    "
+                  >
+                    {{ truncateLabel(getProgramCardLabel(card, cardIndex)) }}
+                  </span>
 
                   <p>
                     {{ getProgramCardDescription(card) }}
@@ -980,8 +566,6 @@ isLayerHovered('network')
 
             </div>
 
-
-            <!-- PAGE INDICATORS -->
 
             <div
               class="program-card-indicators"
@@ -1030,11 +614,6 @@ isLayerHovered('network')
 
         </div>
 
-
-        <!-- ===================================================== -->
-        <!-- EVIDENCE -->
-        <!-- ===================================================== -->
-
         <section
           class="program-mode-evidence"
           *ngIf="programEvidenceResources.length"
@@ -1072,55 +651,55 @@ isLayerHovered('network')
 
                 <a
                   class="evidence-card"
-  *ngFor="let evidence of visibleEvidenceResources; trackBy: trackByIndex"
->
-  <img
-  src="assets/icons/pdf.svg"
-  alt=""
-  aria-hidden="true"
-  class="pdf-icon"
-/>
+                  *ngFor="let evidence of visibleEvidenceResources; trackBy: trackByIndex"
+                >
+                  <img
+                    src="assets/icons/pdf.svg"
+                    alt=""
+                    aria-hidden="true"
+                    class="pdf-icon"
+                  />
 
-  <span class="evidence-name">
-    {{ evidence.title }}
-  </span>
+                  <span class="evidence-name">
+                    {{ evidence.title }}
+                  </span>
 
-  <span class="evidence-meta-row">
-  <span class="evidence-meta">
-  <span>{{ evidence.type }}</span>
-  <span>{{ evidence.size }}</span>
-</span>
+                  <span class="evidence-meta-row">
+                    <span class="evidence-meta">
+                      <span>{{ evidence.type }}</span>
+                      <span>{{ evidence.size }}</span>
+                    </span>
 
-  <img
-    src="assets/icons/mdi_eye.svg"
-    aria-hidden="true"
-    [attr.alt]="config.ariaLabels.viewEvidence"
-  class="evidence-view-icon"
-  (click)="openEvidence($event, evidence)"
-  />
-</span>
+                    <img
+                      src="assets/icons/mdi_eye.svg"
+                      aria-hidden="true"
+                      [attr.alt]="config.ariaLabels.viewEvidence"
+                      class="evidence-view-icon"
+                      (click)="openEvidence($event, evidence)"
+                    />
+                  </span>
 
-  <span class="evidence-tag">
-    {{ evidence.tag }}
-  </span>
-</a>
+                  <span class="evidence-tag">
+                    {{ evidence.tag }}
+                  </span>
+                </a>
               </div>
 
 
               <div
-  class="evidence-scrollbar"
-  *ngIf="canShowEvidenceControls"
-  aria-hidden="true"
->
+                class="evidence-scrollbar"
+                *ngIf="canShowEvidenceControls"
+                aria-hidden="true"
+              >
 
-  <div
-    class="evidence-scrollbar-progress"
-    [style.width.%]="evidenceThumbWidthPercent"
-    [style.left.%]="evidenceThumbLeftPercent"
-  >
-  </div>
+                <div
+                  class="evidence-scrollbar-progress"
+                  [style.width.%]="evidenceThumbWidthPercent"
+                  [style.left.%]="evidenceThumbLeftPercent"
+                >
+                </div>
 
-</div>
+              </div>
 
             </div>
 
@@ -1146,11 +725,6 @@ isLayerHovered('network')
 
         </section>
 
-
-        <!-- ===================================================== -->
-        <!-- PROGRAM LAYER BUTTONS -->
-        <!-- ===================================================== -->
-
         <div
           class="program-layer-tiles"
           [attr.aria-label]="config.ariaLabels.layerTiles"
@@ -1166,7 +740,7 @@ isLayerHovered('network')
             [class.active]="
               selectedLayerKey === layer.key
             "
-             [attr.data-key]="layer.key"
+            [attr.data-key]="layer.key"
             [disabled]="
               !isProgramLayerAvailable(layer.key)
             "
@@ -1185,17 +759,12 @@ isLayerHovered('network')
 
 
         <p class="chip-note">
-          * {{ config.programChipFootnote }}
+          {{ config.staticTexts?.chipNotePrefix || '*' }} {{ config.programChipFootnote }}
         </p>
 
       </section>
 
     </ng-container>
-
-
-    <!-- ========================================================= -->
-    <!-- NORMAL OUTCOME SECTIONS -->
-    <!-- ========================================================= -->
 
     <ng-template #normalOutcomeSections>
 
@@ -1203,10 +772,6 @@ isLayerHovered('network')
         class="rail-sections"
         [style.--active-color]="activePanelColor"
       >
-
-        <!-- ===================================================== -->
-        <!-- NARRATIVE -->
-        <!-- ===================================================== -->
 
         <section
           class="rail rail-narrative"
@@ -1245,7 +810,7 @@ isLayerHovered('network')
                 "
                 [style.--pill-color]="layer.color"
                 (click)="selectLayer(layer.key)"
-                 [attr.data-key]="layer.key"
+                [attr.data-key]="layer.key"
               >
                 {{ layer.chipLabel }}
               </button>
@@ -1267,7 +832,7 @@ isLayerHovered('network')
                 "
                 [style.--pill-color]="layer.color"
                 (click)="selectLayer(layer.key)"
-                 [attr.data-key]="layer.key"
+                [attr.data-key]="layer.key"
               >
                 {{ layer.chipLabel }}
               </button>
@@ -1303,11 +868,6 @@ isLayerHovered('network')
           </article>
 
         </section>
-
-
-        <!-- ===================================================== -->
-        <!-- FRAMEWORK -->
-        <!-- ===================================================== -->
 
         <section
           class="rail rail-framework"
@@ -1359,7 +919,7 @@ isLayerHovered('network')
                 "
                 [style.--pill-color]="layer.color"
                 (click)="selectLayer(layer.key)"
-                 [attr.data-key]="layer.key"
+                [attr.data-key]="layer.key"
               >
                 {{ layer.chipLabel }}
               </button>
@@ -1396,7 +956,7 @@ isLayerHovered('network')
                   </span>
 
                   <h3>
-                    {{ displayProgramData?.title }}
+                    {{ displayProgramData?.title || selectedLayer.heading || selectedLayer.chipLabel }}
                   </h3>
 
                 </div>
@@ -1564,7 +1124,7 @@ isLayerHovered('network')
                   </span>
 
                   <h3>
-                    {{ selectedLayer.heading }}
+                    {{ selectedLayer.heading || selectedLayer.chipLabel }}
                   </h3>
 
                 </div>
@@ -1622,7 +1182,9 @@ isLayerHovered('network')
                 <p class="fwnote">
                   {{
                     selectedLayer.frameworkNote ||
-                    selectedLayer.body
+                    selectedLayer.body ||
+                    selectedLayer.subheading ||
+                    config.defaultNarrativeBody
                   }}
                 </p>
 
@@ -1663,7 +1225,7 @@ isLayerHovered('network')
 
 
           <p class="chip-note">
-            * {{ config.chipFootnote }}
+            {{ config.staticTexts?.chipNotePrefix || '*' }} {{ config.chipFootnote }}
           </p>
 
         </section>
@@ -1673,11 +1235,6 @@ isLayerHovered('network')
     </ng-template>
 
   </div>
-
-
-  <!-- =========================================================== -->
-  <!-- INFO MODAL -->
-  <!-- =========================================================== -->
 
   <div
     class="info-modal-backdrop"

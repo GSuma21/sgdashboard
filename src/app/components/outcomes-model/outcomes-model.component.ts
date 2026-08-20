@@ -3,6 +3,7 @@ import { Component, HostListener, Input, OnChanges } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   OUTCOMES_MODEL_CONFIG,
+  OutcomesAriaLabels,
   OutcomesDiagramIcon,
   OutcomesLayerConfig,
   OutcomesLayerKey,
@@ -64,10 +65,10 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   ngOnDestroy(): void {
-  document.body.style.overflow = '';
-}
+    document.body.style.overflow = '';
+  }
 
-    @HostListener('window:resize')
+  @HostListener('window:resize')
   onWindowResize(): void {
     const newEvidencePerPage = this.isMobileViewport() ? 1 : 2;
 
@@ -79,7 +80,6 @@ export class OutcomesModelComponent implements OnChanges {
       }
     }
 
-    // programCardsPerPage is now viewport-driven too — reclamp cardPageIndex
     if (this.cardPageIndex >= this.programCardPageCount) {
       this.cardPageIndex = Math.max(0, this.programCardPageCount - 1);
     }
@@ -87,6 +87,24 @@ export class OutcomesModelComponent implements OnChanges {
 
   get layers(): OutcomesLayerConfig[] {
     return this.config.layers;
+  }
+
+  get reversedLayers(): OutcomesLayerConfig[] {
+    return [...this.layers].reverse();
+  }
+
+  get outerLayer(): OutcomesLayerConfig {
+    const sortedByRadius = [...this.layers].sort(
+      (a, b) => b.diagram.outerRadius - a.diagram.outerRadius
+    );
+    return sortedByRadius[0] || this.layers[0];
+  }
+
+  get innerLayer(): OutcomesLayerConfig {
+    const sortedByInnerRadius = [...this.layers].sort(
+      (a, b) => a.diagram.innerRadius - b.diagram.innerRadius
+    );
+    return sortedByInnerRadius[0] || this.layers[0];
   }
 
   get selectedLayer(): OutcomesLayerConfig {
@@ -127,20 +145,20 @@ export class OutcomesModelComponent implements OnChanges {
     return this.layers.find((layer) => this.isProgramLayerAvailable(layer.key))?.key || this.config.defaultLayer;
   }
 
-  get studentInfoLayer(): OutcomesLayerConfig {
-    return this.layers.find((layer) => layer.key === 'students') || this.layers[0];
-  }
-
   get infoModalLayer(): OutcomesLayerConfig {
-    return this.hasProgramOutcomeData ? this.selectedLayer : this.studentInfoLayer;
+    return this.hasProgramOutcomeData ? this.selectedLayer : this.innerLayer;
   }
 
   get infoModalTitle(): string {
-    return this.infoModalLayer.heading || this.infoModalLayer.eyebrow || this.infoModalLayer.chipLabel;
+    const staticTexts = this.config.staticTexts || {};
+    const prefix = staticTexts.infoModalTitlePrefix || 'About';
+    return this.infoModalLayer.heading || this.infoModalLayer.eyebrow || this.infoModalLayer.chipLabel || `${prefix} ${this.infoModalLayer.chipLabel}`;
   }
 
   get infoModalDescription(): string {
-    return this.hasProgramOutcomeData ? this.narrativeBody : this.studentInfoLayer.subheading || this.narrativeBody;
+    const staticTexts = this.config.staticTexts || {};
+    const prefix = staticTexts.infoModalDescriptionPrefix || 'Information about';
+    return this.hasProgramOutcomeData ? this.narrativeBody : this.infoModalLayer.subheading || this.narrativeBody || `${prefix} ${this.infoModalLayer.chipLabel}`;
   }
 
   get narrativeBody(): string {
@@ -168,7 +186,8 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   get programPanelDescription(): string {
-    return this.narrativeBody;
+    const staticTexts = this.config.staticTexts || {};
+    return this.narrativeBody || staticTexts.programModeDescription || 'View program outcomes and evidence';
   }
 
   get programCards(): ProgramOutcomeCard[] {
@@ -321,14 +340,14 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   openInfoModal(): void {
-  this.isInfoModalOpen = true;
-  this.updateBodyScrollLock();
-}
+    this.isInfoModalOpen = true;
+    this.updateBodyScrollLock();
+  }
 
   closeInfoModal(): void {
-  this.isInfoModalOpen = false;
-  this.updateBodyScrollLock();
-}
+    this.isInfoModalOpen = false;
+    this.updateBodyScrollLock();
+  }
 
   trackByLayerKey(_: number, layer: OutcomesLayerConfig): string {
     return layer.key;
@@ -374,22 +393,6 @@ export class OutcomesModelComponent implements OnChanges {
     return layer.diagram.textOffsetY ?? 0;
   }
 
-  getIconX(layer: OutcomesLayerConfig): number {
-    return layer.diagram.iconOffsetX ?? 0;
-  }
-
-  getIconY(layer: OutcomesLayerConfig): number {
-    return layer.diagram.iconOffsetY ?? 0;
-  }
-
-  getImageX(layer: OutcomesLayerConfig): number {
-    return this.getIconX(layer) - (layer.diagram.icon.width || 28) / 2;
-  }
-
-  getImageY(layer: OutcomesLayerConfig): number {
-    return this.getIconY(layer) - (layer.diagram.icon.height || 28) / 2;
-  }
-
   shouldShowDiagramText(layer: OutcomesLayerConfig): boolean {
     return (layer.diagram.labelLayout || 'inline') !== 'icon-only';
   }
@@ -398,117 +401,96 @@ export class OutcomesModelComponent implements OnChanges {
     return this.selectedLayerKey === layerKey;
   }
 
-  isReferenceLayerActive(referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'): boolean {
-    return this.selectedLayerKey === this.referenceLayerToKey(referenceLayer);
+  isReferenceLayerActive(layerKey: OutcomesLayerKey | string): boolean {
+    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
+    if (!foundLayer) return false;
+    return this.selectedLayerKey === foundLayer.key;
   }
 
-  selectReferenceLayer(
-    referenceLayer:
-      | 'students'
-      | 'schools'
-      | 'community'
-      | 'society'
-      | 'system'
-      | 'network'
-  ): void {
-    const layerKey = this.referenceLayerToKey(referenceLayer);
+  selectReferenceLayer(layerKey: OutcomesLayerKey | string): void {
+    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
+    if (!foundLayer) return;
 
-    if (this.isDiagramLayerDisabled(layerKey)) {
+    const key = foundLayer.key;
+
+    if (this.isDiagramLayerDisabled(key)) {
       return;
     }
 
-    this.selectLayer(layerKey);
+    this.selectLayer(key);
   }
 
-  getReferenceLayerStrokeWidth(
-    referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'
-  ): number {
-    const layerKey = this.referenceLayerToKey(referenceLayer);
+  getReferenceLayerStrokeWidth(layerKey: OutcomesLayerKey | string): number {
+    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
+    if (!foundLayer) return 1;
 
-    if (this.isDiagramLayerDisabled(layerKey)) {
+    const key = foundLayer.key;
+
+    if (this.isDiagramLayerDisabled(key)) {
       return 1;
     }
 
-    // Only vary width on the programs page; home page keeps the original flat width
     if (!this.hasProgramOutcomeData) {
       return 1.3;
     }
 
-    return this.isReferenceLayerActive(referenceLayer) ? 2 : 1;
+    return this.isReferenceLayerActive(key) ? 2 : 1;
   }
 
-  getLayerDiagramLabel(layerKey: OutcomesLayerKey): string {
-    return this.layers.find((layer) => layer.key === layerKey)?.diagramLabel.toLowerCase() || '';
-  }
+  getReferenceLayerFill(layerKey: OutcomesLayerKey | string): string {
+    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
+    if (!foundLayer) return this.cssVar('--oc-fill-light');
 
-    getLayerIconColor(layer: OutcomesLayerConfig): string {
-    if (this.isDiagramLayerDisabled(layer.key)) {
-      return this.cssVar('--oc-disabled-border-light');
-    }
+    const key = foundLayer.key;
 
-    if (this.hasProgramOutcomeData) {
-      return layer.diagram.icon.color || layer.color || this.cssVar('--oc-neutral-grey');
-    }
-
-    return this.isLayerActive(layer.key)
-      ? layer.diagram.icon.color || layer.color
-      : this.cssVar('--oc-inactive-icon');
-  }
-
-  getReferenceLayerFill(
-    referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'
-  ): string {
-    const layerKey = this.referenceLayerToKey(referenceLayer);
-    const layer = this.layers.find(item => item.key === layerKey);
-
-    if (this.isDiagramLayerDisabled(layerKey)) {
+    if (this.isDiagramLayerDisabled(key)) {
       return this.cssVar('--oc-white');
     }
 
-    if (this.isReferenceLayerActive(referenceLayer) || this.isLayerHovered(layerKey)) {
-      return layer?.fill || this.cssVar('--oc-fill-light');
+    if (this.isReferenceLayerActive(key) || this.isLayerHovered(key)) {
+      return foundLayer?.fill || this.cssVar('--oc-fill-light');
     }
 
     return this.cssVar('--oc-fill-light');
   }
 
-  getReferenceLayerStroke(
-    referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'
-  ): string {
-    const layerKey = this.referenceLayerToKey(referenceLayer);
-    const layer = this.layers.find(item => item.key === layerKey);
+  getReferenceLayerStroke(layerKey: OutcomesLayerKey | string): string {
+    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
+    if (!foundLayer) return this.cssVar('--oc-stroke-light');
 
-    if (this.isDiagramLayerDisabled(layerKey)) {
+    const key = foundLayer.key;
+
+    if (this.isDiagramLayerDisabled(key)) {
       return this.cssVar('--oc-disabled-border');
     }
 
     if (this.hasProgramOutcomeData) {
-      return layer?.color || this.cssVar('--oc-stroke-light');
+      return foundLayer?.color || this.cssVar('--oc-stroke-light');
     }
 
-    if (this.isReferenceLayerActive(referenceLayer) || this.isLayerHovered(layerKey)) {
-      return layer?.color || this.cssVar('--oc-stroke-light');
+    if (this.isReferenceLayerActive(key) || this.isLayerHovered(key)) {
+      return foundLayer?.color || this.cssVar('--oc-stroke-light');
     }
 
     return this.cssVar('--oc-stroke-light');
   }
 
-  getReferenceLabelColor(
-    referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'
-  ): string {
-    const layerKey = this.referenceLayerToKey(referenceLayer);
-    const layer = this.layers.find(item => item.key === layerKey);
+  getReferenceLabelColor(layerKey: OutcomesLayerKey | string): string {
+    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
+    if (!foundLayer) return this.cssVar('--oc-neutral-grey');
 
-    if (this.isDiagramLayerDisabled(layerKey)) {
+    const key = foundLayer.key;
+
+    if (this.isDiagramLayerDisabled(key)) {
       return this.cssVar('--oc-disabled-border-light');
     }
 
     if (this.hasProgramOutcomeData) {
-      return layer?.color || this.cssVar('--oc-neutral-grey');
+      return foundLayer?.color || this.cssVar('--oc-neutral-grey');
     }
 
-    if (this.isReferenceLayerActive(referenceLayer) || this.isLayerHovered(layerKey)) {
-      return layer?.color || this.cssVar('--oc-neutral-grey');
+    if (this.isReferenceLayerActive(key) || this.isLayerHovered(key)) {
+      return foundLayer?.color || this.cssVar('--oc-neutral-grey');
     }
 
     return this.cssVar('--oc-neutral-grey');
@@ -522,17 +504,30 @@ export class OutcomesModelComponent implements OnChanges {
     return this.isLayerActive(layerKey) ? this.getLayerColor(layerKey) : this.cssVar('--oc-neutral-grey');
   }
 
-  private referenceLayerToKey(referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'): OutcomesLayerKey {
-    const layerMap: Record<typeof referenceLayer, OutcomesLayerKey> = {
-      students: 'students',
-      schools: 'schools',
-      community: 'community',
-      society: 'society',
-      system: 'system',
-      network: 'network',
-    };
+  getLayerDiagramLabel(layerKey: OutcomesLayerKey): string {
+    return this.layers.find((layer) => layer.key === layerKey)?.diagramLabel.toLowerCase() || '';
+  }
 
-    return layerMap[referenceLayer];
+  getLayerDataAttr(layer: OutcomesLayerConfig): string {
+    return layer.diagram.dataLayerAttr || layer.key;
+  }
+
+  getLayerLabelForAttr(layer: OutcomesLayerConfig): string {
+    return layer.diagram.labelForAttr || layer.key;
+  }
+
+  getLayerAriaLabel(layerKey: OutcomesLayerKey): string {
+    const layer = this.layers.find((l) => l.key === layerKey);
+    if (!layer) return '';
+
+    const ariaKey = layerKey as keyof OutcomesAriaLabels;
+    return this.config.ariaLabels[ariaKey] || layer.chipLabel || layer.key;
+  }
+
+  getLayerIcon(layerKey: OutcomesLayerKey): OutcomesDiagramIcon {
+    const layer = this.layers.find((l) => l.key === layerKey);
+    if (!layer) return { type: 'image', value: '' };
+    return layer.diagram.icon;
   }
 
   private getAngles(shape: 'full' | 'top' | 'bottom'): [number, number] {
@@ -605,25 +600,26 @@ export class OutcomesModelComponent implements OnChanges {
     return this.hoveredLayerKey === layerKey;
   }
 
- getDiagramLabelColor(layerKey: OutcomesLayerKey): string {
-  if (this.isDiagramLayerDisabled(layerKey)) {
-    return '#AAAAAA';
-  }
-  if (this.hasProgramOutcomeData) {
-    return this.isProgramLayerAvailable(layerKey)
-      ? this.getLayerColor(layerKey)
-      : '#AAAAAA';
-  }
+  getDiagramLabelColor(layerKey: OutcomesLayerKey): string {
+    if (this.isDiagramLayerDisabled(layerKey)) {
+      return this.cssVar('--oc-disabled-border-light');
+    }
 
-  if (
-    this.isReferenceLayerActive(layerKey) ||
-    this.isLayerHovered(layerKey)
-  ) {
-    return this.getReferenceLabelColor(layerKey);
-  }
+    if (this.hasProgramOutcomeData) {
+      return this.isProgramLayerAvailable(layerKey)
+        ? this.getLayerColor(layerKey)
+        : this.cssVar('--oc-disabled-border-light');
+    }
 
-  return this.getDiagramText(layerKey)?.fill || '#666666';
-}
+    if (
+      this.isReferenceLayerActive(layerKey) ||
+      this.isLayerHovered(layerKey)
+    ) {
+      return this.getReferenceLabelColor(layerKey);
+    }
+
+    return this.getDiagramText(layerKey)?.fill || this.cssVar('--oc-stroke-grey');
+  }
 
   get programCardPages(): number[] {
     return Array.from(
@@ -641,13 +637,13 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   get visibleEvidenceResources(): ProgramEvidenceResource[] {
-  const startIndex = this.evidencePageIndex * this.evidencesPerPage;
+    const startIndex = this.evidencePageIndex * this.evidencesPerPage;
 
-  return this.programEvidenceResources.slice(
-    startIndex,
-    startIndex + this.evidencesPerPage
-  );
-}
+    return this.programEvidenceResources.slice(
+      startIndex,
+      startIndex + this.evidencesPerPage
+    );
+  }
 
   get evidencePageCount(): number {
     return Math.max(
@@ -684,7 +680,7 @@ export class OutcomesModelComponent implements OnChanges {
     );
   }
 
-    get evidenceThumbWidthPercent(): number {
+  get evidenceThumbWidthPercent(): number {
     const total = this.programEvidenceResources.length;
     if (!total) return 0;
 
@@ -700,7 +696,7 @@ export class OutcomesModelComponent implements OnChanges {
     return (this.evidencePageIndex / (totalPages - 1)) * (100 - widthPercent);
   }
 
-    get evidenceCardsPerPage(): number {
+  get evidenceCardsPerPage(): number {
     return this.isMobileViewport() ? 1 : 2;
   }
 
@@ -790,21 +786,41 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   getDiagramIcon(layerKey: OutcomesLayerKey): OutcomesDiagramIcon {
-  const layer = this.config.layers.find(
-    (item) => item.key === layerKey
-  );
+    const layer = this.config.layers.find(
+      (item) => item.key === layerKey
+    );
 
-  return layer?.diagram.icon ?? {
-    type: 'image',
-    value: '',
-  };
-}
+    return layer?.diagram.icon ?? {
+      type: 'image',
+      value: '',
+    };
+  }
 
-getDiagramText(layerKey: OutcomesLayerKey) {
-  return this.layers.find(layer => layer.key === layerKey)?.diagram.text;
-}
+  getDiagramText(layerKey: OutcomesLayerKey) {
+    return this.layers.find(layer => layer.key === layerKey)?.diagram.text;
+  }
 
-private updateBodyScrollLock(): void {
-  document.body.style.overflow = this.isInfoModalOpen ? 'hidden' : '';
-}
+  private updateBodyScrollLock(): void {
+    document.body.style.overflow = this.isInfoModalOpen ? 'hidden' : '';
+  }
+
+  getLayerByKey(key: OutcomesLayerKey | string): OutcomesLayerConfig | undefined {
+    return this.layers.find((layer) => layer.key === key);
+  }
+
+  getLayerKeys(): OutcomesLayerKey[] {
+    return this.layers.map((layer) => layer.key);
+  }
+
+  isValidLayerKey(key: string): boolean {
+    return this.layers.some((layer) => layer.key === key);
+  }
+
+  getOuterLayerKey(): OutcomesLayerKey {
+    return this.outerLayer.key;
+  }
+
+  getInnerLayerKey(): OutcomesLayerKey {
+    return this.innerLayer.key;
+  }
 }

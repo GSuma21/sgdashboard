@@ -30,7 +30,13 @@ export interface OutcomesDiagramConfig {
   textOffsetX?: number;
   textOffsetY?: number;
   icon: OutcomesDiagramIcon;
-
+  iconX: number;
+  iconY: number;
+  curvedLabelPath?: string;
+  labelForAttr?: string;
+  dataLayerAttr?: string;
+  hitRadius?: number;
+  isHitTarget?: boolean;
   text?: {
     x: number;
     y: number;
@@ -155,6 +161,15 @@ export interface OutcomesModelConfig {
   defaultCardLabelPrefix: string;
   ctaIcon: string;
   ariaLabels: OutcomesAriaLabels;
+  staticTexts?: {
+    programModeHeading?: string;
+    programModeDescription?: string;
+    diagramNotePrefix?: string;
+    chipNotePrefix?: string;
+    evidenceCountLabel?: string;
+    infoModalTitlePrefix?: string;
+    infoModalDescriptionPrefix?: string;
+  };
 }
 
 export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
@@ -178,6 +193,16 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
   defaultPartnerImage: 'assets/partners/default-partner.svg',
   defaultCardLabelPrefix: 'Card ',
   ctaIcon: 'north_east',
+
+  staticTexts: {
+    programModeHeading: 'Program Details',
+    programModeDescription: 'View program outcomes and evidence',
+    diagramNotePrefix: '* ',
+    chipNotePrefix: '* ',
+    evidenceCountLabel: 'Evidences and Resources',
+    infoModalTitlePrefix: 'About',
+    infoModalDescriptionPrefix: 'Information about',
+  },
 
   ariaLabels: {
     diagram: 'Outcome layers',
@@ -215,6 +240,9 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         labelY: 300,
         labelLayout: 'icon-only',
         labelAnchor: 'middle',
+        iconX: 275,
+        iconY: 275,
+        dataLayerAttr: 'learner',
         icon: {
           type: 'material',
           value: 'assets/icons/learner.svg',
@@ -290,6 +318,10 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         labelAnchor: 'middle',
         iconOffsetY: -18,
         textOffsetY: 20,
+        iconX: 277,
+        iconY: 366,
+        curvedLabelPath: 'M167.43,341.80 A139,139 0 0 0 432.57,341.80',
+        labelForAttr: 'school & anganwadi',
         icon: {
           type: 'material',
           value: 'assets/icons/school.svg',
@@ -352,6 +384,9 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         labelAnchor: 'middle',
         iconOffsetY: -18,
         textOffsetY: 22,
+        iconX: 277,
+        iconY: 188,
+        curvedLabelPath: 'M219.82,209.38 A121,121 0 0 1 380.18,209.38',
         icon: {
           type: 'material',
           value: 'assets/icons/community.svg',
@@ -408,6 +443,9 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         labelAnchor: 'start',
         textOffsetX: 34,
         textOffsetY: 4,
+        iconX: 235,
+        iconY: 100,
+        curvedLabelPath: 'M233.70,127.29 A185,185 0 0 1 366.30,127.29',
         icon: {
           type: 'material',
           value: 'assets/icons/society.svg',
@@ -454,6 +492,10 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         labelAnchor: 'start',
         textOffsetX: 34,
         textOffsetY: 4,
+        iconX: 195,
+        iconY: 460,
+        curvedLabelPath: 'M138.95,423.58 A203,203 0 0 0 461.05,423.58',
+        labelForAttr: 'system institutions',
         icon: {
           type: 'material',
           value: 'assets/icons/system-institutions.svg',
@@ -522,6 +564,10 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
         labelAnchor: 'start',
         textOffsetX: 34,
         textOffsetY: 4,
+        iconX: 215,
+        iconY: 45,
+        hitRadius: 344,
+        isHitTarget: true,
         icon: {
           type: 'material',
           value: 'assets/icons/network.svg',
