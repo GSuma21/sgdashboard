@@ -32,7 +32,7 @@ export class OutcomesModelComponent implements OnChanges {
   cardPageIndex = 0;
   private readonly MOBILE_BREAKPOINT = 768;
   private readonly diagramCenter = 300;
-  evidencesPerPage = 2;
+  evidencesPerPage = window.innerWidth <= 768 ? 1 : 2;
   evidencePageIndex = 0;
   tooltipText: string | null = null;
   tooltipTop = 0;
@@ -630,13 +630,13 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   get visibleEvidenceResources(): ProgramEvidenceResource[] {
-    const startIndex = this.evidencePageIndex * this.evidenceCardsPerPage;
+  const startIndex = this.evidencePageIndex * this.evidencesPerPage;
 
-    return this.programEvidenceResources.slice(
-      startIndex,
-      startIndex + this.evidenceCardsPerPage
-    );
-  }
+  return this.programEvidenceResources.slice(
+    startIndex,
+    startIndex + this.evidencesPerPage
+  );
+}
 
   get evidencePageCount(): number {
     return Math.max(
