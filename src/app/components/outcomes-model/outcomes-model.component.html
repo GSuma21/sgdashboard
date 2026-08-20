@@ -815,19 +815,17 @@
           </div>
 
           <button
-            type="button"
-            class="info-button"
-            [attr.aria-label]="
-              'Show ' + programPanelTitle + ' explanation'
-            "
-            (click)="openInfoModal()"
-          >
-            <img
-              src="assets/icons/info.svg"
-              alt=""
-              aria-hidden="true"
-            />
-          </button>
+  type="button"
+  class="info-button"
+  [style.--info-color]="selectedLayer.color"
+  [attr.aria-label]="'Show ' + programPanelTitle + ' explanation'"
+  (click)="openInfoModal()"
+>
+  <span
+    class="info-button-icon"
+    aria-hidden="true"
+  ></span>
+</button>
 
         </div>
 

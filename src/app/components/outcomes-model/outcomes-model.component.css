@@ -771,10 +771,11 @@
 }
 
 .program-mode-icon {
-  display: block;
-  height: 4.063rem;
+  width: 3rem;
+  height: 3rem;
   object-fit: contain;
-  width: 4.063rem;
+  display: block;
+  flex-shrink: 0;
 }
 
 .program-mode-heading h3 {
@@ -795,14 +796,39 @@
 }
 
 .info-button {
+  align-items: center;
+  appearance: none;
   background: transparent;
   border: none;
+  color: var(--info-color);
+  cursor: pointer;
+  display: inline-flex;
+  height: 1.625rem;
+  justify-content: center;
   margin-left: 1.875rem;
+  padding: 0;
+  width: 1.625rem;
 }
 
-.info-button img {
+.info-button-icon {
+  background-color: var(--info-color);
+
+  display: block;
+
   height: 1.625rem;
   width: 1.625rem;
+
+  -webkit-mask-image: url('/assets/icons/info.svg');
+  mask-image: url('/assets/icons/info.svg');
+
+  -webkit-mask-position: center;
+  mask-position: center;
+
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 
 /* =========================================================
@@ -1248,19 +1274,21 @@
   /* =======================================================
      DIAGRAM
      ======================================================= */
-
-  .sticky-stage {
-    width: 100%;
-  }
-
   .stage {
     width: min(92vw, 28rem);
     max-width: 100%;
   }
 
-  .layer-diagram {
-    width: 100%;
-  }
+  .sticky-stage {
+  overflow: hidden;
+}
+
+.layer-diagram {
+  width: 150%;
+  height: auto;
+  max-width: none;
+  margin-left: -25%;
+}
 
   .diagram-note {
     font-size: 0.75rem;
@@ -1403,14 +1431,14 @@
     line-height: 1.4;
   }
 
-  .info-button {
-    margin-left: 0;
-  }
+.info-button {
+  margin-left: 0;
+}
 
-  .info-button img {
-    height: 1.375rem;
-    width: 1.375rem;
-  }
+.info-button-icon {
+  height: 1.375rem;
+  width: 1.375rem;
+}
 
 /* =======================================================
    PROGRAM CAROUSEL
