@@ -605,9 +605,14 @@ export class OutcomesModelComponent implements OnChanges {
     return this.hoveredLayerKey === layerKey;
   }
 
-  getDiagramLabelColor(layerKey:any): string {
+ getDiagramLabelColor(layerKey: OutcomesLayerKey): string {
   if (this.isDiagramLayerDisabled(layerKey)) {
     return '#AAAAAA';
+  }
+  if (this.hasProgramOutcomeData) {
+    return this.isProgramLayerAvailable(layerKey)
+      ? this.getLayerColor(layerKey)
+      : '#AAAAAA';
   }
 
   if (

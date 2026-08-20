@@ -511,8 +511,9 @@
   [class.on]="
   !isDiagramLayerDisabled('network') &&
   (
-    isReferenceLayerActive('network') ||
-    isLayerHovered('network')
+    hasProgramOutcomeData ||
+isReferenceLayerActive('network') ||
+isLayerHovered('network')
   )
 "
   [class.disabled]="isDiagramLayerDisabled('network')"
@@ -534,6 +535,7 @@
   [class.on]="
   !isDiagramLayerDisabled('society') &&
   (
+    hasProgramOutcomeData ||
     isReferenceLayerActive('society') ||
     isLayerHovered('society')
   )
@@ -557,6 +559,7 @@
   [class.on]="
   !isDiagramLayerDisabled('community') &&
   (
+    hasProgramOutcomeData ||
     isReferenceLayerActive('community') ||
     isLayerHovered('community')
   )
@@ -580,6 +583,7 @@
   [class.on]="
   !isDiagramLayerDisabled('system') &&
   (
+    hasProgramOutcomeData ||
     isReferenceLayerActive('system') ||
     isLayerHovered('system')
   )
@@ -603,6 +607,7 @@
   [class.on]="
   !isDiagramLayerDisabled('schools') &&
   (
+    hasProgramOutcomeData ||
     isReferenceLayerActive('schools') ||
     isLayerHovered('schools')
   )
@@ -623,10 +628,11 @@
 
 
 <g
-  class="learner-icon"
+  class="iconwrap learner-icon"
   [class.on]="
   !isDiagramLayerDisabled('students') &&
   (
+    hasProgramOutcomeData ||
     isReferenceLayerActive('students') ||
     isLayerHovered('students')
   )
