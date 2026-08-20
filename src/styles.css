@@ -35,12 +35,13 @@ html {
   --sg-footer-cta: var(--footer-cta-color-light);
   --sg-footer-accent: var(--footer-accent-color-light);
   --sg-font-heading: "Comfortaa", sans-serif;
-  --sg-font-body: "Source Sans 3", sans-serif;
-  --sg-heading-size: 32px;
-  --sg-heading-size-mobile: 24px;
-  --sg-subheading-size: 24px;
-  --sg-subheading-size-mobile: 18px;
-  --sg-body-size: 16px;
+--sg-font-body: "Source Sans 3", sans-serif;
+--sg-font-partner: "Noto Sans", sans-serif;
+--sg-heading-size: 32px;
+--sg-heading-size-mobile: 24px;
+--sg-subheading-size: 24px;
+--sg-subheading-size-mobile: 18px;
+--sg-body-size: 16px;
 
   /* Outcomes Model component colors */
   --oc-violet: #7e22ce;

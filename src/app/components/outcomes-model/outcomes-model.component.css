@@ -12,7 +12,7 @@
   --line: var(--oc-line);
   background: var(--oc-transparent);
   color: var(--ink);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: var(--sg-font-body);
   font-size: 1.125rem;
   line-height: 1.6;
   padding: 0 var(--side);
@@ -109,7 +109,7 @@
 }
 
 .rlabel {
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: var(--sg-font-body);
   font-size: 1.125rem;
   font-weight: 600;
   pointer-events: none;
@@ -195,7 +195,7 @@
 
 .rail h2 {
   color: var(--ink);
-  font-family: Comfortaa, cursive;
+  font-family: var(--sg-font-heading);
   font-size: 2.063rem;
   font-weight: bold;
   line-height: 1.16;
@@ -250,7 +250,7 @@
   border-radius: 1.5rem;
   color: var(--pill-color);
   cursor: pointer;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: var(--sg-font-body);
   font-size: 0.875rem;
   font-weight: 700;
   line-height: 1;
@@ -361,7 +361,7 @@
 
 .framework-heading h3 {
   color: var(--ink);
-  font-family: Comfortaa, cursive;
+  font-family: var(--sg-font-heading);
   font-size: 1.188rem;
   line-height: 1.2;
   margin: 0.5rem 0 0.625rem;
@@ -687,7 +687,7 @@
 }
 
 .info-modal-heading h3 {
-  font-family: Comfortaa, cursive;
+  font-family: var(--sg-font-heading);
   font-size: 1.125rem;
   font-weight: 800;
   margin: 0;
@@ -780,7 +780,7 @@
 
 .program-mode-heading h3 {
   color: var(--active-color);
-  font-family: 'Source Sans 3', sans-serif !important;
+  font-family: var(--sg-font-body) !important;
   font-size: 1.125rem;
   font-weight: 900;
   line-height: 1.15;
@@ -1027,7 +1027,7 @@
   border-radius: 1.5rem;
   color: var(--tile-color);
   cursor: pointer;
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: var(--sg-font-body);
   font-size: 0.875rem;
   font-weight: 700;
   line-height: 1;
@@ -1127,7 +1127,7 @@
   text-align: center;
   width: 100%;
   font-weight: 900;
-  font-family: 'Noto Sans', sans-serif !important;
+  font-family: var(--sg-font-partner) !important;
 }
 
 .program-partner-card-link {
