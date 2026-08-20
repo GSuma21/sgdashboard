@@ -122,11 +122,12 @@
 
 .iconwrap {
   filter: grayscale(1) opacity(0.45);
-  transition: filter 0.35s ease;
+  transition: filter 0.35s ease, opacity 0.35s ease;
 }
 
 .iconwrap.on {
   filter: none;
+  opacity: 1;
 }
 
 .iconwrap.disabled {

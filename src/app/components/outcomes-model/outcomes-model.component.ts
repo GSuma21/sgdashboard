@@ -392,14 +392,14 @@ export class OutcomesModelComponent implements OnChanges {
     return this.selectedLayerKey === layerKey;
   }
 
-  isReferenceLayerActive(referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'): boolean {
+  isReferenceLayerActive(referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'): boolean {
     return this.selectedLayerKey === this.referenceLayerToKey(referenceLayer);
   }
 
   selectReferenceLayer(
     referenceLayer:
       | 'learner'
-      | 'school'
+      | 'schools'
       | 'community'
       | 'society'
       | 'system'
@@ -415,7 +415,7 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   getReferenceLayerStrokeWidth(
-    referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+    referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'
   ): number {
     const layerKey = this.referenceLayerToKey(referenceLayer);
 
@@ -450,7 +450,7 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   getReferenceLayerFill(
-    referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+    referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'
   ): string {
     const layerKey = this.referenceLayerToKey(referenceLayer);
     const layer = this.layers.find(item => item.key === layerKey);
@@ -467,7 +467,7 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   getReferenceLayerStroke(
-    referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+    referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'
   ): string {
     const layerKey = this.referenceLayerToKey(referenceLayer);
     const layer = this.layers.find(item => item.key === layerKey);
@@ -488,7 +488,7 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   getReferenceLabelColor(
-    referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'
+    referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'
   ): string {
     const layerKey = this.referenceLayerToKey(referenceLayer);
     const layer = this.layers.find(item => item.key === layerKey);
@@ -516,10 +516,10 @@ export class OutcomesModelComponent implements OnChanges {
     return this.isLayerActive(layerKey) ? this.getLayerColor(layerKey) : this.cssVar('--oc-neutral-grey');
   }
 
-  private referenceLayerToKey(referenceLayer: 'learner' | 'school' | 'community' | 'society' | 'system' | 'network'): OutcomesLayerKey {
+  private referenceLayerToKey(referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'): OutcomesLayerKey {
     const layerMap: Record<typeof referenceLayer, OutcomesLayerKey> = {
       learner: 'students',
-      school: 'schools',
+      schools: 'schools',
       community: 'community',
       society: 'society',
       system: 'system',
@@ -598,6 +598,21 @@ export class OutcomesModelComponent implements OnChanges {
   isLayerHovered(layerKey: OutcomesLayerKey): boolean {
     return this.hoveredLayerKey === layerKey;
   }
+
+  getDiagramLabelColor(layerKey:any): string {
+  if (this.isDiagramLayerDisabled(layerKey)) {
+    return '#AAAAAA';
+  }
+
+  if (
+    this.isReferenceLayerActive(layerKey) ||
+    this.isLayerHovered(layerKey)
+  ) {
+    return this.getReferenceLabelColor(layerKey);
+  }
+
+  return this.getDiagramText(layerKey)?.fill || '#666666';
+}
 
   get programCardPages(): number[] {
     return Array.from(

@@ -417,12 +417,12 @@
 
           <path
             class="seg reference-seg"
-            [style.stroke-width]="getReferenceLayerStrokeWidth('school') + 'px'"
+            [style.stroke-width]="getReferenceLayerStrokeWidth('schools') + 'px'"
             [class.disabled]="isDiagramLayerDisabled('schools')"
-            data-layer="school"
+            data-layer="schools"
             d="M452.00,300.00 A152,152 0 0 1 148.00,300.00 L242.00,300.00 A58,58 0 0 0 358.00,300.00 Z"
-            [attr.fill]="getReferenceLayerFill('school')"
-            [attr.stroke]="getReferenceLayerStroke('school')"
+            [attr.fill]="getReferenceLayerFill('schools')"
+            [attr.stroke]="getReferenceLayerStroke('schools')"
             [attr.pointer-events]="'auto'"
             [attr.tabindex]="
               isDiagramLayerDisabled('schools') ? -1 : 0
@@ -434,15 +434,15 @@
             [attr.aria-label]="config.ariaLabels.school"
             (click)="
               !isDiagramLayerDisabled('schools') &&
-              selectReferenceLayer('school')
+              selectReferenceLayer('schools')
             "
             (keydown.enter)="
               !isDiagramLayerDisabled('schools') &&
-              selectReferenceLayer('school')
+              selectReferenceLayer('schools')
             "
             (keydown.space)="
               !isDiagramLayerDisabled('schools') &&
-              selectReferenceLayer('school')
+              selectReferenceLayer('schools')
             "
             (mouseenter)="
               !isDiagramLayerDisabled('schools') &&
@@ -509,12 +509,12 @@
 <g
   class="iconwrap"
   [class.on]="
-    (
-      hasProgramOutcomeData ||
-      isReferenceLayerActive('network')
-    ) &&
-    !isDiagramLayerDisabled('network')
-  "
+  !isDiagramLayerDisabled('network') &&
+  (
+    isReferenceLayerActive('network') ||
+    isLayerHovered('network')
+  )
+"
   [class.disabled]="isDiagramLayerDisabled('network')"
   data-icon="network"
 >
@@ -532,12 +532,12 @@
 <g
   class="iconwrap"
   [class.on]="
-    (
-      hasProgramOutcomeData ||
-      isReferenceLayerActive('society')
-    ) &&
-    !isDiagramLayerDisabled('society')
-  "
+  !isDiagramLayerDisabled('society') &&
+  (
+    isReferenceLayerActive('society') ||
+    isLayerHovered('society')
+  )
+"
   [class.disabled]="isDiagramLayerDisabled('society')"
   data-icon="society"
 >
@@ -555,12 +555,12 @@
           <g
   class="iconwrap"
   [class.on]="
-    (
-      hasProgramOutcomeData ||
-      isReferenceLayerActive('community')
-    ) &&
-    !isDiagramLayerDisabled('community')
-  "
+  !isDiagramLayerDisabled('community') &&
+  (
+    isReferenceLayerActive('community') ||
+    isLayerHovered('community')
+  )
+"
   [class.disabled]="isDiagramLayerDisabled('community')"
   data-icon="community"
 >
@@ -578,12 +578,12 @@
 <g
   class="iconwrap"
   [class.on]="
-    (
-      hasProgramOutcomeData ||
-      isReferenceLayerActive('system')
-    ) &&
-    !isDiagramLayerDisabled('system')
-  "
+  !isDiagramLayerDisabled('system') &&
+  (
+    isReferenceLayerActive('system') ||
+    isLayerHovered('system')
+  )
+"
   [class.disabled]="isDiagramLayerDisabled('system')"
   data-icon="system"
 >
@@ -601,14 +601,14 @@
           <g
   class="iconwrap"
   [class.on]="
-    (
-      hasProgramOutcomeData ||
-      isReferenceLayerActive('school')
-    ) &&
-    !isDiagramLayerDisabled('schools')
-  "
+  !isDiagramLayerDisabled('schools') &&
+  (
+    isReferenceLayerActive('schools') ||
+    isLayerHovered('schools')
+  )
+"
   [class.disabled]="isDiagramLayerDisabled('schools')"
-  data-icon="school"
+  data-icon="schools"
 >
   <image
   [attr.href]="getDiagramIcon('schools').value"
@@ -625,12 +625,12 @@
 <g
   class="learner-icon"
   [class.on]="
-    (
-      hasProgramOutcomeData ||
-      isReferenceLayerActive('learner')
-    ) &&
-    !isDiagramLayerDisabled('students')
-  "
+  !isDiagramLayerDisabled('students') &&
+  (
+    isReferenceLayerActive('learner') ||
+    isLayerHovered('learner')
+  )
+"
   [class.disabled]="isDiagramLayerDisabled('students')"
   data-icon="learner"
 >
@@ -650,7 +650,7 @@
   <text
   [attr.x]="getDiagramText('students')?.x"
   [attr.y]="getDiagramText('students')?.y"
-  [attr.fill]="getDiagramText('students')?.fill"
+  [attr.fill]="getDiagramLabelColor('learner')"
   [attr.font-size]="getDiagramText('students')?.fontSize"
   [attr.font-weight]="getDiagramText('students')?.fontWeight"
   text-anchor="middle"
@@ -672,10 +672,7 @@
   data-lab-for="network"
   [attr.x]="getDiagramText('network')?.x"
   [attr.y]="getDiagramText('network')?.y"
-  [attr.fill]="
-    getDiagramText('network')?.fill ||
-    getReferenceLabelColor('network')
-  "
+  [attr.fill]="getDiagramLabelColor('network')"
   [attr.font-size]="getDiagramText('network')?.fontSize"
   [attr.font-weight]="getDiagramText('network')?.fontWeight"
   text-anchor="middle"
@@ -694,10 +691,7 @@
 <text
   class="rlabel"
   data-lab-for="society"
-  [attr.fill]="
-    getDiagramText('society')?.fill ||
-    getReferenceLabelColor('society')
-  "
+  [attr.fill]="getDiagramLabelColor('society')"
   [attr.font-size]="getDiagramText('society')?.fontSize"
   [attr.font-weight]="getDiagramText('society')?.fontWeight"
 >
@@ -720,10 +714,7 @@
 <text
   class="rlabel"
   data-lab-for="system institutions"
-  [attr.fill]="
-    getDiagramText('system')?.fill ||
-    getReferenceLabelColor('system')
-  "
+  [attr.fill]="getDiagramLabelColor('system')"
   [attr.font-size]="getDiagramText('system')?.fontSize"
   [attr.font-weight]="getDiagramText('system')?.fontWeight"
 >
@@ -746,10 +737,7 @@
           <text
   class="rlabel"
   data-lab-for="community"
-  [attr.fill]="
-    getDiagramText('community')?.fill ||
-    getReferenceLabelColor('community')
-  "
+  [attr.fill]="getDiagramLabelColor('community')"
   [attr.font-size]="getDiagramText('community')?.fontSize"
   [attr.font-weight]="getDiagramText('community')?.fontWeight"
 >
@@ -772,10 +760,7 @@
           <text
   class="rlabel"
   data-lab-for="school &amp; anganwadi"
-  [attr.fill]="
-    getDiagramText('schools')?.fill ||
-    getReferenceLabelColor('school')
-  "
+  [attr.fill]="getDiagramLabelColor('schools')"
   [attr.font-size]="getDiagramText('schools')?.fontSize"
   [attr.font-weight]="getDiagramText('schools')?.fontWeight"
 >
