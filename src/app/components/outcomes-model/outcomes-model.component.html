@@ -459,14 +459,14 @@
 
           <circle
             class="seg reference-seg"
-            [style.stroke-width]="getReferenceLayerStrokeWidth('learner') + 'px'"
+            [style.stroke-width]="getReferenceLayerStrokeWidth('students') + 'px'"
             [class.disabled]="isDiagramLayerDisabled('students')"
             data-layer="learner"
             cx="300"
             cy="300"
             r="58"
-            [attr.fill]="getReferenceLayerFill('learner')"
-            [attr.stroke]="getReferenceLayerStroke('learner')"
+            [attr.fill]="getReferenceLayerFill('students')"
+            [attr.stroke]="getReferenceLayerStroke('students')"
             [attr.pointer-events]="'auto'"
             [attr.tabindex]="
               isDiagramLayerDisabled('students') ? -1 : 0
@@ -478,15 +478,15 @@
             [attr.aria-label]="config.ariaLabels.learner"
             (click)="
               !isDiagramLayerDisabled('students') &&
-              selectReferenceLayer('learner')
+              selectReferenceLayer('students')
             "
             (keydown.enter)="
               !isDiagramLayerDisabled('students') &&
-              selectReferenceLayer('learner')
+              selectReferenceLayer('students')
             "
             (keydown.space)="
               !isDiagramLayerDisabled('students') &&
-              selectReferenceLayer('learner')
+              selectReferenceLayer('students')
             "
             (mouseenter)="
               !isDiagramLayerDisabled('students') &&
@@ -627,12 +627,12 @@
   [class.on]="
   !isDiagramLayerDisabled('students') &&
   (
-    isReferenceLayerActive('learner') ||
-    isLayerHovered('learner')
+    isReferenceLayerActive('students') ||
+    isLayerHovered('students')
   )
 "
   [class.disabled]="isDiagramLayerDisabled('students')"
-  data-icon="learner"
+  data-icon="students"
 >
 
   <!-- Learner image -->
@@ -650,7 +650,7 @@
   <text
   [attr.x]="getDiagramText('students')?.x"
   [attr.y]="getDiagramText('students')?.y"
-  [attr.fill]="getDiagramLabelColor('learner')"
+  [attr.fill]="getDiagramLabelColor('students')"
   [attr.font-size]="getDiagramText('students')?.fontSize"
   [attr.font-weight]="getDiagramText('students')?.fontWeight"
   text-anchor="middle"
@@ -810,7 +810,7 @@
   />
 
           <div>
-            <h3>{{ programPanelTitle }}</h3>
+            <h3>{{ programPanelTitle }}:</h3>
             <p>{{ programPanelDescription }}</p>
           </div>
 

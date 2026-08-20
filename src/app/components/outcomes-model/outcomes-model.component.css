@@ -780,11 +780,12 @@
 
 .program-mode-heading h3 {
   color: var(--active-color);
-  font-family: 'Source Sans 3', sans-serif;
+  font-family: 'Source Sans 3', sans-serif !important;
   font-size: 1.125rem;
-  font-weight: 800;
+  font-weight: 900;
   line-height: 1.15;
   margin: 0 0 0.25rem;
+    font-style: bold;
 }
 
 .program-mode-heading p {
@@ -1124,6 +1125,9 @@
   font-size: 1rem;
   margin: 0 0 0.625rem;
   text-align: center;
+  width: 100%;
+  font-weight: 900;
+  font-family: 'Noto Sans', sans-serif !important;
 }
 
 .program-partner-card-link {
@@ -1132,6 +1136,9 @@
   font-size: 0.75rem;
   font-weight: 800;
   text-align: center;
+  text-decoration: underline;
+  width: 100%;
+
 }
 
 /* =========================================================
@@ -1284,10 +1291,10 @@
 }
 
 .layer-diagram {
-  width: 150%;
+  width: 120%;
   height: auto;
   max-width: none;
-  margin-left: -25%;
+  margin-left: -10%;
 }
 
   .diagram-note {

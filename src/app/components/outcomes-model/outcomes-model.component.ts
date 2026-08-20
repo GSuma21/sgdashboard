@@ -63,6 +63,10 @@ export class OutcomesModelComponent implements OnChanges {
     this.evidencePageIndex = 0;
   }
 
+  ngOnDestroy(): void {
+  document.body.style.overflow = '';
+}
+
     @HostListener('window:resize')
   onWindowResize(): void {
     const newEvidencePerPage = this.isMobileViewport() ? 1 : 2;
@@ -317,12 +321,14 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   openInfoModal(): void {
-    this.isInfoModalOpen = true;
-  }
+  this.isInfoModalOpen = true;
+  this.updateBodyScrollLock();
+}
 
   closeInfoModal(): void {
-    this.isInfoModalOpen = false;
-  }
+  this.isInfoModalOpen = false;
+  this.updateBodyScrollLock();
+}
 
   trackByLayerKey(_: number, layer: OutcomesLayerConfig): string {
     return layer.key;
@@ -392,13 +398,13 @@ export class OutcomesModelComponent implements OnChanges {
     return this.selectedLayerKey === layerKey;
   }
 
-  isReferenceLayerActive(referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'): boolean {
+  isReferenceLayerActive(referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'): boolean {
     return this.selectedLayerKey === this.referenceLayerToKey(referenceLayer);
   }
 
   selectReferenceLayer(
     referenceLayer:
-      | 'learner'
+      | 'students'
       | 'schools'
       | 'community'
       | 'society'
@@ -415,7 +421,7 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   getReferenceLayerStrokeWidth(
-    referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'
+    referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'
   ): number {
     const layerKey = this.referenceLayerToKey(referenceLayer);
 
@@ -450,7 +456,7 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   getReferenceLayerFill(
-    referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'
+    referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'
   ): string {
     const layerKey = this.referenceLayerToKey(referenceLayer);
     const layer = this.layers.find(item => item.key === layerKey);
@@ -467,7 +473,7 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   getReferenceLayerStroke(
-    referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'
+    referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'
   ): string {
     const layerKey = this.referenceLayerToKey(referenceLayer);
     const layer = this.layers.find(item => item.key === layerKey);
@@ -488,7 +494,7 @@ export class OutcomesModelComponent implements OnChanges {
   }
 
   getReferenceLabelColor(
-    referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'
+    referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'
   ): string {
     const layerKey = this.referenceLayerToKey(referenceLayer);
     const layer = this.layers.find(item => item.key === layerKey);
@@ -516,9 +522,9 @@ export class OutcomesModelComponent implements OnChanges {
     return this.isLayerActive(layerKey) ? this.getLayerColor(layerKey) : this.cssVar('--oc-neutral-grey');
   }
 
-  private referenceLayerToKey(referenceLayer: 'learner' | 'schools' | 'community' | 'society' | 'system' | 'network'): OutcomesLayerKey {
+  private referenceLayerToKey(referenceLayer: 'students' | 'schools' | 'community' | 'society' | 'system' | 'network'): OutcomesLayerKey {
     const layerMap: Record<typeof referenceLayer, OutcomesLayerKey> = {
-      learner: 'students',
+      students: 'students',
       schools: 'schools',
       community: 'community',
       society: 'society',
@@ -791,5 +797,9 @@ export class OutcomesModelComponent implements OnChanges {
 
 getDiagramText(layerKey: OutcomesLayerKey) {
   return this.layers.find(layer => layer.key === layerKey)?.diagram.text;
+}
+
+private updateBodyScrollLock(): void {
+  document.body.style.overflow = this.isInfoModalOpen ? 'hidden' : '';
 }
 }
