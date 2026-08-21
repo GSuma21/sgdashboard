@@ -172,6 +172,9 @@ export interface OutcomesModelConfig {
   };
 }
 
+// OUTCOMES_MODEL_CONFIG is now fetched from the API (outcomes-model-config.json) in OutcomesModelComponent.
+// Kept here commented out for reference only — not used at runtime.
+/*
 export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
   layerHeading: 'Impact Narrative',
   title: 'What Shapes Student Outcomes',
@@ -309,7 +312,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
       color: '#5b6ee0',
       fill: '#eff0fc',
       diagram: {
-        shape: 'top',
+        shape: 'bottom',
         innerRadius: 58,
         outerRadius: 152,
         labelX: 300,
@@ -375,7 +378,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
       color: '#e0338a',
       fill: '#fcebf3',
       diagram: {
-        shape: 'bottom',
+        shape: 'top',
         innerRadius: 58,
         outerRadius: 152,
         labelX: 300,
@@ -601,6 +604,7 @@ export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
     },
   ],
 };
+*/
 
 export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
   layerKey: 'students',

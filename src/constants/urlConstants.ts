@@ -1,4 +1,5 @@
 export const LANDING_PAGE = 'landing-page.json'
+export const OUTCOMES_MODEL_CONFIG_PAGE = 'outcomes-model-config.json'
 export const COMMUNITY_LED_IMPROVEMENT = 'community-led-improvement-district-details.json'
 export const NETWORK_DATA = 'network-data.json'
 export const INDIA = 'india.json'

@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, Input, OnChanges } from '@angular/core';
+import { Component, HostListener, Input, OnChanges, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import * as d3 from 'd3';
+import { environment } from '../../../../environments/environment';
+import { OUTCOMES_MODEL_CONFIG_PAGE } from '../../../constants/urlConstants';
 import {
-  OUTCOMES_MODEL_CONFIG,
   OutcomesAriaLabels,
   OutcomesDiagramIcon,
   OutcomesLayerConfig,
@@ -13,6 +15,71 @@ import {
   ProgramOutcomeData,
 } from './outcomes-model.config';
 
+const EMPTY_ARIA_LABELS: OutcomesAriaLabels = {
+  diagram: '',
+  learner: '',
+  school: '',
+  community: '',
+  society: '',
+  system: '',
+  network: '',
+  layerTiles: '',
+  narrativeFilters: '',
+  frameworkFilters: '',
+  cardPages: '',
+  prevCards: '',
+  nextCards: '',
+  prevEvidence: '',
+  nextEvidence: '',
+  viewEvidence: '',
+  closeModal: '',
+};
+
+// Placeholder shown only for the brief window before the API config resolves (or if it fails).
+const EMPTY_OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
+  layerHeading: '',
+  title: '',
+  description: '',
+  layerFootnote: '',
+  chipFootnote: '',
+  defaultLayer: 'students',
+  programChipLabel: '',
+  programColor: '',
+  layers: [],
+  frameworkHeading: '',
+  frameworkTitle: '',
+  frameworkLead: '',
+  evidenceHeading: '',
+  programChipFootnote: '',
+  defaultNarrativeBody: '',
+  defaultCtaLabel: '',
+  defaultPartnerImage: '',
+  defaultCardLabelPrefix: '',
+  ctaIcon: '',
+  ariaLabels: EMPTY_ARIA_LABELS,
+};
+
+const EMPTY_LAYER: OutcomesLayerConfig = {
+  key: 'students',
+  chipLabel: '',
+  diagramLabel: '',
+  icon: '',
+  color: '',
+  fill: '',
+  diagram: {
+    shape: 'full',
+    innerRadius: 0,
+    outerRadius: 0,
+    labelX: 0,
+    labelY: 0,
+    iconX: 0,
+    iconY: 0,
+    icon: { type: 'image', value: '' },
+  },
+  panelType: 'list',
+  imgPath: '',
+};
+
 @Component({
   selector: 'app-outcomes-model',
   standalone: true,
@@ -20,8 +87,8 @@ import {
   templateUrl: './outcomes-model.component.html',
   styleUrls: ['./outcomes-model.component.css'],
 })
-export class OutcomesModelComponent implements OnChanges {
-  @Input() config: OutcomesModelConfig = OUTCOMES_MODEL_CONFIG;
+export class OutcomesModelComponent implements OnChanges, OnInit {
+  @Input() config: OutcomesModelConfig = EMPTY_OUTCOMES_MODEL_CONFIG;
   @Input() programOutcomeData?: ProgramOutcomeData;
   @Input() activeLayer?: OutcomesLayerKey;
   @Input() showProgramPanel = false;
@@ -40,6 +107,19 @@ export class OutcomesModelComponent implements OnChanges {
   tooltipLeft = 0;
   tooltipVisible = false;
   private readonly cssVarCache = new Map<string, string>();
+
+  ngOnInit(): void {
+    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${OUTCOMES_MODEL_CONFIG_PAGE}`)
+      .then((data: any) => {
+        if (data) {
+          this.config = data as OutcomesModelConfig;
+          this.ngOnChanges();
+        }
+      })
+      .catch((error: any) => {
+        console.error('Error loading outcomes model config:', error);
+      });
+  }
 
   ngOnChanges(): void {
     this.selectedLayerKey =
@@ -97,18 +177,18 @@ export class OutcomesModelComponent implements OnChanges {
     const sortedByRadius = [...this.layers].sort(
       (a, b) => b.diagram.outerRadius - a.diagram.outerRadius
     );
-    return sortedByRadius[0] || this.layers[0];
+    return sortedByRadius[0] || this.layers[0] || EMPTY_LAYER;
   }
 
   get innerLayer(): OutcomesLayerConfig {
     const sortedByInnerRadius = [...this.layers].sort(
       (a, b) => a.diagram.innerRadius - b.diagram.innerRadius
     );
-    return sortedByInnerRadius[0] || this.layers[0];
+    return sortedByInnerRadius[0] || this.layers[0] || EMPTY_LAYER;
   }
 
   get selectedLayer(): OutcomesLayerConfig {
-    return this.layers.find((layer) => layer.key === this.selectedLayerKey) || this.layers[0];
+    return this.layers.find((layer) => layer.key === this.selectedLayerKey) || this.layers[0] || EMPTY_LAYER;
   }
 
   get displayProgramData(): ProgramOutcomeData | undefined {
