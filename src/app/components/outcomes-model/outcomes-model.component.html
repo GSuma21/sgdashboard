@@ -13,21 +13,21 @@
 
           <defs>
 
-            <radialGradient id="netRest" cx="50%" cy="50%" r="50%">
+            <radialGradient [attr.id]="gradientId('netRest')" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stop-color="#A6A6A6" stop-opacity="0.42" />
               <stop offset="50%" stop-color="#A6A6A6" stop-opacity="0.28" />
               <stop offset="80%" stop-color="#A6A6A6" stop-opacity="0.13" />
               <stop offset="100%" stop-color="#A6A6A6" stop-opacity="0" />
             </radialGradient>
 
-            <radialGradient id="netActive" cx="50%" cy="50%" r="50%">
+            <radialGradient [attr.id]="gradientId('netActive')" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stop-color="#961C00" stop-opacity="0.34" />
               <stop offset="52%" stop-color="#961C00" stop-opacity="0.24" />
               <stop offset="80%" stop-color="#961C00" stop-opacity="0.12" />
               <stop offset="100%" stop-color="#961C00" stop-opacity="0" />
             </radialGradient>
 
-            <radialGradient id="netMaskGrad" cx="50%" cy="50%" r="50%">
+            <radialGradient [attr.id]="gradientId('netMaskGrad')" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stop-color="#000" />
               <stop offset="55%" stop-color="#000" />
               <stop offset="61%" stop-color="#FFFFFF" />
@@ -38,17 +38,17 @@
               <stop offset="100%" stop-color="#000000" />
             </radialGradient>
 
-            <mask id="netMask">
+            <mask [attr.id]="gradientId('netMask')">
               <circle
                 cx="300"
                 cy="300"
                 r="348"
-                fill="url(#netMaskGrad)"
+                [attr.fill]="gradientUrl('netMaskGrad')"
               />
             </mask>
 
             <filter
-              id="soft"
+              [attr.id]="gradientId('soft')"
               x="-40%"
               y="-40%"
               width="180%"
@@ -66,24 +66,24 @@
             [attr.r]="outerLayer.diagram.outerRadius"
             [attr.fill]="
               isDiagramLayerDisabled(outerLayer.key)
-                ? 'url(#netRest)'
+                ? gradientUrl('netRest')
                 : (
                     isReferenceLayerActive(outerLayer.key) ||
                     isLayerHovered(outerLayer.key)
-                      ? 'url(#netActive)'
-                      : 'url(#netRest)'
+                      ? gradientUrl('netActive')
+                      : gradientUrl('netRest')
                   )
             "
             [style.opacity]="
               isDiagramLayerDisabled(outerLayer.key) ? 0.35 : 1
             "
-            filter="url(#soft)"
+            [attr.filter]="gradientUrl('soft')"
           >
           </circle>
 
           <g
             id="outerWeb"
-            mask="url(#netMask)"
+            [attr.mask]="gradientUrl('netMask')"
             pointer-events="none"
             [style.opacity]="
               isDiagramLayerDisabled(outerLayer.key) ? 0.35 : 1
@@ -243,7 +243,7 @@
               [attr.aria-label]="getLayerAriaLabel(layer.key)"
               (click)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
               (keydown.enter)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
-              (keydown.space)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
+              (keydown.space)="onLayerKeydownSpace($event, layer.key)"
               (mouseenter)="!isDiagramLayerDisabled(layer.key) && setHoveredLayer(layer.key)"
               (mouseleave)="clearHoveredLayer()"
             >
@@ -265,7 +265,7 @@
               [attr.aria-label]="getLayerAriaLabel(layer.key)"
               (click)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
               (keydown.enter)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
-              (keydown.space)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
+              (keydown.space)="onLayerKeydownSpace($event, layer.key)"
               (mouseenter)="!isDiagramLayerDisabled(layer.key) && setHoveredLayer(layer.key)"
               (mouseleave)="clearHoveredLayer()"
             >
@@ -337,7 +337,7 @@
               <ng-container *ngIf="layer.diagram.curvedLabelPath; else straightLabel">
 
                 <path
-                  [attr.id]="'lab-arc-' + layer.key"
+                  [attr.id]="labelArcId(layer.key)"
                   fill="none"
                   [attr.d]="layer.diagram.curvedLabelPath"
                 ></path>
@@ -350,7 +350,7 @@
                   [attr.font-weight]="getDiagramText(layer.key)?.fontWeight"
                 >
                   <textPath
-                    [attr.href]="'#lab-arc-' + layer.key"
+                    [attr.href]="'#' + labelArcId(layer.key)"
                     startOffset="50%"
                     text-anchor="middle"
                   >
@@ -652,6 +652,9 @@
                 <a
                   class="evidence-card"
                   *ngFor="let evidence of visibleEvidenceResources; trackBy: trackByIndex"
+                  [href]="getSafeEvidenceUrl(evidence)"
+                  [attr.target]="getSafeEvidenceUrl(evidence) ? '_blank' : null"
+                  [attr.rel]="getSafeEvidenceUrl(evidence) ? 'noopener noreferrer' : null"
                 >
                   <img
                     src="assets/icons/pdf.svg"
@@ -672,10 +675,9 @@
 
                     <img
                       src="assets/icons/mdi_eye.svg"
+                      alt=""
                       aria-hidden="true"
-                      [attr.alt]="config.ariaLabels.viewEvidence"
                       class="evidence-view-icon"
-                      (click)="openEvidence($event, evidence)"
                     />
                   </span>
 
@@ -1054,12 +1056,12 @@
                       let evidence of programEvidenceResources;
                       trackBy: trackByIndex
                     "
-                    [href]="evidence.url || null"
+                    [href]="getSafeEvidenceUrl(evidence)"
                     [attr.target]="
-                      evidence.url ? '_blank' : null
+                      getSafeEvidenceUrl(evidence) ? '_blank' : null
                     "
                     [attr.rel]="
-                      evidence.url
+                      getSafeEvidenceUrl(evidence)
                         ? 'noopener noreferrer'
                         : null
                     "
@@ -1244,6 +1246,7 @@
   >
 
     <section
+      #infoModal
       class="info-modal"
       role="dialog"
       aria-modal="true"
@@ -1252,6 +1255,7 @@
     >
 
       <button
+        #infoModalCloseButton
         type="button"
         class="info-modal-close"
         [attr.aria-label]="config.ariaLabels.closeModal"

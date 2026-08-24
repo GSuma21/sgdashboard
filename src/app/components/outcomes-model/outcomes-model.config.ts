@@ -628,7 +628,7 @@ export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
     {
       label: 'Enrollment',
       description:
-        '2:75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
+        '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
     },
     {
       label: 'Retention',
@@ -643,7 +643,7 @@ export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
     {
       label: 'Enrollment',
       description:
-        '3:75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
+        '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
     },
     {
       label: 'Retention',
@@ -669,30 +669,35 @@ export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
       type: 'PDF',
       size: '3.6MB',
       tag: 'Retention',
+      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
     },
     {
-      title: '2:Enrollment.pdf',
+      title: 'Enrollment.pdf',
       type: 'PDF',
       size: '3.6MB',
       tag: 'Enrollment',
+      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
     },
     {
       title: 'Evaluation.pdf',
       type: 'PDF',
       size: '3.6MB',
       tag: 'Retention',
+      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
     },
     {
-      title: '3:Enrollment.pdf',
+      title: 'Enrollment.pdf',
       type: 'PDF',
       size: '3.6MB',
       tag: 'Enrollment',
+      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
     },
     {
       title: 'Evaluation.pdf',
       type: 'PDF',
       size: '3.6MB',
       tag: 'Retention',
+      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
     },
   ],
   layers: {

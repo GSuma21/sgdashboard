@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
@@ -59,6 +59,22 @@ const EMPTY_OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
   ariaLabels: EMPTY_ARIA_LABELS,
 };
 
+function isValidOutcomesModelConfig(data: any): data is OutcomesModelConfig {
+  return (
+    !!data &&
+    Array.isArray(data.layers) &&
+    data.layers.every(
+      (layer: any) =>
+        !!layer &&
+        typeof layer.key === 'string' &&
+        typeof layer.diagramLabel === 'string' &&
+        typeof layer.color === 'string' &&
+        typeof layer.fill === 'string' &&
+        !!layer.diagram
+    )
+  );
+}
+
 const EMPTY_LAYER: OutcomesLayerConfig = {
   key: 'students',
   chipLabel: '',
@@ -93,6 +109,12 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   @Input() activeLayer?: OutcomesLayerKey;
   @Input() showProgramPanel = false;
 
+  @ViewChild('infoModal') private infoModalRef?: ElementRef<HTMLElement>;
+  @ViewChild('infoModalCloseButton') private infoModalCloseButtonRef?: ElementRef<HTMLButtonElement>;
+
+  private static nextInstanceId = 0;
+  readonly instanceId = `outcomes-model-${OutcomesModelComponent.nextInstanceId++}`;
+
   selectedLayerKey: OutcomesLayerKey = this.config.defaultLayer;
   hoveredLayerKey: OutcomesLayerKey | null = null;
   selectedPanel: 'programs' | 'layer' = 'layer';
@@ -100,7 +122,9 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   cardPageIndex = 0;
   private readonly MOBILE_BREAKPOINT = 768;
   private readonly diagramCenter = 300;
-  evidencesPerPage = window.innerWidth <= 768 ? 1 : 2;
+  private hasExplicitLayerSelection = false;
+  private previouslyFocusedElement: HTMLElement | null = null;
+  evidencesPerPage = this.evidenceCardsPerPage;
   evidencePageIndex = 0;
   tooltipText: string | null = null;
   tooltipTop = 0;
@@ -111,9 +135,11 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${OUTCOMES_MODEL_CONFIG_PAGE}`)
       .then((data: any) => {
-        if (data) {
-          this.config = data as OutcomesModelConfig;
+        if (isValidOutcomesModelConfig(data)) {
+          this.config = data;
           this.ngOnChanges();
+        } else {
+          console.error('Invalid outcomes model config payload received.');
         }
       })
       .catch((error: any) => {
@@ -122,11 +148,14 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   }
 
   ngOnChanges(): void {
+    if (this.activeLayer || this.programOutcomeData?.layerKey) {
+      this.hasExplicitLayerSelection = true;
+    }
+
     this.selectedLayerKey =
       this.activeLayer ||
       this.programOutcomeData?.layerKey ||
-      this.selectedLayerKey ||
-      this.config.defaultLayer;
+      (this.hasExplicitLayerSelection ? this.selectedLayerKey : this.config.defaultLayer);
 
     if (
       this.hasProgramOutcomeData &&
@@ -262,7 +291,7 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   }
 
   get programPanelTitle(): string {
-    return this.selectedLayer.heading || this.selectedLayer.eyebrow || `${this.selectedLayer.chipLabel}:`;
+    return this.selectedLayer.heading || this.selectedLayer.eyebrow || this.selectedLayer.chipLabel;
   }
 
   get programPanelDescription(): string {
@@ -360,10 +389,19 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
     }
 
     this.selectedLayerKey = layerKey;
+    this.hasExplicitLayerSelection = true;
     this.selectedPanel = 'layer';
 
     this.cardPageIndex = 0;
     this.evidencePageIndex = 0;
+  }
+
+  onLayerKeydownSpace(event: Event, layerKey: OutcomesLayerKey): void {
+    event.preventDefault();
+
+    if (!this.isDiagramLayerDisabled(layerKey)) {
+      this.selectReferenceLayer(layerKey);
+    }
   }
 
   selectProgramPanel(): void {
@@ -420,13 +458,49 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   }
 
   openInfoModal(): void {
+    this.previouslyFocusedElement = document.activeElement as HTMLElement | null;
     this.isInfoModalOpen = true;
     this.updateBodyScrollLock();
+
+    setTimeout(() => this.infoModalCloseButtonRef?.nativeElement.focus());
   }
 
   closeInfoModal(): void {
     this.isInfoModalOpen = false;
     this.updateBodyScrollLock();
+
+    this.previouslyFocusedElement?.focus();
+    this.previouslyFocusedElement = null;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscapeKeydown(): void {
+    if (this.isInfoModalOpen) {
+      this.closeInfoModal();
+    }
+  }
+
+  @HostListener('document:keydown.tab', ['$event'])
+  onTabKeydown(event: Event): void {
+    if (!this.isInfoModalOpen || !this.infoModalRef) return;
+
+    const keyboardEvent = event as KeyboardEvent;
+    const focusable = this.infoModalRef.nativeElement.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (keyboardEvent.shiftKey && document.activeElement === first) {
+      keyboardEvent.preventDefault();
+      last.focus();
+    } else if (!keyboardEvent.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   trackByLayerKey(_: number, layer: OutcomesLayerConfig): string {
@@ -585,7 +659,19 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   }
 
   getLayerDiagramLabel(layerKey: OutcomesLayerKey): string {
-    return this.layers.find((layer) => layer.key === layerKey)?.diagramLabel.toLowerCase() || '';
+    return this.layers.find((layer) => layer.key === layerKey)?.diagramLabel?.toLowerCase() || '';
+  }
+
+  gradientId(name: string): string {
+    return `${this.instanceId}-${name}`;
+  }
+
+  gradientUrl(name: string): string {
+    return `url(#${this.instanceId}-${name})`;
+  }
+
+  labelArcId(layerKey: OutcomesLayerKey | string): string {
+    return `${this.instanceId}-lab-arc-${layerKey}`;
   }
 
   getLayerDataAttr(layer: OutcomesLayerConfig): string {
@@ -829,12 +915,14 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
     return !!text && text.length > limit;
   }
 
-  openEvidence(event: MouseEvent, evidence: ProgramEvidenceResource): void {
-    event.preventDefault();
-    event.stopPropagation();
+  getSafeEvidenceUrl(evidence: ProgramEvidenceResource): string | null {
+    if (!evidence?.url) return null;
 
-    if (evidence?.url) {
-      window.open(evidence.url, '_blank', 'noopener,noreferrer');
+    try {
+      const url = new URL(evidence.url, typeof window !== 'undefined' ? window.location.origin : undefined);
+      return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : null;
+    } catch {
+      return null;
     }
   }
 
