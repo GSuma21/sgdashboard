@@ -1,0 +1,60 @@
+<div class="info-modal-backdrop" role="presentation" (click)="close()">
+  <section
+    #modal
+    class="info-modal"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="titleId"
+    (click)="$event.stopPropagation()"
+  >
+    <button
+      #closeButton
+      type="button"
+      class="info-modal-close"
+      [attr.aria-label]="closeLabel"
+      (click)="close()"
+    >
+      <span class="material-icons" aria-hidden="true"> close </span>
+    </button>
+
+    <div class="info-modal-heading" [style.color]="color">
+      <span class="material-icons info-modal-heading-icon" aria-hidden="true">
+        {{ icon }}
+      </span>
+
+      <div>
+        <h3 [id]="titleId" [style.color]="color">
+          {{ title }}
+        </h3>
+
+        <p>
+          {{ description }}
+        </p>
+      </div>
+    </div>
+
+    <div
+      class="info-modal-content"
+      *ngIf="listItems?.length"
+      [style.border-left-color]="color"
+    >
+      <article
+        class="info-modal-row"
+        *ngFor="let item of listItems || []; trackBy: trackByIndex"
+        [style.border-color]="color"
+      >
+        <span class="info-modal-letter" [style.background]="color">
+          {{ item.letter }}
+        </span>
+
+        <h4 [style.color]="color">
+          {{ item.title }}
+        </h4>
+
+        <p [style.border-left-color]="color">
+          {{ item.description }}
+        </p>
+      </article>
+    </div>
+  </section>
+</div>

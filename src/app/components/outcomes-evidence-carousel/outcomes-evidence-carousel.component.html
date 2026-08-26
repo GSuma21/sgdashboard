@@ -1,0 +1,118 @@
+<section
+  class="program-mode-evidence"
+  *ngIf="evidences.length"
+>
+
+  <h4>
+    {{ heading }}
+    ({{ evidences.length }})
+  </h4>
+
+
+  <div class="evidence-carousel">
+
+    <button
+      type="button"
+      class="evidence-nav evidence-nav-prev"
+      [attr.aria-label]="prevLabel"
+      *ngIf="
+        canShowControls &&
+        canGoToPrevious
+      "
+      (click)="showPrevious()"
+    >
+      <img
+        src="assets/icons/arrow-left.svg"
+        alt=""
+        aria-hidden="true"
+      />
+    </button>
+
+
+    <div class="evidence-content">
+
+      <div class="evidence-grid">
+
+        <div
+          class="evidence-card"
+          *ngFor="let evidence of visibleEvidences; trackBy: trackByIndex"
+        >
+          <span
+            class="evidence-file-icon"
+            aria-hidden="true"
+            [style.background]="getEvidenceFileBackground(evidence)"
+          >
+            <img [src]="getEvidenceFileIcon(evidence)" alt="" />
+          </span>
+
+          <span class="evidence-name" [title]="getEvidenceDisplayName(evidence)">
+            {{ getEvidenceDisplayName(evidence) }}
+          </span>
+
+          <span class="evidence-meta-row">
+            <span class="evidence-meta" *ngIf="evidence.evidence_type || evidence.evidence_size">
+              <span *ngIf="evidence.evidence_type">{{ evidence.evidence_type }}</span>
+              <span *ngIf="evidence.evidence_size">{{ evidence.evidence_size }}</span>
+            </span>
+
+            <a
+              class="evidence-view-link"
+              [href]="getSafeEvidenceUrl(evidence)"
+              [attr.target]="getSafeEvidenceUrl(evidence) ? '_blank' : null"
+              [attr.rel]="getSafeEvidenceUrl(evidence) ? 'noopener noreferrer' : null"
+              [attr.aria-label]="viewLabel + ': ' + getEvidenceDisplayName(evidence)"
+            >
+              <img
+                src="assets/icons/mdi_eye.svg"
+                alt=""
+                aria-hidden="true"
+                class="evidence-view-icon"
+              />
+            </a>
+          </span>
+
+          <span class="evidence-tag">
+            {{ evidence.tag }}
+          </span>
+        </div>
+      </div>
+
+
+      <div
+        class="evidence-scrollbar"
+        *ngIf="canShowControls"
+        aria-hidden="true"
+      >
+
+        <div
+          class="evidence-scrollbar-progress"
+          [style.width.%]="thumbWidthPercent"
+          [style.left.%]="thumbLeftPercent"
+        >
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="evidence-nav evidence-nav-next"
+      [attr.aria-label]="nextLabel"
+      *ngIf="
+        canShowControls &&
+        canGoToNext
+      "
+      (click)="showNext()"
+    >
+      <img
+        src="assets/icons/arrow-right.svg"
+        alt=""
+        aria-hidden="true"
+      />
+    </button>
+
+  </div>
+
+</section>

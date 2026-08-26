@@ -1,18 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, HostListener, Input, TemplateRef, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { environment } from '../../../../environments/environment';
+import { environment } from '@environments/environment';
 import * as d3 from 'd3';
 import { LANDING_PAGE } from '../../../constants/urlConstants';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { LoaderRunnerService } from '../../services/loader-runner.service';
 import { MatDialog } from '@angular/material/dialog';
+import { OutcomesModelComponent } from '../outcomes-model/outcomes-model.component';
+import { buildProgramOutcomeDataFromFramework, ProgramOutcomeData } from '../outcomes-model/outcomes-model.config';
 import { programDetailsConfig } from '../../../config/programDetailsConfig';
 
 @Component({
   selector: 'app-program-details',
-  imports: [CommonModule, RouterModule,MatIcon],
+  imports: [CommonModule, RouterModule,MatIcon, OutcomesModelComponent],
   templateUrl: './program-details.html',
   styleUrl: './program-details.css'
 })
@@ -26,7 +28,6 @@ export class ProgramDetails {
   'var(--tertiary-color-light)'
 ];
 
-
   @ViewChild('galleryTrack') galleryTrack!: ElementRef;
   @ViewChild('downloadDialog') downloadDialog!: TemplateRef<any>;
 
@@ -34,13 +35,14 @@ export class ProgramDetails {
     this.onResize();
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as { report: any };
-    this.programData = state?.report;  
+    this.programData = state?.report || {};
   }
   currentSlide = 0;
   public displayImages: string[] = [];
   private transitionEndListener: any;
   visibleSlides = 4; // how many images visible at once
-  partnerDetails: any
+  partnerDetails: any = []
+  programOutcomeData?: ProgramOutcomeData;
 
   @HostListener('window:resize', ['$event'])
   onResize(event?: any) {
@@ -65,6 +67,7 @@ export class ProgramDetails {
     }
     window.scrollTo(0,0)
     this.displayImages = this.programData.logo_urls || [];
+    this.programOutcomeData = buildProgramOutcomeDataFromFramework(this.programData?.framework);
     this.getPartnerDetails()
   }
 
@@ -75,7 +78,7 @@ export class ProgramDetails {
       this.partnerDetails = data;
       const partners = data.find((item: { type: string; }) => item.type === "partner-logos")?.partners || [];
       this.partnerDetails = partners.filter((p: { name: string; }) =>
-        this.programData.name_of_the_partner_leading_the_program.includes(p.name)
+        (this.programData.name_of_the_partner_leading_the_program || []).includes(p.name)
       );
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
@@ -121,6 +124,27 @@ export class ProgramDetails {
 
   goBack(): void {
     this.location.back(); // navigates to the previous page
+  }
+
+  // Hides the outcomes-model section entirely when this program's framework has no
+  // real outcomes/evidences (e.g. framework: []), instead of falling back to the
+  // generic landing-style narrative view.
+  get hasOutcomesData(): boolean {
+    return this.hasFrameworkOutcomesData;
+  }
+
+  get hasFrameworkOutcomesData(): boolean {
+    return !!this.programOutcomeData;
+  }
+
+  get hasProgramSummaryContent(): boolean {
+    return !!(
+      this.programData?.about_the_program_objective ||
+      this.programData?.stakeholders_doing_the_program ||
+      this.impactText ||
+      this.programData?.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted ||
+      this.programData?.leaders_driving_improvements
+    );
   }
 
   get impactText(): string {

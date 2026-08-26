@@ -15,11 +15,12 @@ import { GlobalMap2 } from '../global-map-2/global-map-2';
 import { WorldMapComponent } from '../world-map/world-map';
 import { ChangeDetectorRef } from '@angular/core';
 import { LoaderRunnerService } from '../../services/loader-runner.service';
+import { OutcomesModelComponent } from '../../components/outcomes-model/outcomes-model.component';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, CountryView, CatalysingNetwork1, GlobalMap2, WorldMapComponent],
+  imports: [CommonModule, RouterModule, IndicatorCardComponent, PartnerLogosComponent, CarouselComponent, CountryView, CatalysingNetwork1, GlobalMap2, WorldMapComponent, OutcomesModelComponent],
   templateUrl: './landing.html',
   styleUrls: ['./landing.css'],
  animations: [
@@ -34,7 +35,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
 
   pageData: any = [];
   window: any = window;
-  isGlobalMapVisible = true; 
+  isGlobalMapVisible = true;
 
   constructor(private cdr: ChangeDetectorRef, private loaderRunner: LoaderRunnerService) { }
 

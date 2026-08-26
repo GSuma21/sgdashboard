@@ -47,9 +47,14 @@
     </ng-container>
 
     <!-- Partner Logos Section -->
-    <ng-container *ngIf="section.type === 'country-view'">
+    <!-- <ng-container *ngIf="section.type === 'country-view'">
       <app-country-view [showVariations]="section.showVariations" [notes]="section.notes" [legends]="section.legends" [selections]="section.selections"></app-country-view>
+    </ng-container> -->
+
+     <ng-container *ngIf="section.type === 'country-view'">
+     <app-outcomes-model></app-outcomes-model>
     </ng-container>
+
 
     <ng-container *ngIf="section.type === 'global-view'">
       <div class="map-container">

@@ -43,7 +43,7 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${STORY_OF_THE_WEEK}`).then((data: any) => {
       this.ngZone.run(() => {
       const currentWeek = this.getWeekNumber(new Date());
-      this.slides = data.data.length < currentWeek - 7 ? data?.data?.slice(data.data.length - 8, data.data.length - 2) : data?.data?.slice(currentWeek + 1, currentWeek + 7) || data?.data?.slice(0, 6);
+      this.slides = this.getStoriesForWeek(data?.data ?? [], currentWeek);
       this.slides = this.utils.assignColorsToStories(this.slides)
 
       this.updateChunks();
@@ -129,6 +129,17 @@ export class StoriesCarouselComponent implements OnInit, OnDestroy {
       results.push(arr.slice(i, i + chunkSize));
     }
     return results;
+  }
+
+  getStoriesForWeek(stories: any[], weekNumber: number): any[] {
+    if (!stories.length) return [];
+
+    const visibleStoriesCount = 6;
+    const startIndex = ((weekNumber - 1) % stories.length + stories.length) % stories.length;
+
+    return Array.from({ length: visibleStoriesCount }, (_, index) => {
+      return stories[(startIndex + index) % stories.length];
+    });
   }
 
   getWeekNumber(d: Date): number {

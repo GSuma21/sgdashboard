@@ -1,0 +1,472 @@
+<section
+  class="outcomes-model"
+  [class.has-program-data]="hasProgramOutcomeData"
+>
+  <div class="outcomes-grid">
+    <div class="sticky-stage">
+      <div class="stage">
+        <app-outcomes-diagram
+          [config]="config"
+          [selectedLayerKey]="selectedLayerKey"
+          [hasProgramOutcomeData]="hasProgramOutcomeData"
+          [disabledLayerKeys]="disabledLayerKeys"
+          [showDiagramNote]="!hasProgramOutcomeData"
+          (layerSelect)="selectLayer($event)"
+        ></app-outcomes-diagram>
+      </div>
+    </div>
+
+    <ng-container *ngIf="hasProgramOutcomeData; else normalOutcomeSections">
+      <section
+        class="program-mode-panel"
+        [style.--active-color]="selectedLayer.color"
+        [style.--active-text-color]="activeTextColor"
+      >
+        <div
+          class="program-mode-heading"
+          [class.no-program-icon]="!programPanelIcon"
+        >
+          <img
+            *ngIf="programPanelIcon"
+            [src]="programPanelIcon"
+            aria-hidden="true"
+            class="program-mode-icon"
+          />
+
+          <div class="program-mode-copy">
+            <h3>{{ programPanelTitle }}:</h3>
+            <p>{{ programPanelDescription }}</p>
+          </div>
+
+          <button
+            type="button"
+            class="info-button"
+            [style.--info-color]="selectedLayer.color"
+            [attr.aria-label]="'Show ' + programPanelTitle + ' explanation'"
+            (click)="isInfoModalOpen = true"
+          >
+            <span class="info-button-icon" aria-hidden="true"></span>
+          </button>
+        </div>
+
+        <app-outcomes-program-card-carousel
+          [cards]="programCards"
+          [cardVariant]="programCardVariant"
+          [defaultCardLabelPrefix]="config.defaultCardLabelPrefix"
+          [defaultPartnerImage]="config.defaultPartnerImage"
+          [defaultCtaLabel]="config.defaultCtaLabel"
+          [prevLabel]="config.ariaLabels.prevCards"
+          [nextLabel]="config.ariaLabels.nextCards"
+          [cardPagesLabel]="config.ariaLabels.cardPages"
+        ></app-outcomes-program-card-carousel>
+
+        <app-outcomes-evidence-carousel
+          [evidences]="programEvidenceResources"
+          [heading]="config.evidenceHeading"
+          [prevLabel]="config.ariaLabels.prevEvidence"
+          [nextLabel]="config.ariaLabels.nextEvidence"
+          [viewLabel]="config.ariaLabels.viewEvidence"
+          [evidenceNameFallbackSuffix]="
+            config.staticTexts?.evidenceNameFallbackSuffix
+          "
+        ></app-outcomes-evidence-carousel>
+
+        <div
+          class="program-layer-tiles"
+          [attr.aria-label]="config.ariaLabels.layerTiles"
+        >
+          <button
+            *ngFor="let layer of layers; trackBy: trackByLayerKey"
+            type="button"
+            class="program-layer-tile"
+            [class.active]="selectedLayerKey === layer.key"
+            [attr.data-key]="layer.key"
+            [disabled]="!isProgramLayerAvailable(layer.key)"
+            [style.--tile-color]="layer.color"
+            [style.border-style]="
+              isProgramLayerAvailable(layer.key) ? 'solid' : 'dashed'
+            "
+            (click)="selectLayer(layer.key)"
+          >
+            {{ getLayerTileLabel(layer) }}
+          </button>
+        </div>
+
+        <p class="chip-note">
+          {{ config.staticTexts?.chipNotePrefix || "*" }}
+          {{ config.programChipFootnote }}
+        </p>
+      </section>
+    </ng-container>
+
+    <ng-template #normalOutcomeSections>
+      <div
+        class="rail-sections"
+        [style.--active-color]="activePanelColor"
+        [style.--active-text-color]="activeTextColor"
+      >
+        <ng-template #pillButton let-layer="layer" let-active="active">
+          <button
+            type="button"
+            class="pill"
+            [class.active]="active"
+            [style.--pill-color]="layer.color"
+            (click)="selectLayer(layer.key)"
+            [attr.data-key]="layer.key"
+          >
+            {{ layer.chipLabel }}
+          </button>
+        </ng-template>
+
+        <section
+          class="rail rail-narrative"
+          [style.--active-color]="selectedLayer.color"
+          [style.--active-text-color]="activeTextColor"
+        >
+          <p class="eyebrow">
+            {{ config.layerHeading }}
+          </p>
+
+          <h2>
+            {{ config.title }}
+          </h2>
+
+          <p class="lead">
+            {{ config.description }}
+          </p>
+
+          <div
+            class="pillwrap"
+            [attr.aria-label]="config.ariaLabels.narrativeFilters"
+          >
+            <div class="pillrow">
+              <ng-container
+                *ngFor="let layer of primaryLayers; trackBy: trackByLayerKey"
+              >
+                <ng-container
+                  *ngTemplateOutlet="
+                    pillButton;
+                    context: {
+                      layer: layer,
+                      active: selectedLayerKey === layer.key,
+                    }
+                  "
+                ></ng-container>
+              </ng-container>
+            </div>
+
+            <div class="pillrow">
+              <ng-container
+                *ngFor="let layer of secondaryLayers; trackBy: trackByLayerKey"
+              >
+                <ng-container
+                  *ngTemplateOutlet="
+                    pillButton;
+                    context: {
+                      layer: layer,
+                      active: selectedLayerKey === layer.key,
+                    }
+                  "
+                ></ng-container>
+              </ng-container>
+            </div>
+          </div>
+
+          <article class="definition-card narrative-card">
+            <p>
+              {{ narrativeBody }}
+            </p>
+
+            <a
+              class="story-cta"
+              *ngIf="selectedLayer.cta"
+              [routerLink]="selectedLayer.cta.link"
+            >
+              {{ selectedLayer.cta.label }}
+
+              <span class="material-icons" aria-hidden="true">
+                {{ config.ctaIcon }}
+              </span>
+            </a>
+          </article>
+        </section>
+
+        <section
+          class="rail rail-framework"
+          [style.--active-color]="activePanelColor"
+          [style.--active-text-color]="activeTextColor"
+        >
+          <p class="eyebrow">
+            {{ config.frameworkHeading }}
+          </p>
+
+          <h2>
+            {{ config.frameworkTitle }}
+          </h2>
+
+          <p class="framework-lead">
+            {{ frameworkLead }}
+          </p>
+
+          <div
+            class="pillwrap"
+            [attr.aria-label]="config.ariaLabels.frameworkFilters"
+          >
+            <div class="pillrow">
+              <button
+                type="button"
+                class="pill"
+                *ngIf="hasProgramOutcomeData"
+                [class.active]="selectedPanel === 'programs'"
+                [style.--pill-color]="config.programColor"
+                (click)="selectProgramPanel()"
+              >
+                {{ config.programChipLabel }}
+              </button>
+
+              <ng-container
+                *ngFor="let layer of layers; trackBy: trackByLayerKey"
+              >
+                <ng-container
+                  *ngTemplateOutlet="
+                    pillButton;
+                    context: {
+                      layer: layer,
+                      active:
+                        selectedPanel === 'layer' &&
+                        selectedLayerKey === layer.key,
+                    }
+                  "
+                ></ng-container>
+              </ng-container>
+            </div>
+          </div>
+
+          <ng-container *ngIf="shouldShowProgramPanel; else configuredPanel">
+            <article class="framework-card program-framework">
+              <div class="framework-heading">
+                <span class="material-icons heading-icon" aria-hidden="true">
+                  school
+                </span>
+
+                <div>
+                  <span class="framework-eyebrow">
+                    {{ config.programChipLabel }}
+                  </span>
+
+                  <h3>
+                    {{
+                      displayProgramData?.title ||
+                        selectedLayer.heading ||
+                        selectedLayer.chipLabel
+                    }}
+                  </h3>
+                </div>
+
+                <button
+                  type="button"
+                  class="info-icon-button"
+                  *ngIf="hasProgramOutcomeData"
+                  [attr.aria-label]="
+                    selectedProgramData?.infoLabel || 'Show outcome information'
+                  "
+                  (click)="isInfoModalOpen = true"
+                >
+                  <span class="material-icons" aria-hidden="true"> info </span>
+                </button>
+              </div>
+
+              <p class="fwsub" *ngIf="selectedProgramData?.subtitle">
+                {{ selectedProgramData?.subtitle }}
+              </p>
+
+              <ul class="framework-list" *ngIf="programCards.length">
+                <li
+                  *ngFor="
+                    let card of programCards;
+                    let cardIndex = index;
+                    trackBy: trackByIndex
+                  "
+                >
+                  <ng-container
+                    *ngIf="getProgramCardLabel(card, cardIndex) as cardLabel"
+                  >
+                    <span class="framework-key">
+                      {{ cardLabel.slice(0, 1) }}
+                    </span>
+
+                    <span class="framework-term">
+                      {{ cardLabel }}
+                    </span>
+
+                    <span class="framework-question">
+                      {{ getProgramCardDescription(card) }}
+                    </span>
+                  </ng-container>
+                </li>
+              </ul>
+
+              <section
+                class="evidence-section"
+                *ngIf="programEvidenceResources.length"
+              >
+                <h4>
+                  {{ config.evidenceHeading }}
+                  ({{ programEvidenceResources.length }})
+                </h4>
+
+                <div class="evidence-grid">
+                  <a
+                    class="evidence-card"
+                    *ngFor="
+                      let evidence of programEvidenceResources;
+                      trackBy: trackByIndex
+                    "
+                    [href]="getSafeEvidenceUrl(evidence)"
+                    [attr.target]="
+                      getSafeEvidenceUrl(evidence) ? '_blank' : null
+                    "
+                    [attr.rel]="
+                      getSafeEvidenceUrl(evidence)
+                        ? 'noopener noreferrer'
+                        : null
+                    "
+                  >
+                    <span
+                      class="evidence-file-icon"
+                      aria-hidden="true"
+                      [style.background]="getEvidenceFileBackground(evidence)"
+                    >
+                      <img [src]="getEvidenceFileIcon(evidence)" alt="" />
+                    </span>
+
+                    <span
+                      class="evidence-name"
+                      [title]="getEvidenceDisplayName(evidence)"
+                    >
+                      {{ getEvidenceDisplayName(evidence) }}
+                    </span>
+
+                    <span
+                      class="evidence-meta"
+                      *ngIf="evidence.evidence_type || evidence.evidence_size"
+                    >
+                      {{ evidence.evidence_type
+                      }}<ng-container
+                        *ngIf="evidence.evidence_type && evidence.evidence_size"
+                      >
+                        · </ng-container
+                      >{{ evidence.evidence_size }}
+                    </span>
+
+                    <span class="evidence-tag">
+                      {{ evidence.tag }}
+                    </span>
+                  </a>
+                </div>
+              </section>
+            </article>
+          </ng-container>
+
+          <ng-template #configuredPanel>
+            <article
+              class="framework-card definition-card2"
+              *ngIf="
+                selectedLayer.listItems?.length;
+                else frameworkDefinitionPanel
+              "
+            >
+              <div class="framework-heading">
+                <span class="material-icons heading-icon" aria-hidden="true">
+                  {{ selectedLayer.icon }}
+                </span>
+
+                <div>
+                  <span class="framework-eyebrow">
+                    {{ selectedLayer.eyebrow || selectedLayer.chipLabel }}
+                  </span>
+
+                  <h3>
+                    {{ selectedLayer.heading || selectedLayer.chipLabel }}
+                  </h3>
+                </div>
+              </div>
+
+              <p class="fwsub" *ngIf="selectedLayer.subheading">
+                {{ selectedLayer.subheading }}
+              </p>
+
+              <ul class="framework-list">
+                <li
+                  *ngFor="
+                    let item of selectedLayer.listItems || [];
+                    trackBy: trackByIndex
+                  "
+                >
+                  <span class="framework-key">
+                    {{ item.letter }}
+                  </span>
+
+                  <span class="framework-term">
+                    {{ item.title }}
+                  </span>
+
+                  <span class="framework-question">
+                    {{ item.description }}
+                  </span>
+                </li>
+              </ul>
+            </article>
+
+            <ng-template #frameworkDefinitionPanel>
+              <article class="definition-card">
+                <span class="framework-eyebrow">
+                  {{ selectedLayer.eyebrow || selectedLayer.chipLabel }}
+                </span>
+
+                <p class="fwnote">
+                  {{
+                    selectedLayer.frameworkNote ||
+                      selectedLayer.body ||
+                      selectedLayer.subheading ||
+                      config.defaultNarrativeBody
+                  }}
+                </p>
+
+                <a
+                  class="story-cta"
+                  *ngIf="selectedLayer.frameworkCta || selectedLayer.cta"
+                  [routerLink]="
+                    (selectedLayer.frameworkCta || selectedLayer.cta)?.link
+                  "
+                >
+                  {{ (selectedLayer.frameworkCta || selectedLayer.cta)?.label }}
+
+                  <span class="material-icons" aria-hidden="true">
+                    {{ config.ctaIcon }}
+                  </span>
+                </a>
+              </article>
+            </ng-template>
+          </ng-template>
+
+          <p class="chip-note">
+            {{ config.staticTexts?.chipNotePrefix || "*" }}
+            {{ config.chipFootnote }}
+          </p>
+        </section>
+      </div>
+    </ng-template>
+  </div>
+
+  <app-outcomes-info-modal
+    *ngIf="isInfoModalOpen"
+    [title]="infoModalTitle"
+    [description]="infoModalDescription"
+    [icon]="infoModalIcon"
+    [color]="infoModalColor"
+    [listItems]="infoModalListItems"
+    [closeLabel]="infoModalCloseLabel"
+    (closed)="closeInfoModal()"
+  ></app-outcomes-info-modal>
+</section>

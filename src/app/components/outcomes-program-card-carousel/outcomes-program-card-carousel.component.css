@@ -1,0 +1,387 @@
+:host {
+  display: block;
+}
+
+.program-card-carousel {
+  box-sizing: border-box;
+  margin: 0 0 2.125rem;
+  position: relative;
+  width: 100%;
+}
+
+.program-card-content {
+  box-sizing: border-box;
+  overflow: hidden;
+  width: 100%;
+}
+
+.program-mode-cards {
+  box-sizing: border-box;
+  display: grid;
+  gap: clamp(0.875rem, 1.6vw, 1.5rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+}
+
+.program-mode-card {
+  align-items: flex-start;
+  background: color-mix(in srgb, var(--active-color) 15%, var(--oc-white));
+  border: 0.131rem solid var(--active-color);
+  border-radius: 1.304rem;
+  box-shadow: 0.261rem 0.261rem 1.304rem var(--oc-card-shadow);
+  box-sizing: border-box;
+  color: var(--oc-heading-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  justify-content: start;
+  min-width: 0;
+  padding: 1.125rem 0.938rem;
+  width: 100%;
+}
+
+.program-card-carousel .program-mode-cards {
+  margin: 0;
+}
+
+.program-mode-cards.partner-grid {
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, 11.25rem);
+  justify-content: start;
+}
+
+.program-mode-card.partner-card {
+  background: var(--oc-white);
+  border: 0;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.75rem var(--oc-card-shadow-soft);
+  min-height: 12.625rem;
+  padding: 1.125rem 0.875rem 0.875rem;
+  width: 11.25rem;
+}
+
+.program-card-nav {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  height: 2.625rem;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.5rem;
+  z-index: 10;
+}
+
+.program-card-nav img {
+  display: block;
+  height: 2rem;
+  object-fit: contain;
+  width: 2rem;
+}
+
+.program-card-nav:hover img {
+  transform: scale(1.08);
+}
+
+.program-card-nav:focus,
+.program-card-nav:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.program-card-nav:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.program-card-nav-prev {
+  left: -2.5rem;
+}
+
+.program-card-nav-next {
+  right: -2.5rem;
+}
+
+/* =========================================================
+   PROGRAM CARD CONTENT
+   ========================================================= */
+
+.program-mode-tag {
+  background: var(--active-color);
+  border-radius: 999rem;
+  box-sizing: border-box;
+  color: var(--active-text-color, var(--oc-white));
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: 0.375rem;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 0.25rem 0.438rem;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.has-tooltip {
+  cursor: pointer;
+}
+
+.program-mode-card p {
+  color: var(--oc-heading-dark);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.22;
+  margin: 0;
+}
+
+/* =========================================================
+   PROGRAM PAGE INDICATORS
+   ========================================================= */
+
+.program-card-indicators {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1.125rem;
+}
+
+.program-card-indicator {
+  appearance: none;
+  background: var(--oc-black);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 0.438rem;
+  padding: 0;
+  width: 0.438rem;
+}
+
+.program-card-indicator.active {
+  height: 0.625rem;
+  width: 0.625rem;
+}
+
+.program-card-indicator:hover {
+  transform: scale(1.15);
+}
+
+.program-card-indicator:focus,
+.program-card-indicator:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+/* =========================================================
+   GLOBAL TOOLTIP
+   ========================================================= */
+
+.global-tooltip {
+  background: var(--oc-tooltip-bg);
+  border-radius: 0.375rem;
+  box-shadow: 0 0.25rem 0.875rem var(--oc-tooltip-shadow);
+  color: var(--oc-white);
+  font-size: 0.75rem;
+  font-weight: 600;
+  left: 0;
+  line-height: 1.35;
+  max-width: 16.25rem;
+  padding: 0.375rem 0.625rem;
+  pointer-events: none;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  transform: translate(-50%, -100%);
+  white-space: normal;
+  z-index: 9999;
+}
+
+.global-tooltip::after {
+  border: 0.313rem solid transparent;
+  border-top-color: var(--oc-tooltip-bg);
+  content: '';
+  left: 50%;
+  position: absolute;
+  top: 100%;
+  transform: translateX(-50%);
+}
+
+/* =========================================================
+   PARTNER CARDS
+   ========================================================= */
+
+.program-partner-card-image {
+  display: block;
+  height: 5.125rem;
+  margin: 0 auto 1.375rem;
+  object-fit: contain;
+  width: 7rem;
+}
+
+.program-partner-card-title {
+  color: var(--oc-partner-title);
+  font-size: 1rem;
+  margin: 0 0 0.625rem;
+  text-align: center;
+  width: 100%;
+  font-weight: 900;
+  font-family: var(--sg-font-partner) !important;
+}
+
+.program-partner-card-link {
+  color: var(--oc-partner-title);
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: underline;
+  width: 100%;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 58.75rem) {
+  .program-mode-cards {
+    gap: 1rem;
+  }
+
+  .program-mode-card {
+    width: auto;
+  }
+
+  .program-card-nav-prev {
+    left: -2rem;
+  }
+
+  .program-card-nav-next {
+    right: -2rem;
+  }
+}
+
+@media (max-width: 47.5rem) {
+  .program-card-carousel {
+    margin-bottom: 1.5rem;
+    padding: 0 1.5rem;
+  }
+
+  .program-card-content {
+    margin: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .program-mode-cards {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 1fr;
+    margin: 0 auto;
+    width: 90%;
+  }
+
+  .program-mode-card {
+    min-height: auto;
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .program-mode-cards.partner-grid {
+    grid-template-columns: minmax(0, 11.25rem) !important;
+    gap: 0.875rem !important;
+    justify-content: center;
+  }
+
+  .program-mode-card.partner-card {
+    width: 100%;
+  }
+
+  .program-card-nav {
+    height: 2.25rem;
+    width: 2.25rem;
+  }
+
+  .program-card-nav img {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+
+  .program-card-nav-prev {
+    left: -0.25rem;
+  }
+
+  .program-card-nav-next {
+    right: -0.25rem;
+  }
+
+  .program-mode-tag {
+    font-size: 0.688rem;
+    max-width: 100%;
+  }
+
+  .program-mode-card p {
+    font-size: 0.75rem;
+  }
+
+  .program-card-indicators {
+    margin-top: 0.875rem;
+  }
+
+  .program-partner-card-image {
+    height: 4rem;
+    margin-bottom: 1rem;
+    width: 6rem;
+  }
+
+  .program-partner-card-title {
+    font-size: 1.25rem;
+  }
+
+  .global-tooltip {
+    font-size: 0.688rem;
+    max-width: min(16rem, calc(100vw - 2rem));
+  }
+}
+
+@media (max-width: 35rem) {
+  .program-card-carousel {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .program-card-nav-prev {
+    left: -0.125rem;
+  }
+
+  .program-card-nav-next {
+    right: -0.125rem;
+  }
+}
+
+@media (max-width: 23.5rem) {
+  .program-card-carousel {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .program-card-nav {
+    width: 2rem;
+  }
+
+  .program-card-nav img {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+}
