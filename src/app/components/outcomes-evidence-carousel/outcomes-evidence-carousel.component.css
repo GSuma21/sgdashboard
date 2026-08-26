@@ -20,6 +20,11 @@
   width: 100%;
 }
 
+.evidence-carousel,
+.evidence-carousel * {
+  box-sizing: border-box;
+}
+
 .evidence-content {
   box-sizing: border-box;
   overflow: hidden;
@@ -229,12 +234,12 @@
   }
 
   .evidence-carousel {
-    padding: 0 1.5rem;
+    padding: 0 2.375rem;
   }
 
   .evidence-content {
     margin: 0 auto;
-    width: 90%;
+    width: 100%;
   }
 
   .evidence-grid {
@@ -315,11 +320,11 @@
   }
 
   .evidence-nav-prev {
-    left: -0.25rem;
+    left: 0;
   }
 
   .evidence-nav-next {
-    right: -0.25rem;
+    right: 0;
   }
 
   .evidence-scrollbar {
@@ -330,16 +335,16 @@
 
 @media (max-width: 35rem) {
   .evidence-carousel {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .evidence-nav-prev {
-    left: -0.125rem;
+    left: 0;
   }
 
   .evidence-nav-next {
-    right: -0.125rem;
+    right: 0;
   }
 
   .evidence-card {
@@ -389,10 +394,9 @@
 
 @media (max-width: 23.5rem) {
   .evidence-carousel {
-    padding-left: 1rem;
-    padding-right: 1rem;
-    display: flex;
-    justify-content: center;
+    display: block;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
   }
 
   .evidence-nav {
