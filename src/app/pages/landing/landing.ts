@@ -16,7 +16,6 @@ import { WorldMapComponent } from '../world-map/world-map';
 import { ChangeDetectorRef } from '@angular/core';
 import { LoaderRunnerService } from '../../services/loader-runner.service';
 import { OutcomesModelComponent } from '../../components/outcomes-model/outcomes-model.component';
-import { SAMPLE_PROGRAM_OUTCOME_DATA } from '../../components/outcomes-model/outcomes-model.config';
 
 @Component({
   selector: 'app-landing',
@@ -36,9 +35,7 @@ export class LandingComponent implements OnInit, AfterViewInit {
 
   pageData: any = [];
   window: any = window;
-  isGlobalMapVisible = true; 
-
-  programData: any = SAMPLE_PROGRAM_OUTCOME_DATA;
+  isGlobalMapVisible = true;
 
   constructor(private cdr: ChangeDetectorRef, private loaderRunner: LoaderRunnerService) { }
 

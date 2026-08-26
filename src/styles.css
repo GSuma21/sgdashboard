@@ -83,6 +83,24 @@ html {
   --oc-stroke-light: #e4e4e4;
   --oc-stroke-grey: #666666;
 
+  /* Outcomes diagram gradient/mask greys (decorative "network web" backdrop) */
+  --oc-diagram-rest-glow: #a6a6a6;
+  --oc-diagram-grey-light: #cfcfcf;
+  --oc-diagram-grey-lighter: #dedede;
+  --oc-diagram-grey: #c4c4c4;
+  --oc-diagram-grey-mid: #949494;
+  --oc-diagram-grey-dark: #525252;
+
+  /* Outcomes program card shadow */
+  --oc-card-shadow-soft: rgba(0, 0, 0, 0.16);
+
+  /* Evidence file-type icon backgrounds */
+  --oc-pdf-bg: #F70C36;
+  --oc-docx-bg: #2563EB;
+  --oc-xlsx-bg: #0DB563;
+  --oc-pptx-bg: #C2410C;
+  --oc-default-file-bg: #6B7280;
+
 }
 
 html.light-theme {

@@ -53,6 +53,11 @@ export interface OutcomesListItem {
   description: string;
 }
 
+export interface OutcomesCta {
+  label: string;
+  link: string;
+}
+
 export interface OutcomesLayerConfig {
   key: OutcomesLayerKey;
   chipLabel: string;
@@ -68,14 +73,8 @@ export interface OutcomesLayerConfig {
   subheading?: string;
   body?: string;
   frameworkNote?: string;
-  cta?: {
-    label: string;
-    link: string;
-  };
-  frameworkCta?: {
-    label: string;
-    link: string;
-  };
+  cta?: OutcomesCta;
+  frameworkCta?: OutcomesCta;
   listItems?: OutcomesListItem[];
 }
 
@@ -100,11 +99,70 @@ export interface ProgramOutcomeCard {
 }
 
 export interface ProgramEvidenceResource {
-  title: string;
-  type: string;
-  size: string;
+  evidence_name?: string;
+  evidence_size_bytes?: number;
+  evidence_size?: string;
+  evidence_mime_type?: string;
+  evidence_type?: string;
   tag: string;
   url?: string;
+}
+
+// Default when the fetched config doesn't supply staticTexts.evidenceNameFallbackSuffix.
+export const EVIDENCE_NAME_FALLBACK_SUFFIX = 'document';
+
+// Falls back to "<tag> <suffix>" (e.g. "Dental Revision document") when the API doesn't
+// provide a file name for an evidence resource. `fallbackSuffix` should come from the
+// fetched config's staticTexts.evidenceNameFallbackSuffix; defaults to the word "document" above.
+// Uses `||` rather than a default parameter because Angular's template `?.` short-circuits
+// to `null` (not `undefined`), which a default parameter wouldn't catch.
+export function getEvidenceDisplayName(
+  evidence: ProgramEvidenceResource,
+  fallbackSuffix?: string | null
+): string {
+  return evidence.evidence_name || `${evidence.tag} ${fallbackSuffix || EVIDENCE_NAME_FALLBACK_SUFFIX}`;
+}
+
+export const EVIDENCE_MEDIA_TYPE = {
+  PDF: 'PDF',
+  DOCX: 'DOCX',
+  DOC: 'DOC',
+  XLSX: 'XLSX',
+  CSV: 'CSV',
+  PPTX: 'PPTX',
+} as const;
+
+// Icon files referenced here still need to be added under public/assets/icons/.
+const EVIDENCE_FILE_TYPE_ICONS: Record<string, string> = {
+  [EVIDENCE_MEDIA_TYPE.PDF]: 'assets/icons/pdf.svg',
+  [EVIDENCE_MEDIA_TYPE.DOCX]: 'assets/icons/docx.svg',
+  [EVIDENCE_MEDIA_TYPE.DOC]: 'assets/icons/docx.svg',
+  [EVIDENCE_MEDIA_TYPE.XLSX]: 'assets/icons/xlsx.svg',
+  [EVIDENCE_MEDIA_TYPE.CSV]: 'assets/icons/xlsx.svg',
+  [EVIDENCE_MEDIA_TYPE.PPTX]: 'assets/icons/pptx.svg',
+};
+
+const DEFAULT_EVIDENCE_FILE_ICON = 'assets/icons/file-default.svg';
+
+export function getEvidenceFileIcon(type?: string): string {
+  return EVIDENCE_FILE_TYPE_ICONS[type?.toUpperCase() || ''] || DEFAULT_EVIDENCE_FILE_ICON;
+}
+
+// The icon SVGs are solid white, drawn to sit on a colored badge (not directly on
+// the card's white background), so each file type needs its own backdrop color.
+const EVIDENCE_FILE_TYPE_BACKGROUNDS: Record<string, string> = {
+  [EVIDENCE_MEDIA_TYPE.PDF]: 'var(--oc-pdf-bg)',
+  [EVIDENCE_MEDIA_TYPE.DOCX]: 'var(--oc-docx-bg)',
+  [EVIDENCE_MEDIA_TYPE.DOC]: 'var(--oc-docx-bg)',
+  [EVIDENCE_MEDIA_TYPE.XLSX]: 'var(--oc-xlsx-bg)',
+  [EVIDENCE_MEDIA_TYPE.CSV]: 'var(--oc-xlsx-bg)',
+  [EVIDENCE_MEDIA_TYPE.PPTX]: 'var(--oc-pptx-bg)',
+};
+
+const DEFAULT_EVIDENCE_FILE_BACKGROUND = 'var(--oc-default-file-bg)';
+
+export function getEvidenceFileBackground(type?: string): string {
+  return EVIDENCE_FILE_TYPE_BACKGROUNDS[type?.toUpperCase() || ''] || DEFAULT_EVIDENCE_FILE_BACKGROUND;
 }
 
 export interface ProgramOutcomeData {
@@ -113,10 +171,10 @@ export interface ProgramOutcomeData {
   subtitle?: string;
   infoLabel?: string;
   cardVariant?: 'outcome' | 'partner';
-  cards?: ProgramOutcomeCard[];
+  outcomes?: ProgramOutcomeCard[];
   evidences?: ProgramEvidenceResource[];
   layers?: Partial<Record<OutcomesLayerKey, ProgramOutcomeData>> | ProgramOutcomeData[];
-  cardsByLayer?: Partial<Record<OutcomesLayerKey, ProgramOutcomeCard[]>>;
+  outcomesByLayer?: Partial<Record<OutcomesLayerKey, ProgramOutcomeCard[]>>;
   evidencesByLayer?: Partial<Record<OutcomesLayerKey, ProgramEvidenceResource[]>>;
 }
 
@@ -169,599 +227,328 @@ export interface OutcomesModelConfig {
     evidenceCountLabel?: string;
     infoModalTitlePrefix?: string;
     infoModalDescriptionPrefix?: string;
+    evidenceNameFallbackSuffix?: string;
   };
 }
 
-// OUTCOMES_MODEL_CONFIG is now fetched from the API (outcomes-model-config.json) in OutcomesModelComponent.
-// Kept here commented out for reference only — not used at runtime.
-/*
-export const OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
-  layerHeading: 'Impact Narrative',
-  title: 'What Shapes Student Outcomes',
-  description: "A learner's education is shaped across multiple layers:",
-  layerFootnote: 'Click on any of the above Layer to read more about it.',
-  chipFootnote: 'Click on any of the above quick chip to read more about it.',
+export const EMPTY_ARIA_LABELS: OutcomesAriaLabels = {
+  diagram: '',
+  learner: '',
+  school: '',
+  community: '',
+  society: '',
+  system: '',
+  network: '',
+  layerTiles: '',
+  narrativeFilters: '',
+  frameworkFilters: '',
+  cardPages: '',
+  prevCards: '',
+  nextCards: '',
+  prevEvidence: '',
+  nextEvidence: '',
+  viewEvidence: '',
+  closeModal: '',
+};
+
+// Placeholder shown only for the brief window before the API config resolves (or if it fails).
+export const EMPTY_OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
+  layerHeading: '',
+  title: '',
+  description: '',
+  layerFootnote: '',
+  chipFootnote: '',
   defaultLayer: 'students',
-  programChipLabel: 'Learner Outcomes:',
-  programColor: '#ff9911',
-
-  frameworkHeading: 'Impact Framework',
-  frameworkTitle: 'Measuring Impact Across Layers',
-  frameworkLead:
-    'The Shikshagraha movement measures impact across these interconnected layers, each a level through which micro-improvements contribute to systemic transformation.',
-  evidenceHeading: 'Evidences and Resources',
-  programChipFootnote: '* Click on any of the above tile to read more about it.',
-  defaultNarrativeBody: 'Tap a layer to see what it means.',
-  defaultCtaLabel: 'Know more',
-  defaultPartnerImage: 'assets/partners/default-partner.svg',
-  defaultCardLabelPrefix: 'Card ',
-  ctaIcon: 'north_east',
-
-  staticTexts: {
-    programModeHeading: 'Program Details',
-    programModeDescription: 'View program outcomes and evidence',
-    diagramNotePrefix: '* ',
-    chipNotePrefix: '* ',
-    evidenceCountLabel: 'Evidences and Resources',
-    infoModalTitlePrefix: 'About',
-    infoModalDescriptionPrefix: 'Information about',
-  },
-
-  ariaLabels: {
-    diagram: 'Outcome layers',
-    learner: 'Learner',
-    school: 'School and Anganwadi',
-    community: 'Community',
-    society: 'Society',
-    system: 'System Institutions',
-    network: 'Network',
-    layerTiles: 'Outcome layer tiles',
-    narrativeFilters: 'Outcome narrative layer filters',
-    frameworkFilters: 'Outcome framework layer filters',
-    cardPages: 'Card pages',
-    prevCards: 'Show previous cards',
-    nextCards: 'Show next cards',
-    prevEvidence: 'Show previous evidences',
-    nextEvidence: 'Show next evidences',
-    viewEvidence: 'View evidence',
-    closeModal: 'Close',
-  },
-
-  layers: [
-    {
-      key: 'students',
-      chipLabel: 'Learner',
-      diagramLabel: 'Learner',
-      icon: 'child_care',
-      color: '#ff9911',
-      fill: '#fff3e2',
-      diagram: {
-        shape: 'full',
-        innerRadius: 0,
-        outerRadius: 58,
-        labelX: 300,
-        labelY: 300,
-        labelLayout: 'icon-only',
-        labelAnchor: 'middle',
-        iconX: 275,
-        iconY: 275,
-        dataLayerAttr: 'learner',
-        icon: {
-          type: 'material',
-          value: 'assets/icons/learner.svg',
-          color: '#ff9911',
-          width: 50,
-          height: 34,
-        },
-        text: {
-          x: 300,
-          y: 325,
-          fill: '#1a1622',
-          fontSize: 23,
-          fontWeight: 600,
-        },
-      },
-      panelType: 'list',
-      imgPath: 'assets/icons/student.svg',
-      heading: 'Learners Outcomes',
-      subheading:
-        "Measures whether children are experiencing improved learning outcomes through better access, learning, well-being, aspirations, and future readiness.",
-      body:
-        'The learner at the centre — their learning, well-being and aspirations are what every layer works toward.',
-      listItems: [
-        {
-          letter: 'E',
-          icon: 'fact_check',
-          title: 'Enrollment',
-          description: 'Are more children accessing public education?',
-        },
-        {
-          letter: 'R',
-          icon: 'accessibility_new',
-          title: 'Retention',
-          description: 'Are children consistently attending and remaining in school?',
-        },
-        {
-          letter: 'L',
-          icon: 'menu_book',
-          title: 'Learning',
-          description:
-            'Are children demonstrating improved academic and holistic learning outcomes along with future ready skills?',
-        },
-        {
-          letter: 'A',
-          icon: 'star',
-          title: 'Aspiration and agency',
-          description:
-            'Are children developing confidence, future aspirations, and awareness of opportunities?',
-        },
-        {
-          letter: 'W',
-          icon: 'favorite_border',
-          title: 'Well-being',
-          description:
-            'Are children experiencing emotional, physical, and social well-being in school?',
-        },
-      ],
-    },
-    {
-      key: 'schools',
-      chipLabel: 'School & Anganwadi Centres',
-      diagramLabel: 'School & Anganwadi',
-      icon: 'account_balance',
-      color: '#5b6ee0',
-      fill: '#eff0fc',
-      diagram: {
-        shape: 'bottom',
-        innerRadius: 58,
-        outerRadius: 152,
-        labelX: 300,
-        labelY: 402,
-        labelLayout: 'stacked',
-        labelAnchor: 'middle',
-        iconOffsetY: -18,
-        textOffsetY: 20,
-        iconX: 277,
-        iconY: 366,
-        curvedLabelPath: 'M167.43,341.80 A139,139 0 0 0 432.57,341.80',
-        labelForAttr: 'school & anganwadi',
-        icon: {
-          type: 'material',
-          value: 'assets/icons/school.svg',
-          color: '#5b6ee0',
-          width: 50,
-          height: 34,
-        },
-        text: {
-          x: 300,
-          y: 402,
-          fill: '#1a1622',
-          fontSize: 23,
-          fontWeight: 600,
-        },
-      },
-      panelType: 'list',
-      imgPath: 'assets/icons/school-solid.svg',
-      heading: 'Schools and Anganwadi Improvement',
-      subheading:
-        'Measuring how learning environments, teaching practices, school leadership, and community participation',
-      body:
-        'Schools and anganwadi centres — where teaching happens and children spend most of their day. (placeholder definition)',
-      listItems: [
-        {
-          letter: 'L',
-          icon: 'workspace_premium',
-          title: 'Leadership',
-          description: 'Are school and Anganwadi leaders driving continuous improvements?',
-        },
-        {
-          letter: 'E',
-          icon: 'menu_book',
-          title: 'Enabling learning environment',
-          description:
-            'Do schools and Anganwadi centres provide a safe, inclusive, and well-resourced environment that enables children to learn?',
-        },
-        {
-          letter: 'E',
-          icon: 'co_present',
-          title: 'Effective teaching and learning practices',
-          description:
-            'Are teaching and learning practices engaging, inclusive, and responsive to the diverse learning needs of children?',
-        },
-      ],
-    },
-    {
-      key: 'community',
-      chipLabel: 'Community',
-      diagramLabel: 'Community',
-      icon: 'group',
-      color: '#e0338a',
-      fill: '#fcebf3',
-      diagram: {
-        shape: 'top',
-        innerRadius: 58,
-        outerRadius: 152,
-        labelX: 300,
-        labelY: 198,
-        labelLayout: 'stacked',
-        labelAnchor: 'middle',
-        iconOffsetY: -18,
-        textOffsetY: 22,
-        iconX: 277,
-        iconY: 188,
-        curvedLabelPath: 'M219.82,209.38 A121,121 0 0 1 380.18,209.38',
-        icon: {
-          type: 'material',
-          value: 'assets/icons/community.svg',
-          color: '#e0338a',
-          width: 50,
-          height: 34,
-        },
-        text: {
-          x: 300,
-          y: 198,
-          fill: '#1a1622',
-          fontSize: 23,
-          fontWeight: 600,
-        },
-      },
-      panelType: 'story',
-      imgPath: 'assets/icons/community-group.svg',
-      eyebrow: 'Community',
-      heading: 'Community',
-      subheading:
-        'Measures whether communities are actively supporting education through leadership, participation, and positive perceptions of public schools.',
-      body: 'Families and local networks that support and demand good education for their children. (placeholder definition)',
-      listItems: [
-        {
-          letter: 'P',
-          icon: 'groups',
-          title: 'Parents and community participation and perception',
-          description:
-            "Are parents and communities actively engaged in supporting schools and children's learning?",
-        },
-        {
-          letter: 'L',
-          icon: 'workspace_premium',
-          title: 'Leadership',
-          description:
-            'Are community leaders continuously identifying, implementing, and sustaining improvements in their contexts?',
-        },
-      ],
-    },
-    {
-      key: 'society',
-      chipLabel: 'Society',
-      diagramLabel: 'Society',
-      icon: 'diversity_3',
-      color: '#99459a',
-      fill: '#f2e7f2',
-      diagram: {
-        shape: 'top',
-        innerRadius: 152,
-        outerRadius: 216,
-        labelX: 300,
-        labelY: 118,
-        labelLayout: 'inline',
-        labelAnchor: 'start',
-        textOffsetX: 34,
-        textOffsetY: 4,
-        iconX: 235,
-        iconY: 100,
-        curvedLabelPath: 'M233.70,127.29 A185,185 0 0 1 366.30,127.29',
-        icon: {
-          type: 'material',
-          value: 'assets/icons/society.svg',
-          color: '#99459a',
-          width: 34,
-          height: 34,
-        },
-        text: {
-          x: 300,
-          y: 118,
-          fill: '#1a1622',
-          fontSize: 23,
-          fontWeight: 600,
-        },
-      },
-      panelType: 'story',
-      imgPath: '',
-      eyebrow: 'Society',
-      body: 'The broader social norms and structures that surround the community. (placeholder definition)',
-      frameworkNote: 'Framework being defined.',
-      cta: {
-        label: 'Explore Voices on the Ground',
-        link: '/voices-from-the-ground',
-      },
-      frameworkCta: {
-        label: 'Explore Voices from the Ground',
-        link: '/voices-from-the-ground',
-      },
-    },
-    {
-      key: 'system',
-      chipLabel: 'System Institutions',
-      diagramLabel: 'System Institutions',
-      icon: 'article',
-      color: '#562f91',
-      fill: '#e9e4f1',
-      diagram: {
-        shape: 'bottom',
-        innerRadius: 152,
-        outerRadius: 216,
-        labelX: 300,
-        labelY: 482,
-        labelLayout: 'inline',
-        labelAnchor: 'start',
-        textOffsetX: 34,
-        textOffsetY: 4,
-        iconX: 195,
-        iconY: 460,
-        curvedLabelPath: 'M138.95,423.58 A203,203 0 0 0 461.05,423.58',
-        labelForAttr: 'system institutions',
-        icon: {
-          type: 'material',
-          value: 'assets/icons/system-institutions.svg',
-          color: '#562f91',
-          width: 34,
-          height: 34,
-        },
-        text: {
-          x: 300,
-          y: 482,
-          fill: '#1a1622',
-          fontSize: 23,
-          fontWeight: 600,
-        },
-      },
-      panelType: 'list',
-      imgPath: '',
-      eyebrow: 'System Institutions',
-      subheading: 'Placeholder Header',
-      body: 'The governance, policy and institutions that enable and resource education. (placeholder definition)',
-      listItems: [
-        {
-          letter: 'B',
-          icon: 'account_balance_wallet',
-          title: 'Budget allocation and resource mobilization',
-          description:
-            'Are institutions effectively mobilising and utilising resources to strengthen education outcomes?',
-        },
-        {
-          letter: 'R',
-          icon: 'rate_review',
-          title: 'Review, monitoring and feedback',
-          description:
-            'Are institutions continuously reviewing progress, learning from evidence, and adapting their actions?',
-        },
-        {
-          letter: 'I',
-          icon: 'emoji_objects',
-          title: 'Innovation and new projects',
-          description:
-            'Are institutions fostering innovation by initiating, experimenting, and scaling what works?',
-        },
-        {
-          letter: 'C',
-          icon: 'hub',
-          title: 'Co-creation with diverse stakeholders',
-          description:
-            'Are institutions meaningfully collaborating with communities, schools, CSOs, and other stakeholders to design and implement improvement programmes?',
-        },
-      ],
-    },
-    {
-      key: 'network',
-      chipLabel: 'Network',
-      diagramLabel: 'Network',
-      icon: 'public',
-      color: '#961c00',
-      fill: '#f3e5df',
-      diagram: {
-        shape: 'full',
-        innerRadius: 216,
-        outerRadius: 304,
-        labelX: 300,
-        labelY: 58,
-        labelLayout: 'inline',
-        labelAnchor: 'start',
-        textOffsetX: 34,
-        textOffsetY: 4,
-        iconX: 215,
-        iconY: 45,
-        hitRadius: 344,
-        isHitTarget: true,
-        icon: {
-          type: 'material',
-          value: 'assets/icons/network.svg',
-          color: '#961c00',
-          width: 34,
-          height: 34,
-        },
-        text: {
-          x: 300,
-          y: 58,
-          fill: '#1a1622',
-          fontSize: 23,
-          fontWeight: 600,
-        },
-      },
-      imgPath: 'assets/icons/network-users.svg',
-      panelType: 'story',
-      eyebrow: 'Network',
-      heading: 'Network',
-      subheading: 'Network Placeholder',
-      body: 'The wider web of actors and movements connecting everything. (placeholder definition)',
-      frameworkNote: 'Framework being defined.',
-      cta: {
-        label: 'Explore Network Health',
-        link: '/network-health',
-      },
-      frameworkCta: {
-        label: 'Explore Network Health',
-        link: '/network-health',
-      },
-    },
-  ],
+  programChipLabel: '',
+  programColor: '',
+  layers: [],
+  frameworkHeading: '',
+  frameworkTitle: '',
+  frameworkLead: '',
+  evidenceHeading: '',
+  programChipFootnote: '',
+  defaultNarrativeBody: '',
+  defaultCtaLabel: '',
+  defaultPartnerImage: '',
+  defaultCardLabelPrefix: '',
+  ctaIcon: '',
+  ariaLabels: EMPTY_ARIA_LABELS,
 };
-*/
 
-export const SAMPLE_PROGRAM_OUTCOME_DATA: ProgramOutcomeData = {
-  layerKey: 'students',
-  infoLabel: 'Learner outcome program details',
-  cards: [
-    {
-      label: 'Enrollment',
-      description:
-        '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
-    },
-    {
-      label: 'Retention',
-      description:
-        '60% of schools will effectively implement PBL as pedagogy in their Maths, Science Classes.',
-    },
-    {
-      label: 'Learning',
-      description:
-        '10% of improvement will be shown from baseline to endline in academic achievement and 21st century skills.',
-    },
-    {
-      label: 'Enrollment',
-      description:
-        '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
-    },
-    {
-      label: 'Retention',
-      description:
-        '60% of schools will effectively implement PBL as pedagogy in their Maths, Science Classes.',
-    },
-    {
-      label: 'Learning',
-      description:
-        '10% of improvement will be shown from baseline to endline in academic achievement and 21st century skills.',
-    },
-    {
-      label: 'Enrollment',
-      description:
-        '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
-    },
-    {
-      label: 'Retention',
-      description:
-        '60% of schools will effectively implement PBL as pedagogy in their Maths, Science Classes.',
-    },
-    {
-      label: 'Learning',
-      description:
-        '10% of improvement will be shown from baseline to endline in academic achievement and 21st century skills.',
-    },
-  ],
-  evidences: [
-    {
-      title: 'Enrollment.pdf',
-      type: 'PDF',
-      size: '3.6MB',
-      tag: 'Enrollment',
-      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
-    },
-    {
-      title: 'Evaluation.pdf',
-      type: 'PDF',
-      size: '3.6MB',
-      tag: 'Retention',
-      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
-    },
-    {
-      title: 'Enrollment.pdf',
-      type: 'PDF',
-      size: '3.6MB',
-      tag: 'Enrollment',
-      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
-    },
-    {
-      title: 'Evaluation.pdf',
-      type: 'PDF',
-      size: '3.6MB',
-      tag: 'Retention',
-      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
-    },
-    {
-      title: 'Enrollment.pdf',
-      type: 'PDF',
-      size: '3.6MB',
-      tag: 'Enrollment',
-      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
-    },
-    {
-      title: 'Evaluation.pdf',
-      type: 'PDF',
-      size: '3.6MB',
-      tag: 'Retention',
-      url: 'https://docs.google.com/document/d/1yGlp_p4CaV902lRhznRk2ldtc25HYB4HMPtoBGDOSIc/edit?tab=t.0',
-    },
-  ],
-  layers: {
-    schools: {
-      infoLabel: 'Schools and Anganwadi program details',
-      cards: [
-        {
-          label: 'Leadership',
-          description:
-            '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
-        },
-      ],
-      evidences: [],
-    },
-    community: {
-      infoLabel: 'Community program details',
-      cards: [
-        {
-          label: 'Parents and community participation and perception',
-          description:
-            '75% of upper primary schools will participate in Project Based Learning lesson plans for Science & Math.',
-        },
-        {
-          label: 'Leadership',
-          description:
-            '60% of schools will effectively implement PBL as pedagogy in their Maths, Science Classes.',
-        },
-      ],
-      evidences: [],
-    },
-    network: {
-      infoLabel: 'Network program details',
-      cardVariant: 'partner',
-      cards: [
-        {
-          name: 'NEAID',
-          src: 'https://res.cloudinary.com/dfncm107l/image/upload/v1754371500/partners/neaid.png',
-          alt: 'NEAID',
-          website: 'https://neaid.org/',
-        },
-        {
-          name: 'Mantra',
-          src: 'https://drive.google.com/uc?export=view&id=1v1l17-Vx5eKFXnyWzIfrC_lm_Jf_bHkL',
-          alt: 'Mantra4Change',
-          website: 'https://www.mantra4change.org/',
-        },
-        {
-          name: 'INVOLVE',
-          src: 'https://res.cloudinary.com/dfncm107l/image/upload/v1754371479/partners/involve.jpg',
-          alt: 'Involve',
-          website: 'https://involveedu.com/',
-        },
-        {
-          name: 'EduWeave',
-          src: 'https://res.cloudinary.com/dfncm107l/image/upload/v1754371471/partners/eduweave.jpg',
-          alt: 'EduWeave',
-        },
-        {
-          name: 'Karunodaya',
-          src: 'https://res.cloudinary.com/dfncm107l/image/upload/v1754371487/partners/karunodaya.png',
-          alt: 'Karunodaya',
-        },
-      ],
-      evidences: [],
-    },
+export const EMPTY_LAYER: OutcomesLayerConfig = {
+  key: 'students',
+  chipLabel: '',
+  diagramLabel: '',
+  icon: '',
+  color: '',
+  fill: '',
+  diagram: {
+    shape: 'full',
+    innerRadius: 0,
+    outerRadius: 0,
+    labelX: 0,
+    labelY: 0,
+    iconX: 0,
+    iconY: 0,
+    icon: { type: 'image', value: '' },
   },
+  panelType: 'list',
+  imgPath: '',
 };
+
+export function isValidOutcomesModelConfig(data: any): data is OutcomesModelConfig {
+  return (
+    !!data &&
+    Array.isArray(data.layers) &&
+    data.layers.every(
+      (layer: any) =>
+        !!layer &&
+        typeof layer.key === 'string' &&
+        typeof layer.diagramLabel === 'string' &&
+        typeof layer.color === 'string' &&
+        typeof layer.fill === 'string' &&
+        !!layer.diagram
+    )
+  );
+}
+
+// Maps the API's `framework[].impact_layer` label to the diagram's layer key.
+const IMPACT_LAYER_KEY_MAP: Record<string, OutcomesLayerKey> = {
+  'Learners Outcomes': 'students',
+  'Schools & Anganwadi Centres': 'schools',
+  'Community': 'community',
+  'System Institutions': 'system',
+};
+
+const PROGRAM_OUTCOME_BASE_LAYER_KEY: OutcomesLayerKey = 'students';
+
+// Reshapes one impact_layer entry's outcome cards. The live API currently nests these
+// under `frameworks[].details[]` (label = framework_name); a flat `cards[]` (label/description
+// per card) is also supported in case the API moves to that shape.
+function extractOutcomeCards(impactLayer: any): ProgramOutcomeCard[] {
+  if (Array.isArray(impactLayer.cards)) {
+    return impactLayer.cards.map((card: any) => ({
+      label: card?.label,
+      description: card?.description,
+    }));
+  }
+
+  const outcomes: ProgramOutcomeCard[] = [];
+  for (const fw of impactLayer.frameworks || []) {
+    for (const detail of fw.details || []) {
+      if (detail?.description) {
+        outcomes.push({ label: fw.framework_name, description: detail.description });
+      }
+    }
+  }
+  return outcomes;
+}
+
+// Reshapes one impact_layer entry's evidence resources. The live API currently nests these
+// under `frameworks[].details[].evidence_link` (no file metadata, just a Drive link); a flat
+// `evidences[]` carrying evidence_name/evidence_size/evidence_type is also supported.
+function extractEvidences(impactLayer: any): ProgramEvidenceResource[] {
+  if (Array.isArray(impactLayer.evidences)) {
+    return impactLayer.evidences.map((evidence: any) => ({
+      evidence_name: evidence?.evidence_name,
+      evidence_size_bytes: evidence?.evidence_size_bytes,
+      evidence_size: evidence?.evidence_size,
+      evidence_mime_type: evidence?.evidence_mime_type,
+      evidence_type: evidence?.evidence_type,
+      tag: evidence?.tag,
+      url: evidence?.url,
+    }));
+  }
+
+  const evidences: ProgramEvidenceResource[] = [];
+  for (const fw of impactLayer.frameworks || []) {
+    for (const detail of fw.details || []) {
+      if (detail?.evidence_link) {
+        evidences.push({
+          evidence_name: fw.framework_name,
+          tag: fw.framework_name,
+          evidence_type: 'PDF',
+          url: detail.evidence_link,
+        });
+      }
+    }
+  }
+  return evidences;
+}
+
+// Reshapes the raw API `framework` array into ProgramOutcomeData: each entry is one impact
+// layer. Supports both the live API's nested `frameworks[].details[]` shape and a flatter
+// `cards[]`/`evidences[]` shape, in case the API moves to that later.
+export function buildProgramOutcomeDataFromFramework(framework: any[]): ProgramOutcomeData | undefined {
+  if (!Array.isArray(framework) || !framework.length) return undefined;
+
+  const layers: Partial<Record<OutcomesLayerKey, ProgramOutcomeData>> = {};
+  let baseLayerData: ProgramOutcomeData | undefined;
+
+  for (const impactLayer of framework) {
+    // Prefer the API's own layerKey; fall back to mapping the impact_layer label for older payloads.
+    const layerKey: OutcomesLayerKey | undefined =
+      impactLayer?.layerKey || IMPACT_LAYER_KEY_MAP[impactLayer?.impact_layer];
+    if (!layerKey) continue;
+
+    const outcomes = extractOutcomeCards(impactLayer);
+    const evidences = extractEvidences(impactLayer);
+
+    if (!outcomes.length && !evidences.length) continue;
+
+    const layerData: ProgramOutcomeData = { title: impactLayer.impact_layer, outcomes, evidences };
+
+    if (layerKey === PROGRAM_OUTCOME_BASE_LAYER_KEY) {
+      baseLayerData = layerData;
+    } else {
+      layers[layerKey] = layerData;
+    }
+  }
+
+  if (!baseLayerData && !Object.keys(layers).length) return undefined;
+
+  return {
+    layerKey: PROGRAM_OUTCOME_BASE_LAYER_KEY,
+    ...baseLayerData,
+    layers,
+  };
+}
+
+export interface OutcomesWebLine {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
+
+export interface OutcomesWebDot {
+  cx: number;
+  cy: number;
+  r: number;
+}
+
+// Coordinates for the decorative "network web" backdrop behind the outer diagram ring.
+// Pure static art data — kept here so the component template doesn't carry ~85 lines
+// of hardcoded <line>/<circle> markup.
+export const OUTCOMES_WEB_BACK_LINES: OutcomesWebLine[] = [
+  { x1: 192.6, y1: 109.8, x2: 150.1, y2: 131.5 },
+  { x1: 79.7, y1: 289.7, x2: 45.1, y2: 289.3 },
+  { x1: 444.9, y1: 501.7, x2: 437.4, y2: 550 },
+  { x1: 37.8, y1: 374, x2: 89.7, y2: 351.6 },
+  { x1: 477.6, y1: 547.5, x2: 437.4, y2: 550 },
+  { x1: 550.4, y1: 422.6, x2: 593.1, y2: 388.3 },
+  { x1: 79.7, y1: 289.7, x2: 89.7, y2: 351.6 },
+  { x1: 444.9, y1: 501.7, x2: 477.6, y2: 547.5 },
+  { x1: 550.4, y1: 422.6, x2: 486.8, y2: 419.7 },
+  { x1: 593.1, y1: 388.3, x2: 565.3, y2: 345.5 },
+  { x1: 325.2, y1: 80.8, x2: 378.2, y2: 63.4 },
+  { x1: 525.9, y1: 507, x2: 477.6, y2: 547.5 },
+  { x1: 419.9, y1: 71.4, x2: 378.2, y2: 63.4 },
+  { x1: 158.4, y1: 525.9, x2: 201.8, y2: 513.9 },
+  { x1: 378.2, y1: 63.4, x2: 365.2, y2: 95.7 },
+  { x1: 227, y1: 587.4, x2: 219.8, y2: 548.2 },
+  { x1: 325.2, y1: 80.8, x2: 365.2, y2: 95.7 },
+  { x1: 419.9, y1: 71.4, x2: 365.2, y2: 95.7 },
+  { x1: 489.3, y1: 111, x2: 452.7, y2: 146 },
+  { x1: 219.8, y1: 548.2, x2: 201.8, y2: 513.9 },
+  { x1: 121.6, y1: 500.6, x2: 158.4, y2: 525.9 },
+  { x1: 121.6, y1: 500.6, x2: 83.1, y2: 464.6 },
+];
+
+export const OUTCOMES_WEB_BACK_DOTS: OutcomesWebDot[] = [
+  { cx: 444.9, cy: 501.7, r: 2.0 },
+  { cx: 550.4, cy: 422.6, r: 2.0 },
+  { cx: 121.6, cy: 500.6, r: 2.0 },
+  { cx: 79.7, cy: 289.7, r: 2.0 },
+  { cx: 486.8, cy: 419.7, r: 2.0 },
+  { cx: 419.9, cy: 71.4, r: 2.0 },
+  { cx: 83.1, cy: 464.6, r: 2.0 },
+  { cx: 593.1, cy: 388.3, r: 2.0 },
+  { cx: 227, cy: 587.4, r: 2.0 },
+  { cx: 219.8, cy: 548.2, r: 2.0 },
+  { cx: 208.3, cy: 23.7, r: 2.0 },
+  { cx: 489.3, cy: 111, r: 2.0 },
+  { cx: 525.9, cy: 507, r: 2.0 },
+  { cx: 192.6, cy: 109.8, r: 2.0 },
+  { cx: 37.8, cy: 374, r: 2.0 },
+  { cx: 89.7, cy: 351.6, r: 2.0 },
+  { cx: 325.2, cy: 80.8, r: 2.0 },
+  { cx: 477.6, cy: 547.5, r: 2.0 },
+  { cx: 150.1, cy: 131.5, r: 2.0 },
+  { cx: 452.7, cy: 146, r: 2.0 },
+  { cx: 565.3, cy: 345.5, r: 2.0 },
+  { cx: 378.2, cy: 63.4, r: 2.0 },
+  { cx: 437.4, cy: 550, r: 2.0 },
+  { cx: 131.4, cy: 44.1, r: 2.0 },
+  { cx: 60.7, cy: 224.5, r: 2.0 },
+  { cx: 365.2, cy: 95.7, r: 2.0 },
+  { cx: 158.4, cy: 525.9, r: 2.0 },
+  { cx: 201.8, cy: 513.9, r: 2.0 },
+  { cx: 319.4, cy: 567, r: 2.0 },
+  { cx: 45.1, cy: 289.3, r: 2.0 },
+];
+
+export const OUTCOMES_WEB_FRONT_LINES: OutcomesWebLine[] = [
+  { x1: 84, y1: 300, x2: 148, y2: 300 },
+  { x1: 452, y1: 300, x2: 516, y2: 300 },
+  { x1: 150, y1: 132, x2: 234, y2: 89 },
+  { x1: 366, y1: 68, x2: 452, y2: 146 },
+  { x1: 452, y1: 146, x2: 516, y2: 300 },
+  { x1: 516, y1: 300, x2: 461, y2: 424 },
+  { x1: 461, y1: 424, x2: 366, y2: 532 },
+  { x1: 366, y1: 532, x2: 234, y2: 511 },
+  { x1: 234, y1: 511, x2: 139, y2: 424 },
+  { x1: 139, y1: 424, x2: 84, y2: 300 },
+  { x1: 150, y1: 132, x2: 84, y2: 300 },
+];
+
+export const OUTCOMES_WEB_FRONT_DOTS: OutcomesWebDot[] = [
+  { cx: 150, cy: 132, r: 3 },
+  { cx: 234, cy: 89, r: 2.4 },
+  { cx: 366, cy: 68, r: 2.4 },
+  { cx: 452, cy: 146, r: 3 },
+  { cx: 516, cy: 300, r: 3 },
+  { cx: 461, cy: 424, r: 2.4 },
+  { cx: 366, cy: 532, r: 2.4 },
+  { cx: 234, cy: 511, r: 2.4 },
+  { cx: 139, cy: 424, r: 2.4 },
+  { cx: 84, cy: 300, r: 3 },
+];
+
+export interface OutcomesGlowStop {
+  offset: string;
+  opacity: number;
+}
+
+export interface OutcomesMaskStop {
+  offset: string;
+  colorVar: string;
+}
+
+// Same stop shape for the neutral "rest" glow and the accent "active" glow — only the
+// color differs at render time (bound via cssVar in the template), so one interface covers both.
+export const OUTCOMES_REST_GLOW_STOPS: OutcomesGlowStop[] = [
+  { offset: '0%', opacity: 0.42 },
+  { offset: '50%', opacity: 0.28 },
+  { offset: '80%', opacity: 0.13 },
+  { offset: '100%', opacity: 0 },
+];
+
+export const OUTCOMES_ACTIVE_GLOW_STOPS: OutcomesGlowStop[] = [
+  { offset: '0%', opacity: 0.34 },
+  { offset: '52%', opacity: 0.24 },
+  { offset: '80%', opacity: 0.12 },
+  { offset: '100%', opacity: 0 },
+];
+
+// The outer-ring edge-fade mask: black (fully masked) -> white (fully visible) -> grey ramp back to black.
+export const OUTCOMES_MASK_GRADIENT_STOPS: OutcomesMaskStop[] = [
+  { offset: '0%', colorVar: '--oc-black' },
+  { offset: '55%', colorVar: '--oc-black' },
+  { offset: '61%', colorVar: '--oc-white' },
+  { offset: '70%', colorVar: '--oc-diagram-grey-light' },
+  { offset: '78%', colorVar: '--oc-diagram-grey-mid' },
+  { offset: '86%', colorVar: '--oc-diagram-grey-dark' },
+  { offset: '94%', colorVar: '--oc-black' },
+  { offset: '100%', colorVar: '--oc-black' },
+];

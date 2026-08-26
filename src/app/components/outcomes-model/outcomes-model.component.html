@@ -4,386 +4,13 @@
     <div class="sticky-stage">
       <div class="stage">
 
-        <svg
-          class="layer-diagram"
-          viewBox="-56 -56 712 712"
-          role="img"
-          [attr.aria-label]="config.ariaLabels.diagram"
-        >
-
-          <defs>
-
-            <radialGradient [attr.id]="gradientId('netRest')" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#A6A6A6" stop-opacity="0.42" />
-              <stop offset="50%" stop-color="#A6A6A6" stop-opacity="0.28" />
-              <stop offset="80%" stop-color="#A6A6A6" stop-opacity="0.13" />
-              <stop offset="100%" stop-color="#A6A6A6" stop-opacity="0" />
-            </radialGradient>
-
-            <radialGradient [attr.id]="gradientId('netActive')" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#961C00" stop-opacity="0.34" />
-              <stop offset="52%" stop-color="#961C00" stop-opacity="0.24" />
-              <stop offset="80%" stop-color="#961C00" stop-opacity="0.12" />
-              <stop offset="100%" stop-color="#961C00" stop-opacity="0" />
-            </radialGradient>
-
-            <radialGradient [attr.id]="gradientId('netMaskGrad')" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#000" />
-              <stop offset="55%" stop-color="#000" />
-              <stop offset="61%" stop-color="#FFFFFF" />
-              <stop offset="70%" stop-color="#CFCFCF" />
-              <stop offset="78%" stop-color="#949494" />
-              <stop offset="86%" stop-color="#525252" />
-              <stop offset="94%" stop-color="#000000" />
-              <stop offset="100%" stop-color="#000000" />
-            </radialGradient>
-
-            <mask [attr.id]="gradientId('netMask')">
-              <circle
-                cx="300"
-                cy="300"
-                r="348"
-                [attr.fill]="gradientUrl('netMaskGrad')"
-              />
-            </mask>
-
-            <filter
-              [attr.id]="gradientId('soft')"
-              x="-40%"
-              y="-40%"
-              width="180%"
-              height="180%"
-            >
-              <feGaussianBlur stdDeviation="8" />
-            </filter>
-
-          </defs>
-
-          <circle
-            id="outerGlow"
-            cx="300"
-            cy="300"
-            [attr.r]="outerLayer.diagram.outerRadius"
-            [attr.fill]="
-              isDiagramLayerDisabled(outerLayer.key)
-                ? gradientUrl('netRest')
-                : (
-                    isReferenceLayerActive(outerLayer.key) ||
-                    isLayerHovered(outerLayer.key)
-                      ? gradientUrl('netActive')
-                      : gradientUrl('netRest')
-                  )
-            "
-            [style.opacity]="
-              isDiagramLayerDisabled(outerLayer.key) ? 0.35 : 1
-            "
-            [attr.filter]="gradientUrl('soft')"
-          >
-          </circle>
-
-          <g
-            id="outerWeb"
-            [attr.mask]="gradientUrl('netMask')"
-            pointer-events="none"
-            [style.opacity]="
-              isDiagramLayerDisabled(outerLayer.key) ? 0.35 : 1
-            "
-          >
-
-            <g
-              id="webBack"
-              [attr.stroke]="
-                isDiagramLayerDisabled(outerLayer.key)
-                  ? '#CFCFCF'
-                  : (
-                      isReferenceLayerActive(outerLayer.key) ||
-                      isLayerHovered(outerLayer.key)
-                        ? '#FFFFFF'
-                        : '#DEDEDE'
-                    )
-              "
-              [attr.fill]="
-                isDiagramLayerDisabled(outerLayer.key)
-                  ? '#CFCFCF'
-                  : (
-                      isReferenceLayerActive(outerLayer.key) ||
-                      isLayerHovered(outerLayer.key)
-                        ? '#FFFFFF'
-                        : '#DEDEDE'
-                    )
-              "
-              stroke-width="0.45"
-            >
-
-              <line x1="192.6" y1="109.8" x2="150.1" y2="131.5"></line>
-              <line x1="79.7" y1="289.7" x2="45.1" y2="289.3"></line>
-              <line x1="444.9" y1="501.7" x2="437.4" y2="550"></line>
-              <line x1="37.8" y1="374" x2="89.7" y2="351.6"></line>
-              <line x1="477.6" y1="547.5" x2="437.4" y2="550"></line>
-              <line x1="550.4" y1="422.6" x2="593.1" y2="388.3"></line>
-              <line x1="79.7" y1="289.7" x2="89.7" y2="351.6"></line>
-              <line x1="444.9" y1="501.7" x2="477.6" y2="547.5"></line>
-              <line x1="550.4" y1="422.6" x2="486.8" y2="419.7"></line>
-              <line x1="593.1" y1="388.3" x2="565.3" y2="345.5"></line>
-              <line x1="325.2" y1="80.8" x2="378.2" y2="63.4"></line>
-              <line x1="525.9" y1="507" x2="477.6" y2="547.5"></line>
-              <line x1="419.9" y1="71.4" x2="378.2" y2="63.4"></line>
-              <line x1="158.4" y1="525.9" x2="201.8" y2="513.9"></line>
-              <line x1="378.2" y1="63.4" x2="365.2" y2="95.7"></line>
-              <line x1="227" y1="587.4" x2="219.8" y2="548.2"></line>
-              <line x1="325.2" y1="80.8" x2="365.2" y2="95.7"></line>
-              <line x1="419.9" y1="71.4" x2="365.2" y2="95.7"></line>
-              <line x1="489.3" y1="111" x2="452.7" y2="146"></line>
-              <line x1="219.8" y1="548.2" x2="201.8" y2="513.9"></line>
-              <line x1="121.6" y1="500.6" x2="158.4" y2="525.9"></line>
-              <line x1="121.6" y1="500.6" x2="83.1" y2="464.6"></line>
-
-              <circle cx="444.9" cy="501.7" r="2.0" stroke="none"></circle>
-              <circle cx="550.4" cy="422.6" r="2.0" stroke="none"></circle>
-              <circle cx="121.6" cy="500.6" r="2.0" stroke="none"></circle>
-              <circle cx="79.7" cy="289.7" r="2.0" stroke="none"></circle>
-              <circle cx="486.8" cy="419.7" r="2.0" stroke="none"></circle>
-              <circle cx="419.9" cy="71.4" r="2.0" stroke="none"></circle>
-              <circle cx="83.1" cy="464.6" r="2.0" stroke="none"></circle>
-              <circle cx="593.1" cy="388.3" r="2.0" stroke="none"></circle>
-              <circle cx="227" cy="587.4" r="2.0" stroke="none"></circle>
-              <circle cx="219.8" cy="548.2" r="2.0" stroke="none"></circle>
-              <circle cx="208.3" cy="23.7" r="2.0" stroke="none"></circle>
-              <circle cx="489.3" cy="111" r="2.0" stroke="none"></circle>
-              <circle cx="525.9" cy="507" r="2.0" stroke="none"></circle>
-              <circle cx="192.6" cy="109.8" r="2.0" stroke="none"></circle>
-              <circle cx="37.8" cy="374" r="2.0" stroke="none"></circle>
-              <circle cx="89.7" cy="351.6" r="2.0" stroke="none"></circle>
-              <circle cx="325.2" cy="80.8" r="2.0" stroke="none"></circle>
-              <circle cx="477.6" cy="547.5" r="2.0" stroke="none"></circle>
-              <circle cx="150.1" cy="131.5" r="2.0" stroke="none"></circle>
-              <circle cx="452.7" cy="146" r="2.0" stroke="none"></circle>
-              <circle cx="565.3" cy="345.5" r="2.0" stroke="none"></circle>
-              <circle cx="378.2" cy="63.4" r="2.0" stroke="none"></circle>
-              <circle cx="437.4" cy="550" r="2.0" stroke="none"></circle>
-              <circle cx="131.4" cy="44.1" r="2.0" stroke="none"></circle>
-              <circle cx="60.7" cy="224.5" r="2.0" stroke="none"></circle>
-              <circle cx="365.2" cy="95.7" r="2.0" stroke="none"></circle>
-              <circle cx="158.4" cy="525.9" r="2.0" stroke="none"></circle>
-              <circle cx="201.8" cy="513.9" r="2.0" stroke="none"></circle>
-              <circle cx="319.4" cy="567" r="2.0" stroke="none"></circle>
-              <circle cx="45.1" cy="289.3" r="2.0" stroke="none"></circle>
-
-            </g>
-
-            <g
-              id="webFront"
-              [attr.stroke]="
-                isDiagramLayerDisabled(outerLayer.key)
-                  ? '#C4C4C4'
-                  : (
-                      isReferenceLayerActive(outerLayer.key) ||
-                      isLayerHovered(outerLayer.key)
-                        ? '#FFFFFF'
-                        : '#C4C4C4'
-                    )
-              "
-              [attr.fill]="
-                isDiagramLayerDisabled(outerLayer.key)
-                  ? '#C4C4C4'
-                  : (
-                      isReferenceLayerActive(outerLayer.key) ||
-                      isLayerHovered(outerLayer.key)
-                        ? '#FFFFFF'
-                        : '#C4C4C4'
-                    )
-              "
-              stroke-width="0.55"
-            >
-
-              <line x1="84" y1="300" x2="148" y2="300"></line>
-              <line x1="452" y1="300" x2="516" y2="300"></line>
-              <line x1="150" y1="132" x2="234" y2="89"></line>
-              <line x1="366" y1="68" x2="452" y2="146"></line>
-              <line x1="452" y1="146" x2="516" y2="300"></line>
-              <line x1="516" y1="300" x2="461" y2="424"></line>
-              <line x1="461" y1="424" x2="366" y2="532"></line>
-              <line x1="366" y1="532" x2="234" y2="511"></line>
-              <line x1="234" y1="511" x2="139" y2="424"></line>
-              <line x1="139" y1="424" x2="84" y2="300"></line>
-              <line x1="150" y1="132" x2="84" y2="300"></line>
-
-              <circle cx="150" cy="132" r="3"></circle>
-              <circle cx="234" cy="89" r="2.4"></circle>
-              <circle cx="366" cy="68" r="2.4"></circle>
-              <circle cx="452" cy="146" r="3"></circle>
-              <circle cx="516" cy="300" r="3"></circle>
-              <circle cx="461" cy="424" r="2.4"></circle>
-              <circle cx="366" cy="532" r="2.4"></circle>
-              <circle cx="234" cy="511" r="2.4"></circle>
-              <circle cx="139" cy="424" r="2.4"></circle>
-              <circle cx="84" cy="300" r="3"></circle>
-
-            </g>
-
-          </g>
-
-          <ng-container *ngFor="let layer of reversedLayers; trackBy: trackByLayerKey">
-
-            <circle
-              *ngIf="layer.diagram.shape === 'full'"
-              class="seg reference-seg"
-              [style.stroke-width]="getReferenceLayerStrokeWidth(layer.key) + 'px'"
-              [class.disabled]="isDiagramLayerDisabled(layer.key)"
-              [attr.data-layer]="getLayerDataAttr(layer)"
-              cx="300"
-              cy="300"
-              [attr.r]="layer.diagram.isHitTarget ? layer.diagram.hitRadius : layer.diagram.outerRadius"
-              [attr.fill]="layer.diagram.isHitTarget ? 'transparent' : getReferenceLayerFill(layer.key)"
-              [attr.stroke]="layer.diagram.isHitTarget ? 'none' : getReferenceLayerStroke(layer.key)"
-              role="button"
-              [attr.tabindex]="isDiagramLayerDisabled(layer.key) ? -1 : 0"
-              [attr.aria-disabled]="isDiagramLayerDisabled(layer.key) ? 'true' : null"
-              pointer-events="auto"
-              [attr.aria-label]="getLayerAriaLabel(layer.key)"
-              (click)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
-              (keydown.enter)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
-              (keydown.space)="onLayerKeydownSpace($event, layer.key)"
-              (mouseenter)="!isDiagramLayerDisabled(layer.key) && setHoveredLayer(layer.key)"
-              (mouseleave)="clearHoveredLayer()"
-            >
-            </circle>
-
-            <path
-              *ngIf="layer.diagram.shape !== 'full'"
-              class="seg reference-seg"
-              [style.stroke-width]="getReferenceLayerStrokeWidth(layer.key) + 'px'"
-              [class.disabled]="isDiagramLayerDisabled(layer.key)"
-              [attr.data-layer]="getLayerDataAttr(layer)"
-              [attr.d]="getLayerPath(layer)"
-              [attr.fill]="getReferenceLayerFill(layer.key)"
-              [attr.stroke]="getReferenceLayerStroke(layer.key)"
-              [attr.pointer-events]="'auto'"
-              [attr.tabindex]="isDiagramLayerDisabled(layer.key) ? -1 : 0"
-              [attr.aria-disabled]="isDiagramLayerDisabled(layer.key) ? 'true' : null"
-              role="button"
-              [attr.aria-label]="getLayerAriaLabel(layer.key)"
-              (click)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
-              (keydown.enter)="!isDiagramLayerDisabled(layer.key) && selectReferenceLayer(layer.key)"
-              (keydown.space)="onLayerKeydownSpace($event, layer.key)"
-              (mouseenter)="!isDiagramLayerDisabled(layer.key) && setHoveredLayer(layer.key)"
-              (mouseleave)="clearHoveredLayer()"
-            >
-            </path>
-
-          </ng-container>
-
-          <ng-container *ngFor="let layer of reversedLayers; trackBy: trackByLayerKey">
-            <g
-              *ngIf="layer.key !== innerLayer.key"
-              class="iconwrap"
-              [class.on]="
-                !isDiagramLayerDisabled(layer.key) &&
-                (hasProgramOutcomeData || isReferenceLayerActive(layer.key) || isLayerHovered(layer.key))
-              "
-              [class.disabled]="isDiagramLayerDisabled(layer.key)"
-              [attr.data-icon]="layer.key"
-            >
-              <image
-                [attr.href]="layer.diagram.icon.value"
-                [attr.x]="layer.diagram.iconX"
-                [attr.y]="layer.diagram.iconY"
-                [attr.width]="layer.diagram.icon.width"
-                [attr.height]="layer.diagram.icon.height"
-                preserveAspectRatio="xMidYMid meet"
-                pointer-events="none"
-              />
-            </g>
-          </ng-container>
-
-          <g
-            class="iconwrap inner-layer-icon"
-            [class.on]="
-              !isDiagramLayerDisabled(innerLayer.key) &&
-              (hasProgramOutcomeData || isReferenceLayerActive(innerLayer.key) || isLayerHovered(innerLayer.key))
-            "
-            [class.disabled]="isDiagramLayerDisabled(innerLayer.key)"
-            [attr.data-icon]="innerLayer.key"
-          >
-
-            <image
-              [attr.href]="innerLayer.diagram.icon.value"
-              [attr.x]="innerLayer.diagram.iconX"
-              [attr.y]="innerLayer.diagram.iconY"
-              [attr.width]="innerLayer.diagram.icon.width"
-              [attr.height]="innerLayer.diagram.icon.height"
-              preserveAspectRatio="xMidYMid meet"
-              pointer-events="none"
-            />
-
-            <text
-              [attr.x]="getDiagramText(innerLayer.key)?.x"
-              [attr.y]="getDiagramText(innerLayer.key)?.y"
-              [attr.fill]="getDiagramLabelColor(innerLayer.key)"
-              [attr.font-size]="getDiagramText(innerLayer.key)?.fontSize"
-              [attr.font-weight]="getDiagramText(innerLayer.key)?.fontWeight"
-              text-anchor="middle"
-              dominant-baseline="middle"
-              pointer-events="none"
-            >
-              {{ getLayerDiagramLabel(innerLayer.key) }}
-            </text>
-
-          </g>
-
-          <ng-container *ngFor="let layer of layers; trackBy: trackByLayerKey">
-            <ng-container *ngIf="shouldShowDiagramText(layer)">
-
-              <ng-container *ngIf="layer.diagram.curvedLabelPath; else straightLabel">
-
-                <path
-                  [attr.id]="labelArcId(layer.key)"
-                  fill="none"
-                  [attr.d]="layer.diagram.curvedLabelPath"
-                ></path>
-
-                <text
-                  class="rlabel"
-                  [attr.data-lab-for]="getLayerLabelForAttr(layer)"
-                  [attr.fill]="getDiagramLabelColor(layer.key)"
-                  [attr.font-size]="getDiagramText(layer.key)?.fontSize"
-                  [attr.font-weight]="getDiagramText(layer.key)?.fontWeight"
-                >
-                  <textPath
-                    [attr.href]="'#' + labelArcId(layer.key)"
-                    startOffset="50%"
-                    text-anchor="middle"
-                  >
-                    {{ getLayerDiagramLabel(layer.key) }}
-                  </textPath>
-                </text>
-
-              </ng-container>
-
-              <ng-template #straightLabel>
-                <text
-                  class="rlabel"
-                  [attr.data-lab-for]="getLayerLabelForAttr(layer)"
-                  [attr.x]="getDiagramText(layer.key)?.x"
-                  [attr.y]="getDiagramText(layer.key)?.y"
-                  [attr.fill]="getDiagramLabelColor(layer.key)"
-                  [attr.font-size]="getDiagramText(layer.key)?.fontSize"
-                  [attr.font-weight]="getDiagramText(layer.key)?.fontWeight"
-                  text-anchor="middle"
-                  dominant-baseline="middle"
-                >
-                  {{ getLayerDiagramLabel(layer.key) }}
-                </text>
-              </ng-template>
-
-            </ng-container>
-          </ng-container>
-
-        </svg>
-
-        <p class="diagram-note">
-          {{ config.staticTexts?.diagramNotePrefix || '*' }} {{ config.layerFootnote }}
-        </p>
+        <app-outcomes-diagram
+          [config]="config"
+          [selectedLayerKey]="selectedLayerKey"
+          [hasProgramOutcomeData]="hasProgramOutcomeData"
+          [disabledLayerKeys]="disabledLayerKeys"
+          (layerSelect)="selectLayer($event)"
+        ></app-outcomes-diagram>
 
       </div>
     </div>
@@ -395,6 +22,7 @@
       <section
         class="program-mode-panel"
         [style.--active-color]="selectedLayer.color"
+        [style.--active-text-color]="activeTextColor"
       >
 
         <div class="program-mode-heading">
@@ -416,7 +44,7 @@
             class="info-button"
             [style.--info-color]="selectedLayer.color"
             [attr.aria-label]="'Show ' + programPanelTitle + ' explanation'"
-            (click)="openInfoModal()"
+            (click)="isInfoModalOpen = true"
           >
             <span
               class="info-button-icon"
@@ -426,306 +54,25 @@
 
         </div>
 
-        <div
-          class="program-card-carousel"
-          *ngIf="programCards.length"
-        >
+        <app-outcomes-program-card-carousel
+          [cards]="programCards"
+          [cardVariant]="programCardVariant"
+          [defaultCardLabelPrefix]="config.defaultCardLabelPrefix"
+          [defaultPartnerImage]="config.defaultPartnerImage"
+          [defaultCtaLabel]="config.defaultCtaLabel"
+          [prevLabel]="config.ariaLabels.prevCards"
+          [nextLabel]="config.ariaLabels.nextCards"
+          [cardPagesLabel]="config.ariaLabels.cardPages"
+        ></app-outcomes-program-card-carousel>
 
-          <button
-            type="button"
-            class="program-card-nav program-card-nav-prev"
-            [attr.aria-label]="config.ariaLabels.prevCards"
-            *ngIf="
-              canShowProgramCardControls &&
-              canGoToPreviousProgramCards
-            "
-            (click)="showPreviousProgramCards()"
-          >
-            <img
-              src="assets/icons/arrow-left.svg"
-              alt=""
-              aria-hidden="true"
-            />
-          </button>
-
-
-          <div class="program-card-content">
-
-            <div
-              class="program-mode-cards"
-              [style.grid-template-columns]="
-                programCardVariant === 'partner'
-                  ? 'repeat(3, 9.625rem)'
-                  : null
-              "
-              [style.gap]="
-                programCardVariant === 'partner'
-                  ? '2.25rem'
-                  : null
-              "
-            >
-
-              <article
-                class="program-mode-card"
-                *ngFor="
-                  let card of visibleProgramCards;
-                  let cardIndex = index;
-                  trackBy: trackByIndex
-                "
-                [style.background]="
-                  programCardVariant === 'partner'
-                    ? '#fff'
-                    : null
-                "
-                [style.border]="
-                  programCardVariant === 'partner'
-                    ? '0'
-                    : null
-                "
-                [style.border-radius]="
-                  programCardVariant === 'partner'
-                    ? '0.5rem'
-                    : null
-                "
-                [style.box-shadow]="
-                  programCardVariant === 'partner'
-                    ? '0 0.125rem 0.75rem rgba(0,0,0,.16)'
-                    : null
-                "
-                [style.min-height]="
-                  programCardVariant === 'partner'
-                    ? '12.625rem'
-                    : null
-                "
-                [style.padding]="
-                  programCardVariant === 'partner'
-                    ? '1.125rem 0.875rem 0.875rem'
-                    : null
-                "
-              >
-
-                <ng-container
-                  *ngIf="
-                    programCardVariant === 'partner';
-                    else outcomeProgramCard
-                  "
-                >
-
-                  <img
-                    [src]="getProgramCardImage(card)"
-                    [alt]="
-                      card.alt ||
-                      getProgramCardLabel(card, cardIndex)
-                    "
-                    class="program-partner-card-image"
-                  />
-
-                  <h4 
-                  class="program-partner-card-title">
-                    {{ getProgramCardLabel(card, cardIndex) }}
-                  </h4>
-
-                  <a
-                    *ngIf="getProgramCardLink(card)"
-                    [href]="getProgramCardLink(card)"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="program-partner-card-link"
-                  >
-                    {{ card.ctaLabel || config.defaultCtaLabel }} →
-                  </a>
-
-                </ng-container>
-
-
-                <ng-template #outcomeProgramCard>
-
-                  <span
-                    class="program-mode-tag"
-                    [class.has-tooltip]="isLabelTruncated(getProgramCardLabel(card, cardIndex))"
-                    (mouseenter)="
-                      isLabelTruncated(getProgramCardLabel(card, cardIndex)) &&
-                      showTooltip($event, getProgramCardLabel(card, cardIndex))
-                    "
-                    (mouseleave)="hideTooltip()"
-                    (click)="
-                      isLabelTruncated(getProgramCardLabel(card, cardIndex)) &&
-                      toggleTooltipMobile($event, getProgramCardLabel(card, cardIndex))
-                    "
-                  >
-                    {{ truncateLabel(getProgramCardLabel(card, cardIndex)) }}
-                  </span>
-
-                  <p>
-                    {{ getProgramCardDescription(card) }}
-                  </p>
-
-                </ng-template>
-
-              </article>
-
-            </div>
-
-
-            <div
-              class="program-card-indicators"
-              *ngIf="canShowProgramCardControls"
-              [attr.aria-label]="config.ariaLabels.cardPages"
-            >
-
-              <button
-                *ngFor="
-                  let page of programCardPages;
-                  let pageIndex = index
-                "
-                type="button"
-                class="program-card-indicator"
-                [class.active]="
-                  pageIndex === cardPageIndex
-                "
-                [attr.aria-label]="
-                  'Go to page ' + (pageIndex + 1)
-                "
-                (click)="goToProgramCardPage(pageIndex)"
-              >
-              </button>
-
-            </div>
-
-          </div>
-
-
-          <button
-            type="button"
-            class="program-card-nav program-card-nav-next"
-            [attr.aria-label]="config.ariaLabels.nextCards"
-            *ngIf="
-              canShowProgramCardControls &&
-              canGoToNextProgramCards
-            "
-            (click)="showNextProgramCards()"
-          >
-            <img
-              src="assets/icons/arrow-right.svg"
-              alt=""
-              aria-hidden="true"
-            />
-          </button>
-
-        </div>
-
-        <section
-          class="program-mode-evidence"
-          *ngIf="programEvidenceResources.length"
-        >
-
-          <h4>
-            {{ config.evidenceHeading }}
-            ({{ programEvidenceResources.length }})
-          </h4>
-
-
-          <div class="evidence-carousel">
-
-            <button
-              type="button"
-              class="evidence-nav evidence-nav-prev"
-              [attr.aria-label]="config.ariaLabels.prevEvidence"
-              *ngIf="
-                canShowEvidenceControls &&
-                canGoToPreviousEvidence
-              "
-              (click)="showPreviousEvidence()"
-            >
-              <img
-                src="assets/icons/arrow-left.svg"
-                alt=""
-                aria-hidden="true"
-              />
-            </button>
-
-
-            <div class="evidence-content">
-
-              <div class="evidence-grid">
-
-                <a
-                  class="evidence-card"
-                  *ngFor="let evidence of visibleEvidenceResources; trackBy: trackByIndex"
-                  [href]="getSafeEvidenceUrl(evidence)"
-                  [attr.target]="getSafeEvidenceUrl(evidence) ? '_blank' : null"
-                  [attr.rel]="getSafeEvidenceUrl(evidence) ? 'noopener noreferrer' : null"
-                >
-                  <img
-                    src="assets/icons/pdf.svg"
-                    alt=""
-                    aria-hidden="true"
-                    class="pdf-icon"
-                  />
-
-                  <span class="evidence-name">
-                    {{ evidence.title }}
-                  </span>
-
-                  <span class="evidence-meta-row">
-                    <span class="evidence-meta">
-                      <span>{{ evidence.type }}</span>
-                      <span>{{ evidence.size }}</span>
-                    </span>
-
-                    <img
-                      src="assets/icons/mdi_eye.svg"
-                      alt=""
-                      aria-hidden="true"
-                      class="evidence-view-icon"
-                    />
-                  </span>
-
-                  <span class="evidence-tag">
-                    {{ evidence.tag }}
-                  </span>
-                </a>
-              </div>
-
-
-              <div
-                class="evidence-scrollbar"
-                *ngIf="canShowEvidenceControls"
-                aria-hidden="true"
-              >
-
-                <div
-                  class="evidence-scrollbar-progress"
-                  [style.width.%]="evidenceThumbWidthPercent"
-                  [style.left.%]="evidenceThumbLeftPercent"
-                >
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <button
-              type="button"
-              class="evidence-nav evidence-nav-next"
-              [attr.aria-label]="config.ariaLabels.nextEvidence"
-              *ngIf="
-                canShowEvidenceControls &&
-                canGoToNextEvidence
-              "
-              (click)="showNextEvidence()"
-            >
-              <img
-                src="assets/icons/arrow-right.svg"
-                alt=""
-                aria-hidden="true"
-              />
-            </button>
-
-          </div>
-
-        </section>
+        <app-outcomes-evidence-carousel
+          [evidences]="programEvidenceResources"
+          [heading]="config.evidenceHeading"
+          [prevLabel]="config.ariaLabels.prevEvidence"
+          [nextLabel]="config.ariaLabels.nextEvidence"
+          [viewLabel]="config.ariaLabels.viewEvidence"
+          [evidenceNameFallbackSuffix]="config.staticTexts?.evidenceNameFallbackSuffix"
+        ></app-outcomes-evidence-carousel>
 
         <div
           class="program-layer-tiles"
@@ -754,7 +101,7 @@
             "
             (click)="selectLayer(layer.key)"
           >
-            {{ layer.chipLabel }}
+            {{ getLayerTileLabel(layer) }}
           </button>
 
         </div>
@@ -773,11 +120,26 @@
       <div
         class="rail-sections"
         [style.--active-color]="activePanelColor"
+        [style.--active-text-color]="activeTextColor"
       >
+
+        <ng-template #pillButton let-layer="layer" let-active="active">
+          <button
+            type="button"
+            class="pill"
+            [class.active]="active"
+            [style.--pill-color]="layer.color"
+            (click)="selectLayer(layer.key)"
+            [attr.data-key]="layer.key"
+          >
+            {{ layer.chipLabel }}
+          </button>
+        </ng-template>
 
         <section
           class="rail rail-narrative"
           [style.--active-color]="selectedLayer.color"
+          [style.--active-text-color]="activeTextColor"
         >
 
           <p class="eyebrow">
@@ -799,46 +161,19 @@
           >
 
             <div class="pillrow">
-
-              <button
-                *ngFor="
-                  let layer of layers.slice(0, 3);
-                  trackBy: trackByLayerKey
-                "
-                type="button"
-                class="pill"
-                [class.active]="
-                  selectedLayerKey === layer.key
-                "
-                [style.--pill-color]="layer.color"
-                (click)="selectLayer(layer.key)"
-                [attr.data-key]="layer.key"
-              >
-                {{ layer.chipLabel }}
-              </button>
-
+              <ng-container *ngFor="let layer of primaryLayers; trackBy: trackByLayerKey">
+                <ng-container
+                  *ngTemplateOutlet="pillButton; context: { layer: layer, active: selectedLayerKey === layer.key }"
+                ></ng-container>
+              </ng-container>
             </div>
 
-
             <div class="pillrow">
-
-              <button
-                *ngFor="
-                  let layer of layers.slice(3);
-                  trackBy: trackByLayerKey
-                "
-                type="button"
-                class="pill"
-                [class.active]="
-                  selectedLayerKey === layer.key
-                "
-                [style.--pill-color]="layer.color"
-                (click)="selectLayer(layer.key)"
-                [attr.data-key]="layer.key"
-              >
-                {{ layer.chipLabel }}
-              </button>
-
+              <ng-container *ngFor="let layer of secondaryLayers; trackBy: trackByLayerKey">
+                <ng-container
+                  *ngTemplateOutlet="pillButton; context: { layer: layer, active: selectedLayerKey === layer.key }"
+                ></ng-container>
+              </ng-container>
             </div>
 
           </div>
@@ -874,6 +209,7 @@
         <section
           class="rail rail-framework"
           [style.--active-color]="activePanelColor"
+          [style.--active-text-color]="activeTextColor"
         >
 
           <p class="eyebrow">
@@ -908,23 +244,14 @@
               </button>
 
 
-              <button
-                *ngFor="
-                  let layer of layers;
-                  trackBy: trackByLayerKey
-                "
-                type="button"
-                class="pill"
-                [class.active]="
-                  selectedPanel === 'layer' &&
-                  selectedLayerKey === layer.key
-                "
-                [style.--pill-color]="layer.color"
-                (click)="selectLayer(layer.key)"
-                [attr.data-key]="layer.key"
-              >
-                {{ layer.chipLabel }}
-              </button>
+              <ng-container *ngFor="let layer of layers; trackBy: trackByLayerKey">
+                <ng-container
+                  *ngTemplateOutlet="
+                    pillButton;
+                    context: { layer: layer, active: selectedPanel === 'layer' && selectedLayerKey === layer.key }
+                  "
+                ></ng-container>
+              </ng-container>
 
             </div>
 
@@ -972,7 +299,7 @@
                     selectedProgramData?.infoLabel ||
                     'Show outcome information'
                   "
-                  (click)="openInfoModal()"
+                  (click)="isInfoModalOpen = true"
                 >
 
                   <span
@@ -1007,31 +334,21 @@
                     trackBy: trackByIndex
                   "
                 >
+                  <ng-container *ngIf="getProgramCardLabel(card, cardIndex) as cardLabel">
 
-                  <span class="framework-key">
-                    {{
-                      getProgramCardLabel(
-                        card,
-                        cardIndex
-                      ).slice(0, 1)
-                    }}
-                  </span>
+                    <span class="framework-key">
+                      {{ cardLabel.slice(0, 1) }}
+                    </span>
 
-                  <span class="framework-term">
-                    {{
-                      getProgramCardLabel(
-                        card,
-                        cardIndex
-                      )
-                    }}
-                  </span>
+                    <span class="framework-term">
+                      {{ cardLabel }}
+                    </span>
 
-                  <span class="framework-question">
-                    {{
-                      getProgramCardDescription(card)
-                    }}
-                  </span>
+                    <span class="framework-question">
+                      {{ getProgramCardDescription(card) }}
+                    </span>
 
+                  </ng-container>
                 </li>
 
               </ul>
@@ -1068,18 +385,19 @@
                   >
 
                     <span
-                      class="material-icons pdf-icon"
+                      class="evidence-file-icon"
                       aria-hidden="true"
+                      [style.background]="getEvidenceFileBackground(evidence)"
                     >
-                      picture_as_pdf
+                      <img [src]="getEvidenceFileIcon(evidence)" alt="" />
                     </span>
 
-                    <span class="evidence-name">
-                      {{ evidence.title }}
+                    <span class="evidence-name" [title]="getEvidenceDisplayName(evidence)">
+                      {{ getEvidenceDisplayName(evidence) }}
                     </span>
 
-                    <span class="evidence-meta">
-                      {{ evidence.type }} · {{ evidence.size }}
+                    <span class="evidence-meta" *ngIf="evidence.evidence_type || evidence.evidence_size">
+                      {{ evidence.evidence_type }}<ng-container *ngIf="evidence.evidence_type && evidence.evidence_size"> · </ng-container>{{ evidence.evidence_size }}
                     </span>
 
                     <span class="evidence-tag">
@@ -1238,119 +556,15 @@
 
   </div>
 
-  <div
-    class="info-modal-backdrop"
+  <app-outcomes-info-modal
     *ngIf="isInfoModalOpen"
-    role="presentation"
-    (click)="closeInfoModal()"
-  >
-
-    <section
-      #infoModal
-      class="info-modal"
-      role="dialog"
-      aria-modal="true"
-      [attr.aria-labelledby]="'outcomes-info-title'"
-      (click)="$event.stopPropagation()"
-    >
-
-      <button
-        #infoModalCloseButton
-        type="button"
-        class="info-modal-close"
-        [attr.aria-label]="config.ariaLabels.closeModal"
-        (click)="closeInfoModal()"
-      >
-
-        <span
-          class="material-icons"
-          aria-hidden="true"
-        >
-          close
-        </span>
-
-      </button>
-
-
-      <div
-        class="info-modal-heading"
-        [style.color]="infoModalLayer.color"
-      >
-
-        <span
-          class="material-icons info-modal-heading-icon"
-          aria-hidden="true"
-        >
-          {{ infoModalLayer.icon }}
-        </span>
-
-        <div>
-
-          <h3
-            id="outcomes-info-title"
-            [style.color]="infoModalLayer.color"
-          >
-            {{ infoModalTitle }}
-          </h3>
-
-          <p>
-            {{ infoModalDescription }}
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <div
-        class="info-modal-content"
-        *ngIf="infoModalLayer.listItems?.length"
-        [style.border-left-color]="infoModalLayer.color"
-      >
-
-        <article
-          class="info-modal-row"
-          *ngFor="
-            let item of infoModalLayer.listItems || [];
-            trackBy: trackByIndex
-          "
-          [style.border-color]="infoModalLayer.color"
-        >
-
-          <span
-            class="info-modal-letter"
-            [style.background]="infoModalLayer.color"
-          >
-            {{ item.letter }}
-          </span>
-
-          <h4
-            [style.color]="infoModalLayer.color"
-          >
-            {{ item.title }}
-          </h4>
-
-          <p
-            [style.border-left-color]="infoModalLayer.color"
-          >
-            {{ item.description }}
-          </p>
-
-        </article>
-
-      </div>
-
-    </section>
-
-  </div>
+    [title]="infoModalTitle"
+    [description]="infoModalDescription"
+    [icon]="infoModalLayer.icon"
+    [color]="infoModalLayer.color"
+    [listItems]="infoModalLayer.listItems || []"
+    [closeLabel]="config.ariaLabels.closeModal"
+    (closed)="isInfoModalOpen = false"
+  ></app-outcomes-info-modal>
 
 </section>
-
-<div
-  class="global-tooltip"
-  *ngIf="tooltipVisible"
-  [style.top.px]="tooltipTop"
-  [style.left.px]="tooltipLeft"
->
-  {{ tooltipText }}
-</div>

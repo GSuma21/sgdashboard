@@ -1,0 +1,155 @@
+<div
+  class="program-card-carousel"
+  *ngIf="cards.length"
+>
+
+  <button
+    type="button"
+    class="program-card-nav program-card-nav-prev"
+    [attr.aria-label]="prevLabel"
+    *ngIf="
+      canShowControls &&
+      canGoToPrevious
+    "
+    (click)="showPrevious()"
+  >
+    <img
+      src="assets/icons/arrow-left.svg"
+      alt=""
+      aria-hidden="true"
+    />
+  </button>
+
+
+  <div class="program-card-content">
+
+    <div
+      class="program-mode-cards"
+      [class.partner-grid]="isPartnerVariant"
+    >
+
+      <article
+        class="program-mode-card"
+        *ngFor="
+          let card of visibleCards;
+          let cardIndex = index;
+          trackBy: trackByIndex
+        "
+        [class.partner-card]="isPartnerVariant"
+      >
+
+        <ng-container
+          *ngIf="getCardLabel(card, cardIndex) as cardLabel"
+        >
+
+        <ng-container
+          *ngIf="
+            isPartnerVariant;
+            else outcomeProgramCard
+          "
+        >
+
+          <img
+            [src]="getCardImage(card)"
+            [alt]="card.alt || cardLabel"
+            class="program-partner-card-image"
+          />
+
+          <h4
+          class="program-partner-card-title">
+            {{ cardLabel }}
+          </h4>
+
+          <a
+            *ngIf="getCardLink(card)"
+            [href]="getCardLink(card)"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="program-partner-card-link"
+          >
+            {{ card.ctaLabel || defaultCtaLabel }} →
+          </a>
+
+        </ng-container>
+
+
+        <ng-template #outcomeProgramCard>
+
+          <span
+            class="program-mode-tag"
+            [class.has-tooltip]="isLabelTruncated(cardLabel)"
+            (mouseenter)="isLabelTruncated(cardLabel) && showTooltip($event, cardLabel)"
+            (mouseleave)="hideTooltip()"
+            (click)="isLabelTruncated(cardLabel) && toggleTooltipMobile($event, cardLabel)"
+          >
+            {{ cardLabel }}
+          </span>
+
+          <p>
+            {{ getCardDescription(card) }}
+          </p>
+
+        </ng-template>
+
+        </ng-container>
+
+      </article>
+
+    </div>
+
+
+    <div
+      class="program-card-indicators"
+      *ngIf="canShowControls"
+      [attr.aria-label]="cardPagesLabel"
+    >
+
+      <button
+        *ngFor="
+          let page of pages;
+          let idx = index
+        "
+        type="button"
+        class="program-card-indicator"
+        [class.active]="
+          idx === pageIndex
+        "
+        [attr.aria-label]="
+          'Go to page ' + (idx + 1)
+        "
+        (click)="goToPage(idx)"
+      >
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <button
+    type="button"
+    class="program-card-nav program-card-nav-next"
+    [attr.aria-label]="nextLabel"
+    *ngIf="
+      canShowControls &&
+      canGoToNext
+    "
+    (click)="showNext()"
+  >
+    <img
+      src="assets/icons/arrow-right.svg"
+      alt=""
+      aria-hidden="true"
+    />
+  </button>
+
+</div>
+
+<div
+  class="global-tooltip"
+  *ngIf="tooltipVisible"
+  [style.top.px]="tooltipTop"
+  [style.left.px]="tooltipLeft"
+>
+  {{ tooltipText }}
+</div>

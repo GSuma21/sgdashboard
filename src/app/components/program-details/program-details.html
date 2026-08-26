@@ -127,10 +127,9 @@
                 
             </div>
             }
-            <div class="outcomes-full-width">
+            <div class="outcomes-full-width" *ngIf="hasOutcomesData">
   <app-outcomes-model
-    [showProgramPanel]="!!programData1"
-    [programOutcomeData]="programData1">
+    [framework]="programData?.framework">
   </app-outcomes-model>
 </div>
 

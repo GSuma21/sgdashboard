@@ -1,12 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import * as d3 from 'd3';
 import { environment } from '../../../../environments/environment';
 import { OUTCOMES_MODEL_CONFIG_PAGE } from '../../../constants/urlConstants';
+import { OutcomesDiagramComponent } from '../outcomes-diagram/outcomes-diagram.component';
+import { OutcomesEvidenceCarouselComponent } from '../outcomes-evidence-carousel/outcomes-evidence-carousel.component';
+import { OutcomesInfoModalComponent } from '../outcomes-info-modal/outcomes-info-modal.component';
+import { OutcomesProgramCardCarouselComponent } from '../outcomes-program-card-carousel/outcomes-program-card-carousel.component';
 import {
-  OutcomesAriaLabels,
-  OutcomesDiagramIcon,
+  buildProgramOutcomeDataFromFramework,
+  EMPTY_LAYER,
+  EMPTY_OUTCOMES_MODEL_CONFIG,
+  getEvidenceDisplayName,
+  getEvidenceFileBackground,
+  getEvidenceFileIcon,
+  isValidOutcomesModelConfig,
   OutcomesLayerConfig,
   OutcomesLayerKey,
   OutcomesModelConfig,
@@ -15,139 +24,60 @@ import {
   ProgramOutcomeData,
 } from './outcomes-model.config';
 
-const EMPTY_ARIA_LABELS: OutcomesAriaLabels = {
-  diagram: '',
-  learner: '',
-  school: '',
-  community: '',
-  society: '',
-  system: '',
-  network: '',
-  layerTiles: '',
-  narrativeFilters: '',
-  frameworkFilters: '',
-  cardPages: '',
-  prevCards: '',
-  nextCards: '',
-  prevEvidence: '',
-  nextEvidence: '',
-  viewEvidence: '',
-  closeModal: '',
-};
-
-// Placeholder shown only for the brief window before the API config resolves (or if it fails).
-const EMPTY_OUTCOMES_MODEL_CONFIG: OutcomesModelConfig = {
-  layerHeading: '',
-  title: '',
-  description: '',
-  layerFootnote: '',
-  chipFootnote: '',
-  defaultLayer: 'students',
-  programChipLabel: '',
-  programColor: '',
-  layers: [],
-  frameworkHeading: '',
-  frameworkTitle: '',
-  frameworkLead: '',
-  evidenceHeading: '',
-  programChipFootnote: '',
-  defaultNarrativeBody: '',
-  defaultCtaLabel: '',
-  defaultPartnerImage: '',
-  defaultCardLabelPrefix: '',
-  ctaIcon: '',
-  ariaLabels: EMPTY_ARIA_LABELS,
-};
-
-function isValidOutcomesModelConfig(data: any): data is OutcomesModelConfig {
-  return (
-    !!data &&
-    Array.isArray(data.layers) &&
-    data.layers.every(
-      (layer: any) =>
-        !!layer &&
-        typeof layer.key === 'string' &&
-        typeof layer.diagramLabel === 'string' &&
-        typeof layer.color === 'string' &&
-        typeof layer.fill === 'string' &&
-        !!layer.diagram
-    )
-  );
-}
-
-const EMPTY_LAYER: OutcomesLayerConfig = {
-  key: 'students',
-  chipLabel: '',
-  diagramLabel: '',
-  icon: '',
-  color: '',
-  fill: '',
-  diagram: {
-    shape: 'full',
-    innerRadius: 0,
-    outerRadius: 0,
-    labelX: 0,
-    labelY: 0,
-    iconX: 0,
-    iconY: 0,
-    icon: { type: 'image', value: '' },
-  },
-  panelType: 'list',
-  imgPath: '',
-};
-
 @Component({
   selector: 'app-outcomes-model',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    OutcomesDiagramComponent,
+    OutcomesInfoModalComponent,
+    OutcomesEvidenceCarouselComponent,
+    OutcomesProgramCardCarouselComponent,
+  ],
   templateUrl: './outcomes-model.component.html',
   styleUrls: ['./outcomes-model.component.css'],
 })
 export class OutcomesModelComponent implements OnChanges, OnInit {
   @Input() config: OutcomesModelConfig = EMPTY_OUTCOMES_MODEL_CONFIG;
   @Input() programOutcomeData?: ProgramOutcomeData;
+  /** Raw `framework` array from the program-details API response; reshaped internally into `programOutcomeData`. */
+  @Input() framework?: any[];
   @Input() activeLayer?: OutcomesLayerKey;
-  @Input() showProgramPanel = false;
 
-  @ViewChild('infoModal') private infoModalRef?: ElementRef<HTMLElement>;
-  @ViewChild('infoModalCloseButton') private infoModalCloseButtonRef?: ElementRef<HTMLButtonElement>;
-
-  private static nextInstanceId = 0;
-  readonly instanceId = `outcomes-model-${OutcomesModelComponent.nextInstanceId++}`;
+  @ViewChild(OutcomesEvidenceCarouselComponent) private evidenceCarousel?: OutcomesEvidenceCarouselComponent;
+  @ViewChild(OutcomesProgramCardCarouselComponent) private programCardCarousel?: OutcomesProgramCardCarouselComponent;
 
   selectedLayerKey: OutcomesLayerKey = this.config.defaultLayer;
-  hoveredLayerKey: OutcomesLayerKey | null = null;
   selectedPanel: 'programs' | 'layer' = 'layer';
   isInfoModalOpen = false;
-  cardPageIndex = 0;
-  private readonly MOBILE_BREAKPOINT = 768;
-  private readonly diagramCenter = 300;
   private hasExplicitLayerSelection = false;
-  private previouslyFocusedElement: HTMLElement | null = null;
-  evidencesPerPage = this.evidenceCardsPerPage;
-  evidencePageIndex = 0;
-  tooltipText: string | null = null;
-  tooltipTop = 0;
-  tooltipLeft = 0;
-  tooltipVisible = false;
-  private readonly cssVarCache = new Map<string, string>();
 
   ngOnInit(): void {
-    d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${OUTCOMES_MODEL_CONFIG_PAGE}`)
-      .then((data: any) => {
-        if (isValidOutcomesModelConfig(data)) {
-          this.config = data;
-          this.ngOnChanges();
-        } else {
-          console.error('Invalid outcomes model config payload received.');
-        }
-      })
-      .catch((error: any) => {
-        console.error('Error loading outcomes model config:', error);
-      });
+    // Diagram styling/text always comes from OUTCOMES_MODEL_CONFIG_PAGE. Only fetch it if this
+    // instance doesn't already have layer data (e.g. landing on program-details directly, with
+    // no [config] passed in) — avoids re-fetching if a parent ever supplies [config] itself.
+    if (!this.config?.layers?.length) {
+      d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${OUTCOMES_MODEL_CONFIG_PAGE}`)
+        .then((data: any) => {
+          if (isValidOutcomesModelConfig(data)) {
+            this.config = data;
+            this.ngOnChanges();
+          } else {
+            console.error('Invalid outcomes model config payload received.');
+          }
+        })
+        .catch((error: any) => {
+          console.error('Error loading outcomes model config:', error);
+        });
+    }
   }
 
   ngOnChanges(): void {
+    if (this.framework) {
+      this.programOutcomeData = buildProgramOutcomeDataFromFramework(this.framework) ?? this.programOutcomeData;
+    }
+
     if (this.activeLayer || this.programOutcomeData?.layerKey) {
       this.hasExplicitLayerSelection = true;
     }
@@ -164,51 +94,18 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
       this.selectedLayerKey = this.firstAvailableProgramLayerKey;
     }
 
-    this.selectedPanel =
-      this.showProgramPanel && this.hasProgramOutcomeData
-        ? 'programs'
-        : this.selectedPanel;
+    this.selectedPanel = this.hasProgramOutcomeData ? 'programs' : this.selectedPanel;
 
-    this.cardPageIndex = 0;
-    this.evidencePageIndex = 0;
-  }
-
-  ngOnDestroy(): void {
-    document.body.style.overflow = '';
-  }
-
-  @HostListener('window:resize')
-  onWindowResize(): void {
-    const newEvidencePerPage = this.isMobileViewport() ? 1 : 2;
-
-    if (this.evidencesPerPage !== newEvidencePerPage) {
-      this.evidencesPerPage = newEvidencePerPage;
-
-      if (this.evidencePageIndex >= this.evidencePageCount) {
-        this.evidencePageIndex = Math.max(0, this.evidencePageCount - 1);
-      }
-    }
-
-    if (this.cardPageIndex >= this.programCardPageCount) {
-      this.cardPageIndex = Math.max(0, this.programCardPageCount - 1);
-    }
+    this.programCardCarousel?.reset();
+    this.evidenceCarousel?.reset();
   }
 
   get layers(): OutcomesLayerConfig[] {
     return this.config.layers;
   }
 
-  get reversedLayers(): OutcomesLayerConfig[] {
-    return [...this.layers].reverse();
-  }
-
-  get outerLayer(): OutcomesLayerConfig {
-    const sortedByRadius = [...this.layers].sort(
-      (a, b) => b.diagram.outerRadius - a.diagram.outerRadius
-    );
-    return sortedByRadius[0] || this.layers[0] || EMPTY_LAYER;
-  }
-
+  // The diagram (which draws its own outer ring) derives its own outerLayer; only
+  // innerLayer is still needed here, for the info modal when there's no program data.
   get innerLayer(): OutcomesLayerConfig {
     const sortedByInnerRadius = [...this.layers].sort(
       (a, b) => a.diagram.innerRadius - b.diagram.innerRadius
@@ -217,7 +114,7 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   }
 
   get selectedLayer(): OutcomesLayerConfig {
-    return this.layers.find((layer) => layer.key === this.selectedLayerKey) || this.layers[0] || EMPTY_LAYER;
+    return this.getLayerByKey(this.selectedLayerKey) || this.layers[0] || EMPTY_LAYER;
   }
 
   get displayProgramData(): ProgramOutcomeData | undefined {
@@ -242,6 +139,14 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
     return this.shouldShowProgramPanel ? this.config.programColor : this.selectedLayer.color;
   }
 
+  // Mirrors .program-layer-tile's active-state contrast rule (see outcomes-model.component.css):
+  // the base "students"/programColor accent is a light orange that needs dark text, every
+  // other layer color is dark enough for white text.
+  get activeTextColor(): string {
+    const isOrangeAccent = this.shouldShowProgramPanel || this.selectedLayerKey === 'students';
+    return isOrangeAccent ? 'var(--oc-black)' : 'var(--oc-white)';
+  }
+
   get hasProgramOutcomeData(): boolean {
     return !!this.programOutcomeData;
   }
@@ -258,15 +163,17 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
     return this.hasProgramOutcomeData ? this.selectedLayer : this.innerLayer;
   }
 
+  private get staticTexts(): NonNullable<OutcomesModelConfig['staticTexts']> {
+    return this.config.staticTexts || {};
+  }
+
   get infoModalTitle(): string {
-    const staticTexts = this.config.staticTexts || {};
-    const prefix = staticTexts.infoModalTitlePrefix || 'About';
+    const prefix = this.staticTexts.infoModalTitlePrefix || 'About';
     return this.infoModalLayer.heading || this.infoModalLayer.eyebrow || this.infoModalLayer.chipLabel || `${prefix} ${this.infoModalLayer.chipLabel}`;
   }
 
   get infoModalDescription(): string {
-    const staticTexts = this.config.staticTexts || {};
-    const prefix = staticTexts.infoModalDescriptionPrefix || 'Information about';
+    const prefix = this.staticTexts.infoModalDescriptionPrefix || 'Information about';
     return this.hasProgramOutcomeData ? this.narrativeBody : this.infoModalLayer.subheading || this.narrativeBody || `${prefix} ${this.infoModalLayer.chipLabel}`;
   }
 
@@ -295,25 +202,19 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   }
 
   get programPanelDescription(): string {
-    const staticTexts = this.config.staticTexts || {};
-    return this.narrativeBody || staticTexts.programModeDescription || 'View program outcomes and evidence';
+    return this.narrativeBody || this.staticTexts.programModeDescription || 'View program outcomes and evidence';
   }
 
   get programCards(): ProgramOutcomeCard[] {
     return (
-      this.selectedProgramData?.cards ||
-      this.programOutcomeData?.cardsByLayer?.[this.selectedLayerKey] ||
+      this.selectedProgramData?.outcomes ||
+      this.programOutcomeData?.outcomesByLayer?.[this.selectedLayerKey] ||
       []
     );
   }
 
   get programPanelIcon(): string {
     return this.selectedLayer.imgPath;
-  }
-
-  get visibleProgramCards(): ProgramOutcomeCard[] {
-    const startIndex = this.cardPageIndex * this.programCardsPerPage;
-    return this.programCards.slice(startIndex, startIndex + this.programCardsPerPage);
   }
 
   get programEvidenceResources(): ProgramEvidenceResource[] {
@@ -324,63 +225,26 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
     );
   }
 
-  get programCardPageCount(): number {
-    return Math.max(1, Math.ceil(this.programCards.length / this.programCardsPerPage));
-  }
-
-  get canShowProgramCardControls(): boolean {
-    return this.programCards.length > this.programCardsPerPage;
-  }
-
-  get canGoToPreviousProgramCards(): boolean {
-    return this.cardPageIndex > 0;
-  }
-
-  get canGoToNextProgramCards(): boolean {
-    return this.cardPageIndex < this.programCardPageCount - 1;
-  }
-
   get programCardVariant(): 'outcome' | 'partner' {
     return this.selectedProgramData?.cardVariant || 'outcome';
   }
 
-  get dividerSegments(): Array<{ x1: number; x2: number }> {
-    const splitRingKeys = new Set(
-      this.layers
-        .filter((layer) => layer.diagram.shape !== 'full')
-        .map((layer) => `${layer.diagram.innerRadius}-${layer.diagram.outerRadius}`)
+  // Narrative pills render in two rows of up to 3; kept as named slices so the
+  // split isn't a bare magic number repeated in the template.
+  get primaryLayers(): OutcomesLayerConfig[] {
+    return this.layers.slice(0, 3);
+  }
+
+  get secondaryLayers(): OutcomesLayerConfig[] {
+    return this.layers.slice(3);
+  }
+
+  // Every layer's disabled state, precomputed once for the diagram child component
+  // (it has no access to programOutcomeData, so it can't derive this itself).
+  get disabledLayerKeys(): Set<OutcomesLayerKey> {
+    return new Set(
+      this.layers.filter((layer) => this.isDiagramLayerDisabled(layer.key)).map((layer) => layer.key)
     );
-
-    return Array.from(splitRingKeys).flatMap((key) => {
-      const [innerRadius, outerRadius] = key.split('-').map(Number);
-      const hasTop = this.layers.some(
-        (layer) =>
-          layer.diagram.shape === 'top' &&
-          layer.diagram.innerRadius === innerRadius &&
-          layer.diagram.outerRadius === outerRadius
-      );
-      const hasBottom = this.layers.some(
-        (layer) =>
-          layer.diagram.shape === 'bottom' &&
-          layer.diagram.innerRadius === innerRadius &&
-          layer.diagram.outerRadius === outerRadius
-      );
-
-      if (!hasTop || !hasBottom) {
-        return [];
-      }
-
-      return [
-        {
-          x1: this.diagramCenter - outerRadius,
-          x2: this.diagramCenter - innerRadius,
-        },
-        {
-          x1: this.diagramCenter + innerRadius,
-          x2: this.diagramCenter + outerRadius,
-        },
-      ];
-    });
   }
 
   selectLayer(layerKey: OutcomesLayerKey): void {
@@ -392,34 +256,20 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
     this.hasExplicitLayerSelection = true;
     this.selectedPanel = 'layer';
 
-    this.cardPageIndex = 0;
-    this.evidencePageIndex = 0;
-  }
-
-  onLayerKeydownSpace(event: Event, layerKey: OutcomesLayerKey): void {
-    event.preventDefault();
-
-    if (!this.isDiagramLayerDisabled(layerKey)) {
-      this.selectReferenceLayer(layerKey);
-    }
+    this.programCardCarousel?.reset();
+    this.evidenceCarousel?.reset();
   }
 
   selectProgramPanel(): void {
     if (!this.hasProgramOutcomeData) return;
 
     this.selectedPanel = 'programs';
-    this.cardPageIndex = 0;
-    this.evidencePageIndex = 0;
+    this.programCardCarousel?.reset();
+    this.evidenceCarousel?.reset();
   }
 
-  showPreviousProgramCards(): void {
-    this.cardPageIndex = Math.max(0, this.cardPageIndex - 1);
-  }
-
-  showNextProgramCards(): void {
-    this.cardPageIndex = Math.min(this.programCardPageCount - 1, this.cardPageIndex + 1);
-  }
-
+  // `index` is the card's absolute position in the (unpaginated) list — the caller
+  // owns pagination, if any, and is responsible for passing the right index.
   getProgramCardLabel(card: ProgramOutcomeCard, index: number): string {
     return (
       card.label ||
@@ -427,20 +277,12 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
       card.name ||
       card.heading ||
       card.partner ||
-      `${this.config.defaultCardLabelPrefix}${this.cardPageIndex * this.programCardsPerPage + index + 1}`
+      `${this.config.defaultCardLabelPrefix}${index + 1}`
     );
   }
 
   getProgramCardDescription(card: ProgramOutcomeCard): string {
     return card.description || card.body || card.text || card.value || card.about_the_program_objective || '';
-  }
-
-  getProgramCardImage(card: ProgramOutcomeCard): string {
-    return card.src || card.logo || card.image || this.config.defaultPartnerImage;
-  }
-
-  getProgramCardLink(card: ProgramOutcomeCard): string | undefined {
-    return card.website || card.url;
   }
 
   isProgramLayerAvailable(layerKey: OutcomesLayerKey): boolean {
@@ -449,58 +291,12 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
     const layerData = this.getProgramLayerData(layerKey);
     const hasLayerData = this.hasProgramContent(layerData);
     const hasGroupedData = !!(
-      this.programOutcomeData.cardsByLayer?.[layerKey]?.length ||
+      this.programOutcomeData.outcomesByLayer?.[layerKey]?.length ||
       this.programOutcomeData.evidencesByLayer?.[layerKey]?.length
     );
     const hasBaseData = layerKey === this.programBaseLayerKey && this.hasProgramContent(this.programOutcomeData);
 
     return hasLayerData || hasGroupedData || hasBaseData;
-  }
-
-  openInfoModal(): void {
-    this.previouslyFocusedElement = document.activeElement as HTMLElement | null;
-    this.isInfoModalOpen = true;
-    this.updateBodyScrollLock();
-
-    setTimeout(() => this.infoModalCloseButtonRef?.nativeElement.focus());
-  }
-
-  closeInfoModal(): void {
-    this.isInfoModalOpen = false;
-    this.updateBodyScrollLock();
-
-    this.previouslyFocusedElement?.focus();
-    this.previouslyFocusedElement = null;
-  }
-
-  @HostListener('document:keydown.escape')
-  onEscapeKeydown(): void {
-    if (this.isInfoModalOpen) {
-      this.closeInfoModal();
-    }
-  }
-
-  @HostListener('document:keydown.tab', ['$event'])
-  onTabKeydown(event: Event): void {
-    if (!this.isInfoModalOpen || !this.infoModalRef) return;
-
-    const keyboardEvent = event as KeyboardEvent;
-    const focusable = this.infoModalRef.nativeElement.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
-    );
-
-    if (!focusable.length) return;
-
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-
-    if (keyboardEvent.shiftKey && document.activeElement === first) {
-      keyboardEvent.preventDefault();
-      last.focus();
-    } else if (!keyboardEvent.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
   }
 
   trackByLayerKey(_: number, layer: OutcomesLayerConfig): string {
@@ -523,347 +319,21 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   }
 
   private hasProgramContent(data?: ProgramOutcomeData): boolean {
-    return !!(data?.title || data?.subtitle || data?.cards?.length || data?.evidences?.length);
+    return !!(data?.title || data?.subtitle || data?.outcomes?.length || data?.evidences?.length);
   }
 
-  getLayerPath(layer: OutcomesLayerConfig): string {
-    const { innerRadius, outerRadius } = layer.diagram;
-    const [startAngle, endAngle] = this.getAngles(layer.diagram.shape);
+  // The program's own layer title (e.g. "Learners Outcomes" from `framework[].impact_layer`),
+  // used to override the static config label when program data is loaded.
+  private getProgramLayerTitle(layerKey: OutcomesLayerKey): string | undefined {
+    if (!this.hasProgramOutcomeData) return undefined;
 
-    return layer.diagram.shape === 'full'
-      ? this.annularCirclePath(innerRadius, outerRadius)
-      : this.annularSectorPath(innerRadius, outerRadius, startAngle, endAngle);
+    return layerKey === this.programBaseLayerKey
+      ? this.programOutcomeData?.title
+      : this.getProgramLayerData(layerKey)?.title;
   }
 
-  getLayerLabelTransform(layer: OutcomesLayerConfig): string {
-    return `translate(${layer.diagram.labelX} ${layer.diagram.labelY})`;
-  }
-
-  getLabelTextX(layer: OutcomesLayerConfig): number {
-    return layer.diagram.textOffsetX ?? 0;
-  }
-
-  getLabelTextY(layer: OutcomesLayerConfig): number {
-    return layer.diagram.textOffsetY ?? 0;
-  }
-
-  shouldShowDiagramText(layer: OutcomesLayerConfig): boolean {
-    return (layer.diagram.labelLayout || 'inline') !== 'icon-only';
-  }
-
-  isLayerActive(layerKey: OutcomesLayerKey): boolean {
-    return this.selectedLayerKey === layerKey;
-  }
-
-  isReferenceLayerActive(layerKey: OutcomesLayerKey | string): boolean {
-    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
-    if (!foundLayer) return false;
-    return this.selectedLayerKey === foundLayer.key;
-  }
-
-  selectReferenceLayer(layerKey: OutcomesLayerKey | string): void {
-    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
-    if (!foundLayer) return;
-
-    const key = foundLayer.key;
-
-    if (this.isDiagramLayerDisabled(key)) {
-      return;
-    }
-
-    this.selectLayer(key);
-  }
-
-  getReferenceLayerStrokeWidth(layerKey: OutcomesLayerKey | string): number {
-    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
-    if (!foundLayer) return 1;
-
-    const key = foundLayer.key;
-
-    if (this.isDiagramLayerDisabled(key)) {
-      return 1;
-    }
-
-    if (!this.hasProgramOutcomeData) {
-      return 1.3;
-    }
-
-    return this.isReferenceLayerActive(key) ? 2 : 1;
-  }
-
-  getReferenceLayerFill(layerKey: OutcomesLayerKey | string): string {
-    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
-    if (!foundLayer) return this.cssVar('--oc-fill-light');
-
-    const key = foundLayer.key;
-
-    if (this.isDiagramLayerDisabled(key)) {
-      return this.cssVar('--oc-white');
-    }
-
-    if (this.isReferenceLayerActive(key) || this.isLayerHovered(key)) {
-      return foundLayer?.fill || this.cssVar('--oc-fill-light');
-    }
-
-    return this.cssVar('--oc-fill-light');
-  }
-
-  getReferenceLayerStroke(layerKey: OutcomesLayerKey | string): string {
-    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
-    if (!foundLayer) return this.cssVar('--oc-stroke-light');
-
-    const key = foundLayer.key;
-
-    if (this.isDiagramLayerDisabled(key)) {
-      return this.cssVar('--oc-disabled-border');
-    }
-
-    if (this.hasProgramOutcomeData) {
-      return foundLayer?.color || this.cssVar('--oc-stroke-light');
-    }
-
-    if (this.isReferenceLayerActive(key) || this.isLayerHovered(key)) {
-      return foundLayer?.color || this.cssVar('--oc-stroke-light');
-    }
-
-    return this.cssVar('--oc-stroke-light');
-  }
-
-  getReferenceLabelColor(layerKey: OutcomesLayerKey | string): string {
-    const foundLayer = this.layers.find((layer) => layer.key === layerKey);
-    if (!foundLayer) return this.cssVar('--oc-neutral-grey');
-
-    const key = foundLayer.key;
-
-    if (this.isDiagramLayerDisabled(key)) {
-      return this.cssVar('--oc-disabled-border-light');
-    }
-
-    if (this.hasProgramOutcomeData) {
-      return foundLayer?.color || this.cssVar('--oc-neutral-grey');
-    }
-
-    if (this.isReferenceLayerActive(key) || this.isLayerHovered(key)) {
-      return foundLayer?.color || this.cssVar('--oc-neutral-grey');
-    }
-
-    return this.cssVar('--oc-neutral-grey');
-  }
-
-  getLayerColor(layerKey: OutcomesLayerKey): string {
-    return this.layers.find((layer) => layer.key === layerKey)?.color || this.cssVar('--oc-neutral-grey');
-  }
-
-  getCurvedLabelColor(layerKey: OutcomesLayerKey): string {
-    return this.isLayerActive(layerKey) ? this.getLayerColor(layerKey) : this.cssVar('--oc-neutral-grey');
-  }
-
-  getLayerDiagramLabel(layerKey: OutcomesLayerKey): string {
-    return this.layers.find((layer) => layer.key === layerKey)?.diagramLabel?.toLowerCase() || '';
-  }
-
-  gradientId(name: string): string {
-    return `${this.instanceId}-${name}`;
-  }
-
-  gradientUrl(name: string): string {
-    return `url(#${this.instanceId}-${name})`;
-  }
-
-  labelArcId(layerKey: OutcomesLayerKey | string): string {
-    return `${this.instanceId}-lab-arc-${layerKey}`;
-  }
-
-  getLayerDataAttr(layer: OutcomesLayerConfig): string {
-    return layer.diagram.dataLayerAttr || layer.key;
-  }
-
-  getLayerLabelForAttr(layer: OutcomesLayerConfig): string {
-    return layer.diagram.labelForAttr || layer.key;
-  }
-
-  getLayerAriaLabel(layerKey: OutcomesLayerKey): string {
-    const layer = this.layers.find((l) => l.key === layerKey);
-    if (!layer) return '';
-
-    const ariaKey = layerKey as keyof OutcomesAriaLabels;
-    return this.config.ariaLabels[ariaKey] || layer.chipLabel || layer.key;
-  }
-
-  getLayerIcon(layerKey: OutcomesLayerKey): OutcomesDiagramIcon {
-    const layer = this.layers.find((l) => l.key === layerKey);
-    if (!layer) return { type: 'image', value: '' };
-    return layer.diagram.icon;
-  }
-
-  private getAngles(shape: 'full' | 'top' | 'bottom'): [number, number] {
-    return shape === 'bottom' ? [0, 180] : [180, 360];
-  }
-
-  private annularCirclePath(innerRadius: number, outerRadius: number): string {
-    if (innerRadius <= 0) {
-      const outerTop = this.polarToCartesian(outerRadius, 270);
-      const outerBottom = this.polarToCartesian(outerRadius, 90);
-
-      return [
-        `M ${outerTop.x} ${outerTop.y}`,
-        `A ${outerRadius} ${outerRadius} 0 1 1 ${outerBottom.x} ${outerBottom.y}`,
-        `A ${outerRadius} ${outerRadius} 0 1 1 ${outerTop.x} ${outerTop.y}`,
-        'Z',
-      ].join(' ');
-    }
-
-    const outerTop = this.polarToCartesian(outerRadius, 270);
-    const outerBottom = this.polarToCartesian(outerRadius, 90);
-    const innerTop = this.polarToCartesian(innerRadius, 270);
-    const innerBottom = this.polarToCartesian(innerRadius, 90);
-
-    return [
-      `M ${outerTop.x} ${outerTop.y}`,
-      `A ${outerRadius} ${outerRadius} 0 1 1 ${outerBottom.x} ${outerBottom.y}`,
-      `A ${outerRadius} ${outerRadius} 0 1 1 ${outerTop.x} ${outerTop.y}`,
-      `M ${innerTop.x} ${innerTop.y}`,
-      `A ${innerRadius} ${innerRadius} 0 1 0 ${innerBottom.x} ${innerBottom.y}`,
-      `A ${innerRadius} ${innerRadius} 0 1 0 ${innerTop.x} ${innerTop.y}`,
-      'Z',
-    ].join(' ');
-  }
-
-  private annularSectorPath(innerRadius: number, outerRadius: number, startAngle: number, endAngle: number): string {
-    const outerStart = this.polarToCartesian(outerRadius, startAngle);
-    const outerEnd = this.polarToCartesian(outerRadius, endAngle);
-    const innerEnd = this.polarToCartesian(innerRadius, endAngle);
-    const innerStart = this.polarToCartesian(innerRadius, startAngle);
-    const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
-
-    return [
-      `M ${outerStart.x} ${outerStart.y}`,
-      `A ${outerRadius} ${outerRadius} 0 ${largeArcFlag} 1 ${outerEnd.x} ${outerEnd.y}`,
-      `L ${innerEnd.x} ${innerEnd.y}`,
-      `A ${innerRadius} ${innerRadius} 0 ${largeArcFlag} 0 ${innerStart.x} ${innerStart.y}`,
-      'Z',
-    ].join(' ');
-  }
-
-  private polarToCartesian(radius: number, angle: number): { x: number; y: number } {
-    const radians = (angle * Math.PI) / 180;
-
-    return {
-      x: this.diagramCenter + radius * Math.cos(radians),
-      y: this.diagramCenter + radius * Math.sin(radians),
-    };
-  }
-
-  setHoveredLayer(layerKey: OutcomesLayerKey): void {
-    this.hoveredLayerKey = layerKey;
-  }
-
-  clearHoveredLayer(): void {
-    this.hoveredLayerKey = null;
-  }
-
-  isLayerHovered(layerKey: OutcomesLayerKey): boolean {
-    return this.hoveredLayerKey === layerKey;
-  }
-
-  getDiagramLabelColor(layerKey: OutcomesLayerKey): string {
-    if (this.isDiagramLayerDisabled(layerKey)) {
-      return this.cssVar('--oc-disabled-border-light');
-    }
-
-    if (this.hasProgramOutcomeData) {
-      return this.isProgramLayerAvailable(layerKey)
-        ? this.getLayerColor(layerKey)
-        : this.cssVar('--oc-disabled-border-light');
-    }
-
-    if (
-      this.isReferenceLayerActive(layerKey) ||
-      this.isLayerHovered(layerKey)
-    ) {
-      return this.getReferenceLabelColor(layerKey);
-    }
-
-    return this.getDiagramText(layerKey)?.fill || this.cssVar('--oc-stroke-grey');
-  }
-
-  get programCardPages(): number[] {
-    return Array.from(
-      { length: this.programCardPageCount },
-      (_, index) => index
-    );
-  }
-
-  goToProgramCardPage(pageIndex: number): void {
-    if (pageIndex < 0 || pageIndex >= this.programCardPageCount) {
-      return;
-    }
-
-    this.cardPageIndex = pageIndex;
-  }
-
-  get visibleEvidenceResources(): ProgramEvidenceResource[] {
-    const startIndex = this.evidencePageIndex * this.evidencesPerPage;
-
-    return this.programEvidenceResources.slice(
-      startIndex,
-      startIndex + this.evidencesPerPage
-    );
-  }
-
-  get evidencePageCount(): number {
-    return Math.max(
-      1,
-      Math.ceil(
-        this.programEvidenceResources.length / this.evidencesPerPage
-      )
-    );
-  }
-
-  get canShowEvidenceControls(): boolean {
-    return this.programEvidenceResources.length > this.evidencesPerPage;
-  }
-
-  get canGoToPreviousEvidence(): boolean {
-    return this.evidencePageIndex > 0;
-  }
-
-  get canGoToNextEvidence(): boolean {
-    return this.evidencePageIndex < this.evidencePageCount - 1;
-  }
-
-  showPreviousEvidence(): void {
-    this.evidencePageIndex = Math.max(
-      0,
-      this.evidencePageIndex - 1
-    );
-  }
-
-  showNextEvidence(): void {
-    this.evidencePageIndex = Math.min(
-      this.evidencePageCount - 1,
-      this.evidencePageIndex + 1
-    );
-  }
-
-  get evidenceThumbWidthPercent(): number {
-    const total = this.programEvidenceResources.length;
-    if (!total) return 0;
-
-    const width = (this.evidenceCardsPerPage / total) * 100;
-    return Math.min(100, width);
-  }
-
-  get evidenceThumbLeftPercent(): number {
-    const totalPages = this.evidencePageCount;
-    if (totalPages <= 1) return 0;
-
-    const widthPercent = this.evidenceThumbWidthPercent;
-    return (this.evidencePageIndex / (totalPages - 1)) * (100 - widthPercent);
-  }
-
-  get evidenceCardsPerPage(): number {
-    return this.isMobileViewport() ? 1 : 2;
+  getLayerTileLabel(layer: OutcomesLayerConfig): string {
+    return this.getProgramLayerTitle(layer.key) || layer.chipLabel;
   }
 
   isDiagramLayerDisabled(layerKey: OutcomesLayerKey): boolean {
@@ -871,48 +341,16 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
       !this.isProgramLayerAvailable(layerKey);
   }
 
-  showTooltip(event: MouseEvent, text: string): void {
-    const target = event.currentTarget as HTMLElement;
-    const rect = target.getBoundingClientRect();
-    this.tooltipText = text;
-    this.tooltipTop = rect.top - 8;
-    this.tooltipLeft = rect.left + rect.width / 2;
-    this.tooltipVisible = true;
+  getEvidenceDisplayName(evidence: ProgramEvidenceResource): string {
+    return getEvidenceDisplayName(evidence, this.staticTexts.evidenceNameFallbackSuffix);
   }
 
-  hideTooltip(): void {
-    this.tooltipVisible = false;
+  getEvidenceFileIcon(evidence: ProgramEvidenceResource): string {
+    return getEvidenceFileIcon(evidence.evidence_type);
   }
 
-  toggleTooltipMobile(event: MouseEvent, text: string): void {
-    if (this.tooltipVisible && this.tooltipText === text) {
-      this.hideTooltip();
-    } else {
-      this.showTooltip(event, text);
-    }
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.program-mode-tag')) {
-      this.hideTooltip();
-    }
-  }
-
-  @HostListener('window:scroll')
-  @HostListener('window:resize')
-  onViewportChange(): void {
-    this.hideTooltip();
-  }
-
-  truncateLabel(text: string, limit = 21): string {
-    if (!text) return '';
-    return text.length > limit ? text.slice(0, limit) + '...' : text;
-  }
-
-  isLabelTruncated(text: string, limit = 21): boolean {
-    return !!text && text.length > limit;
+  getEvidenceFileBackground(evidence: ProgramEvidenceResource): string {
+    return getEvidenceFileBackground(evidence.evidence_type);
   }
 
   getSafeEvidenceUrl(evidence: ProgramEvidenceResource): string | null {
@@ -926,69 +364,7 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
     }
   }
 
-  private cssVar(name: string): string {
-    if (this.cssVarCache.has(name)) {
-      return this.cssVarCache.get(name)!;
-    }
-
-    let value = '';
-
-    if (typeof window !== 'undefined' && typeof getComputedStyle === 'function') {
-      value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-    }
-
-    if (!value) {
-      console.warn(`[OutcomesModelComponent] Missing CSS variable "${name}" in style.css`);
-    }
-
-    this.cssVarCache.set(name, value);
-    return value;
-  }
-
-  get programCardsPerPage(): number {
-    return this.isMobileViewport() ? 1 : 3;
-  }
-
-  private isMobileViewport(): boolean {
-    return typeof window !== 'undefined' && window.innerWidth <= this.MOBILE_BREAKPOINT;
-  }
-
-  getDiagramIcon(layerKey: OutcomesLayerKey): OutcomesDiagramIcon {
-    const layer = this.config.layers.find(
-      (item) => item.key === layerKey
-    );
-
-    return layer?.diagram.icon ?? {
-      type: 'image',
-      value: '',
-    };
-  }
-
-  getDiagramText(layerKey: OutcomesLayerKey) {
-    return this.layers.find(layer => layer.key === layerKey)?.diagram.text;
-  }
-
-  private updateBodyScrollLock(): void {
-    document.body.style.overflow = this.isInfoModalOpen ? 'hidden' : '';
-  }
-
   getLayerByKey(key: OutcomesLayerKey | string): OutcomesLayerConfig | undefined {
     return this.layers.find((layer) => layer.key === key);
-  }
-
-  getLayerKeys(): OutcomesLayerKey[] {
-    return this.layers.map((layer) => layer.key);
-  }
-
-  isValidLayerKey(key: string): boolean {
-    return this.layers.some((layer) => layer.key === key);
-  }
-
-  getOuterLayerKey(): OutcomesLayerKey {
-    return this.outerLayer.key;
-  }
-
-  getInnerLayerKey(): OutcomesLayerKey {
-    return this.innerLayer.key;
   }
 }
