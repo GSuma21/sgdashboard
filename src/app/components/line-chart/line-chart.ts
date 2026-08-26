@@ -21,7 +21,8 @@ import {
 
 // Import renderers
 import { CanvasRenderer } from 'echarts/renderers';
-import { environment } from '../../../../environments/environment';
+import { environment } from '@environments/environment';
+import { lineChartConfig } from '../../../config/lineChartConfig';
 
 // Register what you need
 echarts.use([
@@ -49,9 +50,7 @@ export class LineChartComponent implements OnInit {
   @Input() path?: any;
   @Input() isCommunityLedInitiatives = false;
 
-  title = 'Micro Improvements so far';
-  readonly defaultNote = '*This chart represents the cumulative number of micro-improvements recorded over time.';
-  readonly communityLedNote = '*This chart represents the cumulative number of micro-improvements recorded through community-led initiatives over time.';
+  title = lineChartConfig.title;
   currentYear: string = '2025';
   year = '2025';
   dataFetchPath: any;
@@ -63,7 +62,7 @@ export class LineChartComponent implements OnInit {
   chartOption: EChartsOption = {};
 
   get note(): string {
-    return this.isCommunityLedInitiatives ? this.communityLedNote : this.defaultNote;
+    return this.isCommunityLedInitiatives ? lineChartConfig.notes.communityLed : lineChartConfig.notes.default;
   }
 
   ngOnInit(): void {

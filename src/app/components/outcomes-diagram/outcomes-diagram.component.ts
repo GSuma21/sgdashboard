@@ -384,10 +384,6 @@ export class OutcomesDiagramComponent {
       value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     }
 
-    if (!value) {
-      console.warn(`[OutcomesDiagramComponent] Missing CSS variable "${name}" in style.css`);
-    }
-
     this.cssVarCache.set(name, value);
     return value;
   }

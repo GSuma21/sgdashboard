@@ -30,7 +30,8 @@
 .program-section h3,
 .info-section h3,
 .gallery h3,
-.partners h3 {
+.partners h3,
+.outcomes-section-heading {
     margin-top: 15px;
     margin-bottom: 8px;
     font-size: 18px;
@@ -729,20 +730,29 @@ mat-icon {
 }
 
 .outcomes-full-width {
-  margin-top: 16px;
+  margin-top: 8px;
   width: 100%;
 }
 
+.outcomes-full-width.outcomes-first-section {
+  margin-top: 0;
+}
+
 .outcomes-section-heading {
-  font-size: 18px;
-  font-weight: 600;
-  margin-top: 15px;
-  margin-bottom: 8px;
+  color: var(--program-text-strong);
+}
+
+.outcomes-first-section .outcomes-section-heading {
+  margin-top: 0;
 }
 
 @media (max-width: 768px) {
   .outcomes-full-width {
-    margin-top: 12px;
+    margin-top: 8px;
+  }
+
+  .outcomes-full-width.outcomes-first-section {
+    margin-top: 0;
   }
 
   .outcomes-section-heading {

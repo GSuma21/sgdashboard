@@ -29,15 +29,20 @@ export class OutcomesInfoModalComponent implements OnInit, OnDestroy {
   readonly titleId = `outcomes-info-modal-title-${OutcomesInfoModalComponent.nextInstanceId++}`;
 
   private previouslyFocusedElement: HTMLElement | null = null;
+  private focusTimerId: ReturnType<typeof setTimeout> | null = null;
 
   ngOnInit(): void {
     this.previouslyFocusedElement = document.activeElement as HTMLElement | null;
     document.body.style.overflow = 'hidden';
 
-    setTimeout(() => this.closeButtonRef?.nativeElement.focus());
+    this.focusTimerId = setTimeout(() => this.closeButtonRef?.nativeElement.focus());
   }
 
   ngOnDestroy(): void {
+    if (this.focusTimerId) {
+      clearTimeout(this.focusTimerId);
+    }
+
     document.body.style.overflow = '';
     this.previouslyFocusedElement?.focus();
   }

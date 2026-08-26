@@ -6,5 +6,8 @@ export const programDetailsConfig = {
         leadersDrivingImprovements: {
             label: 'Leaders driving improvements'
         }
+    },
+    outcomes: {
+        heading: 'Learn how Micro Improvements are contributing to mega impact.'
     }
 };

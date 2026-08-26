@@ -1,218 +1,226 @@
 <div class="landing-container">
-    <div class="breadcrumb">
-        <a [routerLink]="['/dashboard']">Dashboard</a>/&nbsp;<a (click)="goBack()"  routerLinkActive="active-link"> {{
-            programData.state_name }}</a><span *ngIf="programData.district_name">/&nbsp;{{ programData.district_name }}</span>
+  <div class="breadcrumb">
+    <a [routerLink]="['/dashboard']">Dashboard</a>/&nbsp;<a
+      (click)="goBack()"
+      routerLinkActive="active-link"
+    >
+      {{ programData.state_name }}</a
+    ><span *ngIf="programData.district_name"
+      >/&nbsp;{{ programData.district_name }}</span
+    >
+  </div>
+
+  <div class="title">
+    <div class="left-section">
+      <div class="back-icon" (click)="goBack()">&#8592;</div>
+      &nbsp;
+      <h2 class="label" *ngIf="programData.name_of_the_program">
+        {{ programData.name_of_the_program }}
+      </h2>
     </div>
 
-     <div class="title">
-            <div class="left-section">
-              <div class="back-icon" (click)="goBack()">&#8592;</div>&nbsp;
-              <h2 class="label" *ngIf="programData.name_of_the_program">
-                {{ programData.name_of_the_program }}
-              </h2>
+    <button
+      class="view-report-btn"
+      (click)="openReport(programData)"
+      *ngIf="programData.report_link"
+    >
+      <span>View Report</span>
+      <mat-icon class="eye-icon">visibility_outlined</mat-icon>
+    </button>
+  </div>
+
+  <div class="program-container">
+    <div class="content">
+      <div class="program-model-container">
+        <div>
+          @if (programData.about_the_program_objective) {
+            <div class="program-section">
+              <h3>Program overview</h3>
+              <p>{{ programData.about_the_program_objective }}</p>
             </div>
-          
-            <button class="view-report-btn" (click)="openReport(programData)" *ngIf="programData.report_link">
-              <span>View Report</span>
-              <mat-icon class="eye-icon">visibility_outlined</mat-icon>
-            </button>
+          }
+          <div class="info-section">
+            <div class="impact">
+              @if (programData.stakeholders_doing_the_program) {
+                <h3>Key stakeholders</h3>
+                <p>{{ programData.stakeholders_doing_the_program }}</p>
+              }
+              @if (impactText) {
+                <h3 *ngIf="impactText">Intended impact</h3>
+                <p
+                  [innerText]="impactText"
+                  [ngStyle]="{
+                    'white-space': 'normal',
+                    'word-wrap': 'break-word',
+                  }"
+                ></p>
+              }
+            </div>
           </div>
-
-    <div class="program-container">
-        <div class="content">
-            <div class="program-model-container">
-                <div>
-                    @if(programData.about_the_program_objective) {
-                    <div class="program-section">
-                        <h3>Program overview</h3>
-                        <p>{{ programData.about_the_program_objective }}</p>
-                    </div>
-                    }
-                    <div class="info-section">
-                        <div class="impact">
-                            @if(programData.stakeholders_doing_the_program) {
-                            <h3>Key stakeholders</h3>
-                            <p>{{ programData.stakeholders_doing_the_program }}</p>
-                            }
-                            @if(impactText){
-                            <h3 *ngIf="impactText">Intended impact</h3>
-                            <p [innerText]="impactText" [ngStyle]="{'white-space': 'normal', 'word-wrap': 'break-word'}"></p>
-            
-                            }
-            
-            
-                        </div>
-
-
-                    </div>
-
-                </div>
-
-                @if (
-                programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted
-                ||
-                programData.leaders_driving_improvements
-                ) {
-                <div class="indiactor-container">
-                
-                    @if (
-                    programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted
-                    ) {
-                    <div class="indicator-card">
-                        <div class="indicator-image">
-                            <img src="./assets/icons/micro_improvements_initiated.svg">
-                        </div>
-                
-                        <div class="indicator-container">
-                            <h5 class="indicator-value text-left">
-                                {{ programDetailsConfig.indicators.microImprovementsInitiated.label }}
-                            </h5>
-                
-                            <p class="indicator-label">
-                                {{
-                                programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted
-                                }}
-                            </p>
-                        </div>
-                    </div>
-                    }
-                
-                    @if (programData.leaders_driving_improvements) {
-                    <div class="indicator-card">
-                        <div class="indicator-image">
-                            <img src="./assets/icons/leaders_driving__improvements.svg">
-                        </div>
-                
-                        <div class="indicator-container">
-                            <h5 class="indicator-value text-left">
-                                {{ programDetailsConfig.indicators.leadersDrivingImprovements.label }}
-                            </h5>
-                
-                            <p class="indicator-label">
-                                {{ programData.leaders_driving_improvements }}
-                            </p>
-                        </div>
-                    </div>
-                    }
-                
-                </div>
-                }
-            </div>
-            @if (programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved) {
-                <div *ngIf="programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved" class="details-section impact-section">
-                <div class="impact-content">
-                    <div class="impact-header">
-                        <!-- <h3 class="impact-title">
-                            Learn how Micro Improvements are contributing to mega impact.
-                        </h3>
-                        @if(programData.download_to_read_more) {
-                        <button class="download-btn" (click)="OnClickMultipleReports(programData)">
-                            <span>Click here to read more</span>
-                            <mat-icon>arrow_drop_down</mat-icon>
-                        </button>
-
-                        } -->
-                         
-                    </div>
-                    
-                    <!-- <div class="impact-cards" *ngIf="impactCardList.length">
-                        <div class="impact-card" *ngFor="let item of impactCardList; let i = index">
-                            <div class="icon" [style.background-color]="colors[i % colors.length]"></div>
-                            <div>
-                                <p class="card-text">{{ item }}</p>
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
-                
-            </div>
-            }
-            <section class="details-section outcomes-full-width" *ngIf="hasOutcomesData">
-                <h3 class="outcomes-section-heading" *ngIf="hasFrameworkOutcomesData">
-                    Learn how Micro Improvements are contributing to mega impact.
-                </h3>
-                <app-outcomes-model
-                    [framework]="programData?.framework"
-                    [programPartners]="partnerDetails">
-                </app-outcomes-model>
-            </section>
-
-            <div *ngIf="displayImages.length" class="details-section gallery-block">
-            <h3 class="heading">Gallery</h3>
-            <section class="gallery-section">
-                <button class="arrow left" *ngIf="currentSlide > 0"  (click)="prevSlide()">&#10094;</button>
-                <div class="gallery-container">
-                    <div class="gallery-track" #galleryTrack>
-                        <div class="gallery-slide"
-     *ngFor="let img of displayImages"
-     [ngStyle]="{'flex': '0 0 ' + (100 / visibleSlides) + '%'}">
-  <img [src]="img" alt="Gallery Image" />
-</div>
-
-                    </div>
-                </div>
-                <button *ngIf="currentSlide < displayImages.length - this.visibleSlides"  class="arrow right" (click)="nextSlide()">&#10095;</button>
-            </section>
-            </div>
-            <div *ngIf="partnerDetails.length" class="details-section partners-section">
-            <h3 class="heading">Partners</h3>
-            <div class="partners">
-                <div class="partners-grid">
-                    <div class="partner-card" *ngFor="let partner of partnerDetails">
-
-                        <!-- Partner Logo -->
-                        <img [src]="partner.src" [alt]="partner.alt" class="partner-logo" />
-
-                        <!-- Partner Name -->
-                        <h5 class="partner-name">{{ partner.name }}</h5>
-
-                        <!-- Know More Link -->
-                        <a [href]="partner.website" target="_blank" rel="noopener noreferrer" class="know-more-btn">
-                            Know more →
-                        </a>
-                    </div>
-                </div>
-            </div>
-            </div>
         </div>
+
+        @if (
+          programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted ||
+          programData.leaders_driving_improvements
+        ) {
+          <div class="indiactor-container">
+            @if (
+              programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted
+            ) {
+              <div class="indicator-card">
+                <div class="indicator-image">
+                  <img src="./assets/icons/micro_improvements_initiated.svg" />
+                </div>
+
+                <div class="indicator-container">
+                  <h5 class="indicator-value text-left">
+                    {{
+                      programDetailsConfig.indicators.microImprovementsInitiated
+                        .label
+                    }}
+                  </h5>
+
+                  <p class="indicator-label">
+                    {{
+                      programData.mi_inititated_from_the_program__total_no_of_mi_startedinprogresssubmitted_or_if_done_via_google_form_then_no_of_responses_submitted
+                    }}
+                  </p>
+                </div>
+              </div>
+            }
+
+            @if (programData.leaders_driving_improvements) {
+              <div class="indicator-card">
+                <div class="indicator-image">
+                  <img src="./assets/icons/leaders_driving__improvements.svg" />
+                </div>
+
+                <div class="indicator-container">
+                  <h5 class="indicator-value text-left">
+                    {{
+                      programDetailsConfig.indicators.leadersDrivingImprovements
+                        .label
+                    }}
+                  </h5>
+
+                  <p class="indicator-label">
+                    {{ programData.leaders_driving_improvements }}
+                  </p>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+      <section
+        class="details-section outcomes-full-width"
+        [class.outcomes-first-section]="!hasProgramSummaryContent"
+        *ngIf="hasOutcomesData"
+      >
+        <h3 class="outcomes-section-heading" *ngIf="hasFrameworkOutcomesData">
+          {{ programDetailsConfig.outcomes.heading }}
+        </h3>
+        <app-outcomes-model
+          [programOutcomeData]="programOutcomeData"
+          [programPartners]="partnerDetails"
+        >
+        </app-outcomes-model>
+      </section>
+
+      <div *ngIf="displayImages.length" class="details-section gallery-block">
+        <h3 class="heading">Gallery</h3>
+        <section class="gallery-section">
+          <button
+            class="arrow left"
+            *ngIf="currentSlide > 0"
+            (click)="prevSlide()"
+          >
+            &#10094;
+          </button>
+          <div class="gallery-container">
+            <div class="gallery-track" #galleryTrack>
+              <div
+                class="gallery-slide"
+                *ngFor="let img of displayImages"
+                [ngStyle]="{ flex: '0 0 ' + 100 / visibleSlides + '%' }"
+              >
+                <img [src]="img" alt="Gallery Image" />
+              </div>
+            </div>
+          </div>
+          <button
+            *ngIf="currentSlide < displayImages.length - this.visibleSlides"
+            class="arrow right"
+            (click)="nextSlide()"
+          >
+            &#10095;
+          </button>
+        </section>
+      </div>
+      <div
+        *ngIf="partnerDetails.length"
+        class="details-section partners-section"
+      >
+        <h3 class="heading">Partners</h3>
+        <div class="partners">
+          <div class="partners-grid">
+            <div class="partner-card" *ngFor="let partner of partnerDetails">
+              <!-- Partner Logo -->
+              <img
+                [src]="partner.src"
+                [alt]="partner.alt"
+                class="partner-logo"
+              />
+
+              <!-- Partner Name -->
+              <h5 class="partner-name">{{ partner.name }}</h5>
+
+              <!-- Know More Link -->
+              <a
+                [href]="partner.website"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="know-more-btn"
+              >
+                Know more →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <ng-template #downloadDialog let-data>
-    <div class="custom-dialog">
+  <div class="custom-dialog">
+    <!-- Header -->
+    <div class="dialog-header">
+      <span class="program-title">
+        {{ data.programName }}
+      </span>
 
-        <!-- Header -->
-        <div class="dialog-header">
-            <span class="program-title">
-                {{ data.programName }}
-            </span>
-
-            <span class="close-btn" (click)="dialog.closeAll()">✕</span>
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- Subtitle -->
-        <div class="report-count">
-            No. of reports available to download: {{ data.links.length }}
-        </div>
-
-        <div class="divider"></div>
-
-        <!-- List -->
-        <div class="report-list">
-            @for (link of data.links; track link; let i = $index) {
-            <div class="report-row" (click)="openLink(link)">
-
-                <span>
-                    Click Report {{ i + 1 }} to read more
-                </span>
-
-                <mat-icon class="view-icon">visibility</mat-icon>
-
-            </div>
-            }
-        </div>
-
+      <span class="close-btn" (click)="dialog.closeAll()">✕</span>
     </div>
+
+    <div class="divider"></div>
+
+    <!-- Subtitle -->
+    <div class="report-count">
+      No. of reports available to download: {{ data.links.length }}
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- List -->
+    <div class="report-list">
+      @for (link of data.links; track link; let i = $index) {
+        <div class="report-row" (click)="openLink(link)">
+          <span> Click Report {{ i + 1 }} to read more </span>
+
+          <mat-icon class="view-icon">visibility</mat-icon>
+        </div>
+      }
+    </div>
+  </div>
 </ng-template>

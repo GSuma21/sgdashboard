@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import * as d3 from 'd3';
-import { environment } from '../../../../environments/environment';
+import { environment } from '@environments/environment';
 import { OUTCOMES_MODEL_CONFIG_PAGE } from '../../../constants/urlConstants';
 import { OutcomesDiagramComponent } from '../outcomes-diagram/outcomes-diagram.component';
 import { OutcomesEvidenceCarouselComponent } from '../outcomes-evidence-carousel/outcomes-evidence-carousel.component';
@@ -18,6 +18,7 @@ import {
   isValidOutcomesModelConfig,
   OutcomesLayerConfig,
   OutcomesLayerKey,
+  OutcomesListItem,
   OutcomesModelConfig,
   ProgramEvidenceResource,
   ProgramOutcomeCard,
@@ -38,13 +39,66 @@ import {
   templateUrl: './outcomes-model.component.html',
   styleUrls: ['./outcomes-model.component.css'],
 })
-export class OutcomesModelComponent implements OnChanges, OnInit {
-  @Input() config: OutcomesModelConfig = EMPTY_OUTCOMES_MODEL_CONFIG;
-  @Input() programOutcomeData?: ProgramOutcomeData;
+export class OutcomesModelComponent implements OnDestroy, OnInit {
+  private _config: OutcomesModelConfig = EMPTY_OUTCOMES_MODEL_CONFIG;
+  private _programOutcomeData?: ProgramOutcomeData;
+  private _framework?: any[];
+  private _programPartners: ProgramOutcomeCard[] = [];
+  private _activeLayer?: OutcomesLayerKey;
+
+  @Input()
+  set config(value: OutcomesModelConfig | undefined) {
+    this._config = value || EMPTY_OUTCOMES_MODEL_CONFIG;
+    this.syncState();
+  }
+
+  get config(): OutcomesModelConfig {
+    return this._config;
+  }
+
+  @Input()
+  set programOutcomeData(value: ProgramOutcomeData | undefined) {
+    this._programOutcomeData = value;
+    this.syncState();
+  }
+
+  get programOutcomeData(): ProgramOutcomeData | undefined {
+    return this._programOutcomeData;
+  }
+
   /** Raw `framework` array from the program-details API response; reshaped internally into `programOutcomeData`. */
-  @Input() framework?: any[];
-  @Input() programPartners: ProgramOutcomeCard[] = [];
-  @Input() activeLayer?: OutcomesLayerKey;
+  @Input()
+  set framework(value: any[] | undefined) {
+    this._framework = value;
+    if (value) {
+      this._programOutcomeData = buildProgramOutcomeDataFromFramework(value);
+    }
+    this.syncState();
+  }
+
+  get framework(): any[] | undefined {
+    return this._framework;
+  }
+
+  @Input()
+  set programPartners(value: ProgramOutcomeCard[] | undefined) {
+    this._programPartners = value || [];
+    this.syncState();
+  }
+
+  get programPartners(): ProgramOutcomeCard[] {
+    return this._programPartners;
+  }
+
+  @Input()
+  set activeLayer(value: OutcomesLayerKey | undefined) {
+    this._activeLayer = value;
+    this.syncState();
+  }
+
+  get activeLayer(): OutcomesLayerKey | undefined {
+    return this._activeLayer;
+  }
 
   @ViewChild(OutcomesEvidenceCarouselComponent) private evidenceCarousel?: OutcomesEvidenceCarouselComponent;
   @ViewChild(OutcomesProgramCardCarouselComponent) private programCardCarousel?: OutcomesProgramCardCarouselComponent;
@@ -53,6 +107,7 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   selectedPanel: 'programs' | 'layer' = 'layer';
   isInfoModalOpen = false;
   private hasExplicitLayerSelection = false;
+  private isDestroyed = false;
 
   ngOnInit(): void {
     // Diagram styling/text always comes from OUTCOMES_MODEL_CONFIG_PAGE. Only fetch it if this
@@ -61,9 +116,10 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
     if (!this.config?.layers?.length) {
       d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${OUTCOMES_MODEL_CONFIG_PAGE}`)
         .then((data: any) => {
+          if (this.isDestroyed) return;
+
           if (isValidOutcomesModelConfig(data)) {
             this.config = data;
-            this.ngOnChanges();
           } else {
             console.error('Invalid outcomes model config payload received.');
           }
@@ -74,11 +130,11 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
     }
   }
 
-  ngOnChanges(): void {
-    if (this.framework) {
-      this.programOutcomeData = buildProgramOutcomeDataFromFramework(this.framework) ?? this.programOutcomeData;
-    }
+  ngOnDestroy(): void {
+    this.isDestroyed = true;
+  }
 
+  private syncState(): void {
     if (this.activeLayer || this.programOutcomeData?.layerKey) {
       this.hasExplicitLayerSelection = true;
     }
@@ -193,6 +249,26 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   get infoModalDescription(): string {
     const prefix = this.staticTexts.infoModalDescriptionPrefix || 'Information about';
     return this.hasProgramOutcomeData ? this.narrativeBody : this.infoModalLayer.subheading || this.narrativeBody || `${prefix} ${this.infoModalLayer.chipLabel}`;
+  }
+
+  get infoModalIcon(): string {
+    return this.infoModalLayer.icon;
+  }
+
+  get infoModalColor(): string {
+    return this.infoModalLayer.color;
+  }
+
+  get infoModalListItems(): OutcomesListItem[] {
+    return this.infoModalLayer.listItems || [];
+  }
+
+  get infoModalCloseLabel(): string {
+    return this.config.ariaLabels.closeModal;
+  }
+
+  closeInfoModal(): void {
+    this.isInfoModalOpen = false;
   }
 
   get narrativeBody(): string {
