@@ -101,6 +101,14 @@
     margin-left: -10%;
   }
 
+  :host-context(.has-program-data) .layer-diagram {
+    margin-bottom: -1.5rem;
+    margin-left: -6%;
+    margin-top: 0;
+    transform: translateY(-3.75rem);
+    width: 112%;
+  }
+
   .diagram-note {
     font-size: 0.75rem;
     line-height: 1.35;
@@ -113,6 +121,11 @@
 }
 
 @media (max-width: 35rem) {
+  :host-context(.has-program-data) .layer-diagram {
+    margin-bottom: -2rem;
+    transform: translateY(-4.25rem);
+  }
+
   .rlabel {
     font-size: 0.875rem;
   }
