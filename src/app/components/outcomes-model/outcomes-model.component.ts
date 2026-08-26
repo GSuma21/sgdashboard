@@ -43,6 +43,7 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   @Input() programOutcomeData?: ProgramOutcomeData;
   /** Raw `framework` array from the program-details API response; reshaped internally into `programOutcomeData`. */
   @Input() framework?: any[];
+  @Input() programPartners: ProgramOutcomeCard[] = [];
   @Input() activeLayer?: OutcomesLayerKey;
 
   @ViewChild(OutcomesEvidenceCarouselComponent) private evidenceCarousel?: OutcomesEvidenceCarouselComponent;
@@ -123,6 +124,10 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
 
   get selectedProgramData(): ProgramOutcomeData | undefined {
     const data = this.programOutcomeData;
+    if (this.selectedLayerKey === 'network' && this.hasProgramPartners) {
+      return this.programNetworkData;
+    }
+
     if (!data) return undefined;
 
     const layerData = this.getProgramLayerData(this.selectedLayerKey);
@@ -148,7 +153,20 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   }
 
   get hasProgramOutcomeData(): boolean {
-    return !!this.programOutcomeData;
+    return !!this.programOutcomeData || this.hasProgramPartners;
+  }
+
+  get hasProgramPartners(): boolean {
+    return (this.programPartners || []).length > 0;
+  }
+
+  get programNetworkData(): ProgramOutcomeData {
+    return {
+      layerKey: 'network',
+      title: this.getLayerByKey('network')?.heading || this.getLayerByKey('network')?.chipLabel || 'Network',
+      cardVariant: 'partner',
+      outcomes: this.programPartners || [],
+    };
   }
 
   get programBaseLayerKey(): OutcomesLayerKey {
@@ -286,7 +304,8 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   }
 
   isProgramLayerAvailable(layerKey: OutcomesLayerKey): boolean {
-    if (!this.programOutcomeData) return true;
+    if (layerKey === 'network' && this.hasProgramPartners) return true;
+    if (!this.programOutcomeData) return false;
 
     const layerData = this.getProgramLayerData(layerKey);
     const hasLayerData = this.hasProgramContent(layerData);
@@ -308,6 +327,10 @@ export class OutcomesModelComponent implements OnChanges, OnInit {
   }
 
   private getProgramLayerData(layerKey: OutcomesLayerKey): ProgramOutcomeData | undefined {
+    if (layerKey === 'network' && this.hasProgramPartners) {
+      return this.programNetworkData;
+    }
+
     const layers = this.programOutcomeData?.layers;
     if (!layers) return undefined;
 

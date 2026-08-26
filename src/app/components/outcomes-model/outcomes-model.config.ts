@@ -313,12 +313,52 @@ export function isValidOutcomesModelConfig(data: any): data is OutcomesModelConf
 }
 
 // Maps the API's `framework[].impact_layer` label to the diagram's layer key.
+// The API text is not fully stable, so normalize common spelling/plural variants
+// before matching (e.g. Centre/Center, Anganwadi/Anganavadi, "&"/"and").
 const IMPACT_LAYER_KEY_MAP: Record<string, OutcomesLayerKey> = {
-  'Learners Outcomes': 'students',
-  'Schools & Anganwadi Centres': 'schools',
-  'Community': 'community',
-  'System Institutions': 'system',
+  'learners outcomes': 'students',
+  'learner outcomes': 'students',
+  learners: 'students',
+  students: 'students',
+  'schools anganwadi centres': 'schools',
+  'schools anganwadi centers': 'schools',
+  'school anganwadi centre': 'schools',
+  'school anganwadi center': 'schools',
+  schools: 'schools',
+  school: 'schools',
+  community: 'community',
+  communities: 'community',
+  'system institutions': 'system',
+  system: 'system',
 };
+
+function normalizeImpactLayerLabel(label?: string): string {
+  return (label || '')
+    .toLowerCase()
+    .replace(/anganavadi/g, 'anganwadi')
+    .replace(/centers/g, 'centres')
+    .replace(/center/g, 'centre')
+    .replace(/&/g, ' and ')
+    .replace(/\band\b/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+    .replace(/\s+/g, ' ');
+}
+
+function getImpactLayerKey(impactLayer: any): OutcomesLayerKey | undefined {
+  const explicitLayerKey = impactLayer?.layerKey as OutcomesLayerKey | undefined;
+  if (explicitLayerKey) return explicitLayerKey;
+
+  const normalizedLabel = normalizeImpactLayerLabel(impactLayer?.impact_layer);
+  if (IMPACT_LAYER_KEY_MAP[normalizedLabel]) return IMPACT_LAYER_KEY_MAP[normalizedLabel];
+
+  if (normalizedLabel.includes('anganwadi') || normalizedLabel.includes('school')) return 'schools';
+  if (normalizedLabel.includes('communit')) return 'community';
+  if (normalizedLabel.includes('system')) return 'system';
+  if (normalizedLabel.includes('learner') || normalizedLabel.includes('student')) return 'students';
+
+  return undefined;
+}
 
 const PROGRAM_OUTCOME_BASE_LAYER_KEY: OutcomesLayerKey = 'students';
 
@@ -387,8 +427,7 @@ export function buildProgramOutcomeDataFromFramework(framework: any[]): ProgramO
 
   for (const impactLayer of framework) {
     // Prefer the API's own layerKey; fall back to mapping the impact_layer label for older payloads.
-    const layerKey: OutcomesLayerKey | undefined =
-      impactLayer?.layerKey || IMPACT_LAYER_KEY_MAP[impactLayer?.impact_layer];
+    const layerKey = getImpactLayerKey(impactLayer);
     if (!layerKey) continue;
 
     const outcomes = extractOutcomeCards(impactLayer);

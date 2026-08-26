@@ -127,11 +127,15 @@
                 
             </div>
             }
-            <div class="outcomes-full-width" *ngIf="hasOutcomesData">
-  <app-outcomes-model
-    [framework]="programData?.framework">
-  </app-outcomes-model>
-</div>
+            <section class="details-section outcomes-full-width" *ngIf="hasOutcomesData">
+                <h3 class="outcomes-section-heading" *ngIf="hasFrameworkOutcomesData">
+                    Learn how Micro Improvements are contributing to mega impact.
+                </h3>
+                <app-outcomes-model
+                    [framework]="programData?.framework"
+                    [programPartners]="partnerDetails">
+                </app-outcomes-model>
+            </section>
 
             <div *ngIf="displayImages.length" class="details-section gallery-block">
             <h3 class="heading">Gallery</h3>

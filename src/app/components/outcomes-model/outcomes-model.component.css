@@ -5,7 +5,7 @@
 .outcomes-model {
   --side: 4rem;
   --stage-top: 1.75rem;
-  --rail-lift: 5.625rem;
+  --rail-lift: 2.5rem;
   --violet: var(--oc-violet);
   --ink: var(--oc-ink);
   --muted: var(--oc-muted);
@@ -17,7 +17,14 @@
   line-height: 1.6;
   padding: 0 var(--side);
   border-top: 0.063rem solid var(--line);
-  margin-top: 4.063rem;
+  margin-top: 2.5rem;
+}
+
+.outcomes-model.has-program-data {
+  --side: 0;
+  border-top: 0;
+  margin-top: 0;
+  padding: 0;
 }
 
 /* =========================================================
@@ -47,10 +54,15 @@
   grid-template-columns: minmax(0, 33.25rem) minmax(0, 1fr);
 }
 
+.has-program-data .outcomes-grid {
+  gap: clamp(1.5rem, 3.5vw, 3rem);
+  grid-template-columns: minmax(18rem, 28rem) minmax(0, 1fr);
+}
+
 .sticky-stage {
   align-items: center;
   display: flex;
-  height: calc(100vh - var(--stage-top));
+  height: min(42rem, calc(100vh - var(--stage-top)));
   justify-content: center;
   position: sticky;
   top: var(--stage-top);
@@ -59,7 +71,18 @@
 .stage {
   margin: 0 auto;
   width: 96%;
-  max-width: 33.25rem
+  max-width: 33.25rem;
+}
+
+.has-program-data .sticky-stage {
+  height: auto;
+  min-height: 0;
+  top: calc(var(--stage-top) + 5rem);
+}
+
+.has-program-data .stage {
+  max-width: 28rem;
+  width: 100%;
 }
 
 .chip-note {
@@ -83,8 +106,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: calc(100vh - var(--stage-top));
-  padding-bottom: calc(3.75rem + var(--rail-lift));
+  min-height: min(42rem, calc(100vh - var(--stage-top)));
+  padding-bottom: calc(2.5rem + var(--rail-lift));
 }
 
 @media (min-width: 58.813rem) and (pointer: fine) {
@@ -482,8 +505,14 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: calc(100vh - var(--stage-top));
-  padding: 3.75rem 0 calc(3.75rem + var(--rail-lift));
+  min-height: min(42rem, calc(100vh - var(--stage-top)));
+  padding: 2.5rem 0 calc(2.5rem + var(--rail-lift));
+}
+
+.has-program-data .program-mode-panel {
+  justify-content: flex-start;
+  min-height: 0;
+  padding: 1.25rem 0 0;
 }
 
 .program-mode-heading {
@@ -493,6 +522,10 @@
   grid-template-columns: 3rem minmax(0, 1fr) 2.125rem;
   margin-bottom: 2.875rem;
   width: 100%;
+}
+
+.has-program-data .program-mode-heading {
+  margin-bottom: 1.5rem;
 }
 
 .program-mode-icon {
@@ -643,6 +676,11 @@
     gap: 1.5rem;
   }
 
+  .has-program-data .outcomes-grid {
+    gap: 1.25rem;
+    grid-template-columns: 1fr;
+  }
+
   /* Diagram */
 
   .sticky-stage {
@@ -659,6 +697,10 @@
     max-width: 100%;
   }
 
+  .has-program-data .stage {
+    width: min(70vw, 26rem);
+  }
+
   /* Normal content */
 
   .rail-sections {
@@ -673,6 +715,10 @@
   .program-mode-panel {
     min-height: 0;
     padding: 2rem 0 3rem;
+  }
+
+  .has-program-data .program-mode-panel {
+    padding: 0 0 2rem;
   }
 
   /* Program heading */
@@ -714,12 +760,20 @@
     gap: 1rem;
   }
 
+  .has-program-data .outcomes-grid {
+    gap: 0.75rem;
+  }
+
   /* =======================================================
      DIAGRAM
      ======================================================= */
   .stage {
     width: min(92vw, 28rem);
     max-width: 100%;
+  }
+
+  .has-program-data .stage {
+    width: min(88vw, 24rem);
   }
 
   .sticky-stage {
@@ -833,12 +887,20 @@
     padding: 1.5rem 0 2.5rem;
   }
 
+  .has-program-data .program-mode-panel {
+    padding: 0 0 1.75rem;
+  }
+
   .program-mode-heading {
     align-items: center;
     display: grid;
     gap: 0.75rem;
     grid-template-columns: 3rem minmax(0, 1fr) 1.875rem;
     margin-bottom: 1.5rem;
+  }
+
+  .has-program-data .program-mode-heading {
+    margin-bottom: 1.125rem;
   }
 
   .program-mode-icon {

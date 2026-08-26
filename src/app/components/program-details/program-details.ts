@@ -128,6 +128,10 @@ export class ProgramDetails {
   // real outcomes/evidences (e.g. framework: []), instead of falling back to the
   // generic landing-style narrative view.
   get hasOutcomesData(): boolean {
+    return this.hasFrameworkOutcomesData;
+  }
+
+  get hasFrameworkOutcomesData(): boolean {
     return !!buildProgramOutcomeDataFromFramework(this.programData?.framework);
   }
 

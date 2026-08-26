@@ -47,9 +47,11 @@ export class LineChartComponent implements OnInit {
   @Input() data: any = {};
   @Input() replaceCode?: any;
   @Input() path?: any;
+  @Input() isCommunityLedInitiatives = false;
 
   title = 'Micro Improvements so far';
-  note = '*This chart represents the cumulative number of micro-improvements recorded over time.';
+  readonly defaultNote = '*This chart represents the cumulative number of micro-improvements recorded over time.';
+  readonly communityLedNote = '*This chart represents the cumulative number of micro-improvements recorded through community-led initiatives over time.';
   currentYear: string = '2025';
   year = '2025';
   dataFetchPath: any;
@@ -59,6 +61,10 @@ export class LineChartComponent implements OnInit {
   quarterPositions = [1, 4, 7, 10];
 
   chartOption: EChartsOption = {};
+
+  get note(): string {
+    return this.isCommunityLedInitiatives ? this.communityLedNote : this.defaultNote;
+  }
 
   ngOnInit(): void {
     if (this.path) {

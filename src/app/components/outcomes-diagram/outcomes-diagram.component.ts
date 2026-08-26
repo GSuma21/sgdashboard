@@ -31,6 +31,7 @@ export class OutcomesDiagramComponent {
   @Input() selectedLayerKey!: OutcomesLayerKey;
   @Input() hasProgramOutcomeData = false;
   @Input() disabledLayerKeys: Set<OutcomesLayerKey> = new Set();
+  @Input() showDiagramNote = true;
 
   @Output() layerSelect = new EventEmitter<OutcomesLayerKey>();
 
@@ -132,6 +133,13 @@ export class OutcomesDiagramComponent {
     if (!foundLayer || this.isDiagramLayerDisabled(foundLayer.key)) return;
 
     this.layerSelect.emit(foundLayer.key);
+  }
+
+  selectReferenceLayerFromPointer(event: MouseEvent, fallbackLayerKey: OutcomesLayerKey | string): void {
+    const layer = this.getLayerFromPointer(event) || this.getLayerByKey(fallbackLayerKey);
+    if (!layer || this.isDiagramLayerDisabled(layer.key)) return;
+
+    this.layerSelect.emit(layer.key);
   }
 
   onLayerKeydownSpace(event: Event, layerKey: OutcomesLayerKey): void {
@@ -298,6 +306,46 @@ export class OutcomesDiagramComponent {
 
   private getAngles(shape: OutcomesLayerShape): [number, number] {
     return shape === 'bottom' ? [0, 180] : [180, 360];
+  }
+
+  private getLayerFromPointer(event: MouseEvent): OutcomesLayerConfig | undefined {
+    const svg = (event.currentTarget as SVGElement).ownerSVGElement || (event.currentTarget as SVGSVGElement);
+    if (!svg || typeof svg.createSVGPoint !== 'function') return undefined;
+
+    const point = svg.createSVGPoint();
+    point.x = event.clientX;
+    point.y = event.clientY;
+
+    const screenCtm = svg.getScreenCTM();
+    if (!screenCtm) return undefined;
+
+    const svgPoint = point.matrixTransform(screenCtm.inverse());
+    const dx = svgPoint.x - this.diagramCenter;
+    const dy = svgPoint.y - this.diagramCenter;
+    const radius = Math.sqrt(dx * dx + dy * dy);
+    const angle = this.normalizeAngle((Math.atan2(dy, dx) * 180) / Math.PI);
+
+    return this.layers.find((layer) => this.isPointInsideLayer(layer, radius, angle));
+  }
+
+  private isPointInsideLayer(layer: OutcomesLayerConfig, radius: number, angle: number): boolean {
+    if (this.isDiagramLayerDisabled(layer.key)) return false;
+
+    const innerRadius = layer.diagram.innerRadius;
+    const outerRadius = layer.diagram.isHitTarget
+      ? layer.diagram.hitRadius || layer.diagram.outerRadius
+      : layer.diagram.outerRadius;
+
+    if (radius < innerRadius || radius > outerRadius) return false;
+
+    if (layer.diagram.shape === 'full') return true;
+
+    const [startAngle, endAngle] = this.getAngles(layer.diagram.shape);
+    return angle >= startAngle && angle <= endAngle;
+  }
+
+  private normalizeAngle(angle: number): number {
+    return (angle + 360) % 360;
   }
 
   private annularSectorPath(innerRadius: number, outerRadius: number, startAngle: number, endAngle: number): string {

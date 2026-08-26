@@ -156,7 +156,7 @@
       [attr.aria-disabled]="isDiagramLayerDisabled(layer.key) ? 'true' : null"
       pointer-events="auto"
       [attr.aria-label]="getLayerAriaLabel(layer.key)"
-      (click)="selectReferenceLayer(layer.key)"
+      (click)="selectReferenceLayerFromPointer($event, layer.key)"
       (keydown.enter)="selectReferenceLayer(layer.key)"
       (keydown.space)="onLayerKeydownSpace($event, layer.key)"
       (mouseenter)="setHoveredLayer(layer.key)"
@@ -178,7 +178,7 @@
       [attr.aria-disabled]="isDiagramLayerDisabled(layer.key) ? 'true' : null"
       role="button"
       [attr.aria-label]="getLayerAriaLabel(layer.key)"
-      (click)="selectReferenceLayer(layer.key)"
+      (click)="selectReferenceLayerFromPointer($event, layer.key)"
       (keydown.enter)="selectReferenceLayer(layer.key)"
       (keydown.space)="onLayerKeydownSpace($event, layer.key)"
       (mouseenter)="setHoveredLayer(layer.key)"
@@ -292,6 +292,6 @@
 
 </svg>
 
-<p class="diagram-note">
+<p class="diagram-note" *ngIf="showDiagramNote">
   {{ config.staticTexts?.diagramNotePrefix || '*' }} {{ config.layerFootnote }}
 </p>

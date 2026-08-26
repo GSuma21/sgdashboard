@@ -1,4 +1,4 @@
-<section class="outcomes-model">
+<section class="outcomes-model" [class.has-program-data]="hasProgramOutcomeData">
   <div class="outcomes-grid">
 
     <div class="sticky-stage">
@@ -9,6 +9,7 @@
           [selectedLayerKey]="selectedLayerKey"
           [hasProgramOutcomeData]="hasProgramOutcomeData"
           [disabledLayerKeys]="disabledLayerKeys"
+          [showDiagramNote]="!hasProgramOutcomeData"
           (layerSelect)="selectLayer($event)"
         ></app-outcomes-diagram>
 

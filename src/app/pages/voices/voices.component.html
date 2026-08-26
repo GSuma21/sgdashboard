@@ -75,7 +75,10 @@
         <div class="indicators-section line-chart-section">
           <div class="row justify-content-center">
             <div class="box-shadow width-spacing">
-              <app-line-chart [data]="section.data"></app-line-chart>
+              <app-line-chart
+                [data]="section.data"
+                [isCommunityLedInitiatives]="true"
+              ></app-line-chart>
             </div>
           </div>
         </div>

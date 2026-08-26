@@ -11,7 +11,6 @@
 
 .program-card-content {
   box-sizing: border-box;
-  margin-right: 0.938rem;
   overflow: hidden;
   width: 100%;
 }
@@ -19,9 +18,9 @@
 .program-mode-cards {
   box-sizing: border-box;
   display: grid;
-  gap: 2.25rem;
-  grid-template-columns: repeat(3, 11.25rem);
-  width: max-content;
+  gap: clamp(0.875rem, 1.6vw, 1.5rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
 }
 
 .program-mode-card {
@@ -38,7 +37,7 @@
   justify-content: start;
   min-width: 0;
   padding: 1.125rem 0.938rem;
-  width: 11.2rem;
+  width: 100%;
 }
 
 .program-card-carousel .program-mode-cards {
@@ -46,8 +45,9 @@
 }
 
 .program-mode-cards.partner-grid {
-  grid-template-columns: repeat(3, 9.625rem);
-  gap: 2.25rem;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, 11.25rem);
+  justify-content: start;
 }
 
 .program-mode-card.partner-card {
@@ -57,6 +57,7 @@
   box-shadow: 0 0.125rem 0.75rem var(--oc-card-shadow-soft);
   min-height: 12.625rem;
   padding: 1.125rem 0.875rem 0.875rem;
+  width: 11.25rem;
 }
 
 .program-card-nav {
@@ -100,11 +101,11 @@
 }
 
 .program-card-nav-prev {
-  left: -3.125rem;
+  left: -2.5rem;
 }
 
 .program-card-nav-next {
-  right: -3.125rem;
+  right: -2.5rem;
 }
 
 /* =========================================================
@@ -251,9 +252,7 @@
 
 @media (max-width: 58.75rem) {
   .program-mode-cards {
-    gap: 1.25rem;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    width: 100%;
+    gap: 1rem;
   }
 
   .program-mode-card {
@@ -298,8 +297,13 @@
   }
 
   .program-mode-cards.partner-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: minmax(0, 11.25rem) !important;
     gap: 0.875rem !important;
+    justify-content: center;
+  }
+
+  .program-mode-card.partner-card {
+    width: 100%;
   }
 
   .program-card-nav {

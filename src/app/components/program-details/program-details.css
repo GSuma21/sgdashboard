@@ -729,6 +729,23 @@ mat-icon {
 }
 
 .outcomes-full-width {
-  width: calc(100% + 15%);
-  margin-left: -7.5%;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.outcomes-section-heading {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 15px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+  .outcomes-full-width {
+    margin-top: 12px;
+  }
+
+  .outcomes-section-heading {
+    margin-bottom: 8px;
+  }
 }
