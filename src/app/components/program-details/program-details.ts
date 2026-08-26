@@ -8,11 +8,13 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
 import { LoaderRunnerService } from '../../services/loader-runner.service';
 import { MatDialog } from '@angular/material/dialog';
+import { OutcomesModelComponent } from '../outcomes-model/outcomes-model.component';
+import { buildProgramOutcomeDataFromFramework } from '../outcomes-model/outcomes-model.config';
 import { programDetailsConfig } from '../../../config/programDetailsConfig';
 
 @Component({
   selector: 'app-program-details',
-  imports: [CommonModule, RouterModule,MatIcon],
+  imports: [CommonModule, RouterModule,MatIcon, OutcomesModelComponent],
   templateUrl: './program-details.html',
   styleUrl: './program-details.css'
 })
@@ -26,7 +28,6 @@ export class ProgramDetails {
   'var(--tertiary-color-light)'
 ];
 
-
   @ViewChild('galleryTrack') galleryTrack!: ElementRef;
   @ViewChild('downloadDialog') downloadDialog!: TemplateRef<any>;
 
@@ -34,13 +35,13 @@ export class ProgramDetails {
     this.onResize();
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as { report: any };
-    this.programData = state?.report;  
+    this.programData = state?.report || {};
   }
   currentSlide = 0;
   public displayImages: string[] = [];
   private transitionEndListener: any;
   visibleSlides = 4; // how many images visible at once
-  partnerDetails: any
+  partnerDetails: any = []
 
   @HostListener('window:resize', ['$event'])
   onResize(event?: any) {
@@ -75,7 +76,7 @@ export class ProgramDetails {
       this.partnerDetails = data;
       const partners = data.find((item: { type: string; }) => item.type === "partner-logos")?.partners || [];
       this.partnerDetails = partners.filter((p: { name: string; }) =>
-        this.programData.name_of_the_partner_leading_the_program.includes(p.name)
+        (this.programData.name_of_the_partner_leading_the_program || []).includes(p.name)
       );
     }).catch((error: any) => {
       console.error('Error loading page data:', error);
@@ -121,6 +122,13 @@ export class ProgramDetails {
 
   goBack(): void {
     this.location.back(); // navigates to the previous page
+  }
+
+  // Hides the outcomes-model section entirely when this program's framework has no
+  // real outcomes/evidences (e.g. framework: []), instead of falling back to the
+  // generic landing-style narrative view.
+  get hasOutcomesData(): boolean {
+    return !!buildProgramOutcomeDataFromFramework(this.programData?.framework);
   }
 
   get impactText(): string {

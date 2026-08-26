@@ -102,7 +102,7 @@
                 <div *ngIf="programData.learn_how_micro_improvements_are_contributing_to_mega_impact__impact_achieved" class="details-section impact-section">
                 <div class="impact-content">
                     <div class="impact-header">
-                        <h3 class="impact-title">
+                        <!-- <h3 class="impact-title">
                             Learn how Micro Improvements are contributing to mega impact.
                         </h3>
                         @if(programData.download_to_read_more) {
@@ -110,19 +110,29 @@
                             <span>Click here to read more</span>
                             <mat-icon>arrow_drop_down</mat-icon>
                         </button>
-                        }
+
+                        } -->
+                         
                     </div>
-                    <div class="impact-cards" *ngIf="impactCardList.length">
+                    
+                    <!-- <div class="impact-cards" *ngIf="impactCardList.length">
                         <div class="impact-card" *ngFor="let item of impactCardList; let i = index">
                             <div class="icon" [style.background-color]="colors[i % colors.length]"></div>
                             <div>
                                 <p class="card-text">{{ item }}</p>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
+                
             </div>
             }
+            <div class="outcomes-full-width" *ngIf="hasOutcomesData">
+  <app-outcomes-model
+    [framework]="programData?.framework">
+  </app-outcomes-model>
+</div>
+
             <div *ngIf="displayImages.length" class="details-section gallery-block">
             <h3 class="heading">Gallery</h3>
             <section class="gallery-section">

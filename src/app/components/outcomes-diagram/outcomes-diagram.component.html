@@ -1,0 +1,297 @@
+<svg
+  class="layer-diagram"
+  viewBox="-56 -56 712 712"
+  role="img"
+  [attr.aria-label]="config.ariaLabels.diagram"
+>
+
+  <defs>
+
+    <radialGradient [attr.id]="gradientId('netRest')" cx="50%" cy="50%" r="50%">
+      <stop
+        *ngFor="let stop of restGlowStops; trackBy: trackByIndex"
+        [attr.offset]="stop.offset"
+        [attr.stop-color]="cssVar('--oc-diagram-rest-glow')"
+        [attr.stop-opacity]="stop.opacity"
+      />
+    </radialGradient>
+
+    <radialGradient [attr.id]="gradientId('netActive')" cx="50%" cy="50%" r="50%">
+      <stop
+        *ngFor="let stop of activeGlowStops; trackBy: trackByIndex"
+        [attr.offset]="stop.offset"
+        [attr.stop-color]="cssVar('--oc-accent-red')"
+        [attr.stop-opacity]="stop.opacity"
+      />
+    </radialGradient>
+
+    <radialGradient [attr.id]="gradientId('netMaskGrad')" cx="50%" cy="50%" r="50%">
+      <stop
+        *ngFor="let stop of maskGradientStops; trackBy: trackByIndex"
+        [attr.offset]="stop.offset"
+        [attr.stop-color]="cssVar(stop.colorVar)"
+      />
+    </radialGradient>
+
+    <!-- Recolors an icon to its layer's own color on hover/select, regardless of the
+         source SVG's own fill — feComposite clips the flood color to the icon's alpha shape. -->
+    <filter
+      *ngFor="let layer of layers; trackBy: trackByLayerKey"
+      [attr.id]="gradientId('icon-tint-' + layer.key)"
+      x="-20%"
+      y="-20%"
+      width="140%"
+      height="140%"
+    >
+      <feFlood [attr.flood-color]="layer.color" result="flood" />
+      <feComposite in="flood" in2="SourceGraphic" operator="in" />
+    </filter>
+
+    <mask [attr.id]="gradientId('netMask')">
+      <circle
+        cx="300"
+        cy="300"
+        r="348"
+        [attr.fill]="gradientUrl('netMaskGrad')"
+      />
+    </mask>
+
+    <filter
+      [attr.id]="gradientId('soft')"
+      x="-40%"
+      y="-40%"
+      width="180%"
+      height="180%"
+    >
+      <feGaussianBlur stdDeviation="8" />
+    </filter>
+
+  </defs>
+
+  <circle
+    id="outerGlow"
+    cx="300"
+    cy="300"
+    [attr.r]="outerLayer.diagram.outerRadius"
+    [attr.fill]="outerGlowFill"
+    [style.opacity]="outerLayerOpacity"
+    [attr.filter]="gradientUrl('soft')"
+  >
+  </circle>
+
+  <g
+    id="outerWeb"
+    [attr.mask]="gradientUrl('netMask')"
+    pointer-events="none"
+    [style.opacity]="outerLayerOpacity"
+  >
+
+    <g
+      id="webBack"
+      [attr.stroke]="webBackColor"
+      [attr.fill]="webBackColor"
+      stroke-width="0.45"
+    >
+
+      <line
+        *ngFor="let line of webBackLines; trackBy: trackByIndex"
+        [attr.x1]="line.x1"
+        [attr.y1]="line.y1"
+        [attr.x2]="line.x2"
+        [attr.y2]="line.y2"
+      ></line>
+
+      <circle
+        *ngFor="let dot of webBackDots; trackBy: trackByIndex"
+        [attr.cx]="dot.cx"
+        [attr.cy]="dot.cy"
+        [attr.r]="dot.r"
+        stroke="none"
+      ></circle>
+
+    </g>
+
+    <g
+      id="webFront"
+      [attr.stroke]="webFrontColor"
+      [attr.fill]="webFrontColor"
+      stroke-width="0.55"
+    >
+
+      <line
+        *ngFor="let line of webFrontLines; trackBy: trackByIndex"
+        [attr.x1]="line.x1"
+        [attr.y1]="line.y1"
+        [attr.x2]="line.x2"
+        [attr.y2]="line.y2"
+      ></line>
+
+      <circle
+        *ngFor="let dot of webFrontDots; trackBy: trackByIndex"
+        [attr.cx]="dot.cx"
+        [attr.cy]="dot.cy"
+        [attr.r]="dot.r"
+      ></circle>
+
+    </g>
+
+  </g>
+
+  <ng-container *ngFor="let layer of reversedLayers; trackBy: trackByLayerKey">
+
+    <circle
+      *ngIf="layer.diagram.shape === 'full'"
+      class="seg reference-seg"
+      [style.stroke-width]="getReferenceLayerStrokeWidth(layer.key) + 'px'"
+      [class.disabled]="isDiagramLayerDisabled(layer.key)"
+      [class.hit-target]="layer.diagram.isHitTarget"
+      [attr.data-layer]="getLayerDataAttr(layer)"
+      cx="300"
+      cy="300"
+      [attr.r]="layer.diagram.isHitTarget ? layer.diagram.hitRadius : layer.diagram.outerRadius"
+      [attr.fill]="layer.diagram.isHitTarget ? 'transparent' : getReferenceLayerFill(layer.key)"
+      [attr.stroke]="layer.diagram.isHitTarget ? 'none' : getReferenceLayerStroke(layer.key)"
+      role="button"
+      [attr.tabindex]="isDiagramLayerDisabled(layer.key) ? -1 : 0"
+      [attr.aria-disabled]="isDiagramLayerDisabled(layer.key) ? 'true' : null"
+      pointer-events="auto"
+      [attr.aria-label]="getLayerAriaLabel(layer.key)"
+      (click)="selectReferenceLayer(layer.key)"
+      (keydown.enter)="selectReferenceLayer(layer.key)"
+      (keydown.space)="onLayerKeydownSpace($event, layer.key)"
+      (mouseenter)="setHoveredLayer(layer.key)"
+      (mouseleave)="clearHoveredLayer()"
+    >
+    </circle>
+
+    <path
+      *ngIf="layer.diagram.shape !== 'full'"
+      class="seg reference-seg"
+      [style.stroke-width]="getReferenceLayerStrokeWidth(layer.key) + 'px'"
+      [class.disabled]="isDiagramLayerDisabled(layer.key)"
+      [attr.data-layer]="getLayerDataAttr(layer)"
+      [attr.d]="getLayerPath(layer)"
+      [attr.fill]="getReferenceLayerFill(layer.key)"
+      [attr.stroke]="getReferenceLayerStroke(layer.key)"
+      [attr.pointer-events]="'auto'"
+      [attr.tabindex]="isDiagramLayerDisabled(layer.key) ? -1 : 0"
+      [attr.aria-disabled]="isDiagramLayerDisabled(layer.key) ? 'true' : null"
+      role="button"
+      [attr.aria-label]="getLayerAriaLabel(layer.key)"
+      (click)="selectReferenceLayer(layer.key)"
+      (keydown.enter)="selectReferenceLayer(layer.key)"
+      (keydown.space)="onLayerKeydownSpace($event, layer.key)"
+      (mouseenter)="setHoveredLayer(layer.key)"
+      (mouseleave)="clearHoveredLayer()"
+    >
+    </path>
+
+  </ng-container>
+
+  <ng-container *ngFor="let layer of reversedLayers; trackBy: trackByLayerKey">
+    <g
+      *ngIf="layer.key !== innerLayer.key"
+      class="iconwrap"
+      [class.on]="isLayerIconActive(layer.key)"
+      [class.disabled]="isDiagramLayerDisabled(layer.key)"
+      [attr.data-icon]="layer.key"
+    >
+      <image
+        [attr.href]="layer.diagram.icon.value"
+        [attr.x]="layer.diagram.iconX"
+        [attr.y]="layer.diagram.iconY"
+        [attr.width]="layer.diagram.icon.width"
+        [attr.height]="layer.diagram.icon.height"
+        preserveAspectRatio="xMidYMid meet"
+        pointer-events="none"
+        [attr.filter]="isLayerIconActive(layer.key) ? gradientUrl('icon-tint-' + layer.key) : null"
+      />
+    </g>
+  </ng-container>
+
+  <g
+    class="iconwrap inner-layer-icon"
+    [class.on]="isLayerIconActive(innerLayer.key)"
+    [class.disabled]="isDiagramLayerDisabled(innerLayer.key)"
+    [attr.data-icon]="innerLayer.key"
+  >
+
+    <image
+      [attr.href]="innerLayer.diagram.icon.value"
+      [attr.x]="innerLayer.diagram.iconX"
+      [attr.y]="innerLayer.diagram.iconY"
+      [attr.width]="innerLayer.diagram.icon.width"
+      [attr.height]="innerLayer.diagram.icon.height"
+      preserveAspectRatio="xMidYMid meet"
+      pointer-events="none"
+      [attr.filter]="isLayerIconActive(innerLayer.key) ? gradientUrl('icon-tint-' + innerLayer.key) : null"
+    />
+
+    <text
+      [attr.x]="getDiagramText(innerLayer.key)?.x"
+      [attr.y]="getDiagramText(innerLayer.key)?.y"
+      [attr.fill]="getDiagramLabelColor(innerLayer.key)"
+      [attr.font-size]="getDiagramText(innerLayer.key)?.fontSize"
+      [attr.font-weight]="getDiagramText(innerLayer.key)?.fontWeight"
+      text-anchor="middle"
+      dominant-baseline="middle"
+      pointer-events="none"
+    >
+      {{ getLayerDiagramLabel(innerLayer.key) }}
+    </text>
+
+  </g>
+
+  <ng-container *ngFor="let layer of layers; trackBy: trackByLayerKey">
+    <ng-container *ngIf="shouldShowDiagramText(layer)">
+
+      <ng-container *ngIf="layer.diagram.curvedLabelPath; else straightLabel">
+
+        <path
+          [attr.id]="labelArcId(layer.key)"
+          fill="none"
+          [attr.d]="layer.diagram.curvedLabelPath"
+        ></path>
+
+        <text
+          class="rlabel"
+          [attr.data-lab-for]="getLayerLabelForAttr(layer)"
+          [attr.fill]="getDiagramLabelColor(layer.key)"
+          [attr.font-size]="getDiagramText(layer.key)?.fontSize"
+          [attr.font-weight]="getDiagramText(layer.key)?.fontWeight"
+        >
+          <textPath
+            [attr.href]="'#' + labelArcId(layer.key)"
+            startOffset="50%"
+            text-anchor="middle"
+          >
+            {{ getLayerDiagramLabel(layer.key) }}
+          </textPath>
+        </text>
+
+      </ng-container>
+
+      <ng-template #straightLabel>
+        <text
+          class="rlabel"
+          [attr.data-lab-for]="getLayerLabelForAttr(layer)"
+          [attr.x]="getDiagramText(layer.key)?.x"
+          [attr.y]="getDiagramText(layer.key)?.y"
+          [attr.fill]="getDiagramLabelColor(layer.key)"
+          [attr.font-size]="getDiagramText(layer.key)?.fontSize"
+          [attr.font-weight]="getDiagramText(layer.key)?.fontWeight"
+          text-anchor="middle"
+          dominant-baseline="middle"
+        >
+          {{ getLayerDiagramLabel(layer.key) }}
+        </text>
+      </ng-template>
+
+    </ng-container>
+  </ng-container>
+
+</svg>
+
+<p class="diagram-note">
+  {{ config.staticTexts?.diagramNotePrefix || '*' }} {{ config.layerFootnote }}
+</p>
