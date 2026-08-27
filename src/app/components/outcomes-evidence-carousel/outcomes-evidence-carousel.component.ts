@@ -30,8 +30,15 @@ export class OutcomesEvidenceCarouselComponent {
   pageIndex = 0;
   perPage = this.cardsPerPage;
 
+  tooltipText: string | null = null;
+  tooltipTop = 0;
+  tooltipLeft = 0;
+  tooltipVisible = false;
+
   @HostListener('window:resize')
   onWindowResize(): void {
+    this.hideTooltip();
+
     const newPerPage = this.cardsPerPage;
 
     if (this.perPage !== newPerPage) {
@@ -111,14 +118,42 @@ export class OutcomesEvidenceCarouselComponent {
     }
   }
 
-  showTagTitleIfClipped(event: MouseEvent, text: string): void {
-    const el = event.currentTarget as HTMLElement;
+  isTagTruncated(text: string, limit = 18): boolean {
+    return !!text && text.length > limit;
+  }
 
-    if (el.scrollWidth > el.clientWidth) {
-      el.setAttribute('title', text);
+  showTooltip(event: MouseEvent, text: string): void {
+    const target = event.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+    this.tooltipText = text;
+    this.tooltipTop = rect.top - 8;
+    this.tooltipLeft = rect.left + rect.width / 2;
+    this.tooltipVisible = true;
+  }
+
+  hideTooltip(): void {
+    this.tooltipVisible = false;
+  }
+
+  toggleTooltipMobile(event: MouseEvent, text: string): void {
+    if (this.tooltipVisible && this.tooltipText === text) {
+      this.hideTooltip();
     } else {
-      el.removeAttribute('title');
+      this.showTooltip(event, text);
     }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.evidence-tag')) {
+      this.hideTooltip();
+    }
+  }
+
+  @HostListener('window:scroll')
+  onScroll(): void {
+    this.hideTooltip();
   }
 
   trackByIndex(index: number): number {

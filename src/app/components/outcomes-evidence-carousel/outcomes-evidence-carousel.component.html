@@ -73,7 +73,10 @@
 
           <span
             class="evidence-tag"
-            (mouseenter)="showTagTitleIfClipped($event, evidence.tag)"
+            [class.has-tooltip]="isTagTruncated(evidence.tag)"
+            (mouseenter)="isTagTruncated(evidence.tag) && showTooltip($event, evidence.tag)"
+            (mouseleave)="hideTooltip()"
+            (click)="isTagTruncated(evidence.tag) && toggleTooltipMobile($event, evidence.tag)"
           >
             {{ evidence.tag }}
           </span>
@@ -116,6 +119,15 @@
       />
     </button>
 
+  </div>
+
+  <div
+    class="global-tooltip"
+    *ngIf="tooltipVisible"
+    [style.top.px]="tooltipTop"
+    [style.left.px]="tooltipLeft"
+  >
+    {{ tooltipText }}
   </div>
 
 </section>

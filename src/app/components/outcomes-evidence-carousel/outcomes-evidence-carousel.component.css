@@ -131,6 +131,44 @@
   white-space: nowrap;
 }
 
+.evidence-tag.has-tooltip {
+  cursor: pointer;
+}
+
+/* =========================================================
+   GLOBAL TOOLTIP (full text for tags clipped by the ellipsis)
+   ========================================================= */
+
+.global-tooltip {
+  background: var(--oc-tooltip-bg);
+  border-radius: 0.375rem;
+  box-shadow: 0 0.25rem 0.875rem var(--oc-tooltip-shadow);
+  color: var(--oc-white);
+  font-size: 0.75rem;
+  font-weight: 600;
+  left: 0;
+  line-height: 1.35;
+  max-width: 16.25rem;
+  padding: 0.375rem 0.625rem;
+  pointer-events: none;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  transform: translate(-50%, -100%);
+  white-space: normal;
+  z-index: 9999;
+}
+
+.global-tooltip::after {
+  border: 0.313rem solid transparent;
+  border-top-color: var(--oc-tooltip-bg);
+  content: '';
+  left: 50%;
+  position: absolute;
+  top: 100%;
+  transform: translateX(-50%);
+}
+
 /* =========================================================
    EVIDENCE NAVIGATION
    ========================================================= */
@@ -330,6 +368,11 @@
   .evidence-scrollbar {
     height: 0.188rem;
     margin-top: 0.625rem;
+  }
+
+  .global-tooltip {
+    font-size: 0.688rem;
+    max-width: min(16rem, calc(100vw - 2rem));
   }
 }
 

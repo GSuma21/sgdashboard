@@ -318,14 +318,11 @@
     box-sizing: border-box;
     display: grid;
     gap: 0.125rem 0.625rem;
-
     grid-template-areas:
       'icon tag  tag'
       'icon name name'
       'icon meta meta';
-
     grid-template-columns: 2rem minmax(0, 1fr) minmax(0, 1fr);
-
     min-height: 3.75rem;
     min-width: 0;
     padding: 0.5rem;
@@ -464,10 +461,9 @@
   /* Evidence */
 
   .evidence-card {
-    grid-template-columns: 1.875rem minmax(0, 1fr) minmax(0, 1fr);
-
     align-items: center;
     gap: 0.125rem 0.5rem;
+    grid-template-columns: 1.875rem minmax(0, 1fr) minmax(0, 1fr);
   }
 
   .evidence-name {
