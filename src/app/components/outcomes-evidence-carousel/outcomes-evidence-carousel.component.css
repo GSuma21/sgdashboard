@@ -234,7 +234,7 @@
   }
 
   .evidence-carousel {
-    padding: 0 2.375rem;
+    padding: 0 3rem;
   }
 
   .evidence-content {
@@ -320,11 +320,11 @@
   }
 
   .evidence-nav-prev {
-    left: 0;
+    left: 0.25rem;
   }
 
   .evidence-nav-next {
-    right: 0;
+    right: 0.25rem;
   }
 
   .evidence-scrollbar {
@@ -335,16 +335,8 @@
 
 @media (max-width: 35rem) {
   .evidence-carousel {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
-  .evidence-nav-prev {
-    left: 0;
-  }
-
-  .evidence-nav-next {
-    right: 0;
+    padding-left: 2.875rem;
+    padding-right: 2.875rem;
   }
 
   .evidence-card {
@@ -395,8 +387,8 @@
 @media (max-width: 23.5rem) {
   .evidence-carousel {
     display: block;
-    padding-left: 1.75rem;
-    padding-right: 1.75rem;
+    padding-left: 2.625rem;
+    padding-right: 2.625rem;
   }
 
   .evidence-nav {

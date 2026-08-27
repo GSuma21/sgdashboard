@@ -276,7 +276,7 @@
 @media (max-width: 47.5rem) {
   .program-card-carousel {
     margin-bottom: 1.5rem;
-    padding: 0 2.375rem;
+    padding: 0 3rem;
   }
 
   .program-card-content {
@@ -322,11 +322,11 @@
   }
 
   .program-card-nav-prev {
-    left: 0;
+    left: 0.25rem;
   }
 
   .program-card-nav-next {
-    right: 0;
+    right: 0.25rem;
   }
 
   .program-mode-tag {
@@ -360,24 +360,16 @@
 
 @media (max-width: 35rem) {
   .program-card-carousel {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
-  .program-card-nav-prev {
-    left: 0;
-  }
-
-  .program-card-nav-next {
-    right: 0;
+    padding-left: 2.875rem;
+    padding-right: 2.875rem;
   }
 }
 
 @media (max-width: 23.5rem) {
   .program-card-carousel {
     display: block;
-    padding-left: 1.75rem;
-    padding-right: 1.75rem;
+    padding-left: 2.625rem;
+    padding-right: 2.625rem;
   }
 
   .program-card-nav {

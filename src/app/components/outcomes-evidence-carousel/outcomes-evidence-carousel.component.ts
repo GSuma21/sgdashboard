@@ -111,6 +111,16 @@ export class OutcomesEvidenceCarouselComponent {
     }
   }
 
+  showTagTitleIfClipped(event: MouseEvent, text: string): void {
+    const el = event.currentTarget as HTMLElement;
+
+    if (el.scrollWidth > el.clientWidth) {
+      el.setAttribute('title', text);
+    } else {
+      el.removeAttribute('title');
+    }
+  }
+
   trackByIndex(index: number): number {
     return index;
   }
