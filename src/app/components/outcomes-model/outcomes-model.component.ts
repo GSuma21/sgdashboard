@@ -200,12 +200,8 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
     return this.shouldShowProgramPanel ? this.config.programColor : this.selectedLayer.color;
   }
 
-  // Mirrors .program-layer-tile's active-state contrast rule (see outcomes-model.component.css):
-  // the base "students"/programColor accent is a light orange that needs dark text, every
-  // other layer color is dark enough for white text.
   get activeTextColor(): string {
-    const isOrangeAccent = this.shouldShowProgramPanel || this.selectedLayerKey === 'students';
-    return isOrangeAccent ? 'var(--oc-black)' : 'var(--oc-white)';
+    return this.getReadableTextColor(this.activePanelColor);
   }
 
   get hasProgramOutcomeData(): boolean {
@@ -465,5 +461,20 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
 
   getLayerByKey(key: OutcomesLayerKey | string): OutcomesLayerConfig | undefined {
     return this.layers.find((layer) => layer.key === key);
+  }
+
+  private getReadableTextColor(color: string): string {
+    const hex = color?.trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i)?.[1];
+    if (!hex) return 'var(--oc-white)';
+
+    const normalizedHex = hex.length === 3
+      ? hex.split('').map((char) => char + char).join('')
+      : hex;
+    const red = parseInt(normalizedHex.slice(0, 2), 16);
+    const green = parseInt(normalizedHex.slice(2, 4), 16);
+    const blue = parseInt(normalizedHex.slice(4, 6), 16);
+    const brightness = (red * 299 + green * 587 + blue * 114) / 1000;
+
+    return brightness > 150 ? 'var(--oc-black)' : 'var(--oc-white)';
   }
 }

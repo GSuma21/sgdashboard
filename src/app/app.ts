@@ -15,7 +15,7 @@ import { filter } from 'rxjs';
     <app-loader></app-loader>
     <header class="app-header" *ngIf="showHeader">
       <nav class="container">
-        <a href="https://shikshagraha.org/" target="_blank" class="logo"><img src='assets/icons/main_logo.svg'></a>
+        <a href="https://shikshagraha.org/" target="_blank" class="logo"> <img src="https://shikshagraha.org/wp-content/themes/twentytwentythree-child/images/Group-22x.png" loading="lazy" sizes="(max-width: 479px) 85vw, 200px" srcset="https://shikshagraha.org/wp-content/themes/twentytwentythree-child/images/Group-22x-p-500.png" alt="" class="image-12"></a>
 
         <button
           class="menu-toggle"
