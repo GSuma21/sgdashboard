@@ -10,7 +10,7 @@ import { OutcomesListItem } from '../outcomes-model/outcomes-model.config';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './outcomes-info-modal.component.html',
-  styleUrls: ['./outcomes-info-modal.component.css'],
+  styleUrls: ['./outcomes-info-modal.component.scss'],
 })
 export class OutcomesInfoModalComponent implements OnInit, OnDestroy {
   @Input() title = '';

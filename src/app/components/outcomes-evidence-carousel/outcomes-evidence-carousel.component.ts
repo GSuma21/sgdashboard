@@ -15,7 +15,7 @@ import {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './outcomes-evidence-carousel.component.html',
-  styleUrls: ['./outcomes-evidence-carousel.component.css'],
+  styleUrls: ['./outcomes-evidence-carousel.component.scss'],
 })
 export class OutcomesEvidenceCarouselComponent {
   @Input() evidences: ProgramEvidenceResource[] = [];

@@ -38,8 +38,8 @@ import {
   ],
   templateUrl: './outcomes-model.component.html',
   styleUrls: [
-    './outcomes-model.component.css',
-    './outcomes-model.component.responsive.css',
+    './outcomes-model.component.scss',
+    './outcomes-model.component.responsive.scss',
   ],
 })
 export class OutcomesModelComponent implements OnDestroy, OnInit {
@@ -203,7 +203,7 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
     return this.shouldShowProgramPanel ? this.config.programColor : this.selectedLayer.color;
   }
 
-  // Mirrors .program-layer-tile's active-state contrast rule (see outcomes-model.component.css):
+  // Mirrors .program-layer-tile's active-state contrast rule (see outcomes-model.component.scss):
   // the base "students"/programColor accent is a light orange that needs dark text, every
   // other layer color is dark enough for white text.
   get activeTextColor(): string {
