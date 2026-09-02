@@ -55,6 +55,13 @@
   transition: fill 0.3s ease;
 }
 
+.icon-color-filter {
+  x: 0;
+  y: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .iconwrap {
   filter: grayscale(1) opacity(0.45);
   transition: filter 0.35s ease, opacity 0.35s ease;

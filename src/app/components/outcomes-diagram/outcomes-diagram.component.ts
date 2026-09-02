@@ -16,6 +16,8 @@ import {
   OutcomesModelConfig,
 } from '../outcomes-model/outcomes-model.config';
 
+type LayerVisualState = 'active' | 'muted' | 'disabled' | 'rest';
+
 // Renders the outer ring diagram (the SVG) for OutcomesModelComponent. Pulled into its
 // own component so the large SVG markup and its geometry/color logic don't live inside
 // a general-purpose panel component's template and class.
@@ -128,10 +130,16 @@ export class OutcomesDiagramComponent {
       !this.isLayerHovered(layerKey);
   }
 
-  getLayerIconFilter(layerKey: OutcomesLayerKey): string | null {
-    if (this.isDiagramLayerDisabled(layerKey)) return null;
-    if (this.isLayerIconActive(layerKey)) return this.gradientUrl('icon-tint-' + layerKey);
-    if (this.isLayerAvailableInactive(layerKey)) return this.gradientUrl('icon-muted-tint-' + layerKey);
+  getLayerVisualState(layerKey: OutcomesLayerKey): LayerVisualState {
+    if (this.isDiagramLayerDisabled(layerKey)) return 'disabled';
+    if (this.isLayerIconActive(layerKey)) return 'active';
+    if (this.hasProgramOutcomeData) return 'muted';
+    return 'rest';
+  }
+
+  getLayerIconFilter(layerKey: OutcomesLayerKey, state = this.getLayerVisualState(layerKey)): string | null {
+    if (state === 'active') return this.gradientUrl('icon-tint-' + layerKey);
+    if (state === 'muted') return this.gradientUrl('icon-muted-tint-' + layerKey);
     return null;
   }
 

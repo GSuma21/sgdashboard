@@ -37,11 +37,8 @@
          source SVG's own fill — feComposite clips the flood color to the icon's alpha shape. -->
     <filter
       *ngFor="let layer of layers; trackBy: trackByLayerKey"
+      class="icon-color-filter"
       [attr.id]="gradientId('icon-tint-' + layer.key)"
-      x="-20%"
-      y="-20%"
-      width="140%"
-      height="140%"
     >
       <feFlood [attr.flood-color]="layer.color" result="flood" />
       <feComposite in="flood" in2="SourceGraphic" operator="in" />
@@ -49,11 +46,8 @@
 
     <filter
       *ngFor="let layer of layers; trackBy: trackByLayerKey"
+      class="icon-color-filter"
       [attr.id]="gradientId('icon-muted-tint-' + layer.key)"
-      x="-20%"
-      y="-20%"
-      width="140%"
-      height="140%"
     >
       <feFlood [attr.flood-color]="layer.color" flood-opacity="0.45" result="flood" />
       <feComposite in="flood" in2="SourceGraphic" operator="in" />
@@ -201,45 +195,47 @@
   </ng-container>
 
   <ng-container *ngFor="let layer of reversedLayers; trackBy: trackByLayerKey">
-    <g
-      *ngIf="layer.key !== innerLayer.key"
-      class="iconwrap"
-      [class.on]="isLayerIconActive(layer.key)"
-      [class.muted]="isLayerAvailableInactive(layer.key)"
-      [class.disabled]="isDiagramLayerDisabled(layer.key)"
-      [attr.data-icon]="layer.key"
-    >
-      <image
-        [attr.href]="layer.diagram.icon.value"
-        [attr.x]="layer.diagram.iconX"
-        [attr.y]="layer.diagram.iconY"
-        [attr.width]="layer.diagram.icon.width"
-        [attr.height]="layer.diagram.icon.height"
-        preserveAspectRatio="xMidYMid meet"
-        pointer-events="none"
-        [attr.filter]="getLayerIconFilter(layer.key)"
-      />
-    </g>
+    <ng-container *ngIf="layer.key !== innerLayer.key && getLayerVisualState(layer.key) as layerState">
+      <g
+        class="iconwrap"
+        [class.on]="layerState === 'active'"
+        [class.muted]="layerState === 'muted'"
+        [class.disabled]="layerState === 'disabled'"
+        [attr.data-icon]="layer.key"
+      >
+        <image
+          [attr.href]="layer.diagram.icon.value"
+          [attr.x]="layer.diagram.iconX"
+          [attr.y]="layer.diagram.iconY"
+          [attr.width]="layer.diagram.icon.width"
+          [attr.height]="layer.diagram.icon.height"
+          preserveAspectRatio="xMidYMid meet"
+          pointer-events="none"
+          [attr.filter]="getLayerIconFilter(layer.key, layerState)"
+        />
+      </g>
+    </ng-container>
   </ng-container>
 
-  <g
-    class="iconwrap inner-layer-icon"
-    [class.on]="isLayerIconActive(innerLayer.key)"
-    [class.muted]="isLayerAvailableInactive(innerLayer.key)"
-    [class.disabled]="isDiagramLayerDisabled(innerLayer.key)"
-    [attr.data-icon]="innerLayer.key"
-  >
+  <ng-container *ngIf="getLayerVisualState(innerLayer.key) as innerLayerState">
+    <g
+      class="iconwrap inner-layer-icon"
+      [class.on]="innerLayerState === 'active'"
+      [class.muted]="innerLayerState === 'muted'"
+      [class.disabled]="innerLayerState === 'disabled'"
+      [attr.data-icon]="innerLayer.key"
+    >
 
-    <image
-      [attr.href]="innerLayer.diagram.icon.value"
-      [attr.x]="innerLayer.diagram.iconX"
-      [attr.y]="innerLayer.diagram.iconY"
-      [attr.width]="innerLayer.diagram.icon.width"
-      [attr.height]="innerLayer.diagram.icon.height"
-      preserveAspectRatio="xMidYMid meet"
-      pointer-events="none"
-      [attr.filter]="getLayerIconFilter(innerLayer.key)"
-    />
+      <image
+        [attr.href]="innerLayer.diagram.icon.value"
+        [attr.x]="innerLayer.diagram.iconX"
+        [attr.y]="innerLayer.diagram.iconY"
+        [attr.width]="innerLayer.diagram.icon.width"
+        [attr.height]="innerLayer.diagram.icon.height"
+        preserveAspectRatio="xMidYMid meet"
+        pointer-events="none"
+        [attr.filter]="getLayerIconFilter(innerLayer.key, innerLayerState)"
+      />
 
     <text
       [attr.x]="getDiagramText(innerLayer.key)?.x"
@@ -254,7 +250,8 @@
       {{ getLayerDiagramLabel(innerLayer.key) }}
     </text>
 
-  </g>
+    </g>
+  </ng-container>
 
   <ng-container *ngFor="let layer of layers; trackBy: trackByLayerKey">
     <ng-container *ngIf="shouldShowDiagramText(layer)">

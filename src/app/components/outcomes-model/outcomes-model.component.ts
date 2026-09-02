@@ -463,6 +463,7 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
     return this.layers.find((layer) => layer.key === key);
   }
 
+  // Keeps text readable on dynamic layer-color backgrounds.
   private getReadableTextColor(color: string): string {
     const hex = color?.trim().match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i)?.[1];
     if (!hex) return 'var(--oc-white)';
