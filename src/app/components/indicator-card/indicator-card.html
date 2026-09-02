@@ -4,7 +4,7 @@
     <div class="divider"></div>
   <div class="indicator-container">
     <h3 class="indicator-value">{{ value }}</h3>
-    <p class="indicator-label">{{ label }}</p>
+    <p class="indicator-label" [class.indicator-label--inline]="label.includes('(INR)')">{{ label }}</p>
   </div>
 </div>
 </div>

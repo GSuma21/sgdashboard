@@ -8,12 +8,13 @@
 
 .landing-container {
     font-family: var(--sg-font-body);
+    background: var(--oc-white);
 }
 
 
 .program-container {
     padding: 0 7.5%;
-    background-color: #eaf7ff;
+    background-color: var(--oc-white);
 }
 
 .program-model-container {
@@ -212,7 +213,7 @@ h5 {
     align-items: center;
     justify-content: center;
     position: relative;
-    background: #eaf6ff;
+    background: #fff;
     border-radius: 8px;
     padding: 6px 0;
 }
@@ -316,7 +317,7 @@ h5 {
     position: sticky;
     top: 80px;
     z-index: 20;
-    background-color: #eaf7ff;
+    background-color: var(--oc-white);
     padding: 0.5rem 7.5%;
 }
   
@@ -382,7 +383,7 @@ h5 {
 .partners {
     text-align: left;
     padding: 0;
-    background-color: #eaf7ff;
+    background-color: var(--oc-white);
 }
 
 .partners h3 {
