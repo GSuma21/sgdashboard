@@ -204,7 +204,7 @@
         [attr.data-icon]="layer.key"
       >
         <image
-          [attr.href]="layer.diagram.icon.value"
+          [attr.href]="getLayerIconHref(layer)"
           [attr.x]="layer.diagram.iconX"
           [attr.y]="layer.diagram.iconY"
           [attr.width]="layer.diagram.icon.width"
@@ -227,7 +227,7 @@
     >
 
       <image
-        [attr.href]="innerLayer.diagram.icon.value"
+        [attr.href]="getLayerIconHref(innerLayer)"
         [attr.x]="innerLayer.diagram.iconX"
         [attr.y]="innerLayer.diagram.iconY"
         [attr.width]="innerLayer.diagram.icon.width"

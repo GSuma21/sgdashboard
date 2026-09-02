@@ -51,6 +51,10 @@ export class OutcomesInfoModalComponent implements OnInit, OnDestroy {
     this.closed.emit();
   }
 
+  get isImageIcon(): boolean {
+    return /^(https?:\/\/|\/?assets\/|\.\/assets\/)/.test(this.icon || '');
+  }
+
   @HostListener('document:keydown.escape')
   onEscapeKeydown(): void {
     this.close();

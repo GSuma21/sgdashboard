@@ -18,9 +18,19 @@
     </button>
 
     <div class="info-modal-heading" [style.color]="color">
+      <img
+        *ngIf="isImageIcon; else materialIcon"
+        class="info-modal-heading-image"
+        [src]="icon"
+        alt=""
+        aria-hidden="true"
+      />
+
+      <ng-template #materialIcon>
       <span class="material-icons info-modal-heading-icon" aria-hidden="true">
         {{ icon }}
       </span>
+      </ng-template>
 
       <div>
         <h3 [id]="titleId" [style.color]="color">

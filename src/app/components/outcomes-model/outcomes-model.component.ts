@@ -108,6 +108,9 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
   isInfoModalOpen = false;
   private hasExplicitLayerSelection = false;
   private isDestroyed = false;
+  private readonly emptyProgramLayerIconOverrides: Partial<Record<OutcomesLayerKey, string>> = {};
+  private programLayerIconOverridesCacheKey = '';
+  private programLayerIconOverridesCache: Partial<Record<OutcomesLayerKey, string>> = {};
 
   ngOnInit(): void {
     // Diagram styling/text always comes from OUTCOMES_MODEL_CONFIG_PAGE. Only fetch it if this
@@ -248,7 +251,7 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
   }
 
   get infoModalIcon(): string {
-    return this.infoModalLayer.icon;
+    return this.getProgramLayerIcon(this.infoModalLayer.key) || this.infoModalLayer.icon;
   }
 
   get infoModalColor(): string {
@@ -304,7 +307,26 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
   }
 
   get programPanelIcon(): string {
-    return this.selectedLayer.imgPath;
+    return this.getProgramLayerIcon(this.selectedLayerKey) || this.selectedLayer.imgPath || this.selectedLayer.diagram.icon.value;
+  }
+
+  get programLayerIconOverrides(): Partial<Record<OutcomesLayerKey, string>> {
+    if (!this.hasProgramOutcomeData) return this.emptyProgramLayerIconOverrides;
+
+    const cacheKey = this.layers.map((layer) => `${layer.key}:${this.getProgramLayerIcon(layer.key)}`).join('|');
+    if (cacheKey === this.programLayerIconOverridesCacheKey) {
+      return this.programLayerIconOverridesCache;
+    }
+
+    this.programLayerIconOverridesCacheKey = cacheKey;
+    this.programLayerIconOverridesCache = this.layers.reduce<Partial<Record<OutcomesLayerKey, string>>>((icons, layer) => {
+      const icon = this.getProgramLayerIcon(layer.key);
+      if (icon) {
+        icons[layer.key] = icon;
+      }
+      return icons;
+    }, {});
+    return this.programLayerIconOverridesCache;
   }
 
   get programEvidenceResources(): ProgramEvidenceResource[] {
@@ -411,6 +433,23 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
     }
 
     return layers[layerKey];
+  }
+
+  private getProgramLayerIcon(layerKey: OutcomesLayerKey): string {
+    const layerData = this.getProgramLayerData(layerKey);
+    const baseData = layerKey === this.programBaseLayerKey ? this.programOutcomeData : undefined;
+    const data = layerData || baseData;
+
+    return (
+      data?.diagramIconUrl ||
+      data?.diagramIcon ||
+      data?.iconUrl ||
+      data?.imageUrl ||
+      data?.imgPath ||
+      data?.image ||
+      data?.icon ||
+      ''
+    );
   }
 
   private hasProgramContent(data?: ProgramOutcomeData): boolean {

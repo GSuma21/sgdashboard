@@ -50,6 +50,13 @@
   font-size: 2.125rem;
 }
 
+.info-modal-heading-image {
+  display: block;
+  height: 2.125rem;
+  object-fit: contain;
+  width: 2.125rem;
+}
+
 .info-modal-heading h3 {
   font-family: var(--sg-font-heading);
   font-size: 1.125rem;

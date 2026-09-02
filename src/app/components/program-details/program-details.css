@@ -315,7 +315,7 @@ h5 {
     align-items: center;
     padding: 1rem 0;
     position: sticky;
-    top: 80px;
+    top: 4.375rem;
     z-index: 20;
     background-color: var(--oc-white);
     padding: 0.5rem 7.5%;
