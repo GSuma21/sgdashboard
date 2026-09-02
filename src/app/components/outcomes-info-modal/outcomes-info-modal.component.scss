@@ -48,9 +48,14 @@
   z-index: 1;
 }
 
-.info-modal-close:focus,
-.info-modal-close:focus-visible {
+.info-modal-close:focus {
   outline: none;
+}
+
+.info-modal-close:focus-visible {
+  border-radius: 50%;
+  outline: 0.125rem solid var(--oc-black);
+  outline-offset: 0.125rem;
 }
 
 .info-modal-close span {

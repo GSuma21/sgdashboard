@@ -27,6 +27,9 @@ export class OutcomesEvidenceCarouselComponent {
 
   private readonly MOBILE_BREAKPOINT = 768;
 
+  private readonly TOOLTIP_MAX_HALF_WIDTH = 130;
+  private readonly TOOLTIP_VIEWPORT_MARGIN = 8;
+
   pageIndex = 0;
   perPage = this.cardsPerPage;
 
@@ -118,29 +121,63 @@ export class OutcomesEvidenceCarouselComponent {
     }
   }
 
-  isTagTruncated(text: string, limit = 18): boolean {
-    return !!text && text.length > limit;
+  // A tag counts as truncated only when its text is actually clipped by the
+  // ellipsis, i.e. the rendered content is wider than the visible box. This is
+  // measured on the real element rather than guessed from the string length, so
+  // the tooltip only appears for tags that show "…".
+  private isTagClipped(el: HTMLElement): boolean {
+    return el.scrollWidth - el.clientWidth > 1;
   }
 
-  showTooltip(event: MouseEvent, text: string): void {
-    const target = event.currentTarget as HTMLElement;
-    const rect = target.getBoundingClientRect();
-    this.tooltipText = text;
+  private tagText(el: HTMLElement): string {
+    return (el.textContent ?? '').trim();
+  }
+
+  onTagPointerEnter(event: MouseEvent): void {
+    const el = event.currentTarget as HTMLElement;
+    const clipped = this.isTagClipped(el);
+    el.classList.toggle('has-tooltip', clipped);
+
+    if (clipped) {
+      this.showTooltip(el);
+    }
+  }
+
+  onTagClick(event: MouseEvent): void {
+    const el = event.currentTarget as HTMLElement;
+    const clipped = this.isTagClipped(el);
+    el.classList.toggle('has-tooltip', clipped);
+
+    if (!clipped) return;
+
+    if (this.tooltipVisible && this.tooltipText === this.tagText(el)) {
+      this.hideTooltip();
+    } else {
+      this.showTooltip(el);
+    }
+  }
+
+  showTooltip(el: HTMLElement): void {
+    const rect = el.getBoundingClientRect();
+    this.tooltipText = this.tagText(el);
     this.tooltipTop = rect.top - 8;
-    this.tooltipLeft = rect.left + rect.width / 2;
+    this.tooltipLeft = this.clampTooltipLeft(rect.left + rect.width / 2);
     this.tooltipVisible = true;
+  }
+
+  private clampTooltipLeft(centerX: number): number {
+    if (typeof window === 'undefined') return centerX;
+
+    const min = this.TOOLTIP_VIEWPORT_MARGIN + this.TOOLTIP_MAX_HALF_WIDTH;
+    const max = window.innerWidth - this.TOOLTIP_VIEWPORT_MARGIN - this.TOOLTIP_MAX_HALF_WIDTH;
+
+    if (max <= min) return window.innerWidth / 2;
+
+    return Math.min(Math.max(centerX, min), max);
   }
 
   hideTooltip(): void {
     this.tooltipVisible = false;
-  }
-
-  toggleTooltipMobile(event: MouseEvent, text: string): void {
-    if (this.tooltipVisible && this.tooltipText === text) {
-      this.hideTooltip();
-    } else {
-      this.showTooltip(event, text);
-    }
   }
 
   @HostListener('document:click', ['$event'])

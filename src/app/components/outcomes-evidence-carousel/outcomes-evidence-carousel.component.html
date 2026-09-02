@@ -77,10 +77,9 @@
 
           <span
             class="evidence-tag"
-            [class.has-tooltip]="isTagTruncated(evidence.tag)"
-            (mouseenter)="isTagTruncated(evidence.tag) && showTooltip($event, evidence.tag)"
+            (mouseenter)="onTagPointerEnter($event)"
             (mouseleave)="hideTooltip()"
-            (click)="isTagTruncated(evidence.tag) && toggleTooltipMobile($event, evidence.tag)"
+            (click)="onTagClick($event)"
           >
             {{ evidence.tag }}
           </span>

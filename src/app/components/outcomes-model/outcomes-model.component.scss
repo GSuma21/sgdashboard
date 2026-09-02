@@ -10,6 +10,7 @@
   --ink: var(--oc-ink);
   --muted: var(--oc-muted);
   --line: var(--oc-line);
+
   background: var(--oc-white);
   color: var(--ink);
   font-family: var(--sg-font-body);
@@ -26,6 +27,7 @@
 
 .outcomes-model.has-program-data {
   --side: 0;
+
   background: var(--oc-white);
   border-top: 0;
   margin-top: 0;
@@ -46,7 +48,7 @@
 
 .has-program-data .outcomes-grid {
   gap: clamp(1.5rem, 3.5vw, 3rem);
-  grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+  grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
   padding-inline: 0;
 }
 
@@ -67,7 +69,7 @@
 
 .has-program-data .sticky-stage {
   align-items: center;
-  align-self: center;
+  align-self: start;
   display: flex;
   height: auto;
   justify-content: center;
@@ -588,11 +590,15 @@
 }
 
 .info-button:focus,
-.info-button:focus-visible,
-.info-icon-button:focus,
-.info-icon-button:focus-visible {
+.info-icon-button:focus {
   outline: none;
   box-shadow: none;
+}
+
+.info-button:focus-visible,
+.info-icon-button:focus-visible {
+  outline: 0.125rem solid var(--oc-black);
+  outline-offset: 0.125rem;
 }
 
 .info-button-icon {
@@ -669,9 +675,13 @@
    ========================================================= */
 
 .pill:focus,
-.pill:focus-visible,
-.program-layer-tile:focus,
-.program-layer-tile:focus-visible {
+.program-layer-tile:focus {
   outline: none;
   box-shadow: none;
+}
+
+.pill:focus-visible,
+.program-layer-tile:focus-visible {
+  outline: 0.125rem solid var(--oc-black);
+  outline-offset: 0.125rem;
 }
