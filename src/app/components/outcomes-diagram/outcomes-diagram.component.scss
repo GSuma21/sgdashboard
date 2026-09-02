@@ -6,6 +6,7 @@
   aspect-ratio: 1;
   display: block;
   width: 100%;
+  overflow: hidden;
 }
 
 .diagram-note {
@@ -102,11 +103,8 @@
   }
 
   :host-context(.has-program-data) .layer-diagram {
-    margin-bottom: -1.5rem;
-    margin-left: -6%;
+    margin-bottom: 0;
     margin-top: 0;
-    transform: translateY(-3.75rem);
-    width: 112%;
   }
 
   .diagram-note {
@@ -122,8 +120,8 @@
 
 @media (max-width: 35rem) {
   :host-context(.has-program-data) .layer-diagram {
-    margin-bottom: -2rem;
-    transform: translateY(-4.25rem);
+    margin-bottom: 0;
+    margin-top: 0;
   }
 
   .rlabel {

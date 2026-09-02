@@ -16,8 +16,18 @@
 .evidence-carousel {
   box-sizing: border-box;
   margin: 0 0 2.125rem;
+  --nav-gutter: 3rem;
+  padding-inline: 0;
   position: relative;
   width: 100%;
+}
+
+.evidence-carousel.has-nav-prev {
+  padding-left: var(--nav-gutter);
+}
+
+.evidence-carousel.has-nav-next {
+  padding-right: var(--nav-gutter);
 }
 
 .evidence-carousel,
@@ -213,11 +223,11 @@
 }
 
 .evidence-nav-prev {
-  left: -2.5rem;
+  left: 0.25rem;
 }
 
 .evidence-nav-next {
-  right: -2.5rem;
+  right: 0.25rem;
 }
 
 /* =========================================================
@@ -251,14 +261,6 @@
   .evidence-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .evidence-nav-prev {
-    left: -2rem;
-  }
-
-  .evidence-nav-next {
-    right: -2rem;
-  }
 }
 
 @media (max-width: 47.5rem) {
@@ -269,10 +271,6 @@
   .program-mode-evidence h4 {
     font-size: 0.875rem;
     margin-bottom: 0.625rem;
-  }
-
-  .evidence-carousel {
-    padding: 0 3rem;
   }
 
   .evidence-content {
@@ -378,8 +376,7 @@
 
 @media (max-width: 35rem) {
   .evidence-carousel {
-    padding-left: 2.875rem;
-    padding-right: 2.875rem;
+    --nav-gutter: 2.875rem;
   }
 
   .evidence-card {
@@ -430,8 +427,7 @@
 @media (max-width: 23.5rem) {
   .evidence-carousel {
     display: block;
-    padding-left: 2.625rem;
-    padding-right: 2.625rem;
+    --nav-gutter: 2.625rem;
   }
 
   .evidence-nav {

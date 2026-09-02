@@ -5,8 +5,18 @@
 .program-card-carousel {
   box-sizing: border-box;
   margin: 0 0 2.125rem;
+  --nav-gutter: 3rem;
+  padding-inline: 0;
   position: relative;
   width: 100%;
+}
+
+.program-card-carousel.has-nav-prev {
+  padding-left: var(--nav-gutter);
+}
+
+.program-card-carousel.has-nav-next {
+  padding-right: var(--nav-gutter);
 }
 
 .program-card-carousel,
@@ -106,11 +116,11 @@
 }
 
 .program-card-nav-prev {
-  left: -2.5rem;
+  left: 0.25rem;
 }
 
 .program-card-nav-next {
-  right: -2.5rem;
+  right: 0.25rem;
 }
 
 /* =========================================================
@@ -263,20 +273,11 @@
   .program-mode-card {
     width: auto;
   }
-
-  .program-card-nav-prev {
-    left: -2rem;
-  }
-
-  .program-card-nav-next {
-    right: -2rem;
-  }
 }
 
 @media (max-width: 47.5rem) {
   .program-card-carousel {
     margin-bottom: 1.5rem;
-    padding: 0 3rem;
   }
 
   .program-card-content {
@@ -360,16 +361,14 @@
 
 @media (max-width: 35rem) {
   .program-card-carousel {
-    padding-left: 2.875rem;
-    padding-right: 2.875rem;
+    --nav-gutter: 2.875rem;
   }
 }
 
 @media (max-width: 23.5rem) {
   .program-card-carousel {
     display: block;
-    padding-left: 2.625rem;
-    padding-right: 2.625rem;
+    --nav-gutter: 2.625rem;
   }
 
   .program-card-nav {

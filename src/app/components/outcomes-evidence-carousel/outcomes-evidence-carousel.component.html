@@ -9,7 +9,11 @@
   </h4>
 
 
-  <div class="evidence-carousel">
+  <div
+    class="evidence-carousel"
+    [class.has-nav-prev]="canShowControls && canGoToPrevious"
+    [class.has-nav-next]="canShowControls && canGoToNext"
+  >
 
     <button
       type="button"

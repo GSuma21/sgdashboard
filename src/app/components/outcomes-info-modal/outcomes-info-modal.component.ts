@@ -33,7 +33,12 @@ export class OutcomesInfoModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.previouslyFocusedElement = document.activeElement as HTMLElement | null;
+
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
 
     this.focusTimerId = setTimeout(() => this.closeButtonRef?.nativeElement.focus());
   }
@@ -44,6 +49,7 @@ export class OutcomesInfoModalComponent implements OnInit, OnDestroy {
     }
 
     document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
     this.previouslyFocusedElement?.focus();
   }
 

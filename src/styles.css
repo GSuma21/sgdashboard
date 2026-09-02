@@ -1,5 +1,6 @@
 /* Global Styles */
 html {
+  scrollbar-gutter: stable;
   --background-color-light: #fbf8ff;
   --text-color-light: #343a40;
   --primary-color-light: #572e91;

@@ -40,14 +40,14 @@
   align-items: start;
   display: grid;
   gap: 3.25rem;
-  grid-template-columns: minmax(0, 33.25rem) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 42fr) minmax(0, 58fr);
   min-width: 0;
 }
 
 .has-program-data .outcomes-grid {
   gap: clamp(1.5rem, 3.5vw, 3rem);
-  grid-template-columns: minmax(16rem, 28rem) minmax(0, 1fr);
-  padding-inline: clamp(1.5rem, 4vw, 4rem);
+  grid-template-columns: minmax(0, 40fr) minmax(0, 60fr);
+  padding-inline: 0;
 }
 
 .sticky-stage {
@@ -61,18 +61,24 @@
 
 .stage {
   margin: 0 auto;
-  width: 96%;
-  max-width: 33.25rem;
+  width: 100%;
+  max-width: min(41rem, calc(100vh - var(--stage-top) - 2rem));
 }
 
 .has-program-data .sticky-stage {
+  align-items: center;
+  align-self: center;
+  display: flex;
   height: auto;
+  justify-content: center;
+  margin-block: 2.5rem;
   min-height: 0;
-  top: calc(var(--stage-top) + 5rem);
+  position: relative;
+  top: auto;
 }
 
 .has-program-data .stage {
-  max-width: 28rem;
+  max-width: 100%;
   width: 100%;
 }
 
@@ -555,6 +561,14 @@
   margin-left: 0;
   padding: 0;
   width: 1.625rem;
+}
+
+.info-button:focus,
+.info-button:focus-visible,
+.info-icon-button:focus,
+.info-icon-button:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .info-button-icon {

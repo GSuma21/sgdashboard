@@ -1,5 +1,7 @@
 <div
   class="program-card-carousel"
+  [class.has-nav-prev]="canShowControls && canGoToPrevious"
+  [class.has-nav-next]="canShowControls && canGoToNext"
   *ngIf="cards.length"
 >
 

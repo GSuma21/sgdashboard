@@ -734,6 +734,20 @@ mat-icon {
   width: 100%;
 }
 
+@media (min-width: 58.8125rem) {
+  .outcomes-full-width {
+    margin-right: -5%;
+    width: auto;
+  }
+}
+
+@media (max-width: 58.75rem) {
+  .outcomes-full-width {
+    margin-inline: -7.5%;
+    width: auto;
+  }
+}
+
 .outcomes-full-width.outcomes-first-section {
   margin-top: 0;
 }
