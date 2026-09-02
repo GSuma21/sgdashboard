@@ -115,11 +115,24 @@ export class OutcomesDiagramComponent {
     return this.disabledLayerKeys.has(layerKey as OutcomesLayerKey);
   }
 
-  // Matches getReferenceLayerStroke/getDiagramLabelColor: in program mode every available
-  // (non-disabled) layer is colored, not just the currently active/hovered one.
+  // Active/hovered layers use the solid color; available inactive layers are muted.
   isLayerIconActive(layerKey: OutcomesLayerKey): boolean {
     return !this.isDiagramLayerDisabled(layerKey) &&
-      (this.hasProgramOutcomeData || this.isReferenceLayerActive(layerKey) || this.isLayerHovered(layerKey));
+      (this.isReferenceLayerActive(layerKey) || this.isLayerHovered(layerKey));
+  }
+
+  isLayerAvailableInactive(layerKey: OutcomesLayerKey | string): boolean {
+    return this.hasProgramOutcomeData &&
+      !this.isDiagramLayerDisabled(layerKey) &&
+      !this.isReferenceLayerActive(layerKey) &&
+      !this.isLayerHovered(layerKey);
+  }
+
+  getLayerIconFilter(layerKey: OutcomesLayerKey): string | null {
+    if (this.isDiagramLayerDisabled(layerKey)) return null;
+    if (this.isLayerIconActive(layerKey)) return this.gradientUrl('icon-tint-' + layerKey);
+    if (this.isLayerAvailableInactive(layerKey)) return this.gradientUrl('icon-muted-tint-' + layerKey);
+    return null;
   }
 
   isReferenceLayerActive(layerKey: OutcomesLayerKey | string): boolean {
@@ -199,8 +212,12 @@ export class OutcomesDiagramComponent {
       return this.isOutermostLayer(key) ? 'none' : this.cssVar('--oc-disabled-border');
     }
 
-    if (this.hasProgramOutcomeData || this.isReferenceLayerActive(key) || this.isLayerHovered(key)) {
+    if (this.isReferenceLayerActive(key) || this.isLayerHovered(key)) {
       return foundLayer.color || this.cssVar('--oc-stroke-light');
+    }
+
+    if (this.isLayerAvailableInactive(key)) {
+      return this.withAlpha(foundLayer.color, 0.45) || foundLayer.color || this.cssVar('--oc-stroke-light');
     }
 
     return this.cssVar('--oc-stroke-light');
@@ -216,8 +233,12 @@ export class OutcomesDiagramComponent {
       return this.cssVar('--oc-disabled-border-light');
     }
 
-    if (this.hasProgramOutcomeData || this.isReferenceLayerActive(key) || this.isLayerHovered(key)) {
+    if (this.isReferenceLayerActive(key) || this.isLayerHovered(key)) {
       return foundLayer.color || this.cssVar('--oc-neutral-grey');
+    }
+
+    if (this.isLayerAvailableInactive(key)) {
+      return this.withAlpha(foundLayer.color, 0.55) || foundLayer.color || this.cssVar('--oc-neutral-grey');
     }
 
     return this.cssVar('--oc-neutral-grey');
@@ -289,12 +310,12 @@ export class OutcomesDiagramComponent {
       return this.cssVar('--oc-disabled-border-light');
     }
 
-    if (this.hasProgramOutcomeData) {
-      return this.getLayerColor(layerKey);
-    }
-
     if (this.isReferenceLayerActive(layerKey) || this.isLayerHovered(layerKey)) {
       return this.getReferenceLabelColor(layerKey);
+    }
+
+    if (this.isLayerAvailableInactive(layerKey)) {
+      return this.withAlpha(this.getLayerColor(layerKey), 0.55) || this.getLayerColor(layerKey);
     }
 
     return this.getDiagramText(layerKey)?.fill || this.cssVar('--oc-stroke-grey');
@@ -346,6 +367,25 @@ export class OutcomesDiagramComponent {
 
   private normalizeAngle(angle: number): number {
     return (angle + 360) % 360;
+  }
+
+  private withAlpha(color: string | undefined, alpha: number): string | null {
+    if (!color) return null;
+
+    const value = color.trim();
+    const hex = value.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+
+    if (hex) {
+      const raw = hex[1].length === 3
+        ? hex[1].split('').map((char) => char + char).join('')
+        : hex[1];
+      const red = parseInt(raw.slice(0, 2), 16);
+      const green = parseInt(raw.slice(2, 4), 16);
+      const blue = parseInt(raw.slice(4, 6), 16);
+      return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
+    }
+
+    return value;
   }
 
   private annularSectorPath(innerRadius: number, outerRadius: number, startAngle: number, endAngle: number): string {
