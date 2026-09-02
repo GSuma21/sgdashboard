@@ -26,12 +26,12 @@
           class="program-mode-heading"
           [class.no-program-icon]="!programPanelIcon"
         >
-          <img
+          <span
             *ngIf="programPanelIcon"
-            [src]="programPanelIcon"
+            [style.--program-icon-url]="'url(' + programPanelIcon + ')'"
             aria-hidden="true"
             class="program-mode-icon"
-          />
+          ></span>
 
           <div class="program-mode-copy">
             <h3>{{ programPanelTitle }}:</h3>
@@ -92,10 +92,6 @@
           </button>
         </div>
 
-        <p class="chip-note">
-          {{ config.staticTexts?.chipNotePrefix || "*" }}
-          {{ config.programChipFootnote }}
-        </p>
       </section>
     </ng-container>
 
@@ -123,9 +119,9 @@
           [style.--active-color]="selectedLayer.color"
           [style.--active-text-color]="activeTextColor"
         >
-          <p class="eyebrow">
+          <!-- <p class="eyebrow">
             {{ config.layerHeading }}
-          </p>
+          </p> -->
 
           <h2>
             {{ config.title }}
@@ -196,9 +192,9 @@
           [style.--active-color]="activePanelColor"
           [style.--active-text-color]="activeTextColor"
         >
-          <p class="eyebrow">
+          <!-- <p class="eyebrow">
             {{ config.frameworkHeading }}
-          </p>
+          </p> -->
 
           <h2>
             {{ config.frameworkTitle }}
@@ -383,12 +379,9 @@
 
                 <div>
                   <span class="framework-eyebrow">
-                    {{ selectedLayer.eyebrow || selectedLayer.chipLabel }}
+                    {{ selectedLayer.heading || selectedLayer.chipLabel }}
                   </span>
 
-                  <h3>
-                    {{ selectedLayer.heading || selectedLayer.chipLabel }}
-                  </h3>
                 </div>
               </div>
 
@@ -421,7 +414,7 @@
             <ng-template #frameworkDefinitionPanel>
               <article class="definition-card">
                 <span class="framework-eyebrow">
-                  {{ selectedLayer.eyebrow || selectedLayer.chipLabel }}
+                  {{ selectedLayer.heading || selectedLayer.chipLabel }}
                 </span>
 
                 <p class="fwnote">
@@ -450,10 +443,10 @@
             </ng-template>
           </ng-template>
 
-          <p class="chip-note">
+          <!-- <p class="chip-note">
             {{ config.staticTexts?.chipNotePrefix || "*" }}
             {{ config.chipFootnote }}
-          </p>
+          </p> -->
         </section>
       </div>
     </ng-template>

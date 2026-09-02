@@ -26,7 +26,7 @@
 
 .program-card-content {
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
   width: 100%;
 }
 
@@ -40,10 +40,10 @@
 
 .program-mode-card {
   align-items: flex-start;
-  background: color-mix(in srgb, var(--active-color) 15%, var(--oc-white));
-  border: 0.131rem solid var(--active-color);
+  background: var(--oc-white);
+  border: 0.131rem solid var(--oc-card-border);
   border-radius: 1.304rem;
-  box-shadow: 0.261rem 0.261rem 1.304rem var(--oc-card-shadow);
+  box-shadow: 0.261rem 0.261rem 1.304rem var(--oc-card-shadow-grey);
   box-sizing: border-box;
   color: var(--oc-heading-dark);
   display: flex;
@@ -151,9 +151,9 @@
 
 .program-mode-card p {
   color: var(--oc-heading-dark);
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.22;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4;
   margin: 0;
 }
 
@@ -171,7 +171,7 @@
 
 .program-card-indicator {
   appearance: none;
-  background: var(--oc-black);
+  background: var(--oc-indicator-dot);
   border: 0;
   border-radius: 50%;
   cursor: pointer;
@@ -333,10 +333,6 @@
   .program-mode-tag {
     font-size: 0.688rem;
     max-width: 100%;
-  }
-
-  .program-mode-card p {
-    font-size: 0.75rem;
   }
 
   .program-card-indicators {

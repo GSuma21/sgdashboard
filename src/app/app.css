@@ -1,7 +1,7 @@
 .app-header {
-  background-color: #fff;
+  background-color: var(--oc-white);
   color: var(--text-color);
-  padding: 1rem 0;
+  padding: 0.5rem 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: fixed;
   /* Make the header fixed */
@@ -123,4 +123,9 @@
 .app-content {
   padding-top: 80px;
   min-height: 100vh;
+}
+
+.image-12 {
+    width: 12.5rem;
+    padding: 0 0.5rem;
 }

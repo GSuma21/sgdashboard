@@ -15,7 +15,7 @@ import { filter } from 'rxjs';
     <app-loader></app-loader>
     <header class="app-header" *ngIf="showHeader">
       <nav class="container">
-        <a href="https://shikshagraha.org/" target="_blank" class="logo"><img src='assets/icons/main_logo.svg'></a>
+        <a routerLink="/" class="logo"><img src="assets/icons/main_logo.svg" alt="Shikshagraha" class="image-12"></a>
 
         <button
           class="menu-toggle"
