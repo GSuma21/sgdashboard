@@ -1,5 +1,6 @@
 /* Global Styles */
 html {
+  scrollbar-gutter: stable;
   --background-color-light: #ffffff;
   --text-color-light: #343a40;
   --primary-color-light: #572e91;
@@ -93,6 +94,9 @@ html {
 
   /* Outcomes program card shadow */
   --oc-card-shadow-soft: rgba(0, 0, 0, 0.16);
+  --oc-card-shadow-grey: rgba(204, 204, 204, 0.24);
+  --oc-card-border: #f2f2f2;
+  --oc-indicator-dot: #acacac;
 
   /* Evidence file-type icon backgrounds */
   --oc-pdf-bg: #F70C36;

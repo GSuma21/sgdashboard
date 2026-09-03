@@ -9,7 +9,11 @@
   </h4>
 
 
-  <div class="evidence-carousel">
+  <div
+    class="evidence-carousel"
+    [class.has-nav-prev]="canShowControls && canGoToPrevious"
+    [class.has-nav-next]="canShowControls && canGoToNext"
+  >
 
     <button
       type="button"
@@ -71,7 +75,12 @@
             </a>
           </span>
 
-          <span class="evidence-tag">
+          <span
+            class="evidence-tag"
+            (mouseenter)="onTagPointerEnter($event)"
+            (mouseleave)="hideTooltip()"
+            (click)="onTagClick($event)"
+          >
             {{ evidence.tag }}
           </span>
         </div>
@@ -113,6 +122,15 @@
       />
     </button>
 
+  </div>
+
+  <div
+    class="global-tooltip"
+    *ngIf="tooltipVisible"
+    [style.top.px]="tooltipTop"
+    [style.left.px]="tooltipLeft"
+  >
+    {{ tooltipText }}
   </div>
 
 </section>

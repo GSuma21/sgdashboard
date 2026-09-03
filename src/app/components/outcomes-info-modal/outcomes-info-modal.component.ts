@@ -10,7 +10,7 @@ import { OutcomesListItem } from '../outcomes-model/outcomes-model.config';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './outcomes-info-modal.component.html',
-  styleUrls: ['./outcomes-info-modal.component.css'],
+  styleUrls: ['./outcomes-info-modal.component.scss'],
 })
 export class OutcomesInfoModalComponent implements OnInit, OnDestroy {
   @Input() title = '';
@@ -30,9 +30,11 @@ export class OutcomesInfoModalComponent implements OnInit, OnDestroy {
 
   private previouslyFocusedElement: HTMLElement | null = null;
   private focusTimerId: ReturnType<typeof setTimeout> | null = null;
+  private previousBodyOverflow = '';
 
   ngOnInit(): void {
     this.previouslyFocusedElement = document.activeElement as HTMLElement | null;
+    this.previousBodyOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     this.focusTimerId = setTimeout(() => this.closeButtonRef?.nativeElement.focus());
@@ -43,7 +45,7 @@ export class OutcomesInfoModalComponent implements OnInit, OnDestroy {
       clearTimeout(this.focusTimerId);
     }
 
-    document.body.style.overflow = '';
+    document.body.style.overflow = this.previousBodyOverflow;
     this.previouslyFocusedElement?.focus();
   }
 

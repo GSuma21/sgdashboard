@@ -11,7 +11,7 @@ import { ProgramOutcomeCard } from '../outcomes-model/outcomes-model.config';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './outcomes-program-card-carousel.component.html',
-  styleUrls: ['./outcomes-program-card-carousel.component.css'],
+  styleUrls: ['./outcomes-program-card-carousel.component.scss'],
 })
 export class OutcomesProgramCardCarouselComponent {
   @Input() cards: ProgramOutcomeCard[] = [];

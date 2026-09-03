@@ -15,7 +15,7 @@ import {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './outcomes-evidence-carousel.component.html',
-  styleUrls: ['./outcomes-evidence-carousel.component.css'],
+  styleUrls: ['./outcomes-evidence-carousel.component.scss'],
 })
 export class OutcomesEvidenceCarouselComponent {
   @Input() evidences: ProgramEvidenceResource[] = [];
@@ -27,11 +27,21 @@ export class OutcomesEvidenceCarouselComponent {
 
   private readonly MOBILE_BREAKPOINT = 768;
 
+  private readonly TOOLTIP_MAX_HALF_WIDTH = 130;
+  private readonly TOOLTIP_VIEWPORT_MARGIN = 8;
+
   pageIndex = 0;
   perPage = this.cardsPerPage;
 
+  tooltipText: string | null = null;
+  tooltipTop = 0;
+  tooltipLeft = 0;
+  tooltipVisible = false;
+
   @HostListener('window:resize')
   onWindowResize(): void {
+    this.hideTooltip();
+
     const newPerPage = this.cardsPerPage;
 
     if (this.perPage !== newPerPage) {
@@ -109,6 +119,78 @@ export class OutcomesEvidenceCarouselComponent {
     } catch {
       return null;
     }
+  }
+
+  // A tag counts as truncated only when its text is actually clipped by the
+  // ellipsis, i.e. the rendered content is wider than the visible box. This is
+  // measured on the real element rather than guessed from the string length, so
+  // the tooltip only appears for tags that show "…".
+  private isTagClipped(el: HTMLElement): boolean {
+    return el.scrollWidth - el.clientWidth > 1;
+  }
+
+  private tagText(el: HTMLElement): string {
+    return (el.textContent ?? '').trim();
+  }
+
+  onTagPointerEnter(event: MouseEvent): void {
+    const el = event.currentTarget as HTMLElement;
+    const clipped = this.isTagClipped(el);
+    el.classList.toggle('has-tooltip', clipped);
+
+    if (clipped) {
+      this.showTooltip(el);
+    }
+  }
+
+  onTagClick(event: MouseEvent): void {
+    const el = event.currentTarget as HTMLElement;
+    const clipped = this.isTagClipped(el);
+    el.classList.toggle('has-tooltip', clipped);
+
+    if (!clipped) return;
+
+    if (this.tooltipVisible && this.tooltipText === this.tagText(el)) {
+      this.hideTooltip();
+    } else {
+      this.showTooltip(el);
+    }
+  }
+
+  showTooltip(el: HTMLElement): void {
+    const rect = el.getBoundingClientRect();
+    this.tooltipText = this.tagText(el);
+    this.tooltipTop = rect.top - 8;
+    this.tooltipLeft = this.clampTooltipLeft(rect.left + rect.width / 2);
+    this.tooltipVisible = true;
+  }
+
+  private clampTooltipLeft(centerX: number): number {
+    if (typeof window === 'undefined') return centerX;
+
+    const min = this.TOOLTIP_VIEWPORT_MARGIN + this.TOOLTIP_MAX_HALF_WIDTH;
+    const max = window.innerWidth - this.TOOLTIP_VIEWPORT_MARGIN - this.TOOLTIP_MAX_HALF_WIDTH;
+
+    if (max <= min) return window.innerWidth / 2;
+
+    return Math.min(Math.max(centerX, min), max);
+  }
+
+  hideTooltip(): void {
+    this.tooltipVisible = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.evidence-tag')) {
+      this.hideTooltip();
+    }
+  }
+
+  @HostListener('window:scroll')
+  onScroll(): void {
+    this.hideTooltip();
   }
 
   trackByIndex(index: number): number {
