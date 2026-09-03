@@ -27,25 +27,27 @@
   transition: fill 0.3s ease, stroke 0.3s ease;
 }
 
-.reference-seg:focus,
-.reference-seg:focus-visible {
-  outline: none;
-}
+.reference-seg {
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
 
-.reference-seg.disabled {
-  cursor: not-allowed;
-}
+  &.disabled {
+    cursor: not-allowed;
 
-.reference-seg.disabled:hover {
-  fill: var(--oc-white) !important;
-  stroke: var(--oc-disabled-border) !important;
-}
+    &:hover {
+      fill: var(--oc-white) !important;
+      stroke: var(--oc-disabled-border) !important;
+    }
 
-/* Hit-target rings (e.g. network) are an oversized invisible click-catcher;
-   they must stay invisible on hover too, not inherit the disabled-hover border. */
-.reference-seg.disabled.hit-target:hover {
-  fill: transparent !important;
-  stroke: none !important;
+    /* Hit-target rings (e.g. network) are an oversized invisible click-catcher;
+       they must stay invisible on hover too, not inherit the disabled-hover border. */
+    &.hit-target:hover {
+      fill: transparent !important;
+      stroke: none !important;
+    }
+  }
 }
 
 .rlabel {
@@ -66,21 +68,21 @@
 .iconwrap {
   filter: grayscale(1) opacity(0.45);
   transition: filter 0.35s ease, opacity 0.35s ease;
-}
 
-.iconwrap.on {
-  filter: none;
-  opacity: 1;
-}
+  &.on {
+    filter: none;
+    opacity: 1;
+  }
 
-.iconwrap.muted {
-  filter: none;
-  opacity: 1;
-}
+  &.muted {
+    filter: none;
+    opacity: 1;
+  }
 
-.iconwrap.disabled {
-  filter: grayscale(1) opacity(0.35);
-  pointer-events: none;
+  &.disabled {
+    filter: grayscale(1) opacity(0.35);
+    pointer-events: none;
+  }
 }
 
 #webBack,
