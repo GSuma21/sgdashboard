@@ -37,7 +37,10 @@ import {
     OutcomesProgramCardCarouselComponent,
   ],
   templateUrl: './outcomes-model.component.html',
-  styleUrls: ['./outcomes-model.component.css'],
+  styleUrls: [
+    './outcomes-model.component.scss',
+    './outcomes-model.component.responsive.scss',
+  ],
 })
 export class OutcomesModelComponent implements OnDestroy, OnInit {
   private _config: OutcomesModelConfig = EMPTY_OUTCOMES_MODEL_CONFIG;

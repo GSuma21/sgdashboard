@@ -467,6 +467,9 @@ p {
 
 
 @media (max-width: 768px) {
+    .landing-container {
+        overflow-x: hidden;
+    }
     .program-model-container {
         flex-direction: column;
     }
@@ -733,6 +736,28 @@ mat-icon {
 .outcomes-full-width {
   margin-top: 8px;
   width: 100%;
+}
+
+@media (min-width: 58.8125rem) {
+  .outcomes-full-width {
+    margin-right: -5%;
+    width: auto;
+  }
+}
+
+@media (max-width: 58.75rem) {
+  .outcomes-full-width {
+    margin-inline: -7.5%;
+    width: auto;
+  }
+
+  .outcomes-section-heading {
+    margin-inline: 6.375vw;
+  }
+
+  .program-container {
+    overflow-x: clip;
+  }
 }
 
 .outcomes-full-width.outcomes-first-section {

@@ -62,6 +62,11 @@ export class ProgramDetails {
   }
 
   ngOnInit(): void {
+    if (!this.programData || Object.keys(this.programData).length === 0) {
+      this.router.navigate(['/']);
+      return;
+    }
+
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }

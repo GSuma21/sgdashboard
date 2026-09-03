@@ -1,5 +1,9 @@
 <div class="landing-container">
-  <div *ngFor="let section of pageData"  [style.width]="(window.innerWidth <= 768 ? '100%' : section.width)" [ngClass]="'section-position-' + section.position">
+  <div
+    *ngFor="let section of pageData"
+    [style.width]="section.type === 'country-view' ? '100%' : (window.innerWidth <= 768 ? '100%' : section.width)"
+    [ngClass]="section.type === 'country-view' ? 'section-position-center' : ('section-position-' + section.position)"
+  >
     <!-- Main Section -->
     <ng-container *ngIf="section.type === 'hero'">
       <section [ngClass]="section.styles.section">

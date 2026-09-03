@@ -5,14 +5,23 @@
 .program-card-carousel {
   box-sizing: border-box;
   margin: 0 0 2.125rem;
-  overflow: visible;
+  --nav-gutter: 3rem;
+  padding-inline: 0;
   position: relative;
   width: 100%;
-}
 
-.program-card-carousel,
-.program-card-carousel * {
-  box-sizing: border-box;
+  &.has-nav-prev {
+    padding-left: var(--nav-gutter);
+  }
+
+  &.has-nav-next {
+    padding-right: var(--nav-gutter);
+  }
+
+  &,
+  & * {
+    box-sizing: border-box;
+  }
 }
 
 .program-card-content {
@@ -32,9 +41,9 @@
 .program-mode-card {
   align-items: flex-start;
   background: var(--oc-white);
-  border: 0.131rem solid #f2f2f2;
+  border: 0.131rem solid var(--oc-card-border);
   border-radius: 1.304rem;
-  box-shadow: 0.261rem 0.261rem 1.304rem rgba(204, 204, 204, 0.24);
+  box-shadow: 0.261rem 0.261rem 1.304rem var(--oc-card-shadow-grey);
   box-sizing: border-box;
   color: var(--oc-heading-dark);
   display: flex;
@@ -82,36 +91,36 @@
   transform: translateY(-50%);
   width: 2.5rem;
   z-index: 10;
-}
 
-.program-card-nav img {
-  display: block;
-  height: 2rem;
-  object-fit: contain;
-  width: 2rem;
-}
+  img {
+    display: block;
+    height: 2rem;
+    object-fit: contain;
+    width: 2rem;
+  }
 
-.program-card-nav:hover img {
-  transform: scale(1.08);
-}
+  &:hover img {
+    transform: scale(1.08);
+  }
 
-.program-card-nav:focus,
-.program-card-nav:focus-visible {
-  outline: none;
-  box-shadow: none;
-}
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
 
-.program-card-nav:disabled {
-  cursor: default;
-  opacity: 0.35;
-}
+  &:disabled {
+    cursor: default;
+    opacity: 0.35;
+  }
 
-.program-card-nav-prev {
-  left: -2.5rem;
-}
+  &-prev {
+    left: 0.25rem;
+  }
 
-.program-card-nav-next {
-  right: -2.5rem;
+  &-next {
+    right: 0.25rem;
+  }
 }
 
 /* =========================================================
@@ -162,28 +171,28 @@
 
 .program-card-indicator {
   appearance: none;
-  background: #acacac;
+  background: var(--oc-indicator-dot);
   border: 0;
   border-radius: 50%;
   cursor: pointer;
   height: 0.438rem;
   padding: 0;
   width: 0.438rem;
-}
 
-.program-card-indicator.active {
-  height: 0.625rem;
-  width: 0.625rem;
-}
+  &.active {
+    height: 0.625rem;
+    width: 0.625rem;
+  }
 
-.program-card-indicator:hover {
-  transform: scale(1.15);
-}
+  &:hover {
+    transform: scale(1.15);
+  }
 
-.program-card-indicator:focus,
-.program-card-indicator:focus-visible {
-  outline: none;
-  box-shadow: none;
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
 }
 
 /* =========================================================
@@ -208,16 +217,16 @@
   transform: translate(-50%, -100%);
   white-space: normal;
   z-index: 9999;
-}
 
-.global-tooltip::after {
-  border: 0.313rem solid transparent;
-  border-top-color: var(--oc-tooltip-bg);
-  content: '';
-  left: 50%;
-  position: absolute;
-  top: 100%;
-  transform: translateX(-50%);
+  &::after {
+    border: 0.313rem solid transparent;
+    border-top-color: var(--oc-tooltip-bg);
+    content: '';
+    left: 50%;
+    position: absolute;
+    top: 100%;
+    transform: translateX(-50%);
+  }
 }
 
 /* =========================================================
@@ -264,20 +273,11 @@
   .program-mode-card {
     width: auto;
   }
-
-  .program-card-nav-prev {
-    left: -2rem;
-  }
-
-  .program-card-nav-next {
-    right: -2rem;
-  }
 }
 
 @media (max-width: 47.5rem) {
   .program-card-carousel {
     margin-bottom: 1.5rem;
-    padding: 0 2.375rem;
   }
 
   .program-card-content {
@@ -315,19 +315,19 @@
   .program-card-nav {
     height: 2.25rem;
     width: 2.25rem;
-  }
 
-  .program-card-nav img {
-    height: 1.75rem;
-    width: 1.75rem;
-  }
+    img {
+      height: 1.75rem;
+      width: 1.75rem;
+    }
 
-  .program-card-nav-prev {
-    left: 0;
-  }
+    &-prev {
+      left: 0.25rem;
+    }
 
-  .program-card-nav-next {
-    right: 0;
+    &-next {
+      right: 0.25rem;
+    }
   }
 
   .program-mode-tag {
@@ -357,32 +357,22 @@
 
 @media (max-width: 35rem) {
   .program-card-carousel {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-
-  .program-card-nav-prev {
-    left: 0;
-  }
-
-  .program-card-nav-next {
-    right: 0;
+    --nav-gutter: 2.875rem;
   }
 }
 
 @media (max-width: 23.5rem) {
   .program-card-carousel {
     display: block;
-    padding-left: 1.75rem;
-    padding-right: 1.75rem;
+    --nav-gutter: 2.625rem;
   }
 
   .program-card-nav {
     width: 2rem;
-  }
 
-  .program-card-nav img {
-    height: 1.5rem;
-    width: 1.5rem;
+    img {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
   }
 }

@@ -26,7 +26,7 @@ type LayerVisualState = 'active' | 'muted' | 'disabled' | 'rest';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './outcomes-diagram.component.html',
-  styleUrls: ['./outcomes-diagram.component.css'],
+  styleUrls: ['./outcomes-diagram.component.scss'],
 })
 export class OutcomesDiagramComponent {
   @Input() config!: OutcomesModelConfig;
