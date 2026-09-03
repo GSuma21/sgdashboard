@@ -119,6 +119,10 @@ app-improvement-story {
 }
 
 .heat-map{
+    --bs-gutter-x: 0;
+    margin-left: 0;
+    margin-right: 0;
+
     app-heat-map{
         width: 100%;
     }

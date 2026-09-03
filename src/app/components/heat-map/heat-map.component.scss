@@ -1,13 +1,19 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 .container {
   display: flex;
-  gap: 40px;
+  gap: clamp(24px, 3vw, 40px);
   font-family: var(--sg-font-body);
-  background-color: #fff;
-  max-height: 50rem;
-  overflow: hidden;
-  margin: 0px 30px;
-  padding: 0px;
-  max-width: fit-content;
+  background-color: var(--oc-white);
+  overflow: visible;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 30px;
+  width: 100%;
+  max-width: 100%;
 
   @media (max-width: 1024px) {
     flex-direction: column;
@@ -24,126 +30,43 @@
 }
 
 .left-panel {
-  flex: 1;
+  flex: 1 1 0;
   min-width: 0;
-  overflow-x: hidden;
+  overflow: visible;
 
 }
 
 .right-panel {
-  flex: 1;
+  flex: 1 1 0;
   min-width: 0;
-  overflow-y: hidden;
-
-}
-
-.heatmap-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: 100px;
-  gap: 6px;
-}
-
-.heatmap-item {
-  border-radius: 6px;
-  padding: 5px;
-  color: white;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  position: relative;
   overflow: hidden;
 
-  // &:hover,
-  // &.active {
-  //   transform: scale(1.02) translateY(-5px);
-  //   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-  //   z-index: 10;
-  // border-radius: 10px;
-
-  // }
-
-  &.grey {
-    cursor: default;
-
-    &:hover {
-      transform: none;
-      box-shadow: none;
-    }
-
-    .content {
-      display: none;
-    }
-  }
-
-  .content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .icon {
-    margin-bottom: auto;
-
-    i {
-      font-size: 24px;
-    }
-  }
-
-  .theme-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    margin: 0 0 5px 0;
-    line-height: 1.2;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    color: white;
-    margin-left: 4px;
-
-  }
-
-  .voice-count {
-    font-size: 17px;
-    opacity: 0.9;
-    font-weight: 600;
-    margin-left: 5px;
-  }
-
-  .text-spacing {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    flex-grow: 1;
-    text-align: left;
-  }
 }
 
-.span-2-2 {
-  grid-column: span 2;
-  grid-row: span 2;
+.treemap-shell {
+  width: min(55rem, 100%);
+  height: 26rem;
+  position: relative;
 }
 
-.span-1-2 {
-  grid-column: span 1;
-  grid-row: span 2;
+.treemap-shell canvas {
+  display: block;
 }
 
-.span-2-1 {
-  grid-column: span 2;
-  grid-row: span 1;
-}
-
-.span-1-1 {
-  grid-column: span 1;
-  grid-row: span 1;
+.treemap-tooltip {
+  position: absolute;
+  z-index: 2;
+  width: 220px;
+  min-height: 48px;
+  padding: 10px 12px;
+  border-radius: 5px;
+  background-color: var(--oc-white);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  color: #1f1f1f;
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.25;
+  pointer-events: none;
 }
 
 .purple {
@@ -225,9 +148,10 @@
 
 .voices-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
   height: 26rem;
+  min-width: 0;
 }
 
 .voice-card {
@@ -239,7 +163,8 @@
   justify-content: flex-start;
   min-height: 180px;
   overflow: hidden;
-  max-width: inherit;
+  min-width: 0;
+  max-width: 100%;
 
 
   .quote-icon {
@@ -256,6 +181,7 @@
     line-clamp: 6;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    overflow-wrap: anywhere;
   }
 
   .quote-author {
@@ -266,59 +192,6 @@
   }
 }
 
-.icon-img {
-  width: 19px;
-  height: 19px;
-}
-
-.span-2-2 .theme-title {
-  font-size: 1.35rem;
-}
-
-.span-2-2 .voice-count {
-  font-size: 1rem;
-}
-
-.span-2-1 .theme-title,
-.span-1-2 .theme-title {
-  font-size: 1.1rem;
-}
-
-.span-2-1 .voice-count,
-.span-1-2 .voice-count {
-  font-size: 0.75rem;
-}
-
-.span-1-1 .theme-title {
-  font-size: 0.9rem;
-}
-
-.span-1-1 .voice-count {
-  font-size: 11px;
-}
-
-.span-2-2 .icon-img {
-  width: 22px;
-  height: 22px;
-}
-
-.span-1-1 .icon-img {
-  width: 14px;
-  height: 14px;
-}
-
-.heatmap-item {
-  font-size: clamp(0.75rem, 1.2vw, 1.1rem);
-}
-
-.theme-title {
-  font-size: 1em;
-}
-
-.voice-count {
-  font-size: 0.7em;
-}
-
 .quote-container{
   display: flex;
   align-items: start;
@@ -326,6 +199,21 @@
   margin-left: 28px;
   margin-top: 5px;
   padding-right: 10px;
+  min-width: 0;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    padding: 0 20px;
+  }
+
+  .voice-card {
+    padding: 14px 16px 0px 16px;
+  }
+
+  .quote-container {
+    margin-left: 18px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -351,6 +239,11 @@
   .voices-grid{
     height: 30rem;
   }
+
+  .treemap-shell {
+    height: 24rem;
+  }
+
 .container{
   margin: 0px;
   padding: 10px;
@@ -367,97 +260,4 @@
 .quote-container {
   margin-left: 10px;
 }
-
-.span-1-2 .theme-title {
-  font-size: 0.7rem;
 }
-
-.span-2-2 .theme-title {
-  font-size: 0.9rem;
-}
-
-.span-1-1 .theme-title {
-  font-size: 0.6rem;
-}
-
-.span-2-2 .voice-count {
-  font-size: 0.8rem;
-}
-
-.span-1-2 .voice-count {
-  font-size: 0.5rem;
-}
-
-.span-1-1 .voice-count {
-  font-size: 0.5rem;
-}
-}
-
-
-.theme1{
-   background-color: #9569ce;
-}
-.theme1.active{
-   background-color: #572e91;
-}
-.theme2{
-   background-color: #8d5aa6;
-}
-.theme2.active{
-   background-color: #802B80;
-}
-.theme3{
-   background-color: #be7666;
-}
-.theme3.active{
-   background-color: #961c00;
-}
-.theme4{
-   background-color: #709dd7;
-}
-.theme4.active{
-   background-color: #1177ff;
-}
-.theme5{
-   background-color: #dd8cb5;
-}
-.theme5.active{
-   background-color: #e03389;
-}
-.theme6{
-   background-color: #6BB977;
-}
-.theme6.active{
-   background-color: #278637;
-}
-.theme7{
-   background-color: #61989F;
-}
-.theme7.active{
-   background-color: #0F97AA;
-}
-.theme8{
-   background-color: #ebc28c;
-}
-.theme8.active{
-   background-color: #ff9911;
-}
-.theme9{
-   background-color:#BA776F;
-}
-.theme9.active{
-   background-color:  #EE4533;
-}
-.theme10{
-   background-color:  #e0c774;
-}
-.theme10.active{
-   background-color:#e0b004;
-}
-
-// @media (hover: none) and (pointer: coarse) {
-//   .heatmap-item:hover {
-//     transform: none !important;
-//     box-shadow: none !important;
-//   }
-// }

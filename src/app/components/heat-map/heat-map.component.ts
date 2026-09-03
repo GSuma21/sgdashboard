@@ -1,17 +1,21 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { environment } from '../../../../environments/environment';
 import { HEATMAP_THEME, THEMES_EMERGED } from '../../../constants/urlConstants';
 import * as d3 from 'd3';
-import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
+import { ActiveElement, Chart, ChartConfiguration, ChartEvent, registerables, ScriptableContext } from 'chart.js';
+import { TreemapController, TreemapDataPoint, TreemapElement } from 'chartjs-chart-treemap';
+
+Chart.register(...registerables, TreemapController, TreemapElement);
 
 export interface HeatmapTheme {
   id: string;
   label: string;
   value: number;
   color: string;
-  gridClass: string;
+  backgroundColor: string;
+  activeBackgroundColor: string;
   icon?: string;
   list?: [];
 }
@@ -22,13 +26,46 @@ export interface VoiceQuote {
   voice_by: string;
   themeId: string;
   color: string;
+  backgroundColor?: string;
+  activeBackgroundColor?: string;
   state: string;
 }
+
+const DEFAULT_THEME_COLORS = [
+  { background: '#9569ce', active: '#572e91' },
+  { background: '#ad91bf', active: '#8f6aa8' },
+  { background: '#be7666', active: '#961c00' },
+  { background: '#709dd7', active: '#1177ff' },
+  { background: '#dd8cb5', active: '#e03389' },
+  { background: '#c2d9ad', active: '#90b36c' },
+  { background: '#94d6dc', active: '#4fb5bf' },
+  { background: '#9368ce', active: '#6d42ad' },
+  { background: '#a98aba', active: '#8f6aa8' },
+  { background: '#edc585', active: '#e3a94e' },
+  { background: '#ddd3a9', active: '#c6b86e' },
+  { background: '#d5b4a9', active: '#c18f80' },
+  { background: '#e46c88', active: '#d94062' },
+  { background: '#c77db4', active: '#ad5c9a' },
+];
+
+const THEME_CLASS_COLORS: Record<string, { background: string; active: string }> = {
+  purple: { background: '#572E9199', active: '#572E91' },
+  'light-purple': { background: '#572E9199', active: '#802B80' },
+  brown: { background: '#961C0080', active: '#D94D3F' },
+  'brown-light': { background: '#CA7862CC', active: '#CA7862' },
+  blue: { background: '#64b5f6', active: '#64b5f6' },
+  pink: { background: '#E0338A99', active: '#E0338A' },
+  green: { background: '#8DC162CC', active: '#90db52cc' },
+  cyan: { background: '#4dd0e1', active: '#4dd0e1' },
+  orange: { background: '#FF9911CC', active: '#FF9911' },
+  beige: { background: '#E2C968', active: '#f2d14c' },
+  grey: { background: '#bdbdbd', active: '#bdbdbd' },
+};
 
 @Component({
   selector: 'app-heat-map',
   standalone: true,
-  imports: [CommonModule, MatTooltipModule],
+  imports: [CommonModule],
   templateUrl: './heat-map.component.html',
   styleUrl: './heat-map.component.scss',
   animations: [
@@ -47,21 +84,42 @@ export interface VoiceQuote {
     ])
   ]
 })
-export class HeatMapComponent implements OnInit {
-  @ViewChildren('tooltip') tooltips!: QueryList<MatTooltip>;
+export class HeatMapComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('treemapCanvas')
+  set treemapCanvas(canvas: ElementRef<HTMLCanvasElement> | undefined) {
+    this.treemapCanvasRef = canvas;
+    this.renderTreemap();
+  }
+
   themes: HeatmapTheme[] = [];
   heatmapThemes:any
   heatmapThemeConfig: Record<string, any> = {}
   heatmapData: Record<string, any> = {}
-  private tooltipTimeoutId: ReturnType<typeof setTimeout> | null = null;
+  private treemapCanvasRef?: ElementRef<HTMLCanvasElement>;
+  private chart?: Chart<'treemap', TreemapDataPoint[], unknown>;
+  private isViewReady = false;
+  private readonly treemapIconImages = new Map<string, HTMLImageElement>();
+  private readonly themeContentPlugin = {
+    id: 'heatmapThemeContent',
+    afterDatasetsDraw: (chart: Chart<'treemap', TreemapDataPoint[], unknown>) => {
+      this.drawTreemapContent(chart);
+    },
+  };
 
   activeThemeId: string | null = null;
   displayedVoices: VoiceQuote[] = [];
-  isMobile = window.innerWidth <= 768;
+  hoveredThemeTooltip: { label: string; left: number; top: number } | null = null;
+
+  constructor(private readonly changeDetectorRef: ChangeDetectorRef) {}
 
 
   ngOnInit(): void {
     this.getThemeData()
+  }
+
+  ngAfterViewInit(): void {
+    this.isViewReady = true;
+    this.renderTreemap();
   }
 
   getThemeData() {
@@ -71,24 +129,16 @@ export class HeatMapComponent implements OnInit {
         return d3.json(`${environment.storageURL}/${environment.bucketName}/${environment.folderName}/${THEMES_EMERGED}`);
       })
       .then((data: any) => {
-
-        // 🔹 Visual configs (order-based)
-        const heatmapConfigs = Object.values(this.heatmapData);
-
-        // 🔹 Sort ONLY ONCE by value (descending)
-        const sortedThemes = [...data.data].sort(
+        const sortedThemes = [...(data?.data ?? [])].sort(
           (a: any, b: any) => Number(b.value) - Number(a.value)
         );
 
-        // 🔹 Map AFTER sorting
         this.themes = sortedThemes.map((item: any, index: number) => {
-          const id = item.id.split(' ')[0];
-
-          // ✅ Icon strictly by id
+          const id = String(item.id ?? '').split(' ')[0];
           const icon = this.heatmapData[id]?.icon ?? '';
-
-          // ✅ Color & grid by sorted order
-          const heatmapByOrder = heatmapConfigs[index] ?? {};
+          const heatmapById = this.heatmapData[id] ?? {};
+          const colors = this.getThemeColors(heatmapById, index);
+          const colorClass = heatmapById.color ?? `theme${(index % DEFAULT_THEME_COLORS.length) + 1}`;
 
           return {
             id,
@@ -96,53 +146,358 @@ export class HeatMapComponent implements OnInit {
             value: Number(item.value),
             list: (item.list ?? []).map((listItem: any) => ({
               ...listItem,
-              color: heatmapByOrder.color ?? 'gray',
+              color: colorClass,
+              backgroundColor: colors.background,
+              activeBackgroundColor: colors.active,
             })),
-            color: heatmapByOrder.color ?? 'gray',
-            gridClass: heatmapByOrder.gridClass ?? 'span-1-1',
+            color: colorClass,
+            backgroundColor: colors.background,
+            activeBackgroundColor: colors.active,
             icon
           };
         });
 
         this.heatmapThemeConfig = this.heatmapData;
 
-        // 🔹 Highest-value theme active
         if (this.themes.length > 0) {
-          this.setActiveTheme(this.themes[0].id);
+          this.setActiveTheme(this.themes[0].id, false);
         }
+
+        this.renderTreemap();
       })
       .catch((error: any) => {
         console.error('Error loading page data:', error);
       });
   }
 
-
-  setActiveTheme(themeId: string): void {
+  setActiveTheme(themeId: string, refreshChart = true): void {
     this.activeThemeId = themeId;
     const activeTheme = this.themes.find(t => t.id === themeId);
     this.displayedVoices = (activeTheme?.list ?? []).slice(0, 4);
+
+    if (refreshChart) {
+      this.chart?.update('none');
+    }
   }
 
-  showTooltipOnClick(index: number) {
-    const tooltipsArray = this.tooltips.toArray();
-    if (!tooltipsArray[index]) return;
+  getThemeBackground(theme: HeatmapTheme | VoiceQuote): string {
+    return this.activeThemeId === theme.id
+      ? theme.activeBackgroundColor || theme.backgroundColor || '#bdbdbd'
+      : theme.backgroundColor || '#bdbdbd';
+  }
 
-    // Hide all other tooltips immediately
-    tooltipsArray.forEach((t, i) => {
-      if (i !== index) t.hide();
-    });
-    // Clear any existing timeout
-    if (this.tooltipTimeoutId) {
-      clearTimeout(this.tooltipTimeoutId);
+  private getThemeColors(config: any, index: number): { background: string; active: string } {
+    const fallback = DEFAULT_THEME_COLORS[index % DEFAULT_THEME_COLORS.length];
+    const color = config?.color;
+    const classColors = typeof color === 'string' ? THEME_CLASS_COLORS[color] : undefined;
+
+    const background = this.getColorValue(config?.backgroundColor)
+      ?? this.getColorValue(config?.inactiveColor)
+      ?? this.getColorValue(color)
+      ?? classColors?.background
+      ?? fallback.background;
+
+    const active = this.getColorValue(config?.activeColor)
+      ?? classColors?.active
+      ?? background
+      ?? fallback.active;
+
+    return { background, active };
+  }
+
+  private getColorValue(value: unknown): string | null {
+    if (typeof value !== 'string') return null;
+
+    const color = value.trim();
+    if (/^(#|rgb\(|rgba\(|hsl\(|hsla\()/i.test(color)) {
+      return color;
     }
-    const tooltip = tooltipsArray[index];
-    tooltip.show();
-    this.tooltipTimeoutId = setTimeout(() => tooltip.hide(), 1000);
+
+    return null;
+  }
+
+  private renderTreemap(): void {
+    if (!this.isViewReady || !this.treemapCanvasRef || !this.themes.length) return;
+
+    this.chart?.destroy();
+
+    const config: ChartConfiguration<'treemap', TreemapDataPoint[], unknown> = {
+      type: 'treemap',
+      data: {
+        datasets: [{
+          label: 'Themes beneath the voices',
+          data: [],
+          tree: this.themes.map(theme => ({
+            id: theme.id,
+            label: theme.label,
+            value: Math.max(theme.value, 1),
+            displayValue: theme.value,
+            backgroundColor: theme.backgroundColor,
+            activeBackgroundColor: theme.activeBackgroundColor,
+            icon: theme.icon,
+          })),
+          key: 'value',
+          spacing: 6,
+          borderRadius: 6,
+          borderWidth: 0,
+          backgroundColor: context => this.getTreemapTileColor(context),
+          hoverBackgroundColor: context => this.getTreemapActiveColor(context),
+          labels: {
+            display: false,
+          },
+        }],
+      },
+      plugins: [this.themeContentPlugin],
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        onClick: (_event: ChartEvent, elements: ActiveElement[]) => {
+          this.activateThemeFromElement(elements[0]);
+        },
+        onHover: (event: ChartEvent, elements: ActiveElement[]) => {
+          const target = event.native?.target as HTMLElement | undefined;
+          if (target) {
+            target.style.cursor = elements.length ? 'pointer' : 'default';
+          }
+          this.handleTreemapHover(elements[0]);
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: {
+            enabled: false,
+          },
+        },
+      },
+    };
+
+    this.chart = new Chart(this.treemapCanvasRef.nativeElement, config);
+  }
+
+  private activateThemeFromElement(element?: ActiveElement): void {
+    const theme = this.getThemeFromChartElement(element);
+    if (!theme || theme.id === this.activeThemeId) return;
+    this.setActiveTheme(theme.id);
+  }
+
+  private handleTreemapHover(element?: ActiveElement): void {
+    const theme = this.getThemeFromChartElement(element);
+    if (!theme || !this.chart) {
+      this.hoveredThemeTooltip = null;
+      this.changeDetectorRef.detectChanges();
+      return;
+    }
+
+    if (theme.id !== this.activeThemeId) {
+      this.setActiveTheme(theme.id);
+    }
+
+    const chartElement = this.chart.getDatasetMeta(element!.datasetIndex).data[element!.index];
+    const rect = chartElement.getProps(['x', 'y', 'width', 'height'], true) as Record<string, number>;
+    const tooltipWidth = 220;
+    const tooltipHeight = 48;
+
+    this.hoveredThemeTooltip = {
+      label: theme.label,
+      left: Math.max(8, Math.min(rect['x'] + rect['width'] - tooltipWidth, this.chart.width - tooltipWidth - 8)),
+      top: Math.max(8, Math.min(rect['y'] + rect['height'] - tooltipHeight, this.chart.height - tooltipHeight - 8)),
+    };
+    this.changeDetectorRef.detectChanges();
+  }
+
+  private getThemeFromChartElement(element?: ActiveElement): HeatmapTheme | undefined {
+    if (!element || !this.chart) return undefined;
+
+    const dataPoint = this.chart.data.datasets[element.datasetIndex]?.data?.[element.index];
+    const raw = this.getTreemapRawData(dataPoint);
+    return this.themes.find(theme => theme.id === raw['id']);
+  }
+
+  private getTreemapRawData(raw: TreemapDataPoint | unknown): Record<string, any> {
+    const dataPoint = raw as TreemapDataPoint | undefined;
+    return (dataPoint?._data as Record<string, any> | undefined) ?? (raw as Record<string, any>) ?? {};
+  }
+
+  private drawTreemapContent(chart: Chart<'treemap', TreemapDataPoint[], unknown>): void {
+    const meta = chart.getDatasetMeta(0);
+    const dataset = chart.data.datasets[0];
+    if (!dataset) return;
+
+    const ctx = chart.ctx;
+    meta.data.forEach((element, index) => {
+      const data = this.getTreemapRawData(dataset.data[index]);
+      const rect = element.getProps(['x', 'y', 'width', 'height'], true) as Record<string, number>;
+      if (rect['width'] < 34 || rect['height'] < 34) return;
+
+      this.drawTreemapIcon(ctx, data, rect);
+      this.drawTreemapText(ctx, data, rect);
+    });
+  }
+
+  private drawTreemapIcon(ctx: CanvasRenderingContext2D, data: Record<string, any>, rect: Record<string, number>): void {
+    const icon = data['icon'];
+    const iconLayout = this.getTreemapIconLayout(data, rect);
+    if (typeof icon !== 'string' || !icon || !iconLayout) return;
+
+    const image = this.getTreemapIconImage(icon);
+    if (!image.complete || image.naturalWidth === 0) return;
+
+    ctx.save();
+    ctx.globalAlpha = data['id'] === this.activeThemeId ? 1 : 0.95;
+    ctx.drawImage(image, iconLayout.x, iconLayout.y, iconLayout.size, iconLayout.size);
+    ctx.restore();
+  }
+
+  private drawTreemapText(ctx: CanvasRenderingContext2D, data: Record<string, any>, rect: Record<string, number>): void {
+    const label = String(data['label'] ?? '');
+    const value = Number(data['displayValue'] ?? 0);
+    if (!label) return;
+
+    const sizes = this.getTreemapTextSizes(rect);
+    const padding = sizes.padding;
+    const iconLayout = this.getTreemapIconLayout(data, rect);
+    const compactInlineIcon = Boolean(iconLayout && rect['height'] < 96 && rect['width'] >= 120);
+    const textX = compactInlineIcon ? iconLayout!.x + iconLayout!.size + 8 : rect['x'] + padding;
+    const maxWidth = rect['x'] + rect['width'] - padding - textX;
+    if (maxWidth < 28) return;
+
+    const titleFont = `${sizes.titleWeight} ${sizes.titleSize}px "Source Sans 3", Arial, sans-serif`;
+    const titleLines = this.wrapCanvasText(ctx, label, maxWidth, 2, titleFont);
+    const titleLineHeight = sizes.titleSize + 6;
+    const voiceLineHeight = sizes.voiceSize + 5;
+    const voiceText = value > 0 ? `${value} Voices raised` : '';
+    const shouldDrawVoice = Boolean(voiceText) && rect['height'] >= 58 && rect['width'] >= 74;
+    const contentHeight = titleLines.length * titleLineHeight + (shouldDrawVoice ? voiceLineHeight : 0);
+    const iconBottom = iconLayout && !compactInlineIcon ? iconLayout.y + iconLayout.size + 8 : rect['y'] + padding;
+    const minY = Math.max(rect['y'] + padding, iconBottom);
+    const maxY = rect['y'] + rect['height'] - padding - contentHeight;
+    let textY = rect['y'] + (rect['height'] - contentHeight) / 2;
+    textY = Math.min(Math.max(textY, minY), Math.max(minY, maxY));
+
+    ctx.save();
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = '#ffffff';
+    ctx.font = titleFont;
+
+    titleLines.forEach(line => {
+      ctx.fillText(line, textX, textY);
+      textY += titleLineHeight;
+    });
+
+    if (shouldDrawVoice) {
+      ctx.font = `600 ${sizes.voiceSize}px "Source Sans 3", Arial, sans-serif`;
+      ctx.globalAlpha = 0.96;
+      ctx.fillText(voiceText, textX, textY);
+    }
+
+    ctx.restore();
+  }
+
+  private getTreemapTextSizes(rect: Record<string, number>): { titleSize: number; voiceSize: number; titleWeight: number; padding: number } {
+    const area = rect['width'] * rect['height'];
+
+    if (area > 50000) {
+      return { titleSize: 22, voiceSize: 15, titleWeight: 700, padding: 12 };
+    }
+
+    if (area > 26000) {
+      return { titleSize: 17, voiceSize: 12, titleWeight: 700, padding: 10 };
+    }
+
+    if (area > 12000) {
+      return { titleSize: 13, voiceSize: 10, titleWeight: 700, padding: 9 };
+    }
+
+    return { titleSize: 11, voiceSize: 8, titleWeight: 700, padding: 7 };
+  }
+
+  private getTreemapIconLayout(data: Record<string, any>, rect: Record<string, number>): { x: number; y: number; size: number } | null {
+    const icon = data['icon'];
+    if (typeof icon !== 'string' || !icon || rect['width'] < 42 || rect['height'] < 48) return null;
+
+    const padding = rect['width'] * rect['height'] > 26000 ? 10 : 7;
+    const size = Math.max(16, Math.min(28, rect['width'] * 0.18, rect['height'] * 0.22));
+
+    if (rect['height'] < 96 && rect['width'] < 120) {
+      return null;
+    }
+
+    return {
+      x: rect['x'] + padding,
+      y: rect['y'] + padding,
+      size,
+    };
+  }
+
+  private wrapCanvasText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number, maxLines: number, font: string): string[] {
+    ctx.font = font;
+    const words = text.split(/\s+/).filter(Boolean);
+    const lines: string[] = [];
+    let line = '';
+
+    words.forEach(word => {
+      const candidate = line ? `${line} ${word}` : word;
+      if (ctx.measureText(candidate).width <= maxWidth) {
+        line = candidate;
+        return;
+      }
+
+      if (line) {
+        lines.push(line);
+      }
+      line = word;
+    });
+
+    if (line) {
+      lines.push(line);
+    }
+
+    const visibleLines = lines.slice(0, maxLines);
+    if (lines.length > maxLines && visibleLines.length) {
+      visibleLines[visibleLines.length - 1] = this.ellipsizeCanvasText(ctx, visibleLines[visibleLines.length - 1], maxWidth);
+    }
+
+    return visibleLines.length ? visibleLines : [this.ellipsizeCanvasText(ctx, text, maxWidth)];
+  }
+
+  private ellipsizeCanvasText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string {
+    if (ctx.measureText(text).width <= maxWidth) return text;
+
+    const ellipsis = '...';
+    let truncated = text;
+    while (truncated.length > 0 && ctx.measureText(`${truncated}${ellipsis}`).width > maxWidth) {
+      truncated = truncated.slice(0, -1);
+    }
+
+    return `${truncated.trim()}${ellipsis}`;
+  }
+
+  private getTreemapIconImage(icon: string): HTMLImageElement {
+    const existingImage = this.treemapIconImages.get(icon);
+    if (existingImage) return existingImage;
+
+    const image = new Image();
+    image.onload = () => this.chart?.draw();
+    image.src = icon;
+    this.treemapIconImages.set(icon, image);
+    return image;
+  }
+
+  private getTreemapTileColor(context: ScriptableContext<'treemap'>): string {
+    const data = this.getTreemapRawData(context.raw);
+    return data['id'] === this.activeThemeId
+      ? data['activeBackgroundColor'] ?? data['backgroundColor'] ?? '#bdbdbd'
+      : data['backgroundColor'] ?? '#bdbdbd';
+  }
+
+  private getTreemapActiveColor(context: ScriptableContext<'treemap'>): string {
+    const data = this.getTreemapRawData(context.raw);
+    return data['activeBackgroundColor'] ?? data['backgroundColor'] ?? '#bdbdbd';
   }
 
   ngOnDestroy(): void {
-    if (this.tooltipTimeoutId) {
-      clearTimeout(this.tooltipTimeoutId);
-    }
+    this.chart?.destroy();
   }
 }
