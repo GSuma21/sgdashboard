@@ -74,9 +74,12 @@
   }
 
 .info-modal-heading-image {
+  background-color: currentColor;
   display: block;
+  flex: none;
   height: 2.125rem;
-  object-fit: contain;
+  mask: var(--info-modal-icon-url) center / contain no-repeat;
+  -webkit-mask: var(--info-modal-icon-url) center / contain no-repeat;
   width: 2.125rem;
 }
 

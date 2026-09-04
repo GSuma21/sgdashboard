@@ -108,7 +108,7 @@ export class HeatMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   activeThemeId: string | null = null;
   displayedVoices: VoiceQuote[] = [];
-  hoveredThemeTooltip: { label: string; left: number; top: number } | null = null;
+  hoveredThemeTooltip: { label: string; voicesText: string; left: number; top: number } | null = null;
 
   constructor(private readonly changeDetectorRef: ChangeDetectorRef) {}
 
@@ -301,6 +301,7 @@ export class HeatMapComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.hoveredThemeTooltip = {
       label: theme.label,
+      voicesText: `${theme.value} Voices raised`,
       left: Math.max(8, Math.min(rect['x'] + rect['width'] - tooltipWidth, this.chart.width - tooltipWidth - 8)),
       top: Math.max(8, Math.min(rect['y'] + rect['height'] - tooltipHeight, this.chart.height - tooltipHeight - 8)),
     };
@@ -331,14 +332,22 @@ export class HeatMapComponent implements OnInit, AfterViewInit, OnDestroy {
       const rect = element.getProps(['x', 'y', 'width', 'height'], true) as Record<string, number>;
       if (rect['width'] < 34 || rect['height'] < 34) return;
 
-      this.drawTreemapIcon(ctx, data, rect);
-      this.drawTreemapText(ctx, data, rect);
+      const shouldDrawText = this.shouldDrawTreemapText(ctx, data, rect);
+      this.drawTreemapIcon(ctx, data, rect, !shouldDrawText);
+      if (shouldDrawText) {
+        this.drawTreemapText(ctx, data, rect);
+      }
     });
   }
 
-  private drawTreemapIcon(ctx: CanvasRenderingContext2D, data: Record<string, any>, rect: Record<string, number>): void {
+  private drawTreemapIcon(
+    ctx: CanvasRenderingContext2D,
+    data: Record<string, any>,
+    rect: Record<string, number>,
+    iconOnly = false
+  ): void {
     const icon = data['icon'];
-    const iconLayout = this.getTreemapIconLayout(data, rect);
+    const iconLayout = this.getTreemapIconLayout(data, rect, iconOnly);
     if (typeof icon !== 'string' || !icon || !iconLayout) return;
 
     const image = this.getTreemapIconImage(icon);
@@ -368,10 +377,16 @@ export class HeatMapComponent implements OnInit, AfterViewInit, OnDestroy {
     const titleLineHeight = sizes.titleSize + 6;
     const voiceLineHeight = sizes.voiceSize + 5;
     const voiceText = value > 0 ? `${value} Voices raised` : '';
-    const shouldDrawVoice = Boolean(voiceText) && rect['height'] >= 58 && rect['width'] >= 74;
-    const contentHeight = titleLines.length * titleLineHeight + (shouldDrawVoice ? voiceLineHeight : 0);
     const iconBottom = iconLayout && !compactInlineIcon ? iconLayout.y + iconLayout.size + 8 : rect['y'] + padding;
     const minY = Math.max(rect['y'] + padding, iconBottom);
+    const titleOnlyHeight = titleLines.length * titleLineHeight;
+    const availableTextHeight = rect['y'] + rect['height'] - padding - minY;
+    const shouldDrawVoice =
+      Boolean(voiceText) &&
+      rect['height'] >= 58 &&
+      rect['width'] >= 74 &&
+      titleOnlyHeight + voiceLineHeight <= availableTextHeight;
+    const contentHeight = titleLines.length * titleLineHeight + (shouldDrawVoice ? voiceLineHeight : 0);
     const maxY = rect['y'] + rect['height'] - padding - contentHeight;
     let textY = rect['y'] + (rect['height'] - contentHeight) / 2;
     textY = Math.min(Math.max(textY, minY), Math.max(minY, maxY));
@@ -395,6 +410,39 @@ export class HeatMapComponent implements OnInit, AfterViewInit, OnDestroy {
     ctx.restore();
   }
 
+  private shouldDrawTreemapText(
+    ctx: CanvasRenderingContext2D,
+    data: Record<string, any>,
+    rect: Record<string, number>
+  ): boolean {
+    const label = String(data['label'] ?? '');
+    if (!label || rect['width'] < 58 || rect['height'] < 56) return false;
+
+    const sizes = this.getTreemapTextSizes(rect);
+    const padding = sizes.padding;
+    const iconLayout = this.getTreemapIconLayout(data, rect);
+    const compactInlineIcon = Boolean(iconLayout && rect['height'] < 96 && rect['width'] >= 120);
+    const textX = compactInlineIcon ? iconLayout!.x + iconLayout!.size + 8 : rect['x'] + padding;
+    const maxWidth = rect['x'] + rect['width'] - padding - textX;
+
+    if (maxWidth < 44) return false;
+
+    const titleFont = `${sizes.titleWeight} ${sizes.titleSize}px "Source Sans 3", Arial, sans-serif`;
+    const titleLines = this.wrapCanvasText(ctx, label, maxWidth, 2, titleFont);
+    const hasReadableTitle = titleLines.some(line => line.replace(/\./g, '').trim().length >= 4);
+    if (!hasReadableTitle) return false;
+
+    const titleLineHeight = sizes.titleSize + 6;
+    const voiceLineHeight = sizes.voiceSize + 5;
+    const voiceText = Number(data['displayValue'] ?? 0) > 0 ? `${data['displayValue']} Voices raised` : '';
+    const shouldDrawVoice = Boolean(voiceText) && rect['height'] >= 58 && rect['width'] >= 74;
+    const iconHeight = iconLayout && !compactInlineIcon ? iconLayout.size + 8 : 0;
+    const titleOnlyHeight = padding * 2 + iconHeight + titleLines.length * titleLineHeight;
+    const requiredHeight = titleOnlyHeight + (shouldDrawVoice ? voiceLineHeight : 0);
+
+    return titleOnlyHeight <= rect['height'] || requiredHeight <= rect['height'];
+  }
+
   private getTreemapTextSizes(rect: Record<string, number>): { titleSize: number; voiceSize: number; titleWeight: number; padding: number } {
     const area = rect['width'] * rect['height'];
 
@@ -413,16 +461,18 @@ export class HeatMapComponent implements OnInit, AfterViewInit, OnDestroy {
     return { titleSize: 11, voiceSize: 8, titleWeight: 700, padding: 7 };
   }
 
-  private getTreemapIconLayout(data: Record<string, any>, rect: Record<string, number>): { x: number; y: number; size: number } | null {
+  private getTreemapIconLayout(
+    data: Record<string, any>,
+    rect: Record<string, number>,
+    iconOnly = false
+  ): { x: number; y: number; size: number } | null {
     const icon = data['icon'];
-    if (typeof icon !== 'string' || !icon || rect['width'] < 42 || rect['height'] < 48) return null;
+    if (typeof icon !== 'string' || !icon || rect['width'] < 34 || rect['height'] < 34) return null;
 
     const padding = rect['width'] * rect['height'] > 26000 ? 10 : 7;
-    const size = Math.max(16, Math.min(28, rect['width'] * 0.18, rect['height'] * 0.22));
-
-    if (rect['height'] < 96 && rect['width'] < 120) {
-      return null;
-    }
+    const size = iconOnly
+      ? Math.max(14, Math.min(22, rect['width'] * 0.28, rect['height'] * 0.28))
+      : Math.max(16, Math.min(24, rect['width'] * 0.16, rect['height'] * 0.2));
 
     return {
       x: rect['x'] + padding,

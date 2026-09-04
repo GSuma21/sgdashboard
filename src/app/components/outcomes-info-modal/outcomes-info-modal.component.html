@@ -18,13 +18,12 @@
     </button>
 
     <div class="info-modal-heading" [style.color]="color">
-      <img
+      <span
         *ngIf="isImageIcon; else materialIcon"
         class="info-modal-heading-image"
-        [src]="icon"
-        alt=""
+        [style.--info-modal-icon-url]="'url(' + icon + ')'"
         aria-hidden="true"
-      />
+      ></span>
 
       <ng-template #materialIcon>
       <span class="material-icons info-modal-heading-icon" aria-hidden="true">

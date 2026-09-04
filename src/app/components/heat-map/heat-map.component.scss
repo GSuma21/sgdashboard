@@ -4,7 +4,8 @@
 }
 
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(24px, 3vw, 40px);
   font-family: var(--sg-font-body);
   background-color: var(--oc-white);
@@ -16,7 +17,7 @@
   max-width: 100%;
 
   @media (max-width: 1024px) {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     max-height: none;
   }
 }
@@ -62,11 +63,22 @@
   border-radius: 5px;
   background-color: var(--oc-white);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   color: #1f1f1f;
-  font-size: 0.84rem;
-  font-weight: 500;
+  font-size: 0.8rem;
   line-height: 1.25;
   pointer-events: none;
+
+  strong {
+    font-weight: 700;
+  }
+
+  span {
+    font-size: 0.74rem;
+    font-weight: 600;
+  }
 }
 
 .purple {
@@ -156,7 +168,7 @@
 
 .voice-card {
   border-radius: 8px;
-  padding: 15px 20px 0px 20px;
+  padding: 22px 28px;
   color: white;
   display: flex;
   flex-direction: column;
@@ -168,17 +180,20 @@
 
 
   .quote-icon {
-    width: 25px;
+    filter: brightness(0) invert(1);
+    opacity: 0.28;
+    width: 34px;
   }
 
   .quote-text {
-    font-size: 0.844rem;
+    font-size: 0.9rem;
+    font-weight: 600;
     line-height: 1.4;
-    margin-bottom: 15px;
+    margin: 0 0 15px;
     flex-grow: 1;
     display: -webkit-box;
-    -webkit-line-clamp: 6;
-    line-clamp: 6;
+    -webkit-line-clamp: 5;
+    line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
     overflow-wrap: anywhere;
@@ -186,9 +201,10 @@
 
   .quote-author {
     font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: 600;
     opacity: 0.9;
-    text-align: right;
+    margin: 0;
+    text-align: left;
   }
 }
 
@@ -196,8 +212,8 @@
   display: flex;
   align-items: start;
   flex-direction: column;
-  margin-left: 28px;
-  margin-top: 5px;
+  margin-left: 48px;
+  margin-top: -6px;
   padding-right: 10px;
   min-width: 0;
 }
@@ -208,11 +224,11 @@
   }
 
   .voice-card {
-    padding: 14px 16px 0px 16px;
+    padding: 18px 20px;
   }
 
   .quote-container {
-    margin-left: 18px;
+    margin-left: 38px;
   }
 }
 
@@ -258,6 +274,6 @@
 }
 
 .quote-container {
-  margin-left: 10px;
+  margin-left: 28px;
 }
 }

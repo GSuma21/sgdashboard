@@ -77,7 +77,7 @@
           [attr.aria-label]="config.ariaLabels.layerTiles"
         >
           <button
-            *ngFor="let layer of layers; trackBy: trackByLayerKey"
+            *ngFor="let layer of frameworkLayers; trackBy: trackByLayerKey"
             type="button"
             class="program-layer-tile"
             [class.active]="selectedLayerKey === layer.key"
@@ -222,7 +222,7 @@
               </button>
 
               <ng-container
-                *ngFor="let layer of layers; trackBy: trackByLayerKey"
+                *ngFor="let layer of frameworkLayers; trackBy: trackByLayerKey"
               >
                 <ng-container
                   *ngTemplateOutlet="
@@ -386,11 +386,11 @@
                 </div>
               </div>
 
-              <p class="fwsub" *ngIf="selectedLayer.subheading">
-                {{ selectedLayer.subheading }}
+              <p class="fwsub" *ngIf="selectedLayerDefinition || selectedLayer.body">
+                {{ selectedLayerDefinition || selectedLayer.body }}
               </p>
 
-              <ul class="framework-list">
+              <ul class="framework-list" *ngIf="shouldShowFrameworkList">
                 <li
                   *ngFor="
                     let item of selectedLayer.listItems || [];

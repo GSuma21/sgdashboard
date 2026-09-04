@@ -254,7 +254,12 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
   }
 
   get infoModalIcon(): string {
-    return this.getProgramLayerIcon(this.infoModalLayer.key) || this.infoModalLayer.icon;
+    return (
+      this.getProgramLayerIcon(this.infoModalLayer.key) ||
+      this.infoModalLayer.imgPath ||
+      (this.infoModalLayer.diagram.icon.type === 'image' ? this.infoModalLayer.diagram.icon.value : '') ||
+      this.infoModalLayer.icon
+    );
   }
 
   get infoModalColor(): string {
@@ -262,6 +267,10 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
   }
 
   get infoModalListItems(): OutcomesListItem[] {
+    if (!this.shouldShowLayerFrameworkList(this.infoModalLayer.key)) {
+      return [];
+    }
+
     return this.infoModalLayer.listItems || [];
   }
 
@@ -274,8 +283,8 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
   }
 
   get narrativeBody(): string {
-    if (this.selectedLayer.subheading) {
-      return this.selectedLayer.subheading;
+    if (this.selectedLayerDefinition) {
+      return this.selectedLayerDefinition;
     }
 
     if (this.selectedLayer.body) {
@@ -287,6 +296,17 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
     }
 
     return this.config.defaultNarrativeBody;
+  }
+
+  get selectedLayerDefinition(): string {
+    const layerTitle = this.normalizeLayerText(
+      this.selectedLayer.heading || this.selectedLayer.chipLabel || this.selectedLayer.key
+    );
+    const definitionItem = this.selectedLayer.listItems?.find(
+      (item) => this.normalizeLayerText(item.title) === layerTitle
+    );
+
+    return definitionItem?.description || this.selectedLayer.subheading || '';
   }
 
   get frameworkLead(): string {
@@ -351,7 +371,31 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
   }
 
   get secondaryLayers(): OutcomesLayerConfig[] {
-    return this.layers.slice(3);
+    return this.layers.slice(3).sort((a, b) => {
+      const order: Partial<Record<OutcomesLayerKey, number>> = {
+        system: 0,
+        society: 1,
+        network: 2,
+      };
+      return (order[a.key] ?? 99) - (order[b.key] ?? 99);
+    });
+  }
+
+  get frameworkLayers(): OutcomesLayerConfig[] {
+    const order: Partial<Record<OutcomesLayerKey, number>> = {
+      students: 0,
+      schools: 1,
+      community: 2,
+      system: 3,
+      society: 4,
+      network: 5,
+    };
+
+    return [...this.layers].sort((a, b) => (order[a.key] ?? 99) - (order[b.key] ?? 99));
+  }
+
+  get shouldShowFrameworkList(): boolean {
+    return this.shouldShowLayerFrameworkList(this.selectedLayerKey);
   }
 
   // Every layer's disabled state, precomputed once for the diagram child component
@@ -503,6 +547,14 @@ export class OutcomesModelComponent implements OnDestroy, OnInit {
 
   getLayerByKey(key: OutcomesLayerKey | string): OutcomesLayerConfig | undefined {
     return this.layers.find((layer) => layer.key === key);
+  }
+
+  private normalizeLayerText(text: string): string {
+    return text.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  }
+
+  private shouldShowLayerFrameworkList(layerKey: OutcomesLayerKey): boolean {
+    return layerKey !== 'society' && layerKey !== 'network';
   }
 
   // Keeps text readable on dynamic layer-color backgrounds.
